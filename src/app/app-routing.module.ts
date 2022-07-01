@@ -12,8 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: AppLoginComponent,
-    // canDeactivate: [HasChangesGuard],
+    component: AppLoginComponent
   }
 ];
 

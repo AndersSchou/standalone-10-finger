@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/services/auth-service';
+import { AuthService } from 'src/app/services/auth.service';
 
+/**
+ * Login component.
+ */
 @Component({
   selector: 'app-modules-login',
   templateUrl: './login.component.html',
