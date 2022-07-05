@@ -1,6 +1,7 @@
+import { AchievementsModule } from './modules/achievements/achievements.module';
 import { AuthInterceptor } from './services/guards/auth-interceptor.service';
 import { environment } from 'src/environments/environment';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,9 +13,16 @@ import { CookieService } from 'ngx-cookie-service';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { AppHomeComponent } from './modules/home/home.component';
 import { AuthGuardService } from './services/guards/auth-guard.service';
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { GamesModule } from './modules/games/games.module';
+import { InfoModule } from './modules/info/info.module';
+import { HomeModule } from './modules/home/home.module';
+import { SetCourseModule } from './modules/set-course/set-course.module';
+import { TypingModule } from './modules/typing/typing.module';
+import { CustomIconService } from './services/custom-icon.service';
+import { GlobalErrorHandler } from './services/global-error-handler.service';
 
 
 // TranslateHttpLoader is used to load the translations automatically.
@@ -27,12 +35,18 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   declarations: [
     AppComponent,
     AppLoginComponent,
-    AppHomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    AchievementsModule,
+    GamesModule,
+    HomeModule,
+    InfoModule,
+    SetCourseModule,
+    TypingModule,
+    HttpClientModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -55,6 +69,11 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AuthService,
     CookieService,
     AuthGuardService,
+    CustomIconService,
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

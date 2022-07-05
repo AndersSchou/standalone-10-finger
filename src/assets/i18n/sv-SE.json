@@ -1,0 +1,17 @@
+{
+  "translateError": "Fel",
+  "translateClientSideNetworkError": "Ett fel på klientsidan eller nätverket uppstod.",
+  "translateCheckInternetConnection": "Kontrollera din internetanslutning och ladda om sidan.",
+  "translateGotIt": "Jag förstår",
+  "translateWelcome10Fingers": "Welcome to 10 fingers",
+  "translateWelcomeMsg": "Set your difficulty level or Start where you left",
+  "translateStartTyping": "Start typing",
+  "translateInfoAbout10Finger": "Info about 10-finger",
+  "translateInfoDescription": "Info about 10-finger system and how it improves writing abilities and how we at Vitec-MV has made courses",
+  "translateTyping": "Typing",
+  "translateSetCourse": "Set a course",
+  "translateGames": "Games",
+  "translateAchivements": "Achivements",
+  "translateInformation": "Information",
+  "translateSettings": "Settings"
+}

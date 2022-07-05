@@ -1,0 +1,43 @@
+<div class="header">
+  <div fxLayout="row" class="h-100">
+    <div fxFlex="none" class="app-icon-hld" [routerLink]="['']">
+      <div class="logo-icon mr-10">
+        <mat-icon class="app-icon-hovers" svgIcon="logo_10_finger"></mat-icon>
+      </div>
+      <div class="logo-text">
+        <mat-icon class="app-icon-hovers" svgIcon="logo_10_finger_text"></mat-icon>
+      </div>
+    </div>
+    <div fxFlex class="menu-hld">
+      <div class="item-hld" [routerLink]="['/type']" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon svgIcon="rocket" class="mr-10 typing"></mat-icon>
+        {{ "translateTyping" | translate }}
+      </div>
+      <div class="item-hld" [routerLink]="['/set-course']" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon svgIcon="courses" class="mr-10 course"></mat-icon>
+        {{ "translateSetCourse" | translate }}
+      </div>
+      <div class="item-hld" [routerLink]="['/games']" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon svgIcon="games" class="mr-10 game"></mat-icon>
+        {{ "translateGames" | translate}}
+      </div>
+      <div class="item-hld" [routerLink]="['/achivements']" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon svgIcon="achivements" class="mr-10 achivement"></mat-icon>
+        {{ "translateAchivements" | translate}}
+      </div>
+      <div class="item-hld" [routerLink]="['/info']" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon svgIcon="info" class="mr-10 info"></mat-icon>
+        {{ "translateInformation" | translate}}
+      </div>
+      <div class="item-hld">
+        <mat-icon svgIcon="settings" class="mr-10 setting"></mat-icon>
+        {{ "translateSettings" | translate }}
+      </div>
+    </div>
+  </div>
+</div>

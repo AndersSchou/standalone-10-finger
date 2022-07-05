@@ -1,0 +1,30 @@
+<div class="dialog-hld">
+  <div mat-dialog-title class="mat-dialog-title">
+    <div class="title" fxLayout="row" fxLayoutAlign="start center">
+      <div class="icon-hld">
+        <mat-icon svgIcon="error" class="app-icon-hover"></mat-icon>
+      </div>
+      <div class="title-hld">{{ "translateError" | translate }}</div>
+    </div>
+  </div>
+
+  <div mat-dialog-content class="content-hld">
+    <div *ngIf="data.status !== 0; else noInternetErrorBlock">
+      <div *ngIf="data.error; else noHttpErrorBlock">
+        <div *ngIf="data.error.errorId">ID: {{data.error.errorId}}</div>
+        <div class="padd-10" *ngIf="data.error.error">{{data.error.error}}</div>
+      </div>
+      <ng-template #noHttpErrorBlock>
+        <div>{{data}}</div>
+      </ng-template>
+    </div>
+    <ng-template #noInternetErrorBlock>
+      <div>{{ "translateClientSideNetworkError" | translate }}</div>
+      <div class="padd-10">{{ "translateCheckInternetConnection" | translate }}</div>
+    </ng-template>
+  </div>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" class="modal-footer">
+    <div (click)="cancel()" class="action-btn">{{ "translateGotIt" | translate }}</div>
+  </div>
+</div>

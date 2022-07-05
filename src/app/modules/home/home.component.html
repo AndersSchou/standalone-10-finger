@@ -1,1 +1,37 @@
-home
+<app-shared-top-menu></app-shared-top-menu>
+<div class="main-content-hld bg-img">
+  <div class="center-content">
+    <div>
+      <div class="welcome-text padd-tb-44">
+        <div class="welcome-title">{{ "translateWelcome10Fingers" | translate}}</div>
+        <div class="welcome-description">{{ "translateWelcomeMsg" | translate}}</div>
+      </div>
+      <div class="padd-tb-44">
+        <div fxLayout="row wrap" fxLayoutGap="100px">
+          <div fxFlex>
+            <div class="wbtn-hld">
+              <div class="welcome-btn" (click)="navigateTo('/type')">
+                {{ "translateStartTyping" | translate}}
+                <mat-icon svgIcon="keyboard" class="ml-20"></mat-icon>
+              </div>
+            </div>
+            <div>
+              <img src="/assets/svg/illustration_start.svg">
+            </div>
+          </div>
+          <div fxFlex>
+            <div class="wbtn-hld">
+              <div class="welcome-btn" (click)="navigateTo('/set-course')">
+                {{ "translateSetCourse" | translate}}
+                <mat-icon svgIcon="courses" class="ml-20"></mat-icon>
+              </div>
+            </div>
+            <div>
+              <img src="/assets/svg/illustration_course.svg">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+@import "app-colors";
+
+.bg-img {
+  background-image: url("/assets/svg/welcome_bg.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.center-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.welcome-text {
+  text-align: center;
+}
+
+.welcome-title {
+  font-weight: 900;
+  font-size: 32px;
+  color: $color-active-secondary;
+  padding-bottom: 16px;
+}
+
+.welcome-description {
+  font-size: 18px;
+  font-weight: 300;
+}
