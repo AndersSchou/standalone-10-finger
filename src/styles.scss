@@ -12,3 +12,42 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: $default-text-color;
 }
+
+body .mat-icon {
+  height: 24px;
+  width: 24px;
+}
+
+.cdk-overlay-pane.error-class {
+  width: 450px;
+}
+
+.cdk-overlay-pane.error-class .mat-dialog-container {
+  padding: 24px 24px 0 24px;
+}
+
+.mat-dialog-actions,
+.mat-dialog-title {
+  margin-bottom: 0 !important;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.main-content-hld {
+  position: fixed;
+  top: 81px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}

@@ -1,0 +1,57 @@
+@import "app-colors";
+
+.bg-img {
+  background-image: url("/assets/svg/welcome_bg.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.center-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.welcome-text {
+  text-align: center;
+}
+
+.welcome-title {
+  font-weight: 900;
+  font-size: 32px;
+  color: $color-active-secondary;
+  padding-bottom: 16px;
+}
+
+.welcome-description {
+  font-size: 18px;
+  font-weight: 300;
+}
+
+.wbtn-hld {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 44px;
+}
+
+.welcome-btn {
+  box-shadow: 12px 12px 24px rgb(247 160 0 / 20%);
+  -moz-box-shadow: 12px 12px 24px rgb(247 160 0 / 20%);
+  -webkit-box-shadow: 12px 12px 24px rgb(247 160 0 / 20%);
+  border-radius: 12px;
+  background: $color-active;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 40px;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.padd-tb-44 {
+  padding: 44px 0;
+}
