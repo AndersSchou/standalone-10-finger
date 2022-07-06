@@ -1,9 +1,16 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
+// This is local environment used for testing locally on localhost.
+
+import { NgxLoggerLevel } from 'ngx-logger';
 
 export const environment = {
-  production: false
+  name: 'test',
+  production: false,
+  availableLanguages: ['da-DK', 'nn-NO', 'sv-SE', 'nb-NO'],
+  logLevel: NgxLoggerLevel.DEBUG,
+  location: 'http://localhost:4200/',
+  UrlEndpoints: {
+    auth: 'https://signon-test.vitec-mv.com',
+  }
 };
 
 /*
