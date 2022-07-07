@@ -13,5 +13,10 @@
   "translateGames": "Games",
   "translateAchivements": "Achivements",
   "translateInformation": "Information",
-  "translateSettings": "Settings"
+  "translateSettings": "Settings",
+  "translateComplete": "complete",
+  "translateStart": "Start",
+  "translateShowAll": "Show all",
+  "translateShowLess": "Show less",
+  "translateExercises": "exercises"
 }

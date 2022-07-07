@@ -48,6 +48,25 @@ body .mat-icon {
   margin-right: 10px;
 }
 
+.ml-10 {
+  margin-left: 10px;
+}
+
 .ml-20 {
   margin-left: 20px;
+}
+
+.page-padd {
+  padding: 0 64px;
+}
+
+.divider {
+  background: $divider-bg;
+  height: 1px;
+}
+
+@media (max-width: 1199px) {
+  .page-padd {
+    padding: 0 26px;
+  }
 }

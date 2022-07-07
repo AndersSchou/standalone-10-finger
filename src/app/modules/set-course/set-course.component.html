@@ -1,2 +1,21 @@
 <app-shared-top-menu></app-shared-top-menu>
-<div class="main-content-hld">course</div>
+<div class="main-content-hld page-padd ptb-34">
+  <div fxLayout="row wrap" fxLayoutGap="50px" *ngIf="categories.length > 0">
+    <div fxFlex="300px">
+      <div>
+        <div *ngFor="let category of categories; let i=index" class="cat-hld"
+          [ngClass]="{'active': category === selectedCourse}" (click)="selectCourse(category)">
+          <div>{{category.name}}</div>
+          <div class="icon-hld">
+            <mat-icon [svgIcon]="i===0 ? 'icon-read' : (i===1 ? 'icon-symbol': 'icon-speed')" class="mr-10">
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+    </div>
+    <div fxFlex>
+      <app-modules-set-course-course [course]="selectedCourse"></app-modules-set-course-course>
+    </div>
+  </div>
+</div>

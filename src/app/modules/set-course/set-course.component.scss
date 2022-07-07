@@ -1,0 +1,26 @@
+@import "app-colors";
+
+.ptb-34 {
+  padding-top: 34px;
+  padding-bottom: 34px;
+}
+
+.cat-hld {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  font-weight: 900;
+  font-size: 20px;
+  cursor: pointer;
+  margin-bottom: 16px;
+  border-radius: 12px;
+}
+
+.icon-hld {
+  margin-left: auto;
+}
+
+.cat-hld.active,
+.cat-hld:hover {
+  background: $color-active;
+}
