@@ -14,12 +14,15 @@ export const SPEAK_NOT_VALID = 365123;
 // This was done to avoid the errors thrown by MatIconRegistry when it can't find/fetch the svg (on internet connection issues).
 export const APP_ICONS = [
   'achivements',
+  'chevron_left',
   'courses',
   'error',
   'games',
-  'icon-read',
-  'icon-speed',
-  'icon-symbol',
+  'icon_read',
+  'icon_replay',
+  'icon_sound',
+  'icon_speed',
+  'icon_symbol',
   'info',
   'keyboard',
   'logo_10_finger',

@@ -10,6 +10,7 @@ export const environment = {
   location: 'http://localhost:4200/',
   UrlEndpoints: {
     auth: 'https://signon-test.vitec-mv.com',
+    voiceservice: 'https://voiceservice-test.vitec-mv.com',
   }
 };
 

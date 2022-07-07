@@ -9,5 +9,6 @@ export const environment = {
   logLevel: NgxLoggerLevel.OFF,
   UrlEndpoints: {
     auth: 'https://signon.vitec-mv.com',
+    voiceservice: 'https://voiceservice.vitec-mv.com',
   }
 };
