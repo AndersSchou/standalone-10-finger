@@ -1240,31 +1240,31 @@ export const da = {
           "exercises": [
             {
               "name": "Øvelse 1",
-              "text": "Det var en sen aften, og den gamle konge var ved at gå i seng."
+              "text": "Det var en sen aften, \nog den gamle konge var ved at gå i seng."
             },
             {
               "name": "Øvelse 2",
-              "text": "Kongen kaldte på sin tjener. \"Væk mig i morgen tidlig klokken fem. Jeg har tænkt mig at skulle på rævejagt, så jeg må tidligt op.\"\n\"Javel Hans Højhed. Jeg skal vække kongen i morgen tidlig klokken fem. Sov godt!\" svarede tjeneren."
+              "text": "Kongen kaldte på sin tjener. \n\"Væk mig i morgen tidlig klokken fem. \nJeg har tænkt mig at skulle på rævejagt, \nså jeg må tidligt op.\" \n\"Javel Hans Højhed. Jeg skal vække \nkongen i morgen tidlig klokken fem. \nSov godt!\" svarede tjeneren."
             },
             {
               "name": "Øvelse 3",
-              "text": "Nu havde tjeneren et problem. Han var en rigtig syvsover, og derfor havde han svært ved at komme tidligt op om morgenen."
+              "text": "Nu havde tjeneren et problem. \nHan var en rigtig syvsover, \nog derfor havde han svært ved at komme \ntidligt op om morgenen."
             },
             {
               "name": "Øvelse 4",
-              "text": "Så fik tjeneren en god ide! Han kaldte på staldkarlen. \"Den gamle konge vil på rævejagt i morgen tidlig. Jeg har lovet at vække ham klokken fem. Derfor vil jeg have dig til at vække mig klokken fire.\" Staldkarlen var bange for tjeneren og svarede:\n \"Javel herre. Jeg skal vække Dem klokken fire.\""
+              "text": "Så fik tjeneren en god ide! \nHan kaldte på staldkarlen. \n\"Den gamle konge vil på rævejagt i morgen \ntidlig. \nJeg har lovet at vække ham klokken fem. \nDerfor vil jeg have dig til at vække \nmig klokken fire.\" \nStaldkarlen var bange for tjeneren \nog svarede:\n\"Javel herre. Jeg skal vække Dem \nklokken fire.\""
             },
             {
               "name": "Øvelse 5",
-              "text": "Nu gik staldkarlen med et problem hængende over hovedet. Han elskede at sove, så han havde altid haft det svært med at komme tidligt ud af sengen."
+              "text": "Nu gik staldkarlen med et problem \nhængende over hovedet. \nHan elskede at sove, så han havde \naltid haft det svært med at komme \ntidligt ud af sengen."
             },
             {
               "name": "Øvelse 6",
-              "text": "Da staldkarlen kom tilbage til stalden, så han hunden, som var ved at jage en kat. \"Kom her!\" sagde staldkarlen til hunden."
+              "text": "Da staldkarlen kom tilbage \ntil stalden, så han hunden, \nsom var ved at jage en kat. \"Kom her!\" \nsagde staldkarlen til hunden."
             },
             {
               "name": "Øvelse 7",
-              "text": "\"Hør her! I morgen tidlig skal den gamle konge på rævejagt. Han ønsker at blive vækket af tjeneren klokken fem. Så jeg er nødt til at vække tjeneren klokken fire.\""
+              "text": "\"Hør her! I morgen tidlig \nskal den gamle konge på rævejagt. \nHan ønsker at blive vækket af tjeneren \nklokken fem. \nSå jeg er nødt til at vække tjeneren klokken fire.\""
             },
             {
               "name": "Øvelse 8",

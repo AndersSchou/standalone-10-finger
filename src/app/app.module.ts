@@ -23,6 +23,7 @@ import { SetCourseModule } from './modules/set-course/set-course.module';
 import { TypingModule } from './modules/typing/typing.module';
 import { CustomIconService } from './services/custom-icon.service';
 import { GlobalErrorHandler } from './services/global-error-handler.service';
+import { VKeyboardComponent } from './vkeyboard/vkeyboard.component';
 
 
 // TranslateHttpLoader is used to load the translations automatically.
