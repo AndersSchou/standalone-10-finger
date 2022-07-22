@@ -10,13 +10,13 @@
 
   @for $col from 2 through 5 {
     .kc#{$col} {
-      left: ($key-width*($col)+$key-margin*($col - 1))+$key-margin;
+      left: $key-width*$col+$key-margin*$col;
     }
   }
 
   @for $col from 6 through 9 {
     .kc#{$col} {
-      left: $row1-offset + ($key-width*($col)+$key-margin*($col - 1))+$key-margin;
+      left: $row1-offset + $key-width*$col+$key-margin*$col;
     }
   }
 

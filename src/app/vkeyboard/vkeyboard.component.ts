@@ -4,6 +4,7 @@ import { DTDKeyboardLayout_SW } from './keyboards/swidish.keboard.dtd';
 import { DTDKeyboardLayout_NO } from './keyboards/norwegian.keboard.dtd';
 import { DTDKeyboardLayout_RO } from './keyboards/romanian.keboard.dtd';
 import { dtd2conf, dtd2skm } from './tools/dtd2skm';
+import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LAYOUT_GROUP_TYPE } from '../common/types';
 
 @Component({
   selector: 'app-vkeyboard',
@@ -16,8 +17,8 @@ export class VKeyboardComponent {
   shiftClassName = '4-1';
 
   hasNumbers: '' | 'no-numbers' = '';
-  theme: '' | 'color-group' | 'sinle-color-group' = '';
-  mode: 'full' | 'partial' | 'minimal' = 'full';
+  theme: KEYBOARD_COLOR_GROUP_TYPE = '';
+  mode: KEYBOARD_LAYOUT_GROUP_TYPE = 'full';
   keysPressed: string[] = [];
 
   keyboardDefinition: {
@@ -82,12 +83,12 @@ export class VKeyboardComponent {
     this.processClass();
   }
 
-  setTheme(theme: '' | 'color-group' | 'sinle-color-group') {
+  setTheme(theme: KEYBOARD_COLOR_GROUP_TYPE) {
     this.theme = theme;
     this.processClass();
   }
 
-  setMode(mode: 'full' | 'partial' | 'minimal') {
+  setMode(mode: KEYBOARD_LAYOUT_GROUP_TYPE) {
     this.mode = mode;
     this.processClass();
   }

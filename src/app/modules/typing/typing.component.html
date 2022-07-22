@@ -1,4 +1,5 @@
 <app-shared-top-menu></app-shared-top-menu>
+<app-shared-settings *ngIf="viewSettings"></app-shared-settings>
 <div class="main-content-hld">
   <div class="typing-header">
     <div class="page-padd">
@@ -41,23 +42,18 @@
   </div>
 
   <div>
-    <button (click)="setTheme('')">No theme</button>
+    <!-- <button (click)="setTheme('')">No theme</button>
     <button (click)="setTheme('color-group')">Theme 1</button>
-    <button (click)="setTheme('sinle-color-group')">Theme 2</button>
+    <button (click)="setTheme('single-color-group')">Theme 2</button>
     <button (click)="setMode('full')">Mode full</button>
     <button (click)="setMode('partial')">Mode partial</button>
-    <button (click)="setMode('minimal')">Mode minimal</button>
-    <button (click)="setNumbers(true)">With numbers</button>
-    <button (click)="setNumbers(false)">Without numbers</button>
+    <button (click)="setMode('minimal')">Mode minimal</button> -->
+    <!-- <button (click)="setNumbers(true)">With numbers</button>
+    <button (click)="setNumbers(false)">Without numbers</button> -->
     <button (click)="setLanguage('dk')">Danish</button>
     <button (click)="setLanguage('sw')">Swidish</button>
     <button (click)="setLanguage('no')">Norwegian</button>
     <button (click)="setLanguage('ro')">Romanian</button>
-  </div>
-  <div style="width: 300px;height:100px;">
-    <span *ngFor="let letter of testLetters" class="test-color color{{letter.color}}">
-      {{letter.val}}
-    </span>
   </div>
   <div class="keyboard-hld">
     <app-vkeyboard #vkeyboard></app-vkeyboard>

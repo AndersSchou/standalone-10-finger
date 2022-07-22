@@ -1,8 +1,8 @@
 @import './scss/size-vars.scss';
-@import './scss/colors.scss';
 @import './scss/key-spacing.scss';
-@import './scss/key-grouping.scss';
-@import './scss/key-theme.scss';
+@import './scss/key-theme-color.scss';
+@import './scss/key-layout.scss';
+@import "app-colors";
 
 #keyboard {
   margin-top: 0px;
@@ -21,23 +21,22 @@
 #keyboard-bg div,
 #keyboard-bg label {
   position: absolute;
-  border-color: #000;
   box-sizing: border-box;
-  background-clip: padding-box
+  background-clip: padding-box;
 }
 
 .kl0>div,
 .kl3>div,
 .kl6>div,
 .kl9>div {
-  text-align: left
+  text-align: left;
 }
 
 .kl1>div,
 .kl4>div,
 .kl7>div,
 .kl10>div {
-  text-align: center
+  text-align: center;
 }
 
 .kl2>div,
@@ -50,19 +49,19 @@
 .kl0>div,
 .kl1>div,
 .kl2>div {
-  vertical-align: top
+  vertical-align: top;
 }
 
 .kl3>div,
 .kl4>div,
 .kl5>div {
-  vertical-align: middle
+  vertical-align: middle;
 }
 
 .kl6>div,
 .kl7>div,
 .kl8>div {
-  vertical-align: bottom
+  vertical-align: bottom;
 }
 
 .kl9,
@@ -73,52 +72,52 @@
   font-size: 9px !important;
   max-height: 1em !important;
   white-space: nowrap;
-  overflow: hidden
+  overflow: hidden;
 }
 
 .kl.ts1 {
   font-size: 8px;
-  line-height: 1em
+  line-height: 1em;
 }
 
 .kl.ts2 {
   font-size: 10px;
-  line-height: 1em
+  line-height: 1em;
 }
 
 .kl.ts3 {
   font-size: 12px;
-  line-height: 1em
+  line-height: 1em;
 }
 
 .kl.ts4 {
   font-size: 14px;
-  line-height: 1em
+  line-height: 1em;
 }
 
 .kl.ts5 {
   font-size: 16px;
-  line-height: 1em
+  line-height: 1em;
 }
 
 .kl.ts6 {
   font-size: 18px;
-  line-height: 1em
+  line-height: 1em;
 }
 
 .kl.ts7 {
   font-size: 20px;
-  line-height: 1em
+  line-height: 1em;
 }
 
 .kl.ts8 {
   font-size: 22px;
-  line-height: 1em
+  line-height: 1em;
 }
 
 .kl.ts9 {
   font-size: 24px;
-  line-height: 1em
+  line-height: 1em;
 }
 
 .kb {
@@ -134,7 +133,7 @@
 .kt {
   width: 42px;
   height: 42px;
-  display: block
+  display: block;
 }
 
 .kls {
@@ -147,7 +146,7 @@
 .kl {
   width: $cell-width;
   height: $cell-height;
-  color: $key-text-color;
+  color: $default-text-color;
 }
 
 .kl>div {
@@ -207,8 +206,6 @@
   box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.35);
 }
 
-// #keyboard.minimal
-// #keyboard.partial
 #keyboard.full {
   width: 1196px;
   height: 326px;
@@ -256,7 +253,7 @@
   top: 1px;
   width: 64px;
   height: 104px;
-  background: #fff;
+  background: $white-color;
   border-top: none !important;
 }
 
@@ -274,7 +271,7 @@
 }
 
 .kr3 .kt.kt-enter {
-  background: #fff;
+  background: $white-color;
   left: 2px !important;
   height: 48px;
   top: 1px;

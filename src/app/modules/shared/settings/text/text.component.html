@@ -1,0 +1,62 @@
+<div class="settings">
+  <div class="section-title">{{ 'translateFont' | translate }}</div>
+  <div class="pb-10">
+    <div class="dropdown-label">{{ 'translateFontSize' | translate }}</div>
+    <div fxlayout="row" mat-button [matMenuTriggerFor]="menu" class="dropdown-btn">
+      <div fxFlex>{{selectedFontSize}}</div>
+      <div fxFlex="nogrow">
+        <mat-icon svgIcon="chevron_down"></mat-icon>
+      </div>
+    </div>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item *ngFor="let opt of fontSizes" (click)="selectFontSize(opt)">{{opt}}</button>
+    </mat-menu>
+  </div>
+
+  <!-- Font family options -->
+  <div *ngFor="let option of fontFamilies" class="option-hld mtb-10" [ngClass]="{'active': option.selected}">
+    <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"></mat-icon>
+    {{option.label}}
+  </div>
+  <div fxlayout="row" mat-button [matMenuTriggerFor]="menuFontFamily" class="dropdown-btn"
+    [ngClass]="{'disabled': !fontFamilies[fontFamilies.length-1].selected}">
+    <div fxFlex>aaa</div>
+    <div fxFlex="nogrow">
+      <mat-icon svgIcon="chevron_down"></mat-icon>
+    </div>
+  </div>
+  <mat-menu #menuFontFamily="matMenu">
+    <button mat-menu-item *ngFor="let opt of otherFontFam">{{opt.label}}</button>
+  </mat-menu>
+
+  <div class="divider mtb-18"></div>
+
+  <!-- Text color options -->
+  <div *ngFor="let option of textColorOptions" class="option-hld mtb-10" [ngClass]="{'active': option.selected}">
+    <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"></mat-icon>
+    <span *ngIf="option.label">{{option.label | translate }}</span>
+  </div>
+  <div class="ptb-5">
+    <div class="dropdown-label">{{ 'translateOneWordRepeat' | translate }}</div>
+    <div fxlayout="row" mat-button [matMenuTriggerFor]="wordRepeat" class="dropdown-btn">
+      <div fxFlex>{{selectedWordRepeat}}</div>
+      <div fxFlex="nogrow">
+        <mat-icon svgIcon="chevron_down"></mat-icon>
+      </div>
+    </div>
+    <mat-menu #wordRepeat="matMenu">
+      <button mat-menu-item *ngFor="let opt of wordToRepeat" (click)="selectWordRepeat(opt)">{{opt+1}}</button>
+    </mat-menu>
+  </div>
+
+  <div class="divider mtb-18"></div>
+  <div class="section-title">{{ 'translateLayout' | translate}}</div>
+  <div *ngFor="let option of layoutTypes" class="option-hld mtb-10">
+    <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"></mat-icon>
+    <div class="layout-opt">
+      <div *ngIf="option.type==='top'">{{option.label}}</div>
+      <mat-icon svgIcon="keyboard_3" class="keyboard-icon"></mat-icon>
+      <div *ngIf="option.type==='bottom'">{{option.label}}</div>
+    </div>
+  </div>
+</div>

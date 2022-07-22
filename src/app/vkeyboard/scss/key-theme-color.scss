@@ -1,4 +1,4 @@
-@import './colors.scss';
+@import "app-colors";
 
 $simple-key-color: $key-blue;
 $simple-key-color-pressed: $key-blue-pressed;
@@ -195,7 +195,7 @@ $theme2-row3-color-group5-list: 8;
 
     #keyboard.ks#{$rowIdx}-#{$colIdx} .kr#{$rowIdx+1} .kc#{$colIdx} .kl,
     #keyboard.kp#{$rowIdx}-#{$colIdx} .kr#{$rowIdx+1} .kc#{$colIdx} .kl {
-      color: $key-colored-text-color;
+      color: $white-color;
     }
 
     #keyboard.ks#{$rowIdx}-#{$colIdx} .kr#{$rowIdx+1} .kc#{$colIdx} .kb {
@@ -214,16 +214,16 @@ $theme2-row3-color-group5-list: 8;
 
   @each $item in $listOfKeyIndexes {
 
-    #keyboard.sinle-color-group .kr#{$rowIdx+1} .kc#{$item} .kl,
-    #keyboard.sinle-color-group.kp#{$rowIdx}-#{$item} .kr#{$rowIdx+1} .kc#{$item} .kl {
-      color: $key-colored-text-color;
+    #keyboard.single-color-group .kr#{$rowIdx+1} .kc#{$item} .kl,
+    #keyboard.single-color-group.kp#{$rowIdx}-#{$item} .kr#{$rowIdx+1} .kc#{$item} .kl {
+      color: $white-color;
     }
 
-    #keyboard.sinle-color-group .kr#{$rowIdx+1} .kc#{$item} .kb {
+    #keyboard.single-color-group .kr#{$rowIdx+1} .kc#{$item} .kb {
       @include get-from-group-color-list($groupIdx);
     }
 
-    #keyboard.sinle-color-group.kp#{$rowIdx}-#{$item} .kr#{$rowIdx+1} .kc#{$item} .kb {
+    #keyboard.single-color-group.kp#{$rowIdx}-#{$item} .kr#{$rowIdx+1} .kc#{$item} .kb {
       @include get-from-group-color-pressed-list($groupIdx);
     }
   }
@@ -235,7 +235,7 @@ $theme2-row3-color-group5-list: 8;
 
       #keyboard.color-group .kr#{$rowIdx+1} .kc#{$item} .kl,
       #keyboard.color-group.kp#{$rowIdx}-#{$item} .kr#{$rowIdx+1} .kc#{$item} .kl {
-        color: $key-colored-text-color;
+        color: $white-color;
       }
 
       #keyboard.color-group .kr#{$rowIdx+1} .kc#{$item} .kb {

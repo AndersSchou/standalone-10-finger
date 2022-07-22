@@ -1,9 +1,11 @@
+@import "app-colors";
+
 $cell-width: 40px; // interior of kb
 $cell-height: 40px;
 $key-width: 51px; // kb actual size
 $key-height: 51px;
 $key-margin: 3px; // margin between keys
-$key-bg-color: rgb(255, 255, 255); // single key bg color
+$key-bg-color: $white-color; // single key bg color
 $key-border-radius: 4px;
 
 $top-spacing: 3px; // used to lower the main rows to make room for fn keys.

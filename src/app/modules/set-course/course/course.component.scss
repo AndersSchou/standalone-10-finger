@@ -14,7 +14,7 @@
   padding-top: 32px;
 }
 
-.exercise-hld {
+.courses-page .exercise-hld {
   margin-top: 24px;
   padding: 16px 24px;
   background: $light-yellow;
@@ -22,6 +22,7 @@
   color: $grey-bg;
   font-size: 20px;
   cursor: pointer;
+  display: block;
 }
 
 .pos-hld {
@@ -80,19 +81,19 @@
   stroke: $white-color;
 }
 
-.exercise-hld:hover,
-.exercise-hld.active {
+.courses-page .exercise-hld:hover,
+.courses-page .exercise-hld.active {
   background: $active-bg-hover;
   color: $default-text-color;
 }
 
-.exercise-hld:hover .pos-hld,
-.exercise-hld.active .pos-hld {
+.courses-page .exercise-hld:hover .pos-hld,
+.courses-page .exercise-hld.active .pos-hld {
   background: $color-active;
 }
 
-.exercise-hld:hover .start-btn,
-.exercise-hld.active .start-btn {
+.courses-page .exercise-hld:hover .start-btn,
+.courses-page .exercise-hld.active .start-btn {
   background: $color-active;
   color: $default-text-color;
   box-shadow: 12px 12px 24px rgb(247 160 0 / 20%);
@@ -109,14 +110,14 @@
   stroke: $white-color;
 }
 
-::ng-deep .exercise-hld:hover .start-btn .mat-icon svg>circle,
-::ng-deep .exercise-hld.active .start-btn .mat-icon svg>circle {
+::ng-deep .courses-page .exercise-hld:hover .start-btn .mat-icon svg>circle,
+::ng-deep .courses-page .exercise-hld.active .start-btn .mat-icon svg>circle {
   fill: $default-text-color;
   stroke: $default-text-color;
 }
 
-::ng-deep .exercise-hld:hover .start-btn .mat-icon svg>path,
-::ng-deep .exercise-hld.active .start-btn .mat-icon svg>path {
+::ng-deep .courses-page .exercise-hld:hover .start-btn .mat-icon svg>path,
+::ng-deep .courses-page .exercise-hld.active .start-btn .mat-icon svg>path {
   fill: $default-text-color;
 }
 

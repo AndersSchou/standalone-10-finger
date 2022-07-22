@@ -24,6 +24,7 @@ import { TypingModule } from './modules/typing/typing.module';
 import { CustomIconService } from './services/custom-icon.service';
 import { GlobalErrorHandler } from './services/global-error-handler.service';
 import { VKeyboardComponent } from './vkeyboard/vkeyboard.component';
+import { SettingsService } from './services/settings.service';
 
 
 // TranslateHttpLoader is used to load the translations automatically.
@@ -71,6 +72,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     CookieService,
     AuthGuardService,
     CustomIconService,
+    SettingsService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,

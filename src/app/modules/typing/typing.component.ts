@@ -1,70 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { fromEvent } from 'rxjs';
-import { KEYS } from 'src/app/common/theme';
+import { fromEvent, ReplaySubject, takeUntil } from 'rxjs';
+import { colorsMap } from 'src/app/common/constants';
+import { Color, STORAGE_KEY_TYPE } from 'src/app/common/enums';
+import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LAYOUT_GROUP_TYPE } from 'src/app/common/types';
 import { Courses } from 'src/app/courses';
 import { CourseDTO } from 'src/app/dto/course.dto';
+import { SettingsService } from 'src/app/services/settings.service';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
 
-enum Color {
-  Color1 = 1,
-  Color2 = 2,
-  Color3 = 3,
-  Color4 = 4,
-  Color5 = 5
-}
-
-// colorsMap[x][y] == Color
-const colorsMap: { [key: string]: { [key: string]: Color } } = {
-  '1': {
-    // 1 2 11 12 13
-    '1': Color.Color1, '2': Color.Color1, '11': Color.Color1, '12': Color.Color1, '13': Color.Color1,
-    // 3 10
-    '3': Color.Color2, '10': Color.Color2,
-    // 4 9
-    '4': Color.Color3, '9': Color.Color3,
-    // 5 6
-    '5': Color.Color4, '6': Color.Color4,
-    // 7 8
-    '7': Color.Color5, '8': Color.Color5,
-  },
-  '2': {
-    // 2 11 12 13
-    '2': Color.Color1, '11': Color.Color1, '12': Color.Color1, '13': Color.Color1,
-    // 3 10
-    '3': Color.Color2, '10': Color.Color2,
-    // 4 9
-    '4': Color.Color3, '9': Color.Color3,
-    // 5 6
-    '5': Color.Color4, '6': Color.Color4,
-    // 7 8
-    '7': Color.Color5, '8': Color.Color5,
-  },
-  '3': {
-    // 2 11 12 13
-    '2': Color.Color1, '11': Color.Color1, '12': Color.Color1, '13': Color.Color1,
-    // 3 10
-    '3': Color.Color2, '10': Color.Color2,
-    // 4 9
-    '4': Color.Color3, '9': Color.Color3,
-    // 5 6
-    '5': Color.Color4, '6': Color.Color4,
-    // 7 8
-    '7': Color.Color5, '8': Color.Color5,
-  },
-  '4': {
-    // 3 12
-    '3': Color.Color1, '12': Color.Color1,
-    // 4 11
-    '4': Color.Color2, '11': Color.Color2,
-    // 5 10
-    '5': Color.Color3, '10': Color.Color3,
-    // 6 7
-    '6': Color.Color4, '7': Color.Color4,
-    // 8 9
-    '8': Color.Color5, '9': Color.Color5,
-  },
-};
 
 interface LetterDTO {
   index: number;
@@ -89,7 +33,7 @@ interface ExerciseDTO {
   templateUrl: './typing.component.html',
   styleUrls: ['./typing.component.scss']
 })
-export class AppTypingComponent implements OnInit, AfterViewInit {
+export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('exerciseElem') exerciseElem: ElementRef<HTMLElement> = {} as ElementRef;
   // Stores the selected course;
   selectedCourse: CourseDTO = {
@@ -101,17 +45,38 @@ export class AppTypingComponent implements OnInit, AfterViewInit {
   // Stores the DOM element.
   divElement = document.createElement('div');
   exercisesArr: ExerciseDTO[] = [];
-  keys = KEYS;
 
-  testLetters: Array<{ val: string; color: Color; }> = [];
+  viewSettings: boolean = false;
 
   @ViewChild('vkeyboard') vkeyboard: VKeyboardComponent | undefined;
+  // Stores the subscribers until they're destroyed.
+  private readonly destroyed = new ReplaySubject<never>();
 
   constructor(
-    private readonly router: Router
-  ) { }
+    private readonly router: Router,
+    private readonly settingsService: SettingsService,
+    private readonly cdr: ChangeDetectorRef
+  ) {
+
+  }
 
   ngOnInit(): void {
+    this.settingsService.viewSettingsAction
+      .pipe(takeUntil(this.destroyed))
+      .subscribe((viewSettings: boolean) => { this.viewSettings = viewSettings; });
+
+    this.settingsService.keyboardThemeColorAction
+      .pipe(takeUntil(this.destroyed))
+      .subscribe((themeColor: KEYBOARD_COLOR_GROUP_TYPE) => {
+        this.setTheme(themeColor);
+      });
+
+    this.settingsService.keyboardPrimaryModeAction
+      .pipe(takeUntil(this.destroyed))
+      .subscribe((mode: KEYBOARD_LAYOUT_GROUP_TYPE) => {
+        this.setMode(mode);
+      });
+
     this.getAllCategories();
 
     fromEvent(document, 'keydown').subscribe((event) => {
@@ -120,10 +85,30 @@ export class AppTypingComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR)) {
+      this.setTheme(localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR) as KEYBOARD_COLOR_GROUP_TYPE);
+    } else {
+      this.setTheme('');
+    }
+
+    if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
+      console.log('1');
+      this.setMode(localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT) as KEYBOARD_LAYOUT_GROUP_TYPE);
+    } else {
+      console.log('2');
+      this.setMode('full');
+    }
+    this.cdr.detectChanges();
+
     console.log('this.exerciseElem.nativeElement', this.exerciseElem.nativeElement);
     if (this.exerciseElem.nativeElement && this.exercisesArr.length > 0) {
       // this.toHTML();
     }
+  }
+
+  ngOnDestroy(): void {
+    console.log('destroy');
+    // this.destroyed.next(true);
   }
 
   /**
@@ -133,7 +118,8 @@ export class AppTypingComponent implements OnInit, AfterViewInit {
     if (this.currentLanguage in Courses) {
       const cat = Courses[this.currentLanguage];
       if (cat && cat.categories) {
-        this.selectedCourse = cat.categories[cat.categories.length - 1].courses[0];
+        this.selectedCourse = cat.categories[0].courses[0];
+        // this.selectedCourse = cat.categories[cat.categories.length - 1].courses[0];
         console.log('this.selectedCourse', this.selectedCourse);
         // this.mapText();
         this.mapExercises();
@@ -192,11 +178,12 @@ export class AppTypingComponent implements OnInit, AfterViewInit {
         for (const letter of line.text) {
           const letterElement = document.createElement('span');
           let keyClass = 'none';
-          const findKey = this.keys.find(el => el.key === letter.toLowerCase());
+          const findKey = this.getKeyColor(letter);
           if (findKey) {
-            keyClass = findKey.color.toString();
+            keyClass = 'color' + findKey;
           }
-          letterElement.classList.add('theme-' + keyClass);
+          const keyDefaultClass = ['key-hld', 'current-pos', keyClass];
+          letterElement.classList.add(...keyDefaultClass);
           letterElement.innerText = letter;
           lineElement.appendChild(letterElement);
         }
@@ -219,23 +206,25 @@ export class AppTypingComponent implements OnInit, AfterViewInit {
     console.log('---', this.divElement);
   }
 
-  setTheme(theme: '' | 'color-group' | 'sinle-color-group') {
+  setTheme(theme: KEYBOARD_COLOR_GROUP_TYPE) {
+    console.log('theme', theme);
     if (this.vkeyboard) {
       this.vkeyboard.setTheme(theme);
     }
   }
 
-  setMode(mode: 'full' | 'partial' | 'minimal') {
+  setMode(mode: KEYBOARD_LAYOUT_GROUP_TYPE) {
     if (this.vkeyboard) {
       this.vkeyboard.setMode(mode);
     }
   }
 
-  setNumbers(hasNumbers = true) {
-    if (this.vkeyboard) {
-      this.vkeyboard.setNumbers(hasNumbers);
-    }
-  }
+  // setNumbers(hasNumbers = true) {
+  //   if (this.vkeyboard) {
+  //     this.vkeyboard.setNumbers(hasNumbers);
+  //   }
+  // }
+
   setLanguage(lan: 'dk' | 'sw' | 'no' | 'ro') {
     if (this.vkeyboard) {
       this.vkeyboard.setLanguage(lan);
@@ -247,14 +236,31 @@ export class AppTypingComponent implements OnInit, AfterViewInit {
   private onKeyDown(event: KeyboardEvent) {
     if (this.vkeyboard) {
       this.vkeyboard.highlightKey(event.key);
-      const keyDefinition = this.vkeyboard.getKeyDefinition(event.key);
+    }
+  }
+
+  /**
+   * Get the character color based on its position on the keyboard.
+   *
+   * @param key Represents the character.
+   *
+   * @returns Returns the color of the character or undefined, if there is no custom color.
+   */
+  getKeyColor(key: string): Color | undefined {
+    if (this.vkeyboard) {
+      const keyDefinition = this.vkeyboard.getKeyDefinition(key);
       if (keyDefinition) {
         const parts = keyDefinition.key.split('-');
-        console.log(keyDefinition, parts);
         if (colorsMap[parts[0]] && colorsMap[parts[0]][parts[1]]) {
-          this.testLetters.push({ val: keyDefinition.value, color: colorsMap[parts[0]][parts[1]] });
+          return colorsMap[parts[0]][parts[1]];
+        } else {
+          return undefined;
         }
+      } else {
+        return undefined;
       }
+    } else {
+      return undefined;
     }
   }
 }
