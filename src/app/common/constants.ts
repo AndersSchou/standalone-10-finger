@@ -1,3 +1,4 @@
+import { KeyboardSettingsDTO } from '../dto/settings.dto';
 import { Color } from './enums';
 
 // Default debounce time.
@@ -101,3 +102,28 @@ export const colorsMap: { [key: string]: { [key: string]: Color } } = {
     '8': Color.Color5, '9': Color.Color5,
   },
 };
+
+
+export const DefaultFontFamilies: KeyboardSettingsDTO[] = [
+  { type: 'roboto', label: 'Roboto', selected: false },
+  { type: 'arial', label: 'Arial', selected: false },
+  { type: 'georgia', label: 'Georgia', selected: false },
+  { type: 'other', label: 'Other', selected: false },
+]
+
+export const DefaultExtraFontFamilies: KeyboardSettingsDTO[] = [
+  { type: 'times', label: 'Times New Roman', selected: false },
+  { type: 'verdana', label: 'Verdana', selected: false },
+  { type: 'tahoma', label: 'Tahoma', selected: false },
+  { type: 'calibri', label: 'Calibri', selected: false },
+];
+
+export const DefaultTextBgColor: KeyboardSettingsDTO[] = [
+  { type: 'color', label: 'Colored text', selected: false },
+  { type: 'no-color', label: 'No colored text', selected: false },
+];
+
+export const DefaultExerciseLayout: KeyboardSettingsDTO[] = [
+  { type: 'top', label: 'ABCDE', selected: false },
+  { type: 'bottom', label: 'ABCDE', selected: false },
+];

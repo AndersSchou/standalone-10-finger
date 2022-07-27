@@ -9,4 +9,13 @@ export enum Color {
 export enum STORAGE_KEY_TYPE {
   KEYBOARD_THEME_COLOR = 'keyboardThemeColor',
   KEYBOARD_PRIMARY_LAYOUT = 'keyboardPrimaryLayout',
+  CURRENT_LANGUAGE = 'currentLanguage',
+}
+
+export enum TEXT_SETTINGS_TYPE {
+  TEXT_COLOR = 'textColor',
+  TEXT_SIZE = 'textSize',
+  TEXT_REPEAT = 'textRepeat',
+  TEXT_FAMILY = 'textFamily',
+  TEXT_DISPLAY_LAYOUT = 'textDisplayLayout',
 }

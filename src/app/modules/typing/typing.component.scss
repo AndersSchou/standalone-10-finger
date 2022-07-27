@@ -99,7 +99,7 @@
   width: 700px;
   max-width: 700px;
   font-weight: 500;
-  font-size: 24px;
+  // font-size: 24px;
   white-space: pre-wrap;
   line-height: 180%;
   // letter-spacing: 0.2em;
@@ -111,7 +111,7 @@
   margin: 18px 0;
 }
 
-::ng-deep .icon-hld {
+::ng-deep .typing-view .icon-hld {
   background-image: url('../../../assets/svg/icon_sound.svg');
   height: 24px;
   width: 24px;
@@ -167,6 +167,15 @@
   border: 1px solid $white-color;
   min-width: 26px;
   text-align: center;
+}
+
+::ng-deep .no-color .color1,
+::ng-deep .no-color .color2,
+::ng-deep .no-color .color3,
+::ng-deep .no-color .color4,
+::ng-deep .no-color .color5 {
+  color: $default-text-color;
+  background-color: transparent;
 }
 
 // ::ng-deep .current-pos {

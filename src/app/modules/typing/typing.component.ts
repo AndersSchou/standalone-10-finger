@@ -2,10 +2,12 @@ import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, 
 import { Router } from '@angular/router';
 import { fromEvent, ReplaySubject, takeUntil } from 'rxjs';
 import { colorsMap } from 'src/app/common/constants';
-import { Color, STORAGE_KEY_TYPE } from 'src/app/common/enums';
-import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LAYOUT_GROUP_TYPE } from 'src/app/common/types';
+import { Color, STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
+import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE, TextSettings } from 'src/app/common/types';
 import { Courses } from 'src/app/courses';
 import { CourseDTO } from 'src/app/dto/course.dto';
+import { TranslationsDTO } from 'src/app/dto/translation.dto';
+import { LanguageHelperService } from 'src/app/services/language.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
 
@@ -48,6 +50,10 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   viewSettings: boolean = false;
 
+  textSetting: { [key: string]: string };
+  coloredText = 'no-color';
+  keyboardTop = false;
+
   @ViewChild('vkeyboard') vkeyboard: VKeyboardComponent | undefined;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<never>();
@@ -55,32 +61,82 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly settingsService: SettingsService,
-    private readonly cdr: ChangeDetectorRef
+    private readonly cdr: ChangeDetectorRef,
+    private readonly languageHelperService: LanguageHelperService,
   ) {
-
+    if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
+      this.textSetting = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE) as string);
+    } else {
+      this.textSetting = {
+        fontSize: '24px',
+        fontFamily: 'Roboto'
+      };
+    }
   }
 
   ngOnInit(): void {
+    console.log('this.textSetting bef', this.textSetting);
+    // Listens for any changes regarding the settings view (show/hide).
     this.settingsService.viewSettingsAction
       .pipe(takeUntil(this.destroyed))
       .subscribe((viewSettings: boolean) => { this.viewSettings = viewSettings; });
 
+    // Listens for any changes regarding the keyboard theme color.
     this.settingsService.keyboardThemeColorAction
       .pipe(takeUntil(this.destroyed))
       .subscribe((themeColor: KEYBOARD_COLOR_GROUP_TYPE) => {
         this.setTheme(themeColor);
       });
 
+    // Listens for any changes regarding the keyboard primary layout.
     this.settingsService.keyboardPrimaryModeAction
       .pipe(takeUntil(this.destroyed))
       .subscribe((mode: KEYBOARD_LAYOUT_GROUP_TYPE) => {
         this.setMode(mode);
       });
 
+    // Listens for any changes regarding the current used language.
+    this.languageHelperService.OnLanguageChanged.pipe(
+      takeUntil(this.destroyed)
+    ).subscribe((trans: TranslationsDTO) => {
+      this.currentLanguage = this.languageHelperService.currentLangUsed;
+      this.setLanguage(this.currentLanguage.split('-')[0]);
+    });
+
+    this.settingsService.textSettingsAction.subscribe((textSettings: TextSettings) => {
+      if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_SIZE) {
+        // Set the font size.
+        this.textSetting['fontSize'] = textSettings.value + 'px';
+        localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_SIZE, JSON.stringify(this.textSetting));
+      } else if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_FAMILY) {
+        // Set the font family.
+        this.textSetting['fontFamily'] = textSettings.value;
+        localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_SIZE, JSON.stringify(this.textSetting));
+      } else if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_COLOR) {
+        // Set the background color of the text.
+        this.coloredText = textSettings.value;
+        localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_COLOR, JSON.stringify(this.coloredText));
+      } else if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT) {
+        // Set the layout display.
+        if (textSettings.value === 'top') {
+          this.keyboardTop = true;
+        } else {
+          this.keyboardTop = false;
+        }
+        localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify(textSettings.value));
+      }
+      this.cdr.detectChanges();
+    });
+
     this.getAllCategories();
 
+    // Listens for a keydown event.
     fromEvent(document, 'keydown').subscribe((event) => {
       console.log('event', event);
+      if (this.vkeyboard) {
+        // Highlight key on keydown.
+        this.vkeyboard.highlightKey((event as KeyboardEvent).key);
+      }
     });
   }
 
@@ -92,17 +148,15 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
-      console.log('1');
       this.setMode(localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT) as KEYBOARD_LAYOUT_GROUP_TYPE);
     } else {
-      console.log('2');
       this.setMode('full');
     }
     this.cdr.detectChanges();
 
     console.log('this.exerciseElem.nativeElement', this.exerciseElem.nativeElement);
     if (this.exerciseElem.nativeElement && this.exercisesArr.length > 0) {
-      // this.toHTML();
+      this.toHTML();
     }
   }
 
@@ -225,17 +279,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   //   }
   // }
 
-  setLanguage(lan: 'dk' | 'sw' | 'no' | 'ro') {
+  setLanguage(lan: string) {
     if (this.vkeyboard) {
-      this.vkeyboard.setLanguage(lan);
-    }
-  }
-
-  // Debug: delete
-  @HostListener('window:keydown', ['$event'])
-  private onKeyDown(event: KeyboardEvent) {
-    if (this.vkeyboard) {
-      this.vkeyboard.highlightKey(event.key);
+      this.vkeyboard.setLanguage(lan as KEYBOARD_LANGUAGE);
     }
   }
 

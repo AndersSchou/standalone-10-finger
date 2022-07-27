@@ -10,8 +10,6 @@ import { LanguageHelperService } from './services/language.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  // Stores the current selected language.
-  usedLanguage = '';
 
   /**
    * Constructor function responsible for injecting the needed services.
@@ -29,7 +27,6 @@ export class AppComponent implements OnInit {
    */
   ngOnInit(): void {
     this.getAllSvgs();
-    this.usedLanguage = this.languageHelperService.getCurrentLanguageAndTranslations();
   }
 
   /**

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
-import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LAYOUT_GROUP_TYPE } from "../common/types";
+import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LAYOUT_GROUP_TYPE, TextSettings } from "../common/types";
 
 @Injectable()
 export class SettingsService {
@@ -16,6 +16,10 @@ export class SettingsService {
   private keyboardPrimaryModeSource = new Subject<KEYBOARD_LAYOUT_GROUP_TYPE>();
   // Observable instance of the source object.
   private keyboardPrimaryObservable = this.keyboardPrimaryModeSource.asObservable();
+  // The subject used to controls the service communication.
+  private textSettingsSource = new Subject<TextSettings>();
+  // Observable instance of the source object.
+  private textSettingsObservable = this.textSettingsSource.asObservable();
 
   /**
    * Getter function for private viewSettings Observable.
@@ -45,6 +49,15 @@ export class SettingsService {
   }
 
   /**
+   * Getter function for private viewSettings Observable.
+   *
+   * @return Observable<TextSettings> That listens for any actions.
+   */
+  public get textSettingsAction(): Observable<TextSettings> {
+    return this.textSettingsObservable;
+  }
+
+  /**
    * Calls the source of the observable and cascades the action.
    *
    * @param value Is the action object you want to cascade.
@@ -69,5 +82,14 @@ export class SettingsService {
    */
   setKeyboardPrimaryMode(value: KEYBOARD_LAYOUT_GROUP_TYPE): void {
     this.keyboardPrimaryModeSource.next(value);
+  }
+
+  /**
+   * Calls the source of the observable and cascades the action.
+   *
+   * @param value Is the action object you want to cascade.
+   */
+  setTextSetting(value: TextSettings): void {
+    this.textSettingsSource.next(value);
   }
 }

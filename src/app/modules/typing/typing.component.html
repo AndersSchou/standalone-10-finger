@@ -1,6 +1,6 @@
 <app-shared-top-menu></app-shared-top-menu>
 <app-shared-settings *ngIf="viewSettings"></app-shared-settings>
-<div class="main-content-hld">
+<div class="main-content-hld typing-view">
   <div class="typing-header">
     <div class="page-padd">
       <div fxLayout="row wrap" fxLayoutGap="20px" class="header-content">
@@ -25,9 +25,12 @@
     </div>
   </div>
   <div class="percentage-hld">35%</div>
-
+  <div class="keyboard-hld" *ngIf="keyboardTop">
+    <app-vkeyboard #vkeyboard></app-vkeyboard>
+  </div>
   <div class="exercise-hld">
-    <div class="exercises">
+    <div class="exercises" [ngClass]="coloredText"
+      [ngStyle]="{fontSize:textSetting['fontSize'],fontFamily:textSetting['fontFamily']}">
       <div #exerciseElem></div>
       <!-- <div *ngFor="let item of selectedCourse.exercises">
         <div fxLayout="row wrap" fxLayoutGap="20px">
@@ -41,21 +44,13 @@
     </div>
   </div>
 
-  <div>
-    <!-- <button (click)="setTheme('')">No theme</button>
-    <button (click)="setTheme('color-group')">Theme 1</button>
-    <button (click)="setTheme('single-color-group')">Theme 2</button>
-    <button (click)="setMode('full')">Mode full</button>
-    <button (click)="setMode('partial')">Mode partial</button>
-    <button (click)="setMode('minimal')">Mode minimal</button> -->
-    <!-- <button (click)="setNumbers(true)">With numbers</button>
-    <button (click)="setNumbers(false)">Without numbers</button> -->
+  <!-- <div>
     <button (click)="setLanguage('dk')">Danish</button>
     <button (click)="setLanguage('sw')">Swidish</button>
     <button (click)="setLanguage('no')">Norwegian</button>
     <button (click)="setLanguage('ro')">Romanian</button>
-  </div>
-  <div class="keyboard-hld">
+  </div> -->
+  <div class="keyboard-hld" *ngIf="!keyboardTop">
     <app-vkeyboard #vkeyboard></app-vkeyboard>
   </div>
 </div>

@@ -1,5 +1,6 @@
 <div class="settings">
-  <div *ngFor="let option of availablelanguages" class="option-hld mtb-10" [ngClass]="{'active': option.selected}">
+  <div *ngFor="let option of availablelanguages" class="option-hld mtb-10" [ngClass]="{'active': option.selected}"
+    (click)="changeLanguage(option)">
     <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"></mat-icon>
     <span *ngIf="option.label">{{option.label | translate}}</span>
   </div>

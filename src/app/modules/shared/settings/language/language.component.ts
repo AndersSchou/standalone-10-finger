@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { KeyboardSettingsDTO } from 'src/app/dto/settings.dto';
+import { LanguageHelperService } from 'src/app/services/language.service';
 import { environment } from 'src/environments/environment';
 
 /**
@@ -13,7 +14,9 @@ import { environment } from 'src/environments/environment';
 export class AppSharedSettingsLanguageComponent {
   availablelanguages: KeyboardSettingsDTO[] = [];
 
-  constructor() {
+  constructor(
+    private readonly languageHelperService: LanguageHelperService
+  ) {
     this.availablelanguages = environment.availableLanguages.map(lang => {
       const el: KeyboardSettingsDTO = {
         type: 'lang-' + lang,
@@ -24,5 +27,16 @@ export class AppSharedSettingsLanguageComponent {
     });
 
     this.availablelanguages[0].selected = true;
+  }
+
+  changeLanguage(lang: KeyboardSettingsDTO) {
+    console.log('lang', lang);
+    this.availablelanguages.forEach(el => {
+      el.selected = false;
+    });
+    lang.selected = true;
+    if (lang.label) {
+      this.languageHelperService.setLanguage(lang.label);
+    }
   }
 }

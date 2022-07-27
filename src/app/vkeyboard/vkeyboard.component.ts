@@ -4,7 +4,7 @@ import { DTDKeyboardLayout_SW } from './keyboards/swidish.keboard.dtd';
 import { DTDKeyboardLayout_NO } from './keyboards/norwegian.keboard.dtd';
 import { DTDKeyboardLayout_RO } from './keyboards/romanian.keboard.dtd';
 import { dtd2conf, dtd2skm } from './tools/dtd2skm';
-import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LAYOUT_GROUP_TYPE } from '../common/types';
+import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE } from '../common/types';
 
 @Component({
   selector: 'app-vkeyboard',
@@ -40,16 +40,16 @@ export class VKeyboardComponent {
 
   constructor(
   ) {
-    this.setLanguage('dk');
+    this.setLanguage('da');
     this.processClass();
     console.log(this.keyboardKeyDefinition);
   }
 
-  setLanguage(lan: 'dk' | 'sw' | 'no' | 'ro') {
-    if (lan === 'dk') {
+  setLanguage(lan: KEYBOARD_LANGUAGE) {
+    if (lan === 'da') {
       this.keyboardDefinition = dtd2skm(DTDKeyboardLayout_DK as any);
       this.keyboardKeyDefinition = dtd2conf(DTDKeyboardLayout_DK as any);
-    } else if (lan === 'no') {
+    } else if (lan === 'nn' || lan === 'nb') {
       this.keyboardDefinition = dtd2skm(DTDKeyboardLayout_NO as any);
       this.keyboardKeyDefinition = dtd2conf(DTDKeyboardLayout_NO as any);
     } else if (lan === 'ro') {
