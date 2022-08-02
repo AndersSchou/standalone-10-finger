@@ -14,6 +14,7 @@ export interface CategoriesDTO {
   completed?: boolean;
   progress?: string;
   selected?: boolean;
+  updatedAt?: Date;
 }
 
 /**
@@ -24,6 +25,7 @@ export interface CourseDTO {
   exercises: CourseExerciseDTO[];
   completed?: boolean;
   showAll?: boolean;
+  updatedAt?: Date;
 }
 
 /**
@@ -35,4 +37,5 @@ export interface CourseExerciseDTO {
   completed?: boolean;
   selected?: boolean;
   progress?: string;
+  updatedAt?: Date;
 }

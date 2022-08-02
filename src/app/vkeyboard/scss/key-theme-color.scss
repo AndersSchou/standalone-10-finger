@@ -248,3 +248,18 @@ $theme2-row3-color-group5-list: 8;
     }
   }
 }
+
+// ::ng-deep .current-pos {
+//   animation: current 1s infinite;
+//   -webkit-animation: current 1s infinite;
+// }
+
+// @keyframes current {
+//   from {
+//     border-bottom: 2px solid $default-text-color;
+//   }
+
+//   to {
+//     border-bottom: 2px solid transparent;
+//   }
+// }

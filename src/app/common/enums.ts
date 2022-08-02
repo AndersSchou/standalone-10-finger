@@ -10,6 +10,7 @@ export enum STORAGE_KEY_TYPE {
   KEYBOARD_THEME_COLOR = 'keyboardThemeColor',
   KEYBOARD_PRIMARY_LAYOUT = 'keyboardPrimaryLayout',
   CURRENT_LANGUAGE = 'currentLanguage',
+  COURSES_PROGRESS = 'coursesProgress',
 }
 
 export enum TEXT_SETTINGS_TYPE {

@@ -1,14 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { fromEvent, ReplaySubject, takeUntil } from 'rxjs';
-import { colorsMap } from 'src/app/common/constants';
+import { fromEvent, ReplaySubject, Subscription, takeUntil, timer } from 'rxjs';
+import { colorsMap, REGEX_FOR_LETTERS_WITH_DIACRITICS, REGEX_WITH_DIACRITICS, SENTENCE_REGEX } from 'src/app/common/constants';
 import { Color, STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE, TextSettings } from 'src/app/common/types';
 import { Courses } from 'src/app/courses';
-import { CourseDTO } from 'src/app/dto/course.dto';
+import { CategoriesDTO, CourseDTO, CourseExerciseDTO, CourseResponseDTO } from 'src/app/dto/course.dto';
 import { TranslationsDTO } from 'src/app/dto/translation.dto';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { SettingsService } from 'src/app/services/settings.service';
+import { SpeechService } from 'src/app/services/speech.service';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
 
 
@@ -25,6 +26,7 @@ interface ExerciseDTO {
   name: string;
   index: number;
   lines: ExerciseTextDTO[];
+  completed?: boolean;
 }
 
 /**
@@ -42,6 +44,8 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     name: '',
     exercises: []
   };
+  categories: CourseResponseDTO = {} as CourseResponseDTO;
+  currentCategory: CategoriesDTO = {} as CategoriesDTO;
   // Stores the current language.
   currentLanguage = 'da';
   // Stores the DOM element.
@@ -50,11 +54,31 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   viewSettings: boolean = false;
 
-  textSetting: { [key: string]: string };
-  coloredText = 'no-color';
+  textSetting: { [key: string]: string } = {};
+  coloredText: string = '';
   keyboardTop = false;
-
+  // Stores the index of the current/active exercise.
+  exerciseIndex = 0;
+  // Stores the index of the current/active line.
+  currentLineIndex = 0;
+  // Stores the index of the current/active letter.
+  currentLetterIndex = 0;
+  // Stores the current character that will be typed.
+  currentChar = '';
+  // Stores the number of mistakes on keypress.
+  nbrOfMistakes = 0;
+  // Stores the current Element.
+  currentActiveElement?: Element;
+  lineLength = 0;
+  exerciseLength = 0;
+  currentProgress = 0;
   @ViewChild('vkeyboard') vkeyboard: VKeyboardComponent | undefined;
+  // Stores the timer subscription.
+  timerSubscription: Subscription = new Subscription();
+  // Tells if it should start the timer or not.
+  startCount = false;
+  // Stores the number of seconds since the start of the exercise.
+  timeCounter = 0;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<never>();
 
@@ -63,7 +87,12 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly settingsService: SettingsService,
     private readonly cdr: ChangeDetectorRef,
     private readonly languageHelperService: LanguageHelperService,
+    private readonly speechService: SpeechService,
   ) {
+    this.setInitialTextSettings();
+  }
+
+  setInitialTextSettings(): void {
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
       this.textSetting = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE) as string);
     } else {
@@ -71,11 +100,31 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         fontSize: '24px',
         fontFamily: 'Roboto'
       };
+      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_SIZE, JSON.stringify(this.textSetting));
     }
+    if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR)) {
+      this.coloredText = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR) as string);
+    } else {
+      this.coloredText = 'no-color';
+      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_COLOR, JSON.stringify(this.coloredText));
+    }
+    if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT)) {
+      const option = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR) as string);
+      if (option === 'top') {
+        this.keyboardTop = true;
+      } else {
+        this.keyboardTop = false;
+      }
+    } else {
+      this.keyboardTop = false;
+      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify('bottom'));
+    }
+
+
+
   }
 
   ngOnInit(): void {
-    console.log('this.textSetting bef', this.textSetting);
     // Listens for any changes regarding the settings view (show/hide).
     this.settingsService.viewSettingsAction
       .pipe(takeUntil(this.destroyed))
@@ -103,6 +152,89 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       this.setLanguage(this.currentLanguage.split('-')[0]);
     });
 
+    // Listens for any changes regarding the text settings.
+    this.textSettingsChanges();
+
+
+    // Listens for keydown events.
+    this.keyDownListener();
+
+    if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
+      const coursesProgress = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
+      this.categories = coursesProgress;
+      const findLatestCategory = coursesProgress.categories.reduce((prev: CategoriesDTO, current: CategoriesDTO) => {
+        if (current.updatedAt) {
+          if (!prev || !prev.updatedAt) {
+            return current;
+          }
+          if (new Date(current.updatedAt) > new Date(prev.updatedAt)) {
+            return current;
+          }
+        }
+        return prev;
+      });
+
+      this.currentCategory = findLatestCategory;
+      this.selectedCourse = findLatestCategory.courses.find((course: CourseDTO) => !course.completed);
+      const findLastExercise = this.selectedCourse.exercises.reduce((prev: CourseExerciseDTO, current: CourseExerciseDTO) => {
+        if (current.updatedAt) {
+          if (!prev || !prev.updatedAt) {
+            return current;
+          }
+          if (new Date(current.updatedAt) > new Date(prev.updatedAt)) {
+            return current;
+          }
+        }
+        return prev;
+      });
+      console.log('findLastExercise', findLastExercise);
+      const findIndex = this.selectedCourse.exercises.findIndex(el => el.name === findLastExercise.name);
+      console.log('findIndex', findIndex);
+      if (findIndex && findIndex + 1 <= this.selectedCourse.exercises.length - 1) {
+        this.exerciseIndex = findIndex + 1;
+        this.currentProgress = 100 * (this.exerciseIndex + 1) / this.selectedCourse.exercises.length;
+      }
+      this.mapExercises();
+    } else {
+      this.getAllCategories();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR)) {
+      this.setTheme(localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR) as KEYBOARD_COLOR_GROUP_TYPE);
+    } else {
+      this.setTheme('');
+    }
+
+    if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
+      this.setMode(localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT) as KEYBOARD_LAYOUT_GROUP_TYPE);
+    } else {
+      this.setMode('full');
+    }
+    this.cdr.detectChanges();
+
+    if (this.exerciseElem.nativeElement && this.exercisesArr.length > 0) {
+      this.toHTML();
+      this.currentPosition();
+    }
+  }
+
+  ngOnDestroy(): void {
+    console.log('destroy');
+    if (this.divElement && this.divElement.hasChildNodes()) {
+      this.exerciseElem.nativeElement.removeChild(this.divElement);
+    }
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
+    // this.destroyed.next(true);
+  }
+
+  /**
+   * Listens for any changes regarding the text settings.
+   */
+  textSettingsChanges(): void {
     this.settingsService.textSettingsAction.subscribe((textSettings: TextSettings) => {
       if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_SIZE) {
         // Set the font size.
@@ -127,42 +259,63 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.cdr.detectChanges();
     });
+  }
 
-    this.getAllCategories();
-
-    // Listens for a keydown event.
+  keyDownListener(): void {
     fromEvent(document, 'keydown').subscribe((event) => {
-      console.log('event', event);
-      if (this.vkeyboard) {
-        // Highlight key on keydown.
-        this.vkeyboard.highlightKey((event as KeyboardEvent).key);
+      // console.log('event', event);
+      console.log('this.currentChar', this.currentChar);
+      // if (this.vkeyboard) {
+      //   // Highlight key on keydown.
+      //   this.vkeyboard.highlightKey((event as KeyboardEvent).key);
+      // }
+      if (this.currentChar === (event as KeyboardEvent).key) {
+        let isSpace = false;
+        if ((event as KeyboardEvent).key === ' ') {
+          isSpace = true;
+          // Prevent auto scroll on space.
+          event.preventDefault();
+        }
+        this.markAsCompleted(isSpace);
+        if (this.currentLetterIndex < this.lineLength - 1) {
+          this.currentLetterIndex++;
+          this.currentPosition();
+        } else {
+          if (this.currentLineIndex < this.exercisesArr[this.exerciseIndex].lines.length - 1) {
+            this.currentLineIndex++;
+            this.currentLetterIndex = 0;
+            this.currentPosition();
+          } else {
+            this.currentLetterIndex = 0;
+            this.currentLineIndex = 0;
+            if (this.exerciseIndex < this.exercisesArr.length - 1) {
+              this.exerciseIndex++;
+              this.currentPosition();
+              // Update the curse progress when the user completes an exercise.
+              this.updateProgress(this.exerciseIndex);
+            } else {
+              console.log('finished');
+              // Update the curse progress when the user completes an exercise.
+              this.updateProgress(this.exerciseIndex, true);
+              // Show achievement screen.
+              this.router.navigate(['/set-course']);
+            }
+          }
+        }
+        console.log('timerSubscription', this.timerSubscription);
+        if (!this.startCount) {
+          console.log('a');
+          this.timerSubscription = timer(0, 1000).subscribe(() => {
+            console.log('count');
+            this.startCount = true;
+          });
+        }
+      } else {
+        if ((event as KeyboardEvent).key !== 'Shift') {
+          this.markAsMistake();
+        }
       }
     });
-  }
-
-  ngAfterViewInit(): void {
-    if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR)) {
-      this.setTheme(localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR) as KEYBOARD_COLOR_GROUP_TYPE);
-    } else {
-      this.setTheme('');
-    }
-
-    if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
-      this.setMode(localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT) as KEYBOARD_LAYOUT_GROUP_TYPE);
-    } else {
-      this.setMode('full');
-    }
-    this.cdr.detectChanges();
-
-    console.log('this.exerciseElem.nativeElement', this.exerciseElem.nativeElement);
-    if (this.exerciseElem.nativeElement && this.exercisesArr.length > 0) {
-      this.toHTML();
-    }
-  }
-
-  ngOnDestroy(): void {
-    console.log('destroy');
-    // this.destroyed.next(true);
   }
 
   /**
@@ -172,6 +325,14 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.currentLanguage in Courses) {
       const cat = Courses[this.currentLanguage];
       if (cat && cat.categories) {
+        console.log('cat', cat);
+        cat.categories[0].updatedAt = new Date();
+        cat.categories[0].courses[0].updatedAt = new Date();
+        this.currentCategory = cat.categories[0];
+        this.categories = cat;
+        localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.categories));
+        // this.selectedCourse = cat.categories[cat.categories.length - 2].courses[cat.categories[cat.categories.length - 2].courses.length - 3];
+        // this.selectedCourse = cat.categories[cat.categories.length - 2].courses[cat.categories[cat.categories.length - 2].courses.length - 1];
         this.selectedCourse = cat.categories[0].courses[0];
         // this.selectedCourse = cat.categories[cat.categories.length - 1].courses[0];
         console.log('this.selectedCourse', this.selectedCourse);
@@ -181,43 +342,135 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * Display the current position of the selected character.
+   */
+  currentPosition(): void {
+    const currentExercise = this.exercisesArr[this.exerciseIndex];
+    const currentLine = currentExercise.lines[this.currentLineIndex];
+    this.lineLength = currentLine.text.length;
+    this.currentChar = currentLine.text[this.currentLetterIndex];
+
+    console.log('currentPosition', this.exerciseIndex, this.currentLineIndex, this.currentLetterIndex);
+    this.showCurrentKeyComb(this.currentChar);
+    const findHtmlElement = document.getElementsByClassName('exercise-' + this.exerciseIndex)[0];
+    if (findHtmlElement) {
+      const findLineEl = findHtmlElement.getElementsByClassName('line-' + this.currentLineIndex)[0];
+      if (findLineEl) {
+        const findSpanEl = findLineEl.getElementsByClassName('key-hld ' + this.currentLetterIndex)[0];
+        if (findSpanEl) {
+          findSpanEl.classList.add('active');
+          this.currentActiveElement = findSpanEl;
+          // Scroll to the center of the exercise view.
+          this.currentActiveElement.scrollIntoView({ behavior: 'smooth', block: "center", inline: "nearest" });
+        }
+      }
+    }
+  }
+
+  /**
+   * Highlight the current key combination.
+   *
+   * @param char Represents the current character.
+   */
+  showCurrentKeyComb(char: string): void {
+    if (this.vkeyboard) {
+      // console.log(this.vkeyboard.getKeyDefinition(char));
+      this.vkeyboard.highlightKey(char);
+      this.cdr.detectChanges();
+    }
+  }
+
+  /**
+   * Mark the current character as completed.
+   *
+   * @param isSpace Tells if the current character is a space or not.
+   */
+  markAsCompleted(isSpace: boolean): void {
+    if (this.currentActiveElement) {
+      this.currentActiveElement.classList.remove('active');
+      if (!isSpace) {
+        // Add completed class (used to change the background for the completed character) to the current character (all chars except space).
+        this.currentActiveElement.classList.add('completed');
+      }
+    }
+  }
+
+  /**
+   * Mark the current character as mistake and count the number of mistakes.
+   */
+  markAsMistake(): void {
+    console.log('markAsMistake', this.currentActiveElement);
+    this.nbrOfMistakes++;
+    if (this.currentActiveElement) {
+      this.currentActiveElement.classList.add('error');
+    }
+    console.log('this.nbrOfMistakes', this.nbrOfMistakes);
+  }
+
   goBack(): void {
     this.router.navigate(['/set-course']);
   }
 
   resetCourse(): void { }
 
+  updateProgress(exerciseIndex: number, isCompleted = false): void {
+    this.selectedCourse.updatedAt = new Date();
+    if (isCompleted) {
+      this.selectedCourse.completed = true;
+    }
+    this.selectedCourse.exercises[exerciseIndex].completed = true;
+    this.selectedCourse.exercises[exerciseIndex].updatedAt = new Date();
+    console.log('this.categories.categories', this.categories);
+    const findCat = this.categories.categories.find(el => el.name === this.currentCategory.name);
+    if (findCat) {
+      findCat.updatedAt = new Date();
+      localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.categories));
+    }
+    this.currentProgress = 100 * (exerciseIndex + 1) / this.selectedCourse.exercises.length;
+    console.log('this.currentProgress', this.currentProgress);
+  }
+
   mapExercises(): void {
     this.exercisesArr = [];
+    console.log('this.selectedCourse.exercises', this.selectedCourse.exercises);
     for (let i = 0; i < this.selectedCourse.exercises.length; i++) {
       const exercise: ExerciseDTO = {
         name: this.selectedCourse.exercises[i].name,
         index: i,
-        lines: []
+        lines: [],
+        completed: this.selectedCourse.exercises[i].completed ? this.selectedCourse.exercises[i].completed : false,
       }
       exercise.lines = this.mapExerciseText(this.selectedCourse.exercises[i].text);
       this.exercisesArr.push(exercise);
     }
-    console.log('exercisesArr', this.exercisesArr);
 
   }
 
   mapExerciseText(text: string): ExerciseTextDTO[] {
-    const lines = text.split('\n');
-    const linesArr: ExerciseTextDTO[] = [];
-    for (let i = 0; i < lines.length; i++) {
-      const currentLine: ExerciseTextDTO = {
-        index: i,
-        text: lines[i].split('')
-      };
-      linesArr.push(currentLine);
+    // console.log('text.match(SENTENCE_REGEX)', REGEX_FOR_LETTERS_WITH_DIACRITICS.test(text));
+    let lines: string[] | undefined = [text];
+    if (REGEX_FOR_LETTERS_WITH_DIACRITICS.test(text)) {
+      lines = text.match(SENTENCE_REGEX)?.filter(line => line !== '');
     }
+    const linesArr: ExerciseTextDTO[] = [];
+    if (lines && lines.length > 0) {
+      for (let i = 0; i < lines.length; i++) {
+        const currentLine: ExerciseTextDTO = {
+          index: i,
+          text: lines[i].split('')
+        };
+        linesArr.push(currentLine);
+      }
+    }
+    // console.log('linesArr', linesArr);
     return linesArr;
   }
 
 
   toHTML(): void {
-    console.log('this.exerciseElem.nativeElement', this.exerciseElem.nativeElement);
+    // console.log('this.exerciseElem.nativeElement', this.exerciseElem.nativeElement);
+    console.log('this.exercisesArr', this.exercisesArr);
     for (const elem of this.exercisesArr) {
       const mainDiv = document.createElement('div');
       mainDiv.classList.add('exercise-' + elem.index);
@@ -229,24 +482,41 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         const lineElement = document.createElement('div');
         const className = ['line', 'line-' + line.index];
         lineElement.classList.add(...className);
-        for (const letter of line.text) {
+        let groupLetterElement;
+
+        for (let i = 0; i < line.text.length; i++) {
           const letterElement = document.createElement('span');
           let keyClass = 'none';
-          const findKey = this.getKeyColor(letter);
+          const findKey = this.getKeyColor(line.text[i]);
           if (findKey) {
             keyClass = 'color' + findKey;
           }
-          const keyDefaultClass = ['key-hld', 'current-pos', keyClass];
+          const completedClass = (elem.completed && line.text[i] !== ' ') ? 'completed' : 'none';
+          const keyDefaultClass = ['key-hld', i.toString(), keyClass, completedClass];
           letterElement.classList.add(...keyDefaultClass);
-          letterElement.innerText = letter;
-          lineElement.appendChild(letterElement);
+          letterElement.innerText = line.text[i];
+          if (groupLetterElement && !line.text[i].match(REGEX_WITH_DIACRITICS)) {
+            // Group letters of a word in a single span element (used for not breaking the words into new lines).
+            groupLetterElement.appendChild(letterElement);
+            lineElement.appendChild(groupLetterElement);
+          } else {
+            lineElement.appendChild(letterElement);
+          }
+
+          if (line.text[i].match(REGEX_WITH_DIACRITICS)) {
+            groupLetterElement = document.createElement('div');
+            groupLetterElement.classList.add('group-letter');
+          }
         }
 
         // Add icon element to the line.
         const iconElem = document.createElement('div');
-        iconElem.classList.add('icon-hld');
+        const iconClassName = ['icon-hld', 'exercise-' + elem.index, line.index.toString()];
+        iconElem.classList.add(...iconClassName);
         // Add the line to the main div.
         mainHldDiv.appendChild(iconElem);
+        // Add on click event to each icon.
+        this.onClick(iconElem, elem);
         mainHldDiv.appendChild(lineElement);
         mainDiv.appendChild(mainHldDiv);
       }
@@ -260,13 +530,22 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('---', this.divElement);
   }
 
+  /**
+   * Set the keyboard color theme.
+   *
+   * @param theme Represents the selected theme.
+   */
   setTheme(theme: KEYBOARD_COLOR_GROUP_TYPE) {
-    console.log('theme', theme);
     if (this.vkeyboard) {
       this.vkeyboard.setTheme(theme);
     }
   }
 
+  /**
+   * Set the display mode of the keyboard.
+   *
+   * @param mode Represents the selected mode.
+   */
   setMode(mode: KEYBOARD_LAYOUT_GROUP_TYPE) {
     if (this.vkeyboard) {
       this.vkeyboard.setMode(mode);
@@ -279,6 +558,11 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   //   }
   // }
 
+  /**
+   * Set the language of the keyboard.
+   *
+   * @param lan Represents the selected language.
+   */
   setLanguage(lan: string) {
     if (this.vkeyboard) {
       this.vkeyboard.setLanguage(lan as KEYBOARD_LANGUAGE);
@@ -308,5 +592,20 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       return undefined;
     }
+  }
+
+  /**
+   * Click event handler for the icon element (starts play sentence on click).
+   *
+   * @param element Represents the icon element.
+   * @param elemInfo Represents the exercise info.
+   */
+  onClick(element: HTMLElement, elemInfo: any): void {
+    fromEvent(element, 'click')
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(() => {
+        const textToRead = elemInfo.lines[element.classList[element.classList.length - 1]].text.join('');
+        this.speechService.play(textToRead, 'mv_da_acl');
+      });
   }
 }

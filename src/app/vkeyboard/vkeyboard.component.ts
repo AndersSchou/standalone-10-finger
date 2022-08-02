@@ -61,6 +61,13 @@ export class VKeyboardComponent {
     }
   }
 
+  /**
+   * Get the key definition for a given character.
+   *
+   * @param key Represents the character to get the key definition for.
+   *
+   * @returns An object of the key definition or null.
+   */
   getKeyDefinition(key: string) {
     if (this.keyboardDefinition[key]) {
       return this.keyboardDefinition[key];
@@ -68,6 +75,11 @@ export class VKeyboardComponent {
     return null;
   }
 
+  /**
+   * Highlight the key/keys for the given character.
+   *
+   * @param key Represents the character to highlight the key/keys for.
+   */
   highlightKey(key: string) {
     this.keysPressed = [];
     if (key in this.keyboardDefinition) {

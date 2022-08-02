@@ -12,19 +12,19 @@
           <div class="course-title">{{selectedCourse.name}}</div>
         </div>
         <div class="right-header" fxFlex="nogrow">
-          <div class="course-det-hld">{{selectedCourse.exercises[0].name}}</div>
+          <div class="course-det-hld">{{selectedCourse.exercises[exerciseIndex].name}}</div>
           <div class="reset-hld" (click)="resetCourse()">
-            <mat-icon svgIcon="icon_replay"></mat-icon>
+            <mat-icon svgIcon="icon_replay" matTooltip="Reset course"></mat-icon>
           </div>
         </div>
       </div>
     </div>
 
     <div class="course-progress-hld">
-      <div class="progress"></div>
+      <div class="progress" [ngStyle]="{width: currentProgress+'%'}"></div>
     </div>
   </div>
-  <div class="percentage-hld">35%</div>
+  <div class="percentage-hld">{{currentProgress | number: '1.0-2'}}%</div>
   <div class="keyboard-hld" *ngIf="keyboardTop">
     <app-vkeyboard #vkeyboard></app-vkeyboard>
   </div>
@@ -32,15 +32,6 @@
     <div class="exercises" [ngClass]="coloredText"
       [ngStyle]="{fontSize:textSetting['fontSize'],fontFamily:textSetting['fontFamily']}">
       <div #exerciseElem></div>
-      <!-- <div *ngFor="let item of selectedCourse.exercises">
-        <div fxLayout="row wrap" fxLayoutGap="20px">
-          <div fxFlex="nogrow" class="icon-hld">
-            <mat-icon svgIcon="icon_sound"></mat-icon>
-          </div>
-          <div fxFlex>{{item.text}}</div>
-        </div>
-        <div class="divider mtb-18"></div>
-      </div> -->
     </div>
   </div>
 

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ReplaySubject, takeUntil } from 'rxjs';
 import { Courses } from 'src/app/courses';
 import { CategoriesDTO } from 'src/app/dto/course.dto';
+import { SettingsService } from 'src/app/services/settings.service';
 
 /**
  * This component holds the logic for set course page.
@@ -20,11 +22,19 @@ export class AppSetCourseComponent implements OnInit {
   };
   // Stores the current language.
   currentLanguage = 'da';
+  // Tells if it should show the settings view or not.
+  viewSettings: boolean = false;
+  // Stores the subscribers until they're destroyed.
+  private readonly destroyed = new ReplaySubject<never>();
 
   /**
    * Constructor function responsible for injecting the needed services.
+   *
+   * @param settingsService Reference to SettingsService.
    */
-  constructor() { }
+  constructor(
+    private readonly settingsService: SettingsService,
+  ) { }
 
   /**
    * A lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
@@ -32,6 +42,11 @@ export class AppSetCourseComponent implements OnInit {
   ngOnInit() {
     // TODO: When navigating to course screen we should scroll to the current progress of the user so the last active exercise is visible in the top.
     this.getAllCategories();
+
+    // Listens for any changes regarding the settings view (show/hide).
+    this.settingsService.viewSettingsAction
+      .pipe(takeUntil(this.destroyed))
+      .subscribe((viewSettings: boolean) => { this.viewSettings = viewSettings; });
   }
 
   /**

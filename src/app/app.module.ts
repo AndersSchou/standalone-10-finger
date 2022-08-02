@@ -25,6 +25,8 @@ import { CustomIconService } from './services/custom-icon.service';
 import { GlobalErrorHandler } from './services/global-error-handler.service';
 import { VKeyboardComponent } from './vkeyboard/vkeyboard.component';
 import { SettingsService } from './services/settings.service';
+import { VoiceService } from './services/api/voice.service';
+import { SpeechService } from './services/speech.service';
 
 
 // TranslateHttpLoader is used to load the translations automatically.
@@ -73,6 +75,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AuthGuardService,
     CustomIconService,
     SettingsService,
+    VoiceService,
+    SpeechService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,

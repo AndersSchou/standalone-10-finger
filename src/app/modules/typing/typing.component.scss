@@ -76,7 +76,6 @@
 
 .course-progress-hld .progress {
   background: $color-active;
-  width: 24%;
   height: 100%;
   border-radius: 4px;
 }
@@ -93,17 +92,16 @@
 .exercise-hld {
   display: flex;
   justify-content: center;
+  max-height: calc(100% - 546px);
+  padding: 15px 0 34px 0;
 }
 
 .exercises {
   width: 700px;
   max-width: 700px;
   font-weight: 500;
-  // font-size: 24px;
   white-space: pre-wrap;
-  line-height: 180%;
-  // letter-spacing: 0.2em;
-  // height: 320px;
+  line-height: 150%;
   overflow: auto;
 }
 
@@ -126,6 +124,16 @@
 
 ::ng-deep .line,
 ::ng-deep .exercise-hld {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+::ng-deep .line {
+  flex-flow: row wrap;
+  max-width: calc(100% - 56px);
+}
+
+::ng-deep .group-letter {
   display: flex;
 }
 
@@ -169,6 +177,36 @@
   text-align: center;
 }
 
+::ng-deep .key-hld.active {
+  background-color: transparent;
+  border-radius: 0;
+}
+
+::ng-deep .key-hld.color1.active {
+  color: $key-orange;
+  box-shadow: inset 0 -4px $key-orange;
+}
+
+::ng-deep .key-hld.color2.active {
+  color: $key-purple;
+  box-shadow: inset 0 -4px $key-purple;
+}
+
+::ng-deep .key-hld.color3.active {
+  color: $key-green;
+  box-shadow: inset 0 -4px $key-green;
+}
+
+::ng-deep .key-hld.color4.active {
+  color: $key-red;
+  box-shadow: inset 0 -4px $key-red;
+}
+
+::ng-deep .key-hld.color5.active {
+  color: $key-blue;
+  box-shadow: inset 0 -4px $key-blue;
+}
+
 ::ng-deep .no-color .color1,
 ::ng-deep .no-color .color2,
 ::ng-deep .no-color .color3,
@@ -176,6 +214,59 @@
 ::ng-deep .no-color .color5 {
   color: $default-text-color;
   background-color: transparent;
+}
+
+::ng-deep .no-color .key-hld.active {
+  background-color: transparent;
+  box-shadow: inset 0 -4px $divider-bg;
+  color: $key-blue;
+  border-radius: 0;
+}
+
+::ng-deep .key-hld.completed {
+  background-color: $blue-bg;
+  color: $default-text-color;
+}
+
+::ng-deep .key-hld.error {
+  background-color: $red-bg;
+  color: $red-text-color;
+}
+
+::ng-deep .key-hld.active.error {
+  -webkit-animation: blink 0.5s linear;
+  -moz-animation: blink 0.5s linear;
+  animation: blink 0.5s linear;
+}
+
+@keyframes blink {
+  0% {
+    background-color: transparent;
+    box-shadow: inset 0 -4px $divider-bg;
+    color: $key-blue;
+    border-radius: 0;
+  }
+
+  100% {
+    background-color: transparent;
+    box-shadow: inset 0 -4px $red-bg;
+    color: $red-text-color;
+    border-radius: 0;
+  }
+}
+
+@-webkit-keyframes blink {
+  0% {
+    background-color: transparent;
+    box-shadow: inset 0 -4px $divider-bg;
+    color: $key-blue;
+    border-radius: 0;
+  }
+
+  100% {
+    background-color: $red-bg;
+    color: $red-text-color;
+  }
 }
 
 // ::ng-deep .current-pos {
