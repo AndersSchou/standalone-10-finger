@@ -1,11 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { fromEvent, ReplaySubject, Subscription, takeUntil, timer } from 'rxjs';
-import { colorsMap, REGEX_FOR_LETTERS_WITH_DIACRITICS, REGEX_WITH_DIACRITICS, SENTENCE_REGEX } from 'src/app/common/constants';
+import { colorsMap, DefaultReadLetterOptions, DefaultReadTextOptions, REGEX_FOR_LETTERS_WITH_DIACRITICS, REGEX_WITH_DIACRITICS, SENTENCE_REGEX } from 'src/app/common/constants';
 import { Color, STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE, TextSettings } from 'src/app/common/types';
 import { Courses } from 'src/app/courses';
 import { CategoriesDTO, CourseDTO, CourseExerciseDTO, CourseResponseDTO } from 'src/app/dto/course.dto';
+import { KeyboardSettingsDTO } from 'src/app/dto/settings.dto';
+import { ReadOptionsDTO } from 'src/app/dto/speak.dto';
 import { TranslationsDTO } from 'src/app/dto/translation.dto';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -79,6 +81,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   startCount = false;
   // Stores the number of seconds since the start of the exercise.
   timeCounter = 0;
+  readTextOptions: ReadOptionsDTO = { readLetterName: false, readLetterSound: false, readWord: false, readSentence: false };
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<never>();
 
@@ -95,18 +98,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   setInitialTextSettings(): void {
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
       this.textSetting = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE) as string);
-    } else {
-      this.textSetting = {
-        fontSize: '24px',
-        fontFamily: 'Roboto'
-      };
-      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_SIZE, JSON.stringify(this.textSetting));
     }
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR)) {
       this.coloredText = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR) as string);
-    } else {
-      this.coloredText = 'no-color';
-      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_COLOR, JSON.stringify(this.coloredText));
     }
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT)) {
       const option = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR) as string);
@@ -115,12 +109,26 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
         this.keyboardTop = false;
       }
-    } else {
-      this.keyboardTop = false;
-      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify('bottom'));
+    }
+    // Set read letter option.
+    if (localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER)) {
+      const readOption = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER) as string);
+      if (readOption.type !== 'none') {
+        const selectedOption: { type: 'readLetterName' | 'readLetterSound' } = readOption;
+        this.readTextOptions[selectedOption.type] = true;
+      }
     }
 
-
+    // Set read text options.
+    if (localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT)) {
+      const readText = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT) as string);
+      for (const opt of readText) {
+        if (opt.selected) {
+          const selectedOption: { type: 'readWord' | 'readSentence' } = opt;
+          this.readTextOptions[selectedOption.type] = true;
+        }
+      }
+    }
 
   }
 
@@ -159,6 +167,10 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     // Listens for keydown events.
     this.keyDownListener();
 
+    this.getCourseProgress();
+  }
+
+  getCourseProgress(): void {
     if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
       const coursesProgress = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
       this.categories = coursesProgress;
@@ -239,15 +251,12 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_SIZE) {
         // Set the font size.
         this.textSetting['fontSize'] = textSettings.value + 'px';
-        localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_SIZE, JSON.stringify(this.textSetting));
       } else if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_FAMILY) {
         // Set the font family.
         this.textSetting['fontFamily'] = textSettings.value;
-        localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_SIZE, JSON.stringify(this.textSetting));
       } else if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_COLOR) {
         // Set the background color of the text.
         this.coloredText = textSettings.value;
-        localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_COLOR, JSON.stringify(this.coloredText));
       } else if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT) {
         // Set the layout display.
         if (textSettings.value === 'top') {
@@ -255,7 +264,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           this.keyboardTop = false;
         }
-        localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify(textSettings.value));
       }
       this.cdr.detectChanges();
     });
@@ -412,8 +420,67 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(['/set-course']);
   }
 
-  resetCourse(): void { }
+  resetCourse(): void {
+    console.log('this.selectedCourse', this.selectedCourse);
+    this.exerciseIndex = 0;
+    this.currentLineIndex = 0;
+    this.currentLetterIndex = 0;
+    this.nbrOfMistakes = 0;
+    this.startCount = false;
+    // Remove all completed, error and active classes from the HTML elements.
+    this.resetKeysClasses();
+    // Reset the course progress.
+    this.resetCourseProgress();
+    // Update visuals for the current exercise.
+    this.currentPosition();
+  }
 
+  /**
+   * Reset the course progress.
+   */
+  resetCourseProgress(): void {
+    this.selectedCourse.updatedAt = new Date();
+    this.selectedCourse.exercises = this.selectedCourse.exercises.map(el => {
+      const exercise = {
+        name: el.name,
+        text: el.text
+      };
+      return exercise;
+    });
+    this.saveCourseProgress();
+  }
+
+  /**
+   * Reset the keys classes (Remove all completed, error and active classes from the HTML elements).
+   */
+  resetKeysClasses(): void {
+    if (this.currentActiveElement) {
+      this.currentActiveElement.classList.remove('active');
+    }
+    const findAllCompletedElements = Array.from(document.getElementsByClassName('completed'));
+    findAllCompletedElements.forEach((element) => { element.classList.remove('completed'); });
+    const findAllElementsWithError = Array.from(document.getElementsByClassName('error'));
+    findAllElementsWithError.forEach((element) => { element.classList.remove('error'); });
+  }
+
+  /**
+   * Save the course progress in the localStorage and update the progress bar.
+   */
+  saveCourseProgress(): void {
+    const findCat = this.categories.categories.find(el => el.name === this.currentCategory.name);
+    if (findCat) {
+      findCat.updatedAt = new Date();
+      localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.categories));
+    }
+    this.currentProgress = 100 * (this.exerciseIndex + 1) / this.selectedCourse.exercises.length;
+  }
+
+  /**
+   * Update exercise progress.
+   *
+   * @param exerciseIndex Represents the current exercise index.
+   * @param isCompleted Tells if the current exercise is completed or not.
+   */
   updateProgress(exerciseIndex: number, isCompleted = false): void {
     this.selectedCourse.updatedAt = new Date();
     if (isCompleted) {
@@ -421,16 +488,12 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.selectedCourse.exercises[exerciseIndex].completed = true;
     this.selectedCourse.exercises[exerciseIndex].updatedAt = new Date();
-    console.log('this.categories.categories', this.categories);
-    const findCat = this.categories.categories.find(el => el.name === this.currentCategory.name);
-    if (findCat) {
-      findCat.updatedAt = new Date();
-      localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.categories));
-    }
-    this.currentProgress = 100 * (exerciseIndex + 1) / this.selectedCourse.exercises.length;
-    console.log('this.currentProgress', this.currentProgress);
+    this.saveCourseProgress();
   }
 
+  /**
+   * Map each exercise to an array.
+   */
   mapExercises(): void {
     this.exercisesArr = [];
     console.log('this.selectedCourse.exercises', this.selectedCourse.exercises);
@@ -447,8 +510,14 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+  /**
+   * Split the exercise text into an array of lines.
+   *
+   * @param text Represents the current exercise text.
+   *
+   * @returns An array of ExerciseTextDTO for each character in the text.
+   */
   mapExerciseText(text: string): ExerciseTextDTO[] {
-    // console.log('text.match(SENTENCE_REGEX)', REGEX_FOR_LETTERS_WITH_DIACRITICS.test(text));
     let lines: string[] | undefined = [text];
     if (REGEX_FOR_LETTERS_WITH_DIACRITICS.test(text)) {
       lines = text.match(SENTENCE_REGEX)?.filter(line => line !== '');
@@ -463,11 +532,12 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         linesArr.push(currentLine);
       }
     }
-    // console.log('linesArr', linesArr);
     return linesArr;
   }
 
-
+  /**
+   * Create the HTML elements based on the current course.
+   */
   toHTML(): void {
     // console.log('this.exerciseElem.nativeElement', this.exerciseElem.nativeElement);
     console.log('this.exercisesArr', this.exercisesArr);

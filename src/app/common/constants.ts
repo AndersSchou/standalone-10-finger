@@ -111,7 +111,7 @@ export const colorsMap: { [key: string]: { [key: string]: Color } } = {
   },
 };
 
-
+// Default font family array.
 export const DefaultFontFamilies: KeyboardSettingsDTO[] = [
   { type: 'roboto', label: 'Roboto', selected: false },
   { type: 'arial', label: 'Arial', selected: false },
@@ -119,6 +119,7 @@ export const DefaultFontFamilies: KeyboardSettingsDTO[] = [
   { type: 'other', label: 'Other', selected: false },
 ]
 
+// Default extra font families array.
 export const DefaultExtraFontFamilies: KeyboardSettingsDTO[] = [
   { type: 'times', label: 'Times New Roman', selected: false },
   { type: 'verdana', label: 'Verdana', selected: false },
@@ -126,12 +127,27 @@ export const DefaultExtraFontFamilies: KeyboardSettingsDTO[] = [
   { type: 'calibri', label: 'Calibri', selected: false },
 ];
 
+// Default text backgorund colors array.
 export const DefaultTextBgColor: KeyboardSettingsDTO[] = [
   { type: 'color', label: 'Colored text', selected: false },
   { type: 'no-color', label: 'No colored text', selected: false },
 ];
 
+// Default display layout array.
 export const DefaultExerciseLayout: KeyboardSettingsDTO[] = [
   { type: 'top', label: 'ABCDE', selected: false },
   { type: 'bottom', label: 'ABCDE', selected: false },
+];
+
+// Default read letter options.
+export const DefaultReadLetterOptions: KeyboardSettingsDTO[] = [
+  { type: 'readLetterName', label: 'Letter name', selected: false },
+  { type: 'readLetterSound', label: 'Letter sound', selected: false },
+  { type: 'none', label: 'No sound', selected: false },
+];
+
+// Default read text options.
+export const DefaultReadTextOptions: KeyboardSettingsDTO[] = [
+  { type: 'readWord', label: 'Read words', selected: false },
+  { type: 'readSentence', label: 'Read sentences', selected: false }
 ];

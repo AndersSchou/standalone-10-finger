@@ -1,13 +1,15 @@
 <div class="settings">
   <div class="section-title">{{ 'translateReadLetter' | translate }}</div>
-  <div *ngFor="let option of readLetterOptions" class="option-hld mtb-10" [ngClass]="{'active': option.selected}">
+  <div *ngFor="let option of readLetterOptions" class="option-hld mtb-10" [ngClass]="{'active': option.selected}"
+    (click)="selectReadLetterOption(option)">
     <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"></mat-icon>
     <span *ngIf="option.label">{{option.label | translate}}</span>
   </div>
 
   <div class="divider mtb-18"></div>
   <div class="section-title">{{ 'translateReadText' | translate }}</div>
-  <div *ngFor="let option of readTextOptions" class="option-hld mtb-10" [ngClass]="{'active': option.selected}">
+  <div *ngFor="let option of readTextOptions" class="option-hld mtb-10" [ngClass]="{'active': option.selected}"
+    (click)="selectReadTextOption(option)">
     <mat-icon [svgIcon]="option.selected? 'checkbox_checked': 'checkbox_unchecked'" class="mr-24"></mat-icon>
     <span *ngIf="option.label">{{option.label | translate}}</span>
   </div>

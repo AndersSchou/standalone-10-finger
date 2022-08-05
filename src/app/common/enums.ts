@@ -19,4 +19,6 @@ export enum TEXT_SETTINGS_TYPE {
   TEXT_REPEAT = 'textRepeat',
   TEXT_FAMILY = 'textFamily',
   TEXT_DISPLAY_LAYOUT = 'textDisplayLayout',
+  READ_LETTER = 'readLetter',
+  READ_TEXT = 'readText',
 }

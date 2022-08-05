@@ -30,3 +30,13 @@ export interface SpeakTimestampDTO {
   // Length of the word that is highlighted.
   length: number;
 }
+
+/**
+ * Read options interface.
+ */
+export interface ReadOptionsDTO {
+  readLetterName: boolean;
+  readLetterSound: boolean;
+  readWord: boolean;
+  readSentence: boolean;
+}

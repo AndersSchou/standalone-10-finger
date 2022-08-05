@@ -31,6 +31,10 @@ export class AppSharedSettingsTextComponent {
   selectedWordRepeat: number;
   // Stores the selected extra font family.
   selectedExtraFontFamily: KeyboardSettingsDTO = {} as KeyboardSettingsDTO;
+  textStyle = {
+    fontSize: '24px',
+    fontFamily: 'Roboto'
+  };
 
   constructor(
     private readonly settingsService: SettingsService
@@ -46,15 +50,15 @@ export class AppSharedSettingsTextComponent {
     // Set the selected font size and font family based on the saved settings.
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
       // Set font size.
-      const textStyle = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE) as string);
-      this.selectedFontSize = textStyle['fontSize'].split(/\D/g)[0];
+      this.textStyle = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE) as string);
+      this.selectedFontSize = Number(this.textStyle['fontSize'].split(/\D/g)[0]);
       // Set font family.
-      const findFamily = this.fontFamilies.find(el => el.label === textStyle['fontFamily']);
+      const findFamily = this.fontFamilies.find(el => el.label === this.textStyle['fontFamily']);
       if (findFamily) {
         findFamily.selected = true;
         this.selectedExtraFontFamily = this.otherFontFam[0];
       } else {
-        const findOtherFamily = this.otherFontFam.find(el => el.label === textStyle['fontFamily']);
+        const findOtherFamily = this.otherFontFam.find(el => el.label === this.textStyle['fontFamily']);
         if (findOtherFamily) {
           this.fontFamilies[this.fontFamilies.length - 1].selected = true;
           findOtherFamily.selected = true;
@@ -112,16 +116,19 @@ export class AppSharedSettingsTextComponent {
     }
     opt.selected = true;
     if (opt.type !== 'other') {
+      this.textStyle['fontFamily'] = opt.label as string;
       this.settingsService.setTextSetting({
         type: TEXT_SETTINGS_TYPE.TEXT_FAMILY,
         value: opt.label ? opt.label : ''
       });
     } else {
+      this.textStyle['fontFamily'] = this.otherFontFam[0].label as string;
       this.settingsService.setTextSetting({
         type: TEXT_SETTINGS_TYPE.TEXT_FAMILY,
         value: this.otherFontFam[0].label ? this.otherFontFam[0].label : ''
       });
     }
+    localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_SIZE, JSON.stringify(this.textStyle));
   }
 
   /**
@@ -131,6 +138,8 @@ export class AppSharedSettingsTextComponent {
    */
   selectFontSize(opt: number): void {
     this.selectedFontSize = opt;
+    this.textStyle['fontSize'] = `${opt}px`;
+    localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_SIZE, JSON.stringify(this.textStyle));
     this.settingsService.setTextSetting({
       type: TEXT_SETTINGS_TYPE.TEXT_SIZE,
       value: opt.toString()
@@ -160,6 +169,7 @@ export class AppSharedSettingsTextComponent {
       item.selected = false;
     });
     option.selected = true;
+    localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_COLOR, JSON.stringify(option.type));
     this.settingsService.setTextSetting({
       type: TEXT_SETTINGS_TYPE.TEXT_COLOR,
       value: option.type
@@ -176,6 +186,7 @@ export class AppSharedSettingsTextComponent {
       item.selected = false;
     });
     option.selected = true;
+    localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify(option.type));
     this.settingsService.setTextSetting({
       type: TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT,
       value: option.type

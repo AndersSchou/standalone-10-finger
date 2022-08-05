@@ -13,7 +13,9 @@ export type TextSettings =
   | TextSettingsSize
   | TextSettingsRepeat
   | TextSettingsFamily
-  | TextSettingsDisplayLayout;
+  | TextSettingsDisplayLayout
+  | TextSettingsReadLetter
+  | TextSettingsReadText;
 
 /**
  * Tool type definition for loading from url.
@@ -36,5 +38,13 @@ export interface TextSettingsFamily {
 }
 export interface TextSettingsDisplayLayout {
   type: TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT;
+  value: string;
+}
+export interface TextSettingsReadLetter {
+  type: TEXT_SETTINGS_TYPE.READ_LETTER;
+  value: string;
+}
+export interface TextSettingsReadText {
+  type: TEXT_SETTINGS_TYPE.READ_TEXT;
   value: string;
 }
