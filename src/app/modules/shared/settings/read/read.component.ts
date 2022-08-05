@@ -16,7 +16,7 @@ export class AppSharedSettingsReadComponent {
   // Stores the default read letter options.
   readLetterOptions: KeyboardSettingsDTO[] = DefaultReadLetterOptions;
   // Stores the default read text options.
-  readTextOptions: KeyboardSettingsDTO[] = DefaultReadTextOptions;
+  readTextOptions: KeyboardSettingsDTO[] = [];
 
   constructor(
     private readonly settingsService: SettingsService
@@ -39,13 +39,9 @@ export class AppSharedSettingsReadComponent {
     // Set read text initial value.
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT)) {
       const readTextOption = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT) as string);
-      for (const option of readTextOption) {
-        const findText = this.readTextOptions.find(el => el.type === option.type);
-        if (findText) {
-          findText.selected = true;
-        }
-      }
+      this.readTextOptions = readTextOption;
     } else {
+      this.readTextOptions = DefaultReadTextOptions;
       for (const option of this.readTextOptions) {
         option.selected = true;
       }

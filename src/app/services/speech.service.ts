@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { SpeakResultDTO } from '../dto/speak.dto';
+import { REGEX_FOR_LETTERS_WITH_DIACRITICS } from '../common/constants';
+import { ReadOptionsDTO, SpeakResultDTO } from '../dto/speak.dto';
 import { VoiceService } from './api/voice.service';
 
 /**
@@ -57,14 +58,15 @@ export class SpeechService {
    */
   play(
     speechText: string,
-    voiceID: string
+    voiceID: string,
+    speechType?: string
   ): void {
     // If speech text does not exist.
     if (!speechText) {
       return;
     }
 
-    this.voiceService.speak(speechText, voiceID).subscribe(
+    this.voiceService.speak(speechText, voiceID, speechType).subscribe(
       (speakResult) => {
         if (speakResult.soundLink) {
           this.speakResult = speakResult;
@@ -108,6 +110,21 @@ export class SpeechService {
    */
   isSpeechEnded(): boolean {
     return this.speechAudioElement.src ? false : true;
+  }
+
+  handleReading(character: string, readOptions: ReadOptionsDTO, voiceID: string): void {
+    console.log('handleReading', character, readOptions);
+    if (character && character.length === 1) {
+      // Read letter name + sound only if the character is a letter.
+      if (character.match(REGEX_FOR_LETTERS_WITH_DIACRITICS)) {
+        if (readOptions.readLetterName) {
+          this.play(character, voiceID, 'LetterName');
+        } else if (readOptions.readLetterSound) {
+          this.play(character, voiceID, 'LetterSound');
+        }
+      }
+    }
+    // Read word/sentence when current char is a nonalphanumerical char and the previous chars are letters.
   }
 
 }

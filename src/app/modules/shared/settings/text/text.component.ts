@@ -65,10 +65,11 @@ export class AppSharedSettingsTextComponent {
           this.selectedExtraFontFamily = findOtherFamily;
         }
       }
-    } else {
-      this.fontFamilies[0].selected = true;
-      this.selectedExtraFontFamily = this.otherFontFam[0];
     }
+    // else {
+    //   this.fontFamilies[0].selected = true;
+    //   this.selectedExtraFontFamily = this.otherFontFam[0];
+    // }
 
     // Set the selected text color option based on the saved settings.
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR)) {
@@ -79,9 +80,10 @@ export class AppSharedSettingsTextComponent {
       } else {
         this.textColorBgOptions[1].selected = true;
       }
-    } else {
-      this.textColorBgOptions[1].selected = true;
     }
+    // else {
+    //   this.textColorBgOptions[1].selected = true;
+    // }
 
     // Set the layout display.
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT)) {
@@ -92,9 +94,10 @@ export class AppSharedSettingsTextComponent {
       } else {
         this.layoutTypes[0].selected = true;
       }
-    } else {
-      this.layoutTypes[0].selected = true;
     }
+    // else {
+    //   this.layoutTypes[0].selected = true;
+    // }
   }
 
   /**

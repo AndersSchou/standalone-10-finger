@@ -26,6 +26,7 @@ export interface CourseDTO {
   completed?: boolean;
   showAll?: boolean;
   updatedAt?: Date;
+  results: CourseResultDTO[];
 }
 
 /**
@@ -38,4 +39,11 @@ export interface CourseExerciseDTO {
   selected?: boolean;
   progress?: string;
   updatedAt?: Date;
+}
+
+export interface CourseResultDTO {
+  mistakes: number;
+  time: number;
+  characters: number;
+  updatedAt: Date;
 }

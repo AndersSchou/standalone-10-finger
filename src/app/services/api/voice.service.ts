@@ -40,13 +40,14 @@ export class VoiceService extends BaseService<SpeakResultDTO> {
    */
   speak(
     text: string,
-    voiceID: string
+    voiceID: string,
+    speechType?: string
   ): Observable<SpeakResultDTO> {
     const speakSettings = {
       format: (this.platform.SAFARI || this.platform.WEBKIT) ? 'mp3' : 'OGG',
       speed: 1,
       text,
-      type: 'TTS',
+      type: speechType ? speechType : 'TTS',
       voiceID,
     };
     return this.post<SpeakBodyDTO, SpeakResultDTO>(
