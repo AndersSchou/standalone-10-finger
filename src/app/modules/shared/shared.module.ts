@@ -17,6 +17,7 @@ import { AppSharedSettingsTextComponent } from './settings/text/text.component';
 import { AppSharedSettingsLanguageComponent } from './settings/language/language.component';
 import { AppSharedSettingsReadComponent } from './settings/read/read.component';
 import { AppSharedSettingsResetComponent } from './settings/reset/reset.component';
+import { AppSharedLoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { AppSharedSettingsResetComponent } from './settings/reset/reset.componen
     AppSharedSettingsReadComponent,
     AppSharedSettingsLogoutComponent,
     AppSharedSettingsResetComponent,
+    AppSharedLoaderComponent,
   ],
   imports: [
     FormsModule,
@@ -50,6 +52,7 @@ import { AppSharedSettingsResetComponent } from './settings/reset/reset.componen
     AppSharedSettingsReadComponent,
     AppSharedSettingsLogoutComponent,
     AppSharedSettingsResetComponent,
+    AppSharedLoaderComponent,
   ],
   providers: [
     ErrorModalService,

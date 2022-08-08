@@ -186,7 +186,19 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
       this.currentCategory = findLatestCategory;
-      this.selectedCourse = findLatestCategory.courses.find((course: CourseDTO) => !course.completed);
+      console.log('this.currentCategory', this.currentCategory);
+      const findLatestCourse = findLatestCategory.courses.reduce((prev: CourseDTO, current: CourseDTO) => {
+        if (current.updatedAt) {
+          if (!prev || !prev.updatedAt) {
+            return current;
+          }
+          if (new Date(current.updatedAt) > new Date(prev.updatedAt)) {
+            return current;
+          }
+        }
+        return prev;
+      });
+      this.selectedCourse = findLatestCourse;
       this.selectedCourse.results = this.selectedCourse.results ? this.selectedCourse.results : [];
       const findLastExercise = this.selectedCourse.exercises.reduce((prev: CourseExerciseDTO, current: CourseExerciseDTO) => {
         if (current.updatedAt) {
@@ -199,11 +211,16 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         return prev;
       });
+      console.log('findLastExercise', findLastExercise);
       const findIndex = this.selectedCourse.exercises.findIndex(el => el.name === findLastExercise.name);
-      if (findIndex && findIndex + 1 <= this.selectedCourse.exercises.length - 1) {
-        this.exerciseIndex = findIndex + 1;
-        this.currentProgress = (100 * this.exerciseIndex) / this.selectedCourse.exercises.length;
+      if (!findLastExercise.completed) {
+        this.exerciseIndex = findIndex;
+      } else {
+        if (findIndex && findIndex + 1 <= this.selectedCourse.exercises.length - 1) {
+          this.exerciseIndex = findIndex + 1;
+        }
       }
+      this.calculateProgress();
       this.mapExercises();
     } else {
       this.getAllCategories();
@@ -239,6 +256,12 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       this.timerSubscription.unsubscribe();
     }
     // this.destroyed.next(true);
+  }
+
+  calculateProgress(): void {
+    const completedExercises = this.selectedCourse.exercises.filter((exercise: CourseExerciseDTO) => exercise.completed);
+    let index = completedExercises.length > 0 ? completedExercises.length : 0;
+    this.currentProgress = (100 * index) / this.selectedCourse.exercises.length;
   }
 
   /**
@@ -316,18 +339,42 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
           } else {
             this.currentLetterIndex = 0;
             this.currentLineIndex = 0;
-            if (this.exerciseIndex < this.exercisesArr.length - 1) {
-              this.exerciseIndex++;
+
+            const findIncompleteExercise = this.exercisesArr.find(exercise => exercise.index > this.exerciseIndex && !exercise.completed);
+            if (findIncompleteExercise) {
+              this.exerciseIndex = findIncompleteExercise.index;
               this.currentPosition();
               // Update the curse progress when the user completes an exercise.
               this.updateProgress(this.exerciseIndex - 1);
             } else {
-              console.log('finished');
-              // Update the curse progress when the user completes an exercise.
-              this.updateProgress(this.exerciseIndex, true, true);
-              // Show achievement screen.
-              this.router.navigate(['/set-course']);
+              const findPrevIncompleteExercise = this.exercisesArr.find(exercise => !exercise.completed);
+              if (findPrevIncompleteExercise) {
+                this.exerciseIndex = findPrevIncompleteExercise.index;
+                this.currentPosition();
+                // Update the curse progress when the user completes an exercise.
+                this.updateProgress(this.exerciseIndex - 1);
+              } else {
+                if (this.exerciseIndex === this.exercisesArr.length - 1) {
+                  // Update the curse progress when the user completes an exercise.
+                  this.updateProgress(this.exerciseIndex, true, true);
+                  // Show achievement screen.
+                  this.router.navigate(['/set-course']);
+                }
+              }
             }
+            console.log('findIncompleteExercise', findIncompleteExercise);
+            // if (this.exerciseIndex < this.exercisesArr.length - 1) {
+            //   this.exerciseIndex++;
+            //   this.currentPosition();
+            //   // Update the curse progress when the user completes an exercise.
+            //   this.updateProgress(this.exerciseIndex - 1);
+            // } else {
+            //   console.log('finished');
+            //   // Update the curse progress when the user completes an exercise.
+            //   this.updateProgress(this.exerciseIndex, true, true);
+            //   // Show achievement screen.
+            //   this.router.navigate(['/set-course']);
+            // }
           }
         }
         if (this.timerSubscription === Subscription.EMPTY) {
@@ -380,10 +427,13 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('currentPosition', this.exerciseIndex, this.currentLineIndex, this.currentLetterIndex);
     this.showCurrentKeyComb(this.currentChar);
     const findHtmlElement = document.getElementsByClassName('exercise-' + this.exerciseIndex)[0];
+    console.log('findHtmlElement', findHtmlElement);
     if (findHtmlElement) {
       const findLineEl = findHtmlElement.getElementsByClassName('line-' + this.currentLineIndex)[0];
+      console.log('findLineEl', findLineEl);
       if (findLineEl) {
         const findSpanEl = findLineEl.getElementsByClassName('key-hld ' + this.currentLetterIndex)[0];
+        console.log('findSpanEl', findSpanEl);
         if (findSpanEl) {
           findSpanEl.classList.add('active');
           this.currentActiveElement = findSpanEl;
@@ -513,7 +563,8 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.categories));
     }
     if (!isFinished) {
-      this.currentProgress = (100 * this.exerciseIndex) / this.selectedCourse.exercises.length;
+      // this.currentProgress = (100 * this.exerciseIndex) / this.selectedCourse.exercises.length;
+      this.calculateProgress();
     }
   }
 

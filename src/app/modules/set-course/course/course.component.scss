@@ -59,6 +59,10 @@
   border-radius: 4px;
 }
 
+.progress.full {
+  width: 100%;
+}
+
 .start-btn {
   display: flex;
   align-items: center;
@@ -123,8 +127,8 @@
 
 
 .max-h {
-  height: 484px;
-  overflow: hidden;
+  // height: 484px;
+  // overflow: hidden;
 }
 
 .max-h.full-h {

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
 import { Courses } from 'src/app/courses';
-import { CategoriesDTO } from 'src/app/dto/course.dto';
+import { CategoriesDTO, CourseDTO, CourseExerciseDTO } from 'src/app/dto/course.dto';
 import { SettingsService } from 'src/app/services/settings.service';
 
 /**
@@ -16,7 +17,7 @@ export class AppSetCourseComponent implements OnInit {
   // Stores the categories array.
   categories: CategoriesDTO[] = [];
   // Stores the selected course;
-  selectedCourse: CategoriesDTO = {
+  currentCategory: CategoriesDTO = {
     name: '',
     courses: []
   };
@@ -34,6 +35,7 @@ export class AppSetCourseComponent implements OnInit {
    */
   constructor(
     private readonly settingsService: SettingsService,
+    private readonly cdr: ChangeDetectorRef,
   ) { }
 
   /**
@@ -47,6 +49,55 @@ export class AppSetCourseComponent implements OnInit {
     this.settingsService.viewSettingsAction
       .pipe(takeUntil(this.destroyed))
       .subscribe((viewSettings: boolean) => { this.viewSettings = viewSettings; });
+
+    if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
+      const coursesProgress = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
+      this.categories = coursesProgress.categories.map((el: CategoriesDTO) => {
+        const elem = el;
+        const completedCourses = el.courses.filter((course: CourseDTO) => course.completed);
+        console.log('completedCourses', completedCourses);
+        elem.progress = ((100 * completedCourses.length) / el.courses.length) + '%';
+        return elem;
+      });
+      console.log('this.categories', this.categories);
+      this.findLatestCat();
+
+    } else {
+      this.getAllCategories();
+    }
+  }
+
+  /**
+   * Find the latest category.
+   */
+  findLatestCat(): void {
+    const findLatestCategory = this.categories.reduce((prev: CategoriesDTO, current: CategoriesDTO) => {
+      if (current.updatedAt) {
+        if (!prev || !prev.updatedAt) {
+          return current;
+        }
+        if (new Date(current.updatedAt) > new Date(prev.updatedAt)) {
+          return current;
+        }
+      }
+      return prev;
+    });
+
+    if (findLatestCategory) {
+      if (!findLatestCategory.completed) {
+        this.currentCategory = findLatestCategory;
+      } else {
+        const findIndex = this.categories.findIndex((el: CategoriesDTO) => el.name === findLatestCategory.name);
+        if (findIndex && ((findIndex + 1) <= this.categories.length - 1)) {
+          this.currentCategory = this.categories[findIndex + 1];
+        } else {
+          this.currentCategory = this.categories[0];
+        }
+      }
+    } else {
+      this.currentCategory = this.categories[0];
+    }
+    console.log('this.currentCategory', this.currentCategory);
   }
 
   /**
@@ -55,26 +106,24 @@ export class AppSetCourseComponent implements OnInit {
   getAllCategories(): void {
     if (this.currentLanguage in Courses) {
       const cat = Courses[this.currentLanguage];
-      let index = 10;
       if (cat && cat.categories) {
         this.categories = cat.categories.map((el: CategoriesDTO) => {
           const elem = el;
-          elem.progress = 10 + index + '%';
-          index += 15;
+          elem.progress = '0%';
           return elem;
         });
-        this.selectedCourse = this.categories[0];
+        this.currentCategory = this.categories[0];
       }
     }
   }
 
   /**
-   * Select course.
+   * Select category.
    *
-   * @param course Represents the selected course.
+   * @param category Represents the selected category.
    */
-  selectCourse(course: CategoriesDTO): void {
-    this.selectedCourse = course;
+  selectCategory(category: CategoriesDTO): void {
+    console.log('category', category);
+    this.currentCategory = { ...category };
   }
-
 }

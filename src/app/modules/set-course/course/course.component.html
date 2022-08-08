@@ -6,30 +6,32 @@
     <div class="txt-hld">{{courseVal.progress}} {{ "translateComplete" | translate}}</div>
   </div>
   <div class="divider"></div>
-  <div *ngFor="let course of courseVal.courses" class="pt-32">
-    <div class="course-title" #target>{{course.name}}</div>
-    <div class="lesson-counter">{{course.exercises.length}} {{ "translateExercises" | translate }}</div>
-    <div class="plr-20">
-      <div class="max-h" [ngClass]="{'full-h': course.showAll}">
-        <div *ngFor="let exercise of course.exercises; let i=index" class="exercise-hld"
-          [ngClass]="{'active': exercise.selected}">
-          <div class="exercise">
-            <div class="pos-hld">{{i+1}}</div>
-            <div>{{exercise.name}}</div>
-            <div class="start-btn">
-              {{ "translateStart" | translate }}
-              <mat-icon svgIcon="rocket" class="ml-10">
-              </mat-icon>
+  <div>
+    <div *ngFor="let course of courseVal.courses; let i=index" class="pt-32" [ngClass]="'course-holder-'+i">
+      <div class="course-title" #target>{{course.name}}</div>
+      <div class="lesson-counter">{{course.exercises.length}} {{ "translateExercises" | translate }}</div>
+      <div class="plr-20">
+        <div class="max-h" [ngClass]="{'full-h': course.showAll}">
+          <div *ngFor="let exercise of course.exercises; let j=index" class="exercise-hld"
+            [ngClass]="{'active': j===activeExerciseIndex && i===activeCourseIndex}">
+            <div class="exercise" [ngClass]="'exercise-index-'+j">
+              <div class="pos-hld">{{j+1}}</div>
+              <div>{{exercise.name}}</div>
+              <div class="start-btn" (click)="startExercise(i,j)">
+                {{ "translateStart" | translate }}
+                <mat-icon svgIcon="rocket" class="ml-10">
+                </mat-icon>
+              </div>
+            </div>
+            <div class="exercise-progress">
+              <div class="progress" [ngClass]="{'full': exercise.completed}"></div>
             </div>
           </div>
-          <div class="exercise-progress">
-            <div class="progress" [ngStyle]="{'width': exercise.progress}"></div>
-          </div>
         </div>
-      </div>
-      <div (click)="showAll(course,target)" class="toggle-view">
+        <!-- <div (click)="showAll(course,target)" class="toggle-view">
         <span *ngIf="!course.showAll">{{ "translateShowAll" | translate }} +{{course.exercises.length - 4}}</span>
         <span *ngIf="course.showAll">{{ "translateShowLess" | translate }}</span>
+      </div> -->
       </div>
     </div>
   </div>
