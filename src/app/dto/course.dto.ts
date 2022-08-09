@@ -36,8 +36,8 @@ export interface CourseExerciseDTO {
   name: string;
   text: string;
   completed?: boolean;
-  selected?: boolean;
   progress?: string;
+  results: CourseResultDTO[];
   updatedAt?: Date;
 }
 
@@ -45,5 +45,6 @@ export interface CourseResultDTO {
   mistakes: number;
   time: number;
   characters: number;
+  lastIndex?: number;
   updatedAt: Date;
 }

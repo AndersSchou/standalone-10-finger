@@ -44,8 +44,12 @@ export class AppHomeComponent implements OnInit {
    *
    * @param url Represents the page url.
    */
-  navigateTo(url: string): void {
-    this.router.navigate([url]);
+  navigateTo(url: string, param: boolean = false): void {
+    if (param) {
+      this.router.navigate([url], { queryParams: { resume: 'Course' } });
+    } else {
+      this.router.navigate([url]);
+    }
   }
 
   setDefaultSettings(): void {

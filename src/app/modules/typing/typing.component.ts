@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { fromEvent, ReplaySubject, Subscription, takeUntil, timer } from 'rxjs';
 import { colorsMap, DefaultReadLetterOptions, DefaultReadTextOptions, REGEX_FOR_LETTERS_WITH_DIACRITICS_AND_NBR, REGEX_WITH_DIACRITICS, SENTENCE_REGEX } from 'src/app/common/constants';
 import { Color, STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
@@ -81,6 +81,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   // Stores the number of seconds since the start of the exercise.
   timeCounter = 0;
   readTextOptions: ReadOptionsDTO = { readLetterName: false, readLetterSound: false, readWord: false, readSentence: false };
+  resumeCourse: boolean = false;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<never>();
 
@@ -90,6 +91,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly cdr: ChangeDetectorRef,
     private readonly languageHelperService: LanguageHelperService,
     private readonly speechService: SpeechService,
+    private readonly activatedRoute: ActivatedRoute,
   ) {
     this.setInitialTextSettings();
   }
@@ -132,6 +134,14 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      const shouldResume = 'resume';
+      console.log('params[shouldResume]', params[shouldResume]);
+      if (params && params[shouldResume]) {
+        this.resumeCourse = true;
+      }
+    });
+
     // Listens for any changes regarding the settings view (show/hide).
     this.settingsService.viewSettingsAction
       .pipe(takeUntil(this.destroyed))
@@ -173,6 +183,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
       const coursesProgress = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
       this.categories = coursesProgress;
+      console.log('this.categories', this.categories);
       const findLatestCategory = coursesProgress.categories.reduce((prev: CategoriesDTO, current: CategoriesDTO) => {
         if (current.updatedAt) {
           if (!prev || !prev.updatedAt) {
@@ -185,21 +196,51 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         return prev;
       });
 
-      this.currentCategory = findLatestCategory;
-      console.log('this.currentCategory', this.currentCategory);
-      const findLatestCourse = findLatestCategory.courses.reduce((prev: CourseDTO, current: CourseDTO) => {
-        if (current.updatedAt) {
-          if (!prev || !prev.updatedAt) {
-            return current;
+      if (!this.resumeCourse) {
+        this.currentCategory = findLatestCategory;
+      } else {
+        // Resume course. Check if the latest category is completed.
+        if (findLatestCategory.completed) {
+          // If it's completed, find the next category.
+          const findNextCat = coursesProgress.categories.find((cat: CategoriesDTO) => !cat.completed);
+          if (findNextCat) {
+            this.currentCategory = findNextCat;
+          } else {
+            // If all categories are completed, then start from the beginning.
+            this.currentCategory = coursesProgress.categories[0];
           }
-          if (new Date(current.updatedAt) > new Date(prev.updatedAt)) {
-            return current;
-          }
+        } else {
+          this.currentCategory = findLatestCategory;
         }
-        return prev;
-      });
-      this.selectedCourse = findLatestCourse;
+      }
+
+      // this.currentCategory = findLatestCategory;
+      console.log('this.currentCategory', this.currentCategory);
+      if (this.currentCategory.completed && this.resumeCourse) {
+        this.selectedCourse = this.currentCategory.courses[0];
+      } else {
+        const findLatestCourse = this.currentCategory.courses.reduce((prev: CourseDTO, current: CourseDTO) => {
+          if (current.updatedAt) {
+            if (!prev || !prev.updatedAt) {
+              return current;
+            }
+            if (new Date(current.updatedAt) > new Date(prev.updatedAt)) {
+              return current;
+            }
+          }
+          return prev;
+        });
+        this.selectedCourse = findLatestCourse;
+      }
+      console.log('this.selectedCourse', this.selectedCourse);
+
       this.selectedCourse.results = this.selectedCourse.results ? this.selectedCourse.results : [];
+      this.selectedCourse.exercises = this.selectedCourse.exercises.map(el => {
+        const elem = el;
+        elem.results = el.results ? el.results : [];
+        return elem;
+      });
+
       const findLastExercise = this.selectedCourse.exercises.reduce((prev: CourseExerciseDTO, current: CourseExerciseDTO) => {
         if (current.updatedAt) {
           if (!prev || !prev.updatedAt) {
@@ -213,13 +254,18 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       console.log('findLastExercise', findLastExercise);
       const findIndex = this.selectedCourse.exercises.findIndex(el => el.name === findLastExercise.name);
-      if (!findLastExercise.completed) {
+      if (!this.resumeCourse) {
         this.exerciseIndex = findIndex;
       } else {
-        if (findIndex && findIndex + 1 <= this.selectedCourse.exercises.length - 1) {
-          this.exerciseIndex = findIndex + 1;
+        if (!findLastExercise.completed) {
+          this.exerciseIndex = findIndex;
+        } else {
+          if (findIndex && findIndex + 1 <= this.selectedCourse.exercises.length - 1) {
+            this.exerciseIndex = findIndex + 1;
+          }
         }
       }
+
       this.calculateProgress();
       this.mapExercises();
     } else {
@@ -318,7 +364,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       //   this.vkeyboard.highlightKey((event as KeyboardEvent).key);
       // }
 
-      console.log('this.readTextOptions', this.readTextOptions);
+      // console.log('this.readTextOptions', this.readTextOptions);
       this.speechService.handleReading((event as KeyboardEvent).key, this.readTextOptions, 'mv_da_acl');
       if (this.currentChar === (event as KeyboardEvent).key) {
         let isSpace = false;
@@ -328,6 +374,12 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
           event.preventDefault();
         }
         this.markAsCompleted(isSpace);
+        console.log('+++++++++this.timeCounter', this.timeCounter);
+        if (this.timerSubscription === Subscription.EMPTY) {
+          this.timerSubscription = timer(0, 1000).subscribe(() => {
+            this.timeCounter++;
+          });
+        }
         if (this.currentLetterIndex < this.lineLength - 1) {
           this.currentLetterIndex++;
           this.currentPosition();
@@ -344,25 +396,25 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
             if (findIncompleteExercise) {
               this.exerciseIndex = findIncompleteExercise.index;
               this.currentPosition();
-              // Update the curse progress when the user completes an exercise.
+              // Update the course progress when the user completes an exercise.
               this.updateProgress(this.exerciseIndex - 1);
             } else {
               const findPrevIncompleteExercise = this.exercisesArr.find(exercise => !exercise.completed);
               if (findPrevIncompleteExercise) {
                 this.exerciseIndex = findPrevIncompleteExercise.index;
                 this.currentPosition();
-                // Update the curse progress when the user completes an exercise.
+                // Update the course progress when the user completes an exercise.
                 this.updateProgress(this.exerciseIndex - 1);
               } else {
                 if (this.exerciseIndex === this.exercisesArr.length - 1) {
-                  // Update the curse progress when the user completes an exercise.
+                  // Update the course progress when the user completes all the exercises.
                   this.updateProgress(this.exerciseIndex, true, true);
                   // Show achievement screen.
                   this.router.navigate(['/set-course']);
                 }
               }
             }
-            console.log('findIncompleteExercise', findIncompleteExercise);
+            // console.log('findIncompleteExercise', findIncompleteExercise);
             // if (this.exerciseIndex < this.exercisesArr.length - 1) {
             //   this.exerciseIndex++;
             //   this.currentPosition();
@@ -376,11 +428,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
             //   this.router.navigate(['/set-course']);
             // }
           }
-        }
-        if (this.timerSubscription === Subscription.EMPTY) {
-          this.timerSubscription = timer(0, 1000).subscribe(() => {
-            this.timeCounter++;
-          });
         }
       } else {
         if ((event as KeyboardEvent).key !== 'Shift') {
@@ -397,18 +444,23 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.currentLanguage in Courses) {
       const cat = Courses[this.currentLanguage];
       if (cat && cat.categories) {
-        console.log('cat', cat);
+        // console.log('cat', cat);
         cat.categories[0].updatedAt = new Date();
         cat.categories[0].courses[0].updatedAt = new Date();
         this.currentCategory = cat.categories[0];
         this.categories = cat;
-        localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.categories));
         // this.selectedCourse = cat.categories[cat.categories.length - 2].courses[cat.categories[cat.categories.length - 2].courses.length - 3];
         // this.selectedCourse = cat.categories[cat.categories.length - 2].courses[cat.categories[cat.categories.length - 2].courses.length - 1];
         this.selectedCourse = cat.categories[0].courses[0];
         this.selectedCourse.results = [];
+        this.selectedCourse.exercises = this.selectedCourse.exercises.map(el => {
+          const elem = el;
+          elem.results = [];
+          return elem;
+        });
+        localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.categories));
         // this.selectedCourse = cat.categories[cat.categories.length - 1].courses[0];
-        console.log('this.selectedCourse', this.selectedCourse);
+        // console.log('this.selectedCourse', this.selectedCourse);
         // this.mapText();
         this.mapExercises();
       }
@@ -476,12 +528,12 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Mark the current character as mistake and count the number of mistakes.
    */
   markAsMistake(): void {
-    console.log('markAsMistake', this.currentActiveElement);
+    // console.log('markAsMistake', this.currentActiveElement);
     this.nbrOfMistakes++;
     if (this.currentActiveElement) {
       this.currentActiveElement.classList.add('error');
     }
-    console.log('this.nbrOfMistakes', this.nbrOfMistakes);
+    // console.log('this.nbrOfMistakes', this.nbrOfMistakes);
   }
 
   goBack(): void {
@@ -489,14 +541,15 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   resetCourse(): void {
-    console.log('this.selectedCourse', this.selectedCourse);
+    // console.log('this.selectedCourse', this.selectedCourse);
     this.exerciseIndex = 0;
     this.currentLineIndex = 0;
     this.currentLetterIndex = 0;
     this.nbrOfMistakes = 0;
     this.currentProgress = 0;
     this.selectedCourse.results = [];
-    console.log('this.currentProgress', this.currentProgress);
+
+    // console.log('this.currentProgress', this.currentProgress);
     if (this.timerSubscription !== Subscription.EMPTY) {
       this.timerSubscription.unsubscribe();
       this.timerSubscription = Subscription.EMPTY;
@@ -518,7 +571,8 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedCourse.exercises = this.selectedCourse.exercises.map(el => {
       const exercise = {
         name: el.name,
-        text: el.text
+        text: el.text,
+        results: [],
       };
       return exercise;
     });
@@ -547,12 +601,16 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('---asjdh', this.selectedCourse, this.exerciseIndex, this.selectedCourse.exercises.length);
     if (isFinished) {
       let charsNbr = 0;
+      let totalMistakes = 0;
+      let totalTime = 0;
       for (const exercise of this.selectedCourse.exercises) {
         charsNbr += exercise.text.length;
+        totalMistakes += exercise.results[exercise.results.length - 1].mistakes;
+        totalTime += exercise.results[exercise.results.length - 1].time;
       }
       this.selectedCourse.results.push({
-        mistakes: this.nbrOfMistakes,
-        time: this.timeCounter,
+        mistakes: totalMistakes,
+        time: totalTime,
         characters: charsNbr,
         updatedAt: new Date()
       });
@@ -583,6 +641,20 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.selectedCourse.exercises[exerciseIndex].completed = true;
     this.selectedCourse.exercises[exerciseIndex].updatedAt = new Date();
+
+    this.selectedCourse.exercises[exerciseIndex].results.push({
+      mistakes: this.nbrOfMistakes,
+      time: this.timeCounter,
+      characters: this.selectedCourse.exercises[exerciseIndex].text.length,
+      updatedAt: new Date()
+    });
+    // Reset the exercise progress when going to the next exercise.
+    this.nbrOfMistakes = 0;
+    if (this.timerSubscription !== Subscription.EMPTY) {
+      this.timerSubscription.unsubscribe();
+      this.timerSubscription = Subscription.EMPTY;
+    }
+    this.timeCounter = 0;
     this.saveCourseProgress(isFinished);
   }
 
@@ -592,12 +664,14 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   mapExercises(): void {
     this.exercisesArr = [];
     console.log('this.selectedCourse.exercises', this.selectedCourse.exercises);
+    const findExercise = this.selectedCourse.exercises.find(el => !el.completed);
+    const shouldRemoveCompleted = findExercise ? false : true;
     for (let i = 0; i < this.selectedCourse.exercises.length; i++) {
       const exercise: ExerciseDTO = {
         name: this.selectedCourse.exercises[i].name,
         index: i,
         lines: [],
-        completed: this.selectedCourse.exercises[i].completed ? this.selectedCourse.exercises[i].completed : false,
+        completed: !shouldRemoveCompleted && this.selectedCourse.exercises[i].completed ? this.selectedCourse.exercises[i].completed : false,
       }
       exercise.lines = this.mapExerciseText(this.selectedCourse.exercises[i].text);
       this.exercisesArr.push(exercise);
@@ -636,6 +710,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   toHTML(): void {
     // console.log('this.exerciseElem.nativeElement', this.exerciseElem.nativeElement);
     console.log('this.exercisesArr', this.exercisesArr);
+    console.log('this.resumeCourse', this.resumeCourse);
     for (const elem of this.exercisesArr) {
       const mainDiv = document.createElement('div');
       mainDiv.classList.add('exercise-' + elem.index);
