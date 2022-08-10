@@ -11,6 +11,7 @@ export const environment = {
   UrlEndpoints: {
     auth: 'https://signon-test.vitec-mv.com',
     voiceservice: 'https://voiceservice-test.vitec-mv.com',
+    user: 'https://mvidsignonapi-test.vitec-mv.com',
   }
 };
 

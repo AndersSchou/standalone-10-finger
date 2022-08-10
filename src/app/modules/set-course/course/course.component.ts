@@ -1,3 +1,4 @@
+import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { Component, Input, Output } from "@angular/core";
 import { Router } from "@angular/router";
 import { STORAGE_KEY_TYPE } from "src/app/common/enums";
@@ -35,20 +36,11 @@ export class AppSetCourseCourseComponent {
 
   constructor(
     private readonly router: Router,
+    private readonly courseHelperService: CourseHelperService,
   ) { }
 
   findLatestCourse(cat: CategoriesDTO): void {
-    const findLatestCourse = cat.courses.reduce((prev: CourseDTO, current: CourseDTO) => {
-      if (current.updatedAt) {
-        if (!prev || !prev.updatedAt) {
-          return current;
-        }
-        if (new Date(current.updatedAt) > new Date(prev.updatedAt)) {
-          return current;
-        }
-      }
-      return prev;
-    });
+    const findLatestCourse = this.courseHelperService.getLatestCourse(cat);
     console.log('findLatestCourse', findLatestCourse);
 
     let currentCourse = findLatestCourse;
@@ -70,18 +62,7 @@ export class AppSetCourseCourseComponent {
   }
 
   findLatestExercise(course: CourseDTO): void {
-    const findLastExercise = course.exercises.reduce((prev: CourseExerciseDTO, current: CourseExerciseDTO) => {
-      if (current.updatedAt) {
-        if (!prev || !prev.updatedAt) {
-          return current;
-        }
-        if (new Date(current.updatedAt) > new Date(prev.updatedAt)) {
-          return current;
-        }
-      }
-      return prev;
-    });
-    console.log('findLastExercise', findLastExercise);
+    const findLastExercise = this.courseHelperService.getLatestExercise(course);
 
     const findIndex = course.exercises.findIndex((el: CourseExerciseDTO) => el.name === findLastExercise.name);
     this.activeExerciseIndex = findIndex;
@@ -89,19 +70,18 @@ export class AppSetCourseCourseComponent {
       if (findIndex && ((findIndex + 1) <= course.exercises.length - 1)) {
         this.activeExerciseIndex = findIndex + 1;
       } else {
-        this.activeExerciseIndex = 0;
+        if (!course.completed) {
+          this.activeExerciseIndex = 0;
+        }
       }
     }
     console.log('findLastExercise', findLastExercise);
   }
 
   scrollToExercise(): void {
-    console.log('exercise', this.activeExerciseIndex, this.activeCourseIndex);
     const findCourseElem = document.getElementsByClassName('course-holder-' + this.activeCourseIndex);
-    console.log('findCourseElem', findCourseElem);
     if (findCourseElem && findCourseElem.length > 0) {
       const findExerciseElem = findCourseElem[0].getElementsByClassName('exercise-index-' + this.activeExerciseIndex)[0];
-      console.log('findExerciseElem', findExerciseElem);
       if (findExerciseElem) {
         findExerciseElem.scrollIntoView({ behavior: 'smooth' });
       }
@@ -109,9 +89,9 @@ export class AppSetCourseCourseComponent {
   }
 
   startExercise(courseIndex: number, exerciseIndex: number): void {
-    console.log('startExercise', courseIndex, exerciseIndex);
     const findCat = this.categories.find((el: CategoriesDTO) => el.name === this.courseVal.name);
     if (findCat) {
+      findCat.updatedAt = new Date();
       findCat.courses[courseIndex].updatedAt = new Date();
       findCat.courses[courseIndex].exercises[exerciseIndex].updatedAt = new Date();
     }

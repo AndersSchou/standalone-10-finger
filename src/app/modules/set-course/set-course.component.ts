@@ -1,8 +1,9 @@
+import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
 import { Courses } from 'src/app/courses';
-import { CategoriesDTO, CourseDTO, CourseExerciseDTO } from 'src/app/dto/course.dto';
+import { CategoriesDTO, CourseDTO, CourseResponseDTO } from 'src/app/dto/course.dto';
 import { SettingsService } from 'src/app/services/settings.service';
 
 /**
@@ -36,6 +37,7 @@ export class AppSetCourseComponent implements OnInit {
   constructor(
     private readonly settingsService: SettingsService,
     private readonly cdr: ChangeDetectorRef,
+    private readonly courseHelperService: CourseHelperService,
   ) { }
 
   /**
@@ -55,12 +57,10 @@ export class AppSetCourseComponent implements OnInit {
       this.categories = coursesProgress.categories.map((el: CategoriesDTO) => {
         const elem = el;
         const completedCourses = el.courses.filter((course: CourseDTO) => course.completed);
-        console.log('completedCourses', completedCourses);
-        elem.progress = ((100 * completedCourses.length) / el.courses.length) + '%';
+        elem.progress = ((100 * completedCourses.length) / el.courses.length);
         return elem;
       });
-      console.log('this.categories', this.categories);
-      this.findLatestCat();
+      this.findLatestCat(coursesProgress);
 
     } else {
       this.getAllCategories();
@@ -70,18 +70,8 @@ export class AppSetCourseComponent implements OnInit {
   /**
    * Find the latest category.
    */
-  findLatestCat(): void {
-    const findLatestCategory = this.categories.reduce((prev: CategoriesDTO, current: CategoriesDTO) => {
-      if (current.updatedAt) {
-        if (!prev || !prev.updatedAt) {
-          return current;
-        }
-        if (new Date(current.updatedAt) > new Date(prev.updatedAt)) {
-          return current;
-        }
-      }
-      return prev;
-    });
+  findLatestCat(coursesProgress: CourseResponseDTO): void {
+    const findLatestCategory = this.courseHelperService.getLatestCategory(coursesProgress);
 
     if (findLatestCategory) {
       if (!findLatestCategory.completed) {
@@ -97,7 +87,6 @@ export class AppSetCourseComponent implements OnInit {
     } else {
       this.currentCategory = this.categories[0];
     }
-    console.log('this.currentCategory', this.currentCategory);
   }
 
   /**
@@ -109,7 +98,7 @@ export class AppSetCourseComponent implements OnInit {
       if (cat && cat.categories) {
         this.categories = cat.categories.map((el: CategoriesDTO) => {
           const elem = el;
-          elem.progress = '0%';
+          elem.progress = 0;
           return elem;
         });
         this.currentCategory = this.categories[0];
@@ -123,7 +112,6 @@ export class AppSetCourseComponent implements OnInit {
    * @param category Represents the selected category.
    */
   selectCategory(category: CategoriesDTO): void {
-    console.log('category', category);
     this.currentCategory = { ...category };
   }
 }

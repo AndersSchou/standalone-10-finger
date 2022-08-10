@@ -5,6 +5,25 @@ export const da = {
       "name": "Læs og skriv",
       "courses": [
         {
+          "name": "Testl 1",
+          "exercises": [
+            {
+              "name": "Øvelse 1",
+              "text": "fdsa asdf"
+            },
+            {
+              "name": "Øvelse 2",
+              // "text": "jklæ ælkj"
+              "text": "jklae aelkj"
+            },
+            {
+              "name": "Øvelse 3",
+              // "text": "jfkdlsæa"
+              "text": "jfkdlsaea"
+            },
+          ],
+        },
+        {
           "name": "Level 1",
           "exercises": [
             {

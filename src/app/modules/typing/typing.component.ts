@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { fromEvent, ReplaySubject, Subscription, takeUntil, timer } from 'rxjs';
-import { colorsMap, DefaultReadLetterOptions, DefaultReadTextOptions, REGEX_FOR_LETTERS_WITH_DIACRITICS_AND_NBR, REGEX_WITH_DIACRITICS, SENTENCE_REGEX } from 'src/app/common/constants';
+import { colorsMap, REGEX_FOR_LETTERS_WITH_DIACRITICS_AND_NBR, REGEX_WITH_DIACRITICS, SENTENCE_REGEX } from 'src/app/common/constants';
 import { Color, STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE, TextSettings } from 'src/app/common/types';
 import { Courses } from 'src/app/courses';
@@ -9,16 +9,12 @@ import { CategoriesDTO, CourseDTO, CourseExerciseDTO, CourseResponseDTO } from '
 import { KeyboardSettingsDTO } from 'src/app/dto/settings.dto';
 import { ReadOptionsDTO } from 'src/app/dto/speak.dto';
 import { TranslationsDTO } from 'src/app/dto/translation.dto';
+import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { SpeechService } from 'src/app/services/speech.service';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
 
-
-interface LetterDTO {
-  index: number;
-  letter: string;
-}
 interface ExerciseTextDTO {
   index: number;
   text: string[];
@@ -41,24 +37,30 @@ interface ExerciseDTO {
 })
 export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('exerciseElem') exerciseElem: ElementRef<HTMLElement> = {} as ElementRef;
+  @ViewChild('vkeyboard') vkeyboard: VKeyboardComponent | undefined;
   // Stores the selected course;
   selectedCourse: CourseDTO = {
     name: '',
     exercises: [],
     results: []
   };
+  // Stores the categories object.
   categories: CourseResponseDTO = {} as CourseResponseDTO;
+  // Stores the current(active) category.
   currentCategory: CategoriesDTO = {} as CategoriesDTO;
   // Stores the current language.
   currentLanguage = 'da';
   // Stores the DOM element.
   divElement = document.createElement('div');
+  // Stores the exercises array with all the needed data for creating/updating the HTML elements.
   exercisesArr: ExerciseDTO[] = [];
-
+  // Tells if it should show the settings view or not.
   viewSettings: boolean = false;
-
+  // Stores the text settings (font size and font family).
   textSetting: { [key: string]: string } = {};
+  // Stores the text color option for the exercise.
   coloredText: string = '';
+  // Tells if the keyboard should be displayed on top or on the bottom of the exercises holder.
   keyboardTop = false;
   // Stores the index of the current/active exercise.
   exerciseIndex = 0;
@@ -72,18 +74,20 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   nbrOfMistakes = 0;
   // Stores the current Element.
   currentActiveElement?: Element;
+  // Stores the current line length.
   lineLength = 0;
-  exerciseLength = 0;
+  // Stores the current course progress.
   currentProgress = 0;
-  @ViewChild('vkeyboard') vkeyboard: VKeyboardComponent | undefined;
-  // Stores the timer subscription.
-  timerSubscription: Subscription = Subscription.EMPTY;
-  // Stores the number of seconds since the start of the exercise.
-  timeCounter = 0;
+  // Stores the start time (used to calculate the time spent on an exercise).
+  startTime: Date = new Date();
+  // Tells if it should start the timer or not.
+  startCount = false;
+  // Stores the read options.
   readTextOptions: ReadOptionsDTO = { readLetterName: false, readLetterSound: false, readWord: false, readSentence: false };
+  // Tells if it should resume course or not.
   resumeCourse: boolean = false;
   // Stores the subscribers until they're destroyed.
-  private readonly destroyed = new ReplaySubject<never>();
+  private readonly destroyed = new ReplaySubject<boolean>();
 
   constructor(
     private readonly router: Router,
@@ -92,10 +96,14 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly languageHelperService: LanguageHelperService,
     private readonly speechService: SpeechService,
     private readonly activatedRoute: ActivatedRoute,
+    private readonly courseHelperService: CourseHelperService,
   ) {
     this.setInitialTextSettings();
   }
 
+  /**
+   * Set initial settings based on the stored settings from local storage.
+   */
   setInitialTextSettings(): void {
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
       this.textSetting = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE) as string);
@@ -134,9 +142,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Checks queryParams for resume param.
     this.activatedRoute.queryParams.subscribe(params => {
       const shouldResume = 'resume';
-      console.log('params[shouldResume]', params[shouldResume]);
       if (params && params[shouldResume]) {
         this.resumeCourse = true;
       }
@@ -172,106 +180,12 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     // Listens for any changes regarding the text settings.
     this.textSettingsChanges();
 
-
     // Listens for keydown events.
     this.keyDownListener();
 
-    this.getCourseProgress();
+    this.courseProgress();
   }
 
-  getCourseProgress(): void {
-    if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
-      const coursesProgress = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
-      this.categories = coursesProgress;
-      console.log('this.categories', this.categories);
-      const findLatestCategory = coursesProgress.categories.reduce((prev: CategoriesDTO, current: CategoriesDTO) => {
-        if (current.updatedAt) {
-          if (!prev || !prev.updatedAt) {
-            return current;
-          }
-          if (new Date(current.updatedAt) > new Date(prev.updatedAt)) {
-            return current;
-          }
-        }
-        return prev;
-      });
-
-      if (!this.resumeCourse) {
-        this.currentCategory = findLatestCategory;
-      } else {
-        // Resume course. Check if the latest category is completed.
-        if (findLatestCategory.completed) {
-          // If it's completed, find the next category.
-          const findNextCat = coursesProgress.categories.find((cat: CategoriesDTO) => !cat.completed);
-          if (findNextCat) {
-            this.currentCategory = findNextCat;
-          } else {
-            // If all categories are completed, then start from the beginning.
-            this.currentCategory = coursesProgress.categories[0];
-          }
-        } else {
-          this.currentCategory = findLatestCategory;
-        }
-      }
-
-      // this.currentCategory = findLatestCategory;
-      console.log('this.currentCategory', this.currentCategory);
-      if (this.currentCategory.completed && this.resumeCourse) {
-        this.selectedCourse = this.currentCategory.courses[0];
-      } else {
-        const findLatestCourse = this.currentCategory.courses.reduce((prev: CourseDTO, current: CourseDTO) => {
-          if (current.updatedAt) {
-            if (!prev || !prev.updatedAt) {
-              return current;
-            }
-            if (new Date(current.updatedAt) > new Date(prev.updatedAt)) {
-              return current;
-            }
-          }
-          return prev;
-        });
-        this.selectedCourse = findLatestCourse;
-      }
-      console.log('this.selectedCourse', this.selectedCourse);
-
-      this.selectedCourse.results = this.selectedCourse.results ? this.selectedCourse.results : [];
-      this.selectedCourse.exercises = this.selectedCourse.exercises.map(el => {
-        const elem = el;
-        elem.results = el.results ? el.results : [];
-        return elem;
-      });
-
-      const findLastExercise = this.selectedCourse.exercises.reduce((prev: CourseExerciseDTO, current: CourseExerciseDTO) => {
-        if (current.updatedAt) {
-          if (!prev || !prev.updatedAt) {
-            return current;
-          }
-          if (new Date(current.updatedAt) > new Date(prev.updatedAt)) {
-            return current;
-          }
-        }
-        return prev;
-      });
-      console.log('findLastExercise', findLastExercise);
-      const findIndex = this.selectedCourse.exercises.findIndex(el => el.name === findLastExercise.name);
-      if (!this.resumeCourse) {
-        this.exerciseIndex = findIndex;
-      } else {
-        if (!findLastExercise.completed) {
-          this.exerciseIndex = findIndex;
-        } else {
-          if (findIndex && findIndex + 1 <= this.selectedCourse.exercises.length - 1) {
-            this.exerciseIndex = findIndex + 1;
-          }
-        }
-      }
-
-      this.calculateProgress();
-      this.mapExercises();
-    } else {
-      this.getAllCategories();
-    }
-  }
 
   ngAfterViewInit(): void {
     if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR)) {
@@ -295,15 +209,120 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     console.log('destroy');
+    // Cleanup the DOM.
     if (this.divElement && this.divElement.hasChildNodes()) {
       this.exerciseElem.nativeElement.removeChild(this.divElement);
     }
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-    }
-    // this.destroyed.next(true);
+    this.destroyed.next(true);
   }
 
+  /**
+   * Get course progress.
+   */
+  courseProgress(): void {
+    if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
+      const coursesProgress = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
+      this.categories = coursesProgress;
+
+      this.setCurrentCategory();
+      this.setCurrentCourse();
+      this.setCurrentExercise();
+
+      this.calculateProgress();
+      this.mapExercises();
+    } else {
+      this.getAllCategories();
+    }
+  }
+
+  /**
+   * Set current category.
+   */
+  setCurrentCategory(): void {
+    const findLatestCategory = this.courseHelperService.getLatestCategory(this.categories);
+
+    if (!this.resumeCourse) {
+      this.currentCategory = findLatestCategory;
+    } else {
+      // Resume course. Check if the latest category is completed.
+      if (findLatestCategory.completed) {
+        // If it's completed, find the next category.
+        const findNextCat = this.categories.categories.find((cat: CategoriesDTO) => !cat.completed);
+        if (findNextCat) {
+          this.currentCategory = findNextCat;
+        } else {
+          // If all categories are completed, then start from the beginning.
+          this.currentCategory = this.categories.categories[0];
+        }
+      } else {
+        this.currentCategory = findLatestCategory;
+      }
+    }
+  }
+
+  /**
+   * Set current course.
+   */
+  setCurrentCourse(): void {
+    const findLatestCourse = this.courseHelperService.getLatestCourse(this.currentCategory);
+
+    if (!this.resumeCourse) {
+      this.selectedCourse = findLatestCourse;
+    } else {
+      // Resume course. Check if the latest category is completed.
+      if (findLatestCourse.completed) {
+        // If it's completed, find the next category.
+        const findNextCourse = this.currentCategory.courses.find(course => !course.completed);
+        if (findNextCourse) {
+          this.selectedCourse = findNextCourse;
+        } else {
+          // If all categories are completed, then start from the beginning.
+          this.selectedCourse = this.currentCategory.courses[0];
+        }
+      } else {
+        this.selectedCourse = findLatestCourse;
+      }
+    }
+
+    this.selectedCourse.results = this.selectedCourse.results ? this.selectedCourse.results : [];
+    this.selectedCourse.exercises = this.selectedCourse.exercises.map(el => {
+      const elem = el;
+      elem.results = el.results ? el.results : [];
+      return elem;
+    });
+  }
+
+  /**
+   * Set current exercise.
+   */
+  setCurrentExercise(): void {
+    const findLastExercise = this.courseHelperService.getLatestExercise(this.selectedCourse);
+
+    const findIndex = this.selectedCourse.exercises.findIndex(el => el.name === findLastExercise.name);
+    if (!this.resumeCourse) {
+      this.exerciseIndex = findIndex;
+    } else {
+      if (!findLastExercise.completed) {
+        this.exerciseIndex = findIndex;
+      } else {
+        if (findIndex && findIndex + 1 <= this.selectedCourse.exercises.length - 1) {
+          this.exerciseIndex = findIndex + 1;
+        }
+      }
+    }
+    this.selectedCourse.exercises = this.selectedCourse.exercises.map((el, index) => {
+      const elem = el;
+      elem.results = el.results ? el.results : [];
+      if (index >= this.exerciseIndex) {
+        elem.completed = false;
+      }
+      return elem;
+    });
+  }
+
+  /**
+   * Calculate course progress based on completed exercises.
+   */
   calculateProgress(): void {
     const completedExercises = this.selectedCourse.exercises.filter((exercise: CourseExerciseDTO) => exercise.completed);
     let index = completedExercises.length > 0 ? completedExercises.length : 0;
@@ -314,127 +333,121 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Listens for any changes regarding the text settings.
    */
   textSettingsChanges(): void {
-    this.settingsService.textSettingsAction.subscribe((textSettings: TextSettings) => {
-      if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_SIZE) {
-        // Set the font size.
-        this.textSetting['fontSize'] = textSettings.value + 'px';
-      } else if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_FAMILY) {
-        // Set the font family.
-        this.textSetting['fontFamily'] = textSettings.value;
-      } else if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_COLOR) {
-        // Set the background color of the text.
-        this.coloredText = textSettings.value;
-      } else if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT) {
-        // Set the layout display.
-        if (textSettings.value === 'top') {
-          this.keyboardTop = true;
-        } else {
-          this.keyboardTop = false;
-        }
-      } else if (textSettings.type === TEXT_SETTINGS_TYPE.READ_LETTER) {
-        if (textSettings.value !== 'none') {
-          if (textSettings.value === 'readLetterName') {
-            this.readTextOptions['readLetterName'] = true;
-            this.readTextOptions['readLetterSound'] = false;
+    this.settingsService.textSettingsAction
+      .pipe(takeUntil(this.destroyed)).subscribe((textSettings: TextSettings) => {
+        if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_SIZE) {
+          // Set the font size.
+          this.textSetting['fontSize'] = textSettings.value + 'px';
+        } else if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_FAMILY) {
+          // Set the font family.
+          this.textSetting['fontFamily'] = textSettings.value;
+        } else if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_COLOR) {
+          // Set the background color of the text.
+          this.coloredText = textSettings.value;
+        } else if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT) {
+          // Set the layout display.
+          if (textSettings.value === 'top') {
+            this.keyboardTop = true;
+          } else {
+            this.keyboardTop = false;
+          }
+        } else if (textSettings.type === TEXT_SETTINGS_TYPE.READ_LETTER) {
+          // Set read letter/sound option.
+          if (textSettings.value !== 'none') {
+            if (textSettings.value === 'readLetterName') {
+              this.readTextOptions['readLetterName'] = true;
+              this.readTextOptions['readLetterSound'] = false;
+            } else {
+              this.readTextOptions['readLetterName'] = false;
+              this.readTextOptions['readLetterSound'] = true;
+            }
           } else {
             this.readTextOptions['readLetterName'] = false;
-            this.readTextOptions['readLetterSound'] = true;
+            this.readTextOptions['readLetterSound'] = false;
           }
-        } else {
-          this.readTextOptions['readLetterName'] = false;
-          this.readTextOptions['readLetterSound'] = false;
+        } else if (textSettings.type === TEXT_SETTINGS_TYPE.READ_TEXT) {
+          // Set read word/sentence options.
+          const val: 'readWord' | 'readSentence' = textSettings.value as 'readWord' | 'readSentence';
+          this.readTextOptions[val] = !this.readTextOptions[val];
         }
-      } else if (textSettings.type === TEXT_SETTINGS_TYPE.READ_TEXT) {
-        const val: 'readWord' | 'readSentence' = textSettings.value as 'readWord' | 'readSentence';
-        this.readTextOptions[val] = !this.readTextOptions[val];
-      }
-      this.cdr.detectChanges();
-    });
+        this.cdr.detectChanges();
+      });
   }
 
+  /**
+   * Keydown event listener.
+   */
   keyDownListener(): void {
-    fromEvent(document, 'keydown').subscribe((event) => {
-      // console.log('event', event);
-      console.log('this.currentChar', this.currentChar);
-      const text = this.exercisesArr[this.exerciseIndex].lines[this.currentLineIndex].text.slice(0, this.currentLetterIndex + 1);
-      console.log('text', text);
-      console.log('aaa', this.exercisesArr[this.exerciseIndex], this.currentLineIndex, this.currentLetterIndex);
-      // if (this.vkeyboard) {
-      //   // Highlight key on keydown.
-      //   this.vkeyboard.highlightKey((event as KeyboardEvent).key);
-      // }
-
-      // console.log('this.readTextOptions', this.readTextOptions);
-      this.speechService.handleReading((event as KeyboardEvent).key, this.readTextOptions, 'mv_da_acl');
-      if (this.currentChar === (event as KeyboardEvent).key) {
-        let isSpace = false;
-        if ((event as KeyboardEvent).key === ' ') {
-          isSpace = true;
-          // Prevent auto scroll on space.
-          event.preventDefault();
-        }
-        this.markAsCompleted(isSpace);
-        console.log('+++++++++this.timeCounter', this.timeCounter);
-        if (this.timerSubscription === Subscription.EMPTY) {
-          this.timerSubscription = timer(0, 1000).subscribe(() => {
-            this.timeCounter++;
-          });
-        }
-        if (this.currentLetterIndex < this.lineLength - 1) {
-          this.currentLetterIndex++;
-          this.currentPosition();
+    fromEvent(document, 'keydown')
+      .pipe(takeUntil(this.destroyed)).subscribe((event) => {
+        console.log('==============', this.exerciseIndex, this.currentLineIndex, this.currentLetterIndex);
+        // Handle reading on keydown (read letter/sound/word/sentence).
+        this.speechService.handleReading((event as KeyboardEvent).key, this.readTextOptions, 'mv_da_acl');
+        if (this.currentChar === (event as KeyboardEvent).key) {
+          let isSpace = false;
+          if ((event as KeyboardEvent).key === ' ') {
+            isSpace = true;
+            // Prevent auto scroll on space.
+            event.preventDefault();
+          }
+          this.markAsCompleted(isSpace);
+          if (!this.startCount) {
+            this.startTime = new Date();
+            this.startCount = true;
+          }
+          // Update the current letter index.
+          this.updateCurrentPosition();
         } else {
-          if (this.currentLineIndex < this.exercisesArr[this.exerciseIndex].lines.length - 1) {
-            this.currentLineIndex++;
-            this.currentLetterIndex = 0;
-            this.currentPosition();
-          } else {
-            this.currentLetterIndex = 0;
-            this.currentLineIndex = 0;
-
-            const findIncompleteExercise = this.exercisesArr.find(exercise => exercise.index > this.exerciseIndex && !exercise.completed);
-            if (findIncompleteExercise) {
-              this.exerciseIndex = findIncompleteExercise.index;
-              this.currentPosition();
-              // Update the course progress when the user completes an exercise.
-              this.updateProgress(this.exerciseIndex - 1);
-            } else {
-              const findPrevIncompleteExercise = this.exercisesArr.find(exercise => !exercise.completed);
-              if (findPrevIncompleteExercise) {
-                this.exerciseIndex = findPrevIncompleteExercise.index;
-                this.currentPosition();
-                // Update the course progress when the user completes an exercise.
-                this.updateProgress(this.exerciseIndex - 1);
-              } else {
-                if (this.exerciseIndex === this.exercisesArr.length - 1) {
-                  // Update the course progress when the user completes all the exercises.
-                  this.updateProgress(this.exerciseIndex, true, true);
-                  // Show achievement screen.
-                  this.router.navigate(['/set-course']);
-                }
-              }
-            }
-            // console.log('findIncompleteExercise', findIncompleteExercise);
-            // if (this.exerciseIndex < this.exercisesArr.length - 1) {
-            //   this.exerciseIndex++;
-            //   this.currentPosition();
-            //   // Update the curse progress when the user completes an exercise.
-            //   this.updateProgress(this.exerciseIndex - 1);
-            // } else {
-            //   console.log('finished');
-            //   // Update the curse progress when the user completes an exercise.
-            //   this.updateProgress(this.exerciseIndex, true, true);
-            //   // Show achievement screen.
-            //   this.router.navigate(['/set-course']);
-            // }
+          if ((event as KeyboardEvent).key !== 'Shift') {
+            this.markAsMistake();
           }
         }
+      });
+  }
+
+  /**
+   * Update the letter/line/exercise index based on the current position.
+   */
+  updateCurrentPosition(): void {
+    if (this.currentLetterIndex < this.lineLength - 1) {
+      this.currentLetterIndex++;
+      this.currentPosition();
+    } else {
+      // Update the current line index.
+      if (this.currentLineIndex < this.exercisesArr[this.exerciseIndex].lines.length - 1) {
+        this.currentLineIndex++;
+        this.currentLetterIndex = 0;
+        this.currentPosition();
       } else {
-        if ((event as KeyboardEvent).key !== 'Shift') {
-          this.markAsMistake();
+        // Update the current exercise index.
+        this.currentLetterIndex = 0;
+        this.currentLineIndex = 0;
+        // Find next exercise.
+        const findNextIncompleteExercise = this.exercisesArr.find(exercise => exercise.index > this.exerciseIndex && !exercise.completed);
+        if (findNextIncompleteExercise) {
+          this.exerciseIndex = findNextIncompleteExercise.index;
+          this.currentPosition();
+          // Update the course progress when the user completes an exercise.
+          this.updateProgress(this.exerciseIndex - 1);
+        } else {
+          // Find previous exercise.
+          const findPrevIncompleteExercise = this.exercisesArr.find(exercise => !exercise.completed);
+          if (findPrevIncompleteExercise && (this.exerciseIndex !== this.exercisesArr.length - 1)) {
+            this.exerciseIndex = findPrevIncompleteExercise.index;
+            this.currentPosition();
+            // Update the course progress when the user completes an exercise.
+            this.updateProgress(this.exerciseIndex - 1);
+          } else {
+            if (this.exerciseIndex === this.exercisesArr.length - 1) {
+              // Update the course progress when the user completes all the exercises.
+              this.updateProgress(this.exerciseIndex, true, true);
+              // Show achievement screen.
+              this.router.navigate(['/set-course']);
+            }
+          }
         }
       }
-    });
+    }
   }
 
   /**
@@ -444,14 +457,11 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.currentLanguage in Courses) {
       const cat = Courses[this.currentLanguage];
       if (cat && cat.categories) {
-        // console.log('cat', cat);
         cat.categories[0].updatedAt = new Date();
         cat.categories[0].courses[0].updatedAt = new Date();
-        this.currentCategory = cat.categories[0];
         this.categories = cat;
-        // this.selectedCourse = cat.categories[cat.categories.length - 2].courses[cat.categories[cat.categories.length - 2].courses.length - 3];
-        // this.selectedCourse = cat.categories[cat.categories.length - 2].courses[cat.categories[cat.categories.length - 2].courses.length - 1];
-        this.selectedCourse = cat.categories[0].courses[0];
+        this.currentCategory = cat.categories[0];
+        this.selectedCourse = this.currentCategory.courses[0];
         this.selectedCourse.results = [];
         this.selectedCourse.exercises = this.selectedCourse.exercises.map(el => {
           const elem = el;
@@ -459,9 +469,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
           return elem;
         });
         localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.categories));
-        // this.selectedCourse = cat.categories[cat.categories.length - 1].courses[0];
-        // console.log('this.selectedCourse', this.selectedCourse);
-        // this.mapText();
         this.mapExercises();
       }
     }
@@ -471,21 +478,16 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Display the current position of the selected character.
    */
   currentPosition(): void {
-    const currentExercise = this.exercisesArr[this.exerciseIndex];
-    const currentLine = currentExercise.lines[this.currentLineIndex];
+    const currentLine = this.exercisesArr[this.exerciseIndex].lines[this.currentLineIndex];
     this.lineLength = currentLine.text.length;
     this.currentChar = currentLine.text[this.currentLetterIndex];
 
-    console.log('currentPosition', this.exerciseIndex, this.currentLineIndex, this.currentLetterIndex);
     this.showCurrentKeyComb(this.currentChar);
     const findHtmlElement = document.getElementsByClassName('exercise-' + this.exerciseIndex)[0];
-    console.log('findHtmlElement', findHtmlElement);
     if (findHtmlElement) {
       const findLineEl = findHtmlElement.getElementsByClassName('line-' + this.currentLineIndex)[0];
-      console.log('findLineEl', findLineEl);
       if (findLineEl) {
         const findSpanEl = findLineEl.getElementsByClassName('key-hld ' + this.currentLetterIndex)[0];
-        console.log('findSpanEl', findSpanEl);
         if (findSpanEl) {
           findSpanEl.classList.add('active');
           this.currentActiveElement = findSpanEl;
@@ -503,7 +505,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   showCurrentKeyComb(char: string): void {
     if (this.vkeyboard) {
-      // console.log(this.vkeyboard.getKeyDefinition(char));
       this.vkeyboard.highlightKey(char);
       this.cdr.detectChanges();
     }
@@ -515,7 +516,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param isSpace Tells if the current character is a space or not.
    */
   markAsCompleted(isSpace: boolean): void {
-    if (this.currentActiveElement) {
+    if (this.currentActiveElement && this.currentActiveElement.classList.contains('active')) {
       this.currentActiveElement.classList.remove('active');
       if (!isSpace) {
         // Add completed class (used to change the background for the completed character) to the current character (all chars except space).
@@ -528,18 +529,22 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Mark the current character as mistake and count the number of mistakes.
    */
   markAsMistake(): void {
-    // console.log('markAsMistake', this.currentActiveElement);
     this.nbrOfMistakes++;
-    if (this.currentActiveElement) {
+    if (this.currentActiveElement && !this.currentActiveElement.classList.contains('error')) {
       this.currentActiveElement.classList.add('error');
     }
-    // console.log('this.nbrOfMistakes', this.nbrOfMistakes);
   }
 
+  /**
+   * Go back method.
+   */
   goBack(): void {
     this.router.navigate(['/set-course']);
   }
 
+  /**
+   * Reset course method.
+   */
   resetCourse(): void {
     // console.log('this.selectedCourse', this.selectedCourse);
     this.exerciseIndex = 0;
@@ -548,19 +553,26 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.nbrOfMistakes = 0;
     this.currentProgress = 0;
     this.selectedCourse.results = [];
-
-    // console.log('this.currentProgress', this.currentProgress);
-    if (this.timerSubscription !== Subscription.EMPTY) {
-      this.timerSubscription.unsubscribe();
-      this.timerSubscription = Subscription.EMPTY;
-    }
-    this.timeCounter = 0;
+    this.startCount = false;
     // Remove all completed, error and active classes from the HTML elements.
     this.resetKeysClasses();
     // Reset the course progress.
     this.resetCourseProgress();
     // Update visuals for the current exercise.
     this.currentPosition();
+  }
+
+  /**
+   * Reset the keys classes (Remove all completed, error and active classes from the HTML elements).
+   */
+  resetKeysClasses(): void {
+    if (this.currentActiveElement) {
+      this.currentActiveElement.classList.remove('active');
+    }
+    const findAllCompletedElements = Array.from(document.getElementsByClassName('completed'));
+    findAllCompletedElements.forEach((element) => { element.classList.remove('completed'); });
+    const findAllElementsWithError = Array.from(document.getElementsByClassName('error'));
+    findAllElementsWithError.forEach((element) => { element.classList.remove('error'); });
   }
 
   /**
@@ -580,25 +592,11 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Reset the keys classes (Remove all completed, error and active classes from the HTML elements).
-   */
-  resetKeysClasses(): void {
-    if (this.currentActiveElement) {
-      this.currentActiveElement.classList.remove('active');
-    }
-    const findAllCompletedElements = Array.from(document.getElementsByClassName('completed'));
-    findAllCompletedElements.forEach((element) => { element.classList.remove('completed'); });
-    const findAllElementsWithError = Array.from(document.getElementsByClassName('error'));
-    findAllElementsWithError.forEach((element) => { element.classList.remove('error'); });
-  }
-
-  /**
    * Save the course progress in the localStorage and update the progress bar.
    *
    * @param isFinished Tells if the course is finished or not.
    */
   saveCourseProgress(isFinished = false): void {
-    console.log('---asjdh', this.selectedCourse, this.exerciseIndex, this.selectedCourse.exercises.length);
     if (isFinished) {
       let charsNbr = 0;
       let totalMistakes = 0;
@@ -621,7 +619,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.categories));
     }
     if (!isFinished) {
-      // this.currentProgress = (100 * this.exerciseIndex) / this.selectedCourse.exercises.length;
       this.calculateProgress();
     }
   }
@@ -642,19 +639,17 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedCourse.exercises[exerciseIndex].completed = true;
     this.selectedCourse.exercises[exerciseIndex].updatedAt = new Date();
 
+    this.exercisesArr[exerciseIndex].completed = true;
+
     this.selectedCourse.exercises[exerciseIndex].results.push({
       mistakes: this.nbrOfMistakes,
-      time: this.timeCounter,
+      time: new Date().getTime() - new Date(this.startTime).getTime(),
       characters: this.selectedCourse.exercises[exerciseIndex].text.length,
       updatedAt: new Date()
     });
     // Reset the exercise progress when going to the next exercise.
     this.nbrOfMistakes = 0;
-    if (this.timerSubscription !== Subscription.EMPTY) {
-      this.timerSubscription.unsubscribe();
-      this.timerSubscription = Subscription.EMPTY;
-    }
-    this.timeCounter = 0;
+    this.startCount = false;
     this.saveCourseProgress(isFinished);
   }
 
@@ -663,20 +658,16 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   mapExercises(): void {
     this.exercisesArr = [];
-    console.log('this.selectedCourse.exercises', this.selectedCourse.exercises);
-    const findExercise = this.selectedCourse.exercises.find(el => !el.completed);
-    const shouldRemoveCompleted = findExercise ? false : true;
     for (let i = 0; i < this.selectedCourse.exercises.length; i++) {
       const exercise: ExerciseDTO = {
         name: this.selectedCourse.exercises[i].name,
         index: i,
         lines: [],
-        completed: !shouldRemoveCompleted && this.selectedCourse.exercises[i].completed ? this.selectedCourse.exercises[i].completed : false,
+        completed: this.selectedCourse.exercises[i].completed ? this.selectedCourse.exercises[i].completed : false,
       }
       exercise.lines = this.mapExerciseText(this.selectedCourse.exercises[i].text);
       this.exercisesArr.push(exercise);
     }
-
   }
 
   /**

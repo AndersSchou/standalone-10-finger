@@ -27,6 +27,8 @@ import { VKeyboardComponent } from './vkeyboard/vkeyboard.component';
 import { SettingsService } from './services/settings.service';
 import { VoiceService } from './services/api/voice.service';
 import { SpeechService } from './services/speech.service';
+import { CourseHelperService } from './services/course-helper.service';
+import { UserService } from './services/api/user.service';
 
 
 // TranslateHttpLoader is used to load the translations automatically.
@@ -77,6 +79,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SettingsService,
     VoiceService,
     SpeechService,
+    UserService,
+    CourseHelperService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,

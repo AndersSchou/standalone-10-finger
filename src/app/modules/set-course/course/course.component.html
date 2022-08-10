@@ -1,9 +1,9 @@
 <div class="courses-page">
   <div class="course-progress">
     <div class="exercise-progress">
-      <div class="progress" [ngStyle]="{'width': courseVal.progress}"></div>
+      <div class="progress" [ngStyle]="{'width': courseVal.progress + '%'}"></div>
     </div>
-    <div class="txt-hld">{{courseVal.progress}} {{ "translateComplete" | translate}}</div>
+    <div class="txt-hld">{{courseVal.progress | number: '1.0-2'}}% {{ "translateComplete" | translate}}</div>
   </div>
   <div class="divider"></div>
   <div>

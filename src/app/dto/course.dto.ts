@@ -12,7 +12,7 @@ export interface CategoriesDTO {
   name: string;
   courses: CourseDTO[];
   completed?: boolean;
-  progress?: string;
+  progress?: number;
   selected?: boolean;
   updatedAt?: Date;
 }
@@ -36,13 +36,15 @@ export interface CourseExerciseDTO {
   name: string;
   text: string;
   completed?: boolean;
-  progress?: string;
+  progress?: number;
   results: CourseResultDTO[];
   updatedAt?: Date;
 }
 
 export interface CourseResultDTO {
   mistakes: number;
+  start?: Date;
+  end?: Date;
   time: number;
   characters: number;
   lastIndex?: number;

@@ -1,5 +1,7 @@
+import { WhoAmIResponseDTO } from './dto/whoami.dto';
 import { Component, OnInit } from '@angular/core';
 import { APP_ICONS } from './common/constants';
+import { UserService } from './services/api/user.service';
 import { CustomIconService } from './services/custom-icon.service';
 import { LanguageHelperService } from './services/language.service';
 
@@ -20,6 +22,7 @@ export class AppComponent implements OnInit {
   constructor(
     private readonly customIconService: CustomIconService,
     private readonly languageHelperService: LanguageHelperService,
+    private readonly userService: UserService,
   ) { }
 
   /**
@@ -27,6 +30,13 @@ export class AppComponent implements OnInit {
    */
   ngOnInit(): void {
     this.getAllSvgs();
+    // this.getUserLanguage();
+  }
+
+  getUserLanguage(): void {
+    this.userService.getUserInfo().subscribe((user: WhoAmIResponseDTO) => {
+      console.log('user', user);
+    });
   }
 
   /**
