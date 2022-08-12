@@ -582,6 +582,11 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.currentProgress = 0;
     this.selectedCourse.results = [];
     this.startCount = false;
+    this.exercisesArr = this.exercisesArr.map(el => {
+      const elem = el;
+      elem.completed = false;
+      return elem;
+    });
     // Remove all completed, error and active classes from the HTML elements.
     this.resetKeysClasses();
     // Reset the course progress.
