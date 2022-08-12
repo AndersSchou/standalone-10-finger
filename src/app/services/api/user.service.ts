@@ -42,4 +42,22 @@ export class UserService extends BaseService<WhoAmIResponseDTO> {
       })
     );
   }
+
+  /**
+   * Converts two letter region code to the language-region code format used on MV profiles.
+   *
+   * @param regionCode Represents the selected profile/language.
+   *
+   * @return The voice for the selected profile/language.
+   */
+  convertRegionToLanguageIdentifier(regionCode: string): string {
+    switch (regionCode) {
+      case 'SE':
+        return 'sv-SE';
+      case 'NO':
+        return 'nb-NO';
+      default:
+        return 'da-DK';
+    }
+  }
 }

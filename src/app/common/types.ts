@@ -6,7 +6,7 @@ export type KEYBOARD_LAYOUT_GROUP_TYPE = 'full' | 'partial' | 'minimal';
 
 // export type KEYBOARD_LAYOUT_MODE_TYPE = 'full' | 'partial' | 'minimal' | 'numbers' | 'no-numbers';
 
-export type KEYBOARD_LANGUAGE = 'da' | 'sv' | 'nn' | 'nb' | 'ro';
+export type KEYBOARD_LANGUAGE = 'da' | 'sv' | 'nn' | 'nb';
 
 export type TextSettings =
   | TextSettingsColor

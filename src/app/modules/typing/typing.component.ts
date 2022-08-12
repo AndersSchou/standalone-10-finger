@@ -5,7 +5,7 @@ import { colorsMap, REGEX_FOR_LETTERS_WITH_DIACRITICS_AND_NBR, REGEX_WITH_DIACRI
 import { Color, STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE, TextSettings } from 'src/app/common/types';
 import { Courses } from 'src/app/courses';
-import { CategoriesDTO, CourseDTO, CourseExerciseDTO, CourseResponseDTO } from 'src/app/dto/course.dto';
+import { CategoriesDTO, CourseDTO, CourseExerciseDTO, CourseResponseDTO, StoredCourseResponseDTO } from 'src/app/dto/course.dto';
 import { KeyboardSettingsDTO } from 'src/app/dto/settings.dto';
 import { ReadOptionsDTO } from 'src/app/dto/speak.dto';
 import { TranslationsDTO } from 'src/app/dto/translation.dto';
@@ -49,9 +49,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   // Stores the current(active) category.
   currentCategory: CategoriesDTO = {} as CategoriesDTO;
   // Stores the current language.
-  currentLanguage = 'da';
+  currentLanguage: string = '';
   // Stores the DOM element.
-  divElement = document.createElement('div');
+  divElement: any;
   // Stores the exercises array with all the needed data for creating/updating the HTML elements.
   exercisesArr: ExerciseDTO[] = [];
   // Tells if it should show the settings view or not.
@@ -86,6 +86,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   readTextOptions: ReadOptionsDTO = { readLetterName: false, readLetterSound: false, readWord: false, readSentence: false };
   // Tells if it should resume course or not.
   resumeCourse: boolean = false;
+  storedData: StoredCourseResponseDTO[] = [];
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
@@ -99,6 +100,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly courseHelperService: CourseHelperService,
   ) {
     this.setInitialTextSettings();
+
+    this.currentLanguage = this.languageHelperService.currentLangUsed;
+    this.setLanguage();
   }
 
   /**
@@ -169,12 +173,17 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setMode(mode);
       });
 
+    if (this.currentLanguage.length > 0) {
+      this.courseProgress();
+    }
+
     // Listens for any changes regarding the current used language.
     this.languageHelperService.OnLanguageChanged.pipe(
       takeUntil(this.destroyed)
     ).subscribe((trans: TranslationsDTO) => {
       this.currentLanguage = this.languageHelperService.currentLangUsed;
-      this.setLanguage(this.currentLanguage.split('-')[0]);
+      this.setLanguage();
+      this.courseProgress();
     });
 
     // Listens for any changes regarding the text settings.
@@ -182,8 +191,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Listens for keydown events.
     this.keyDownListener();
-
-    this.courseProgress();
   }
 
 
@@ -221,15 +228,20 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   courseProgress(): void {
     if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
-      const coursesProgress = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
-      this.categories = coursesProgress;
+      this.storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
+      const findData = this.storedData.find((el: StoredCourseResponseDTO) => el.language === this.currentLanguage.split('-')[0]);
+      if (findData) {
+        this.categories = findData.data;
 
-      this.setCurrentCategory();
-      this.setCurrentCourse();
-      this.setCurrentExercise();
+        this.setCurrentCategory();
+        this.setCurrentCourse();
+        this.setCurrentExercise();
 
-      this.calculateProgress();
-      this.mapExercises();
+        this.calculateProgress();
+        this.mapExercises();
+      } else {
+        this.getAllCategories();
+      }
     } else {
       this.getAllCategories();
     }
@@ -380,7 +392,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   keyDownListener(): void {
     fromEvent(document, 'keydown')
       .pipe(takeUntil(this.destroyed)).subscribe((event) => {
-        console.log('==============', this.exerciseIndex, this.currentLineIndex, this.currentLetterIndex);
         // Handle reading on keydown (read letter/sound/word/sentence).
         this.speechService.handleReading((event as KeyboardEvent).key, this.readTextOptions, 'mv_da_acl');
         if (this.currentChar === (event as KeyboardEvent).key) {
@@ -432,18 +443,16 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           // Find previous exercise.
           const findPrevIncompleteExercise = this.exercisesArr.find(exercise => !exercise.completed);
-          if (findPrevIncompleteExercise && (this.exerciseIndex !== this.exercisesArr.length - 1)) {
+          if (findPrevIncompleteExercise && findPrevIncompleteExercise.index !== this.exerciseIndex) {
+            // Update the course progress when the user completes an exercise.
+            this.updateProgress(this.exerciseIndex);
             this.exerciseIndex = findPrevIncompleteExercise.index;
             this.currentPosition();
-            // Update the course progress when the user completes an exercise.
-            this.updateProgress(this.exerciseIndex - 1);
           } else {
-            if (this.exerciseIndex === this.exercisesArr.length - 1) {
-              // Update the course progress when the user completes all the exercises.
-              this.updateProgress(this.exerciseIndex, true, true);
-              // Show achievement screen.
-              this.router.navigate(['/set-course']);
-            }
+            // Update the course progress when the user completes all the exercises.
+            this.updateProgress(this.exerciseIndex, true);
+            // Show achievement screen.
+            this.router.navigate(['/set-course']);
           }
         }
       }
@@ -454,11 +463,14 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Get all categories for the current language.
    */
   getAllCategories(): void {
-    if (this.currentLanguage in Courses) {
-      const cat = Courses[this.currentLanguage];
+    this.categories = {} as CourseResponseDTO;
+    const courseLang = this.currentLanguage.split('-')[0];
+    if (courseLang in Courses) {
+      const cat = Courses[courseLang];
       if (cat && cat.categories) {
         cat.categories[0].updatedAt = new Date();
         cat.categories[0].courses[0].updatedAt = new Date();
+
         this.categories = cat;
         this.currentCategory = cat.categories[0];
         this.selectedCourse = this.currentCategory.courses[0];
@@ -468,8 +480,25 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
           elem.results = [];
           return elem;
         });
-        localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.categories));
+
+        const storeData: StoredCourseResponseDTO = {
+          language: courseLang, data: this.categories
+        };
+        this.storedData.push(storeData);
+        localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.storedData));
         this.mapExercises();
+      } else {
+        this.categories = {} as CourseResponseDTO;
+        this.currentCategory = {} as CategoriesDTO;
+        this.selectedCourse = {
+          name: '',
+          exercises: [],
+          results: []
+        };
+        // Clean up the DOM.
+        if (this.exerciseElem.nativeElement && this.divElement && this.divElement.hasChildNodes()) {
+          this.divElement.remove();
+        }
       }
     }
   }
@@ -546,7 +575,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Reset course method.
    */
   resetCourse(): void {
-    // console.log('this.selectedCourse', this.selectedCourse);
     this.exerciseIndex = 0;
     this.currentLineIndex = 0;
     this.currentLetterIndex = 0;
@@ -613,11 +641,23 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         updatedAt: new Date()
       });
     }
-    const findCat = this.categories.categories.find(el => el.name === this.currentCategory.name);
-    if (findCat) {
-      findCat.updatedAt = new Date();
-      localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.categories));
+
+    // Update course progress in local storage.
+    const findItem = this.storedData.find(el => el.language === this.currentLanguage.split('-')[0]);
+    if (findItem) {
+      const findCat = findItem.data.categories.find(el => el.name === this.currentCategory.name);
+      if (findCat) {
+        findCat.updatedAt = new Date();
+        if (isFinished) {
+          const findIncompleteCourse = findCat.courses.find(el => !el.completed);
+          if (!findIncompleteCourse) {
+            findCat.completed = true;
+          }
+        }
+        localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.storedData));
+      }
     }
+
     if (!isFinished) {
       this.calculateProgress();
     }
@@ -627,11 +667,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Update exercise progress.
    *
    * @param exerciseIndex Represents the current exercise index.
-   * @param isCompleted Tells if the current exercise is completed or not.
-   * @param isFinished Tells if the current course is finished or not.
+   * @param isCompleted Tells if the current course is completed or not.
    */
-  updateProgress(exerciseIndex: number, isCompleted = false, isFinished = false): void {
-    console.log('this.course', this.selectedCourse);
+  updateProgress(exerciseIndex: number, isCompleted = false): void {
     this.selectedCourse.updatedAt = new Date();
     if (isCompleted) {
       this.selectedCourse.completed = true;
@@ -650,7 +688,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     // Reset the exercise progress when going to the next exercise.
     this.nbrOfMistakes = 0;
     this.startCount = false;
-    this.saveCourseProgress(isFinished);
+    this.saveCourseProgress(isCompleted);
   }
 
   /**
@@ -658,15 +696,21 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   mapExercises(): void {
     this.exercisesArr = [];
-    for (let i = 0; i < this.selectedCourse.exercises.length; i++) {
-      const exercise: ExerciseDTO = {
-        name: this.selectedCourse.exercises[i].name,
-        index: i,
-        lines: [],
-        completed: this.selectedCourse.exercises[i].completed ? this.selectedCourse.exercises[i].completed : false,
+    if (this.selectedCourse && this.selectedCourse.exercises.length > 0) {
+      for (let i = 0; i < this.selectedCourse.exercises.length; i++) {
+        const exercise: ExerciseDTO = {
+          name: this.selectedCourse.exercises[i].name,
+          index: i,
+          lines: [],
+          completed: this.selectedCourse.exercises[i].completed ? this.selectedCourse.exercises[i].completed : false,
+        }
+        exercise.lines = this.mapExerciseText(this.selectedCourse.exercises[i].text);
+        this.exercisesArr.push(exercise);
       }
-      exercise.lines = this.mapExerciseText(this.selectedCourse.exercises[i].text);
-      this.exercisesArr.push(exercise);
+      if (this.exerciseElem.nativeElement) {
+        this.toHTML();
+        this.currentPosition();
+      }
     }
   }
 
@@ -699,66 +743,66 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Create the HTML elements based on the current course.
    */
   toHTML(): void {
-    // console.log('this.exerciseElem.nativeElement', this.exerciseElem.nativeElement);
-    console.log('this.exercisesArr', this.exercisesArr);
-    console.log('this.resumeCourse', this.resumeCourse);
-    for (const elem of this.exercisesArr) {
-      const mainDiv = document.createElement('div');
-      mainDiv.classList.add('exercise-' + elem.index);
+    this.exerciseElem.nativeElement.innerHTML = '';
+    if (this.exercisesArr.length > 0) {
+      this.divElement = document.createElement('div');
+      for (const elem of this.exercisesArr) {
+        const mainDiv = document.createElement('div');
+        mainDiv.classList.add('exercise-' + elem.index);
 
-      for (const line of elem.lines) {
-        const mainHldDiv = document.createElement('div');
-        mainHldDiv.classList.add('exercise-hld');
+        for (const line of elem.lines) {
+          const mainHldDiv = document.createElement('div');
+          mainHldDiv.classList.add('exercise-hld');
 
-        const lineElement = document.createElement('div');
-        const className = ['line', 'line-' + line.index];
-        lineElement.classList.add(...className);
-        let groupLetterElement;
+          const lineElement = document.createElement('div');
+          const className = ['line', 'line-' + line.index];
+          lineElement.classList.add(...className);
+          let groupLetterElement;
 
-        for (let i = 0; i < line.text.length; i++) {
-          const letterElement = document.createElement('span');
-          let keyClass = 'none';
-          const findKey = this.getKeyColor(line.text[i]);
-          if (findKey) {
-            keyClass = 'color' + findKey;
+          for (let i = 0; i < line.text.length; i++) {
+            const letterElement = document.createElement('span');
+            let keyClass = 'none';
+            const findKey = this.getKeyColor(line.text[i]);
+            if (findKey) {
+              keyClass = 'color' + findKey;
+            }
+            const completedClass = (elem.completed && line.text[i] !== ' ') ? 'completed' : 'none';
+            const keyDefaultClass = ['key-hld', i.toString(), keyClass, completedClass];
+            letterElement.classList.add(...keyDefaultClass);
+            letterElement.innerText = line.text[i];
+            if (groupLetterElement && !line.text[i].match(REGEX_WITH_DIACRITICS)) {
+              // Group letters of a word in a single span element (used for not breaking the words into new lines).
+              groupLetterElement.appendChild(letterElement);
+              lineElement.appendChild(groupLetterElement);
+            } else {
+              lineElement.appendChild(letterElement);
+            }
+
+            if (line.text[i].match(REGEX_WITH_DIACRITICS)) {
+              groupLetterElement = document.createElement('div');
+              groupLetterElement.classList.add('group-letter');
+            }
           }
-          const completedClass = (elem.completed && line.text[i] !== ' ') ? 'completed' : 'none';
-          const keyDefaultClass = ['key-hld', i.toString(), keyClass, completedClass];
-          letterElement.classList.add(...keyDefaultClass);
-          letterElement.innerText = line.text[i];
-          if (groupLetterElement && !line.text[i].match(REGEX_WITH_DIACRITICS)) {
-            // Group letters of a word in a single span element (used for not breaking the words into new lines).
-            groupLetterElement.appendChild(letterElement);
-            lineElement.appendChild(groupLetterElement);
-          } else {
-            lineElement.appendChild(letterElement);
-          }
 
-          if (line.text[i].match(REGEX_WITH_DIACRITICS)) {
-            groupLetterElement = document.createElement('div');
-            groupLetterElement.classList.add('group-letter');
-          }
+          // Add icon element to the line.
+          const iconElem = document.createElement('div');
+          const iconClassName = ['icon-hld', 'exercise-' + elem.index, line.index.toString()];
+          iconElem.classList.add(...iconClassName);
+          // Add the line to the main div.
+          mainHldDiv.appendChild(iconElem);
+          // Add on click event to each icon.
+          this.onClick(iconElem, elem);
+          mainHldDiv.appendChild(lineElement);
+          mainDiv.appendChild(mainHldDiv);
         }
-
-        // Add icon element to the line.
-        const iconElem = document.createElement('div');
-        const iconClassName = ['icon-hld', 'exercise-' + elem.index, line.index.toString()];
-        iconElem.classList.add(...iconClassName);
-        // Add the line to the main div.
-        mainHldDiv.appendChild(iconElem);
-        // Add on click event to each icon.
-        this.onClick(iconElem, elem);
-        mainHldDiv.appendChild(lineElement);
-        mainDiv.appendChild(mainHldDiv);
+        const underlineDiv = document.createElement('div');
+        const dividerClass = ['divider', 'mtb-18'];
+        underlineDiv.classList.add(...dividerClass);
+        this.divElement.appendChild(mainDiv);
+        this.divElement.appendChild(underlineDiv);
       }
-      const underlineDiv = document.createElement('div');
-      const dividerClass = ['divider', 'mtb-18'];
-      underlineDiv.classList.add(...dividerClass);
-      this.divElement.appendChild(mainDiv);
-      this.divElement.appendChild(underlineDiv);
+      this.exerciseElem.nativeElement.appendChild(this.divElement);
     }
-    this.exerciseElem.nativeElement.appendChild(this.divElement);
-    console.log('---', this.divElement);
   }
 
   /**
@@ -791,12 +835,11 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Set the language of the keyboard.
-   *
-   * @param lan Represents the selected language.
    */
-  setLanguage(lan: string) {
+  setLanguage() {
     if (this.vkeyboard) {
-      this.vkeyboard.setLanguage(lan as KEYBOARD_LANGUAGE);
+      const lang = this.currentLanguage.split('-')[0];
+      this.vkeyboard.setLanguage(lang as KEYBOARD_LANGUAGE);
     }
   }
 

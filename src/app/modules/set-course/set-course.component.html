@@ -16,8 +16,11 @@
       <div class="divider"></div>
     </div>
     <div fxFlex>
-      <app-modules-set-course-course [course]="currentCategory" [categories]="categories">
+      <app-modules-set-course-course [currentLanguage]="currentLanguage" [categories]="categories"
+        [course]="currentCategory">
       </app-modules-set-course-course>
     </div>
+  </div>
+  <div *ngIf="categories.length===0" class="center-content">There are no categories for {{currentLanguage | translate}}.
   </div>
 </div>

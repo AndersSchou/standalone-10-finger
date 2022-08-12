@@ -5,6 +5,11 @@ export interface CourseResponseDTO {
   categories: CategoriesDTO[];
 }
 
+export interface StoredCourseResponseDTO {
+  language: string;
+  data: CourseResponseDTO;
+}
+
 /**
  * Categories interface.
  */

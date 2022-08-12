@@ -5,25 +5,6 @@ export const da = {
       "name": "Læs og skriv",
       "courses": [
         {
-          "name": "Testl 1",
-          "exercises": [
-            {
-              "name": "Øvelse 1",
-              "text": "fdsa asdf"
-            },
-            {
-              "name": "Øvelse 2",
-              // "text": "jklæ ælkj"
-              "text": "jklae aelkj"
-            },
-            {
-              "name": "Øvelse 3",
-              // "text": "jfkdlsæa"
-              "text": "jfkdlsaea"
-            },
-          ],
-        },
-        {
           "name": "Level 1",
           "exercises": [
             {
@@ -32,13 +13,11 @@ export const da = {
             },
             {
               "name": "Øvelse 2",
-              // "text": "jklæ ælkj"
-              "text": "jklae aelkj"
+              "text": "jklæ ælkj"
             },
             {
               "name": "Øvelse 3",
-              // "text": "jfkdlsæa"
-              "text": "jfkdlsaea"
+              "text": "jfkdlsæa"
             },
             {
               "name": "Øvelse 4",
@@ -58,18 +37,15 @@ export const da = {
             },
             {
               "name": "Øvelse 8",
-              // "text": "la læ"
-              "text": "la lae"
+              "text": "la læ"
             },
             {
               "name": "Øvelse 9",
-              // "text": "læ fæ"
-              "text": "lae fae"
+              "text": "læ fæ"
             },
             {
               "name": "Øvelse 10",
-              // "text": "fæ sæ"
-              "text": "fae sae"
+              "text": "fæ sæ"
             },
             {
               "name": "Rimord 1",
@@ -1234,28 +1210,23 @@ export const da = {
           "exercises": [
             {
               "name": "Øvelse 1",
-              // "text": "Bølle-Bob møder Leslie på gaden.- Hej, siger Leslie.- Vil du med ned til Valde?"
-              "text": "Bolle-Bob moder Leslie pa gaden.- Hej, siger Leslie.- Vil du med ned til Valde?"
+              "text": "Bølle-Bob møder Leslie på gaden.- Hej, siger Leslie.- Vil du med ned til Valde?"
             },
             {
               "name": "Øvelse 2",
-              // "text": "Valde Underbid bor i en gammel vogn på byens losse-plads.Her kommer alle byens unge.Især Leslie. "
-              "text": "Valde Underbid bor i en gammel vogn pa byens losse-plads.Her kommer alle byens unge.Isaer Leslie. "
+              "text": "Valde Underbid bor i en gammel vogn på byens losse-plads.Her kommer alle byens unge.Især Leslie. "
             },
             {
               "name": "Øvelse 3",
-              // "text": "- Jeg kender ikke andre end Valde her i byen, siger Leslie.- Og så dig."
-              "text": "- Jeg kender ikke andre end Valde her i byen, siger Leslie.- Og sa dig."
+              "text": "- Jeg kender ikke andre end Valde her i byen, siger Leslie.- Og så dig."
             },
             {
               "name": "Øvelse 4",
-              // "text": "Du er jo lige flyttet til byen. Det tager lidt tid at få venner. Kom! De går sammen hen ad gaden.Så ser Bølle-Bob to rockere."
-              "text": "Du er jo lige flyttet til byen. Det tager lidt tid at fa venner. Kom! De gar sammen hen ad gaden.Sa ser Bolle-Bob to rockere."
+              "text": "Du er jo lige flyttet til byen. Det tager lidt tid at få venner. Kom! De går sammen hen ad gaden.Så ser Bølle-Bob to rockere."
             },
             {
               "name": "Øvelse 5",
-              // "text": "- Se der! siger han.De kommer gående lige imod dem.- Jeg har da aldrig set rockere før i vores by, siger Bølle-Bob.Men det er du vel vant til?"
-              "text": "- Se der! siger han.De kommer gaende lige imod dem.- Jeg har da aldrig set rockere for i vores by, siger Bolle-Bob.Men det er du vel vant til?"
+              "text": "- Se der! siger han.De kommer gående lige imod dem.- Jeg har da aldrig set rockere før i vores by, siger Bølle-Bob.Men det er du vel vant til?"
             }
           ]
         }
@@ -1269,7 +1240,7 @@ export const da = {
           "exercises": [
             {
               "name": "Øvelse 1",
-              "text": "Det1 var en sen aften, og den gamle konge var ved at gå i seng."
+              "text": "Det var en sen aften, og den gamle konge var ved at gå i seng."
             },
             {
               "name": "Øvelse 2",

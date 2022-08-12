@@ -113,7 +113,7 @@ export class SpeechService {
   }
 
   handleReading(character: string, readOptions: ReadOptionsDTO, voiceID: string): void {
-    console.log('handleReading', character, readOptions);
+    // console.log('handleReading', character, readOptions);
     if (character && character.length === 1) {
       // Read letter name + sound only if the character is a letter.
       if (character.match(REGEX_FOR_LETTERS_WITH_DIACRITICS)) {

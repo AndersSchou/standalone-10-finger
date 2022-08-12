@@ -170,6 +170,17 @@ $theme2-row3-color-group5-list: 8;
 
 .simple-key-color-pressed {
   background-color: $simple-key-color-pressed;
+  animation: blinkingBackground 1s infinite;
+}
+
+@keyframes blinkingBackground {
+  0% {
+    background-color: $simple-key-color-pressed;
+  }
+
+  100% {
+    background-color: $simple-key-color;
+  }
 }
 
 .simple-key-color {
@@ -182,6 +193,19 @@ $theme2-row3-color-group5-list: 8;
 
 @mixin get-from-group-color-pressed-list($index) {
   background-color: nth($group-color-pressed-list, $index);
+  animation: blinkingBackgroundMulti#{$index} 1s infinite;
+}
+
+@for $rowIdx from 1 through 5 {
+  @keyframes blinkingBackgroundMulti#{$rowIdx} {
+    0% {
+      background-color: nth($group-color-pressed-list, $rowIdx);
+    }
+
+    100% {
+      background-color: nth($group-color-list, $rowIdx);
+    }
+  }
 }
 
 @for $groupIdx from 1 through 5 {

@@ -51,12 +51,21 @@ export class LanguageHelperService {
     // Add languages to the translations array.
     this.translateService.addLangs(this.availableLanguages);
 
-    /**
+    const userSavedLang = window.localStorage.getItem(STORAGE_KEY_TYPE.CURRENT_LANGUAGE);
+
+    // Checks if the user language was saved locally.
+    if (userSavedLang) {
+      this.setLanguage(userSavedLang);
+    } else {
+      /**
      * The first language from the available languages array will be used as a fallback when a translation isn't found
      * into the current language.
      */
-    this.translateService.setDefaultLang(this.availableLanguages[0]);
-    this.translateService.use(this.availableLanguages[0]);
+      this.translateService.setDefaultLang(this.availableLanguages[0]);
+      this.translateService.use(this.availableLanguages[0]);
+    }
+
+
     // TODO: Set the language based on the user region language.
   }
 

@@ -1,7 +1,7 @@
 <app-shared-top-menu></app-shared-top-menu>
 <app-shared-settings *ngIf="viewSettings"></app-shared-settings>
 <div class="main-content-hld typing-view">
-  <div class="typing-header">
+  <div class="typing-header" *ngIf="categories && categories.categories">
     <div class="page-padd">
       <div fxLayout="row wrap" fxLayoutGap="20px" class="header-content">
         <div class="left-header" fxFlex>
@@ -9,7 +9,9 @@
             <mat-icon svgIcon="chevron_left" class="mr-10"></mat-icon>
             Back
           </div>
-          <div class="course-title">{{currentCategory.name}} - {{selectedCourse.name}}</div>
+          <div class="course-title">
+            {{currentCategory.name}} - {{selectedCourse.name}}
+          </div>
         </div>
         <div class="right-header" fxFlex="nogrow">
           <div class="course-det-hld">{{selectedCourse.exercises[exerciseIndex].name}}</div>

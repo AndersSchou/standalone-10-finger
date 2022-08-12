@@ -2,14 +2,14 @@
 export const nb = {
   "categories": [
     {
-      "name": "Læs og skriv",
+      "name": "NB Læs og skriv",
       "courses": [
         {
-          "name": "Testl 1",
+          "name": "NB Testl 1",
           "exercises": [
             {
               "name": "Øvelse 1",
-              "text": "fdsa asdf"
+              "text": "nb fdsa asdf"
             },
             {
               "name": "Øvelse 2",

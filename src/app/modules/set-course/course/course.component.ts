@@ -1,8 +1,8 @@
 import { CourseHelperService } from 'src/app/services/course-helper.service';
-import { Component, Input, Output } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { Router } from "@angular/router";
 import { STORAGE_KEY_TYPE } from "src/app/common/enums";
-import { CategoriesDTO, CourseDTO, CourseExerciseDTO } from "src/app/dto/course.dto";
+import { CategoriesDTO, CourseDTO, CourseExerciseDTO, StoredCourseResponseDTO } from "src/app/dto/course.dto";
 
 /**
  * This component holds the logic for displaying course exercises.
@@ -13,6 +13,7 @@ import { CategoriesDTO, CourseDTO, CourseExerciseDTO } from "src/app/dto/course.
   styleUrls: ['./course.component.scss']
 })
 export class AppSetCourseCourseComponent {
+  @Input() currentLanguage: string = '';
   @Input()
   set course(cat: CategoriesDTO) {
     if (cat) {
@@ -21,7 +22,7 @@ export class AppSetCourseCourseComponent {
 
       setTimeout(() => {
         this.scrollToExercise();
-      }, 500);
+      }, 250);
     }
   }
   @Input() categories: CategoriesDTO[] = [];
@@ -41,7 +42,6 @@ export class AppSetCourseCourseComponent {
 
   findLatestCourse(cat: CategoriesDTO): void {
     const findLatestCourse = this.courseHelperService.getLatestCourse(cat);
-    console.log('findLatestCourse', findLatestCourse);
 
     let currentCourse = findLatestCourse;
     const findIndex = cat.courses.findIndex((el: CourseDTO) => el.name === findLatestCourse.name);
@@ -50,15 +50,12 @@ export class AppSetCourseCourseComponent {
       if (findIndex && ((findIndex + 1) <= cat.courses.length - 1)) {
         currentCourse = cat.courses[findIndex + 1];
         this.activeCourseIndex = findIndex + 1;
-        console.log('----');
       } else {
         currentCourse = cat.courses[0];
         this.activeCourseIndex = 0;
       }
     }
-    console.log('currentCourse', currentCourse);
     this.findLatestExercise(currentCourse);
-
   }
 
   findLatestExercise(course: CourseDTO): void {
@@ -75,7 +72,6 @@ export class AppSetCourseCourseComponent {
         }
       }
     }
-    console.log('findLastExercise', findLastExercise);
   }
 
   scrollToExercise(): void {
@@ -95,7 +91,27 @@ export class AppSetCourseCourseComponent {
       findCat.courses[courseIndex].updatedAt = new Date();
       findCat.courses[courseIndex].exercises[exerciseIndex].updatedAt = new Date();
     }
-    localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify({ categories: this.categories }));
+
+    const lang = this.currentLanguage.split('-')[0];
+    if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
+      const allCats = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
+      const findLangCategories = allCats.find((el: StoredCourseResponseDTO) => el.language === lang);
+      if (findLangCategories) {
+        findLangCategories.data = { categories: this.categories };
+      } else {
+        allCats.push({
+          language: lang,
+          data: { categories: this.categories }
+        });
+      }
+      localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(allCats));
+    } else {
+      const storedData = [{
+        language: lang,
+        data: { categories: this.categories }
+      }];
+      localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(storedData));
+    }
     setTimeout(() => {
       this.router.navigate(['/type']);
     }, 500);

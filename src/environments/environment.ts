@@ -5,7 +5,7 @@ import { NgxLoggerLevel } from 'ngx-logger';
 export const environment = {
   name: 'test',
   production: false,
-  availableLanguages: ['da-DK', 'nn-NO', 'sv-SE', 'nb-NO'],
+  availableLanguages: ['da-DK', 'nn-NO', 'nb-NO', 'sv-SE'],
   logLevel: NgxLoggerLevel.DEBUG,
   location: 'http://localhost:4200/',
   UrlEndpoints: {

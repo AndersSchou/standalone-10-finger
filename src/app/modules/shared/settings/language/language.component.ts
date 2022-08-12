@@ -12,12 +12,13 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./language.component.scss']
 })
 export class AppSharedSettingsLanguageComponent {
-  availablelanguages: KeyboardSettingsDTO[] = [];
+  availableLanguages: KeyboardSettingsDTO[] = [];
+  currentLanguage: string;
 
   constructor(
     private readonly languageHelperService: LanguageHelperService
   ) {
-    this.availablelanguages = environment.availableLanguages.map(lang => {
+    this.availableLanguages = environment.availableLanguages.map(lang => {
       const el: KeyboardSettingsDTO = {
         type: 'lang-' + lang,
         label: lang,
@@ -26,12 +27,17 @@ export class AppSharedSettingsLanguageComponent {
       return el;
     });
 
-    this.availablelanguages[0].selected = true;
+    this.currentLanguage = this.languageHelperService.currentLangUsed;
+    const findCurrentLanguage = this.availableLanguages.find(el => el.label === this.languageHelperService.currentLangUsed);
+    if (findCurrentLanguage) {
+      findCurrentLanguage.selected = true;
+    } else {
+      this.availableLanguages[0].selected = true;
+    }
   }
 
   changeLanguage(lang: KeyboardSettingsDTO) {
-    console.log('lang', lang);
-    this.availablelanguages.forEach(el => {
+    this.availableLanguages.forEach(el => {
       el.selected = false;
     });
     lang.selected = true;
