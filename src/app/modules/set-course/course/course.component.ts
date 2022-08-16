@@ -3,6 +3,7 @@ import { Component, Input } from "@angular/core";
 import { Router } from "@angular/router";
 import { STORAGE_KEY_TYPE } from "src/app/common/enums";
 import { CategoriesDTO, CourseDTO, CourseExerciseDTO, StoredCourseResponseDTO } from "src/app/dto/course.dto";
+import { DEFAULT_DEBOUNCE_MIN_TIME } from 'src/app/common/constants';
 
 /**
  * This component holds the logic for displaying course exercises.
@@ -22,24 +23,37 @@ export class AppSetCourseCourseComponent {
 
       setTimeout(() => {
         this.scrollToExercise();
-      }, 250);
+      }, DEFAULT_DEBOUNCE_MIN_TIME);
     }
   }
   @Input() categories: CategoriesDTO[] = [];
-  activeCourseIndex = 0;
-  activeExerciseIndex = 0;
 
+  // Stores the active course index.
+  activeCourseIndex = 0;
+  // Stores the active exercise index.
+  activeExerciseIndex = 0;
   // Stores the course.
   courseVal: CategoriesDTO = {
     name: '',
     courses: []
   };
 
+  /**
+   * Constructor function responsible for injecting the needed services.
+   *
+   * @param router Reference to Router.
+   * @param courseHelperService Reference to CourseHelperService.
+   */
   constructor(
     private readonly router: Router,
     private readonly courseHelperService: CourseHelperService,
   ) { }
 
+  /**
+   * Find the latest course.
+   *
+   * @param cat Represents the selected category.
+   */
   findLatestCourse(cat: CategoriesDTO): void {
     const findLatestCourse = this.courseHelperService.getLatestCourse(cat);
 
@@ -58,6 +72,11 @@ export class AppSetCourseCourseComponent {
     this.findLatestExercise(currentCourse);
   }
 
+  /**
+   * Find the latest exercise.
+   *
+   * @param course Represents the selected course.
+   */
   findLatestExercise(course: CourseDTO): void {
     const findLastExercise = this.courseHelperService.getLatestExercise(course);
 
@@ -74,6 +93,9 @@ export class AppSetCourseCourseComponent {
     }
   }
 
+  /**
+   * Scrolls to the last active exercise.
+   */
   scrollToExercise(): void {
     const findCourseElem = document.getElementsByClassName('course-holder-' + this.activeCourseIndex);
     if (findCourseElem && findCourseElem.length > 0) {
@@ -84,6 +106,12 @@ export class AppSetCourseCourseComponent {
     }
   }
 
+  /**
+   * Start exercise function.
+   *
+   * @param courseIndex Represents the selected course index.
+   * @param exerciseIndex Represents the selected exercise index.
+   */
   startExercise(courseIndex: number, exerciseIndex: number): void {
     const findCat = this.categories.find((el: CategoriesDTO) => el.name === this.courseVal.name);
     if (findCat) {
@@ -92,6 +120,7 @@ export class AppSetCourseCourseComponent {
       findCat.courses[courseIndex].exercises[exerciseIndex].updatedAt = new Date();
     }
 
+    // Update local storage with the new data.
     const lang = this.currentLanguage.split('-')[0];
     if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
       const allCats = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
@@ -115,20 +144,5 @@ export class AppSetCourseCourseComponent {
     setTimeout(() => {
       this.router.navigate(['/type']);
     }, 500);
-
-  }
-
-  /**
-   * Toggles show all button.
-   *
-   * @param course Represents the selected course.
-   * @param target Represents the HTML target.
-   */
-  showAll(course: CourseDTO, target: HTMLElement): void {
-    // course.showAll = !course.showAll;
-    // if (!course.showAll) {
-    //   // Scroll to course title.
-    //   target.scrollIntoView({ behavior: 'smooth' });
-    // }
   }
 }

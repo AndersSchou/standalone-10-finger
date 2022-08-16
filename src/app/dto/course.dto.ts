@@ -5,6 +5,9 @@ export interface CourseResponseDTO {
   categories: CategoriesDTO[];
 }
 
+/**
+ * Stored categories interface.
+ */
 export interface StoredCourseResponseDTO {
   language: string;
   data: CourseResponseDTO;
@@ -46,6 +49,9 @@ export interface CourseExerciseDTO {
   updatedAt?: Date;
 }
 
+/**
+ * Result interface.
+ */
 export interface CourseResultDTO {
   mistakes: number;
   start?: Date;

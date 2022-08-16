@@ -1,3 +1,6 @@
+/**
+ * Settings DTO.
+ */
 export interface KeyboardSettingsDTO {
   type: string;
   icon?: string;

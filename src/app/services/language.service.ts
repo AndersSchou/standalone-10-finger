@@ -65,8 +65,6 @@ export class LanguageHelperService {
       this.translateService.use(this.availableLanguages[0]);
     }
 
-
-    // TODO: Set the language based on the user region language.
   }
 
   /**

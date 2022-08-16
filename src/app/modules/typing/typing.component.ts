@@ -6,7 +6,6 @@ import { Color, STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from 'src/app/common/enum
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE, TextSettings } from 'src/app/common/types';
 import { Courses } from 'src/app/courses';
 import { CategoriesDTO, CourseDTO, CourseExerciseDTO, CourseResponseDTO, StoredCourseResponseDTO } from 'src/app/dto/course.dto';
-import { KeyboardSettingsDTO } from 'src/app/dto/settings.dto';
 import { ReadOptionsDTO } from 'src/app/dto/speak.dto';
 import { TranslationsDTO } from 'src/app/dto/translation.dto';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
@@ -15,11 +14,17 @@ import { SettingsService } from 'src/app/services/settings.service';
 import { SpeechService } from 'src/app/services/speech.service';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
 
+/**
+ * Exercise text interface.
+ */
 interface ExerciseTextDTO {
   index: number;
   text: string[];
 }
 
+/**
+ * Exercise interface.
+ */
 interface ExerciseDTO {
   name: string;
   index: number;
@@ -86,10 +91,23 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   readTextOptions: ReadOptionsDTO = { readLetterName: false, readLetterSound: false, readWord: false, readSentence: false };
   // Tells if it should resume course or not.
   resumeCourse: boolean = false;
+  // Stores the data from the local storage.
   storedData: StoredCourseResponseDTO[] = [];
+  // Reading subscription.
+  readingSubscription: Subscription = Subscription.EMPTY;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
+  /**
+   *
+   * @param router Reference to Router.
+   * @param settingsService Reference to SettingsService.
+   * @param cdr Reference to ChangeDetectorRef.
+   * @param languageHelperService Reference to LanguageHelperService.
+   * @param speechService Reference to SpeechService.
+   * @param activatedRoute Reference to ActivatedRoute.
+   * @param courseHelperService Reference to CourseHelperService.
+   */
   constructor(
     private readonly router: Router,
     private readonly settingsService: SettingsService,
@@ -145,6 +163,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+  /**
+   * A lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
+   */
   ngOnInit(): void {
     // Checks queryParams for resume param.
     this.activatedRoute.queryParams.subscribe(params => {
@@ -173,7 +194,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setMode(mode);
       });
 
-    if (this.currentLanguage.length > 0) {
+    if (this.currentLanguage && this.currentLanguage.length > 0) {
       this.courseProgress();
     }
 
@@ -194,6 +215,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
+  /**
+   *  A lifecycle hook that is called after Angular has fully initialized a component's view.
+   */
   ngAfterViewInit(): void {
     if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR)) {
       this.setTheme(localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR) as KEYBOARD_COLOR_GROUP_TYPE);
@@ -214,8 +238,10 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * Unsubscribe Observables and detach event handlers to avoid memory leaks.
+   */
   ngOnDestroy(): void {
-    console.log('destroy');
     // Cleanup the DOM.
     if (this.divElement && this.divElement.hasChildNodes()) {
       this.exerciseElem.nativeElement.removeChild(this.divElement);
@@ -392,8 +418,16 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   keyDownListener(): void {
     fromEvent(document, 'keydown')
       .pipe(takeUntil(this.destroyed)).subscribe((event) => {
-        // Handle reading on keydown (read letter/sound/word/sentence).
-        this.speechService.handleReading((event as KeyboardEvent).key, this.readTextOptions, 'mv_da_acl');
+
+        if (this.readingSubscription) {
+          this.readingSubscription.unsubscribe();
+        }
+
+        this.readingSubscription = timer(100).subscribe(() => {
+          // Handle reading on keydown (read letter/sound/word/sentence).
+          this.speechService.handleReading((event as KeyboardEvent).key, this.readTextOptions, 'mv_da_acl');
+        });
+
         if (this.currentChar === (event as KeyboardEvent).key) {
           let isSpace = false;
           if ((event as KeyboardEvent).key === ' ') {
@@ -646,7 +680,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         updatedAt: new Date()
       });
     }
-
     // Update course progress in local storage.
     const findItem = this.storedData.find(el => el.language === this.currentLanguage.split('-')[0]);
     if (findItem) {

@@ -41,7 +41,6 @@ export class VKeyboardComponent {
   ) {
     this.setLanguage('da');
     this.processClass();
-    console.log(this.keyboardKeyDefinition);
   }
 
   setLanguage(lan: KEYBOARD_LANGUAGE) {

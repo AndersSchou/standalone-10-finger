@@ -1,5 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
+import { DefaultReadLetterOptions, DefaultReadTextOptions } from "../common/constants";
+import { STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from "../common/enums";
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LAYOUT_GROUP_TYPE, TextSettings } from "../common/types";
 
 @Injectable()
@@ -92,4 +94,80 @@ export class SettingsService {
   setTextSetting(value: TextSettings): void {
     this.textSettingsSource.next(value);
   }
+
+  /**
+   * Set default settings if they're not set.
+   */
+  setDefaultSettings(): void {
+    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
+      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_SIZE, JSON.stringify(
+        {
+          fontSize: '24px',
+          fontFamily: 'Roboto'
+        }
+      ));
+    }
+
+    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR)) {
+      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_COLOR, JSON.stringify('no-color'));
+    }
+
+    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT)) {
+      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify('bottom'));
+    }
+
+    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER)) {
+      const readLetter = DefaultReadLetterOptions[DefaultReadLetterOptions.length - 1];
+      readLetter.selected = true;
+      localStorage.setItem(TEXT_SETTINGS_TYPE.READ_LETTER, JSON.stringify(readLetter));
+    }
+
+    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT)) {
+      const readText = DefaultReadTextOptions;
+      for (const opt of readText) {
+        opt.selected = true;
+      }
+      localStorage.setItem(TEXT_SETTINGS_TYPE.READ_TEXT, JSON.stringify(readText));
+    }
+
+    if (!localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR)) {
+      localStorage.setItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR, '');
+    }
+
+    if (!localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
+      localStorage.setItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT, 'full');
+    }
+  }
+
+  /**
+   * Cleans up the local storage.
+   */
+  storageCleanup(): void {
+    if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
+      localStorage.removeItem(TEXT_SETTINGS_TYPE.TEXT_SIZE);
+    }
+    if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR)) {
+      localStorage.removeItem(TEXT_SETTINGS_TYPE.TEXT_COLOR);
+    }
+    if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT)) {
+      localStorage.removeItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT);
+    }
+    if (localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER)) {
+      localStorage.removeItem(TEXT_SETTINGS_TYPE.READ_LETTER);
+    }
+    if (localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT)) {
+      localStorage.removeItem(TEXT_SETTINGS_TYPE.READ_TEXT);
+    }
+
+    if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
+      localStorage.removeItem(STORAGE_KEY_TYPE.COURSES_PROGRESS);
+    }
+    if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR)) {
+      localStorage.removeItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR);
+    }
+    if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
+      localStorage.removeItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT);
+    }
+  }
+
 }

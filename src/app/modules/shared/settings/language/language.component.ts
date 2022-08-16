@@ -4,7 +4,7 @@ import { LanguageHelperService } from 'src/app/services/language.service';
 import { environment } from 'src/environments/environment';
 
 /**
- * This component holds the logic for the keyboard settings view.
+ * This component holds the logic for the language settings view.
  */
 @Component({
   selector: 'app-shared-settings-language',
@@ -12,9 +12,16 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./language.component.scss']
 })
 export class AppSharedSettingsLanguageComponent {
+  // Stores the available languages.
   availableLanguages: KeyboardSettingsDTO[] = [];
+  // Stores the current language.
   currentLanguage: string;
 
+  /**
+   * Constructor function responsible for injecting the needed services.
+   *
+   * @param languageHelperService Reference to LanguageHelperService.
+   */
   constructor(
     private readonly languageHelperService: LanguageHelperService
   ) {
@@ -36,6 +43,11 @@ export class AppSharedSettingsLanguageComponent {
     }
   }
 
+  /**
+   * Sets the new selected language.
+   *
+   * @param lang Represent the new selected language.
+   */
   changeLanguage(lang: KeyboardSettingsDTO) {
     this.availableLanguages.forEach(el => {
       el.selected = false;

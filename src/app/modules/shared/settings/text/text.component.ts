@@ -5,7 +5,7 @@ import { KeyboardSettingsDTO } from 'src/app/dto/settings.dto';
 import { SettingsService } from 'src/app/services/settings.service';
 
 /**
- * This component holds the logic for the keyboard settings view.
+ * This component holds the logic for the text settings view.
  */
 @Component({
   selector: 'app-shared-settings-text',
@@ -31,11 +31,17 @@ export class AppSharedSettingsTextComponent {
   selectedWordRepeat: number;
   // Stores the selected extra font family.
   selectedExtraFontFamily: KeyboardSettingsDTO = {} as KeyboardSettingsDTO;
+  // Stores the selected font size and font family options.
   textStyle = {
     fontSize: '24px',
     fontFamily: 'Roboto'
   };
 
+  /**
+   * Constructor function responsible for injecting the needed services.
+   *
+   * @param settingsService Reference to SettingsService.
+   */
   constructor(
     private readonly settingsService: SettingsService
   ) {
@@ -46,6 +52,9 @@ export class AppSharedSettingsTextComponent {
     this.selectedWordRepeat = this.wordToRepeat[2];
   }
 
+  /**
+   * Sets the initial values for the settings.
+   */
   setInitialValues(): void {
     // Set the selected font size and font family based on the saved settings.
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
@@ -66,10 +75,6 @@ export class AppSharedSettingsTextComponent {
         }
       }
     }
-    // else {
-    //   this.fontFamilies[0].selected = true;
-    //   this.selectedExtraFontFamily = this.otherFontFam[0];
-    // }
 
     // Set the selected text color option based on the saved settings.
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR)) {
@@ -81,9 +86,6 @@ export class AppSharedSettingsTextComponent {
         this.textColorBgOptions[1].selected = true;
       }
     }
-    // else {
-    //   this.textColorBgOptions[1].selected = true;
-    // }
 
     // Set the layout display.
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT)) {
@@ -95,9 +97,6 @@ export class AppSharedSettingsTextComponent {
         this.layoutTypes[0].selected = true;
       }
     }
-    // else {
-    //   this.layoutTypes[0].selected = true;
-    // }
   }
 
   /**

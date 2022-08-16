@@ -16,21 +16,19 @@ import { AppSharedSettingsKeyboardComponent } from './settings/keyboard/keyboard
 import { AppSharedSettingsTextComponent } from './settings/text/text.component';
 import { AppSharedSettingsLanguageComponent } from './settings/language/language.component';
 import { AppSharedSettingsReadComponent } from './settings/read/read.component';
-import { AppSharedSettingsResetComponent } from './settings/reset/reset.component';
-import { AppSharedLoaderComponent } from './loader/loader.component';
+import { WarningModalComponent } from './modals/warning-modal/warning-modal.component';
 
 @NgModule({
   declarations: [
     AppSharedTopMenuComponent,
     ErrorModalComponent,
+    WarningModalComponent,
     AppSharedSettingsComponent,
     AppSharedSettingsKeyboardComponent,
     AppSharedSettingsTextComponent,
     AppSharedSettingsLanguageComponent,
     AppSharedSettingsReadComponent,
     AppSharedSettingsLogoutComponent,
-    AppSharedSettingsResetComponent,
-    AppSharedLoaderComponent,
   ],
   imports: [
     FormsModule,
@@ -45,14 +43,13 @@ import { AppSharedLoaderComponent } from './loader/loader.component';
     TranslateModule,
     AppSharedTopMenuComponent,
     ErrorModalComponent,
+    WarningModalComponent,
     AppSharedSettingsComponent,
     AppSharedSettingsKeyboardComponent,
     AppSharedSettingsTextComponent,
     AppSharedSettingsLanguageComponent,
     AppSharedSettingsReadComponent,
     AppSharedSettingsLogoutComponent,
-    AppSharedSettingsResetComponent,
-    AppSharedLoaderComponent,
   ],
   providers: [
     ErrorModalService,

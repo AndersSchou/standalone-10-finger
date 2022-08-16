@@ -1,0 +1,23 @@
+<div class="dialog-hld">
+  <div mat-dialog-title class="mat-dialog-title">
+    <div class="title" fxLayout="row" fxLayoutAlign="start center">
+      <div class="icon-hld">
+        <mat-icon svgIcon="info" class="app-icon-hover"></mat-icon>
+      </div>
+      <div class="title-hld">{{ data.title | translate }}</div>
+    </div>
+  </div>
+
+  <div mat-dialog-content class="content-hld">
+    <div>{{ data.description | translate }}</div>
+  </div>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" class="modal-footer">
+    <div (click)="close()" class="action-btn default">
+      {{ "translateCancel" | translate }}
+    </div>
+    <div (click)="close(true)" class="action-btn">
+      {{ "translateYes" | translate }}
+    </div>
+  </div>
+</div>

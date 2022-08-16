@@ -13,13 +13,13 @@ import { SettingsService } from 'src/app/services/settings.service';
   styleUrls: ['./keyboard.component.scss']
 })
 export class AppSharedSettingsKeyboardComponent {
-
+  // Stores the default keyboard theme options.
   keyboardTheme: KeyboardSettingsDTO[] = [
     { type: 'color-group', icon: 'keyboard_1', selected: false },
     { type: 'single-color-group', icon: 'keyboard_2', selected: false },
     { type: '', icon: 'keyboard_3', selected: false },
   ];
-
+  // Stores the available keyboard layout options.
   keyboardViewMode: KeyboardSettingsDTO[] = [
     { type: 'full', icon: 'keyboard_mode_3', selected: false },
     { type: 'partial', icon: 'keyboard_mode_1', selected: false },
@@ -28,6 +28,11 @@ export class AppSharedSettingsKeyboardComponent {
     // { type: 'no-numbers', icon: 'keyboard_mode_3', selected: false },
   ];
 
+  /**
+   * Constructor function responsible for injecting the needed services.
+   *
+   * @param settingsService Reference to SettingsService.
+   */
   constructor(
     private readonly settingsService: SettingsService
   ) {

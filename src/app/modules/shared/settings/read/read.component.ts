@@ -5,7 +5,7 @@ import { KeyboardSettingsDTO } from 'src/app/dto/settings.dto';
 import { SettingsService } from 'src/app/services/settings.service';
 
 /**
- * This component holds the logic for the keyboard settings view.
+ * This component holds the logic for the reading settings view.
  */
 @Component({
   selector: 'app-shared-settings-read',
@@ -18,12 +18,20 @@ export class AppSharedSettingsReadComponent {
   // Stores the default read text options.
   readTextOptions: KeyboardSettingsDTO[] = [];
 
+  /**
+   * Constructor function responsible for injecting the needed services.
+   *
+   * @param settingsService Reference to SettingsService.
+   */
   constructor(
     private readonly settingsService: SettingsService
   ) {
     this.setInitialValues();
   }
 
+  /**
+   * Sets the initial values for the settings.
+   */
   setInitialValues() {
     // Set read letter initial value.
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER)) {

@@ -43,5 +43,10 @@
   "translateReadLetterSound": "Read letter sound",
   "translateNoSound": "No sound",
   "translateReadWords": "Read words",
-  "translateReadSentences": "Read sentences"
+  "translateReadSentences": "Read sentences",
+  "translateCancel": "Avbryt",
+  "translateYes": "Ja",
+  "translateAreYouSure": "Are you sure?",
+  "translateAreYouReallySure": "Are you really really sure?",
+  "translateResetWarningDescription": "This will reset all your progress! Are you sure you want to proceed?"
 }

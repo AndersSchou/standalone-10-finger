@@ -1,12 +1,11 @@
 import { CourseHelperService } from 'src/app/services/course-helper.service';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
 import { Courses } from 'src/app/courses';
 import { CategoriesDTO, CourseDTO, CourseResponseDTO, StoredCourseResponseDTO } from 'src/app/dto/course.dto';
 import { SettingsService } from 'src/app/services/settings.service';
 import { LanguageHelperService } from 'src/app/services/language.service';
-import { TranslationsDTO } from 'src/app/dto/translation.dto';
 
 /**
  * This component holds the logic for set course page.
@@ -16,7 +15,7 @@ import { TranslationsDTO } from 'src/app/dto/translation.dto';
   templateUrl: './set-course.component.html',
   styleUrls: ['./set-course.component.scss']
 })
-export class AppSetCourseComponent implements OnInit {
+export class AppSetCourseComponent implements OnInit, OnDestroy {
   // Stores the categories array.
   categories: CategoriesDTO[] = [];
   // Stores the selected course;
@@ -28,18 +27,20 @@ export class AppSetCourseComponent implements OnInit {
   currentLanguage: string;
   // Tells if it should show the settings view or not.
   viewSettings: boolean = false;
+  // Stores the categories data.
   storedData: StoredCourseResponseDTO[] = [];
   // Stores the subscribers until they're destroyed.
-  private readonly destroyed = new ReplaySubject<never>();
+  private readonly destroyed = new ReplaySubject<boolean>();
 
   /**
    * Constructor function responsible for injecting the needed services.
    *
    * @param settingsService Reference to SettingsService.
+   * @param courseHelperService Reference to CourseHelperService.
+   * @param languageHelperService Reference to LanguageHelperService.
    */
   constructor(
     private readonly settingsService: SettingsService,
-    private readonly cdr: ChangeDetectorRef,
     private readonly courseHelperService: CourseHelperService,
     private readonly languageHelperService: LanguageHelperService,
   ) {
@@ -51,12 +52,11 @@ export class AppSetCourseComponent implements OnInit {
    */
   ngOnInit() {
     // Listens for any changes regarding the current used language.
-    this.languageHelperService.OnLanguageChanged.pipe(
-      takeUntil(this.destroyed)
-    ).subscribe((trans: TranslationsDTO) => {
-      this.currentLanguage = this.languageHelperService.currentLangUsed;
-      this.getCategories();
-    });
+    this.languageHelperService.OnLanguageChanged
+      .pipe(takeUntil(this.destroyed)).subscribe(() => {
+        this.currentLanguage = this.languageHelperService.currentLangUsed;
+        this.getCategories();
+      });
 
     // Listens for any changes regarding the settings view (show/hide).
     this.settingsService.viewSettingsAction
@@ -66,6 +66,16 @@ export class AppSetCourseComponent implements OnInit {
     this.getCategories();
   }
 
+  /**
+   * Unsubscribe Observables and detach event handlers to avoid memory leaks.
+   */
+  ngOnDestroy(): void {
+    this.destroyed.next(true);
+  }
+
+  /**
+   * Get all categories.
+   */
   getCategories(): void {
     this.categories = [];
     if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
@@ -113,16 +123,18 @@ export class AppSetCourseComponent implements OnInit {
    * Get all categories for the current language.
    */
   getAllCategories(): void {
-    const lang = this.currentLanguage.split('-')[0];
-    if (lang in Courses) {
-      const cat = Courses[lang];
-      if (cat && cat.categories) {
-        this.categories = cat.categories.map((el: CategoriesDTO) => {
-          const elem = el;
-          elem.progress = 0;
-          return elem;
-        });
-        this.currentCategory = this.categories[0];
+    if (this.currentLanguage && this.currentLanguage.length > 0) {
+      const lang = this.currentLanguage.split('-')[0];
+      if (lang in Courses) {
+        const cat = Courses[lang];
+        if (cat && cat.categories) {
+          this.categories = cat.categories.map((el: CategoriesDTO) => {
+            const elem = el;
+            elem.progress = 0;
+            return elem;
+          });
+          this.currentCategory = this.categories[0];
+        }
       }
     }
   }
