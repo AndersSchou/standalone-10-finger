@@ -257,7 +257,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       this.storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
       const findData = this.storedData.find((el: StoredCourseResponseDTO) => el.language === this.currentLanguage.split('-')[0]);
       if (findData) {
-        this.categories = findData.data;
+        this.categories = { ...findData.data };
 
         this.setCurrentCategory();
         this.setCurrentCourse();
@@ -337,13 +337,13 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     const findLastExercise = this.courseHelperService.getLatestExercise(this.selectedCourse);
 
     const findIndex = this.selectedCourse.exercises.findIndex(el => el.name === findLastExercise.name);
-    if (!this.resumeCourse) {
+    if (this.resumeCourse) {
       this.exerciseIndex = findIndex;
     } else {
       if (!findLastExercise.completed) {
         this.exerciseIndex = findIndex;
       } else {
-        if (findIndex && findIndex + 1 <= this.selectedCourse.exercises.length - 1) {
+        if (findIndex + 1 <= this.selectedCourse.exercises.length - 1) {
           this.exerciseIndex = findIndex + 1;
         }
       }
@@ -470,10 +470,10 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         // Find next exercise.
         const findNextIncompleteExercise = this.exercisesArr.find(exercise => exercise.index > this.exerciseIndex && !exercise.completed);
         if (findNextIncompleteExercise) {
+          // Update the course progress when the user completes an exercise.
+          this.updateProgress(this.exerciseIndex);
           this.exerciseIndex = findNextIncompleteExercise.index;
           this.currentPosition();
-          // Update the course progress when the user completes an exercise.
-          this.updateProgress(this.exerciseIndex - 1);
         } else {
           // Find previous exercise.
           const findPrevIncompleteExercise = this.exercisesArr.find(exercise => !exercise.completed);
@@ -514,6 +514,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
           elem.results = [];
           return elem;
         });
+        this.exerciseIndex = 0;
 
         const storeData: StoredCourseResponseDTO = {
           language: courseLang, data: this.categories
@@ -723,6 +724,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       characters: this.selectedCourse.exercises[exerciseIndex].text.length,
       updatedAt: new Date()
     });
+
     // Reset the exercise progress when going to the next exercise.
     this.nbrOfMistakes = 0;
     this.startCount = false;
