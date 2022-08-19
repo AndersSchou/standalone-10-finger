@@ -95,7 +95,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   storedData: StoredCourseResponseDTO[] = [];
   // Reading subscription.
   readingSubscription: Subscription = Subscription.EMPTY;
+  // Tells if the character is the last character of the text.
   isLastChar: boolean = false;
+  // Stores the text that will be read.
   textToRead: string = '';
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
@@ -206,7 +208,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe((trans: TranslationsDTO) => {
       this.currentLanguage = this.languageHelperService.currentLangUsed;
       this.setLanguage();
-      this.courseProgress();
+      this.courseProgress(true);
     });
 
     // Listens for any changes regarding the text settings.
@@ -252,8 +254,10 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Get course progress.
+   *
+   * @param langChanged Tells if the language has changed.
    */
-  courseProgress(): void {
+  courseProgress(langChanged: boolean = false): void {
     if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
       this.storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
       const findData = this.storedData.find((el: StoredCourseResponseDTO) => el.language === this.currentLanguage.split('-')[0]);
@@ -262,7 +266,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.setCurrentCategory();
         this.setCurrentCourse();
-        this.setCurrentExercise();
+        this.setCurrentExercise(langChanged);
 
         this.calculateProgress();
         this.mapExercises();
@@ -333,13 +337,23 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Set current exercise.
+   *
+   * @param langChanged Tells if the language has changed.
    */
-  setCurrentExercise(): void {
+  setCurrentExercise(langChanged: boolean = false): void {
     const findLastExercise = this.courseHelperService.getLatestExercise(this.selectedCourse);
 
     const findIndex = this.selectedCourse.exercises.findIndex(el => el.name === findLastExercise.name);
-    if (!this.resumeCourse) {
+    if (!this.resumeCourse && !langChanged) {
       this.exerciseIndex = findIndex;
+      this.selectedCourse.exercises = this.selectedCourse.exercises.map((el, index) => {
+        const elem: CourseExerciseDTO = { ...el };
+        elem.results = el.results ? el.results : [];
+        if (index >= this.exerciseIndex) {
+          elem.completed = false;
+        }
+        return elem;
+      });
     } else {
       if (!findLastExercise.completed) {
         this.exerciseIndex = findIndex;
@@ -349,14 +363,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     }
-    this.selectedCourse.exercises = this.selectedCourse.exercises.map((el, index) => {
-      const elem: CourseExerciseDTO = el;
-      elem.results = el.results ? el.results : [];
-      if (index >= this.exerciseIndex) {
-        elem.completed = false;
-      }
-      return elem;
-    });
   }
 
   /**
@@ -419,13 +425,16 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   keyDownListener(): void {
     fromEvent(document, 'keydown')
       .pipe(takeUntil(this.destroyed)).subscribe((event) => {
+        let charMatch = true;
+        if ((event as KeyboardEvent).key === ' ') {
+          // Prevent auto scroll on space.
+          event.preventDefault();
+        }
 
         if (this.currentChar === (event as KeyboardEvent).key) {
           let isSpace = false;
           if ((event as KeyboardEvent).key === ' ') {
             isSpace = true;
-            // Prevent auto scroll on space.
-            event.preventDefault();
           }
           this.markAsCompleted(isSpace);
           if (!this.startCount) {
@@ -436,16 +445,10 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
           this.updateCurrentPosition();
         } else {
           if ((event as KeyboardEvent).key !== 'Shift') {
+            charMatch = false;
             this.markAsMistake();
           }
         }
-
-        // const txt = this.exercisesArr[this.exerciseIndex].lines[this.currentLineIndex].text.join('');
-        // const txtToRead = txt.substring(0, this.currentLetterIndex);
-        console.log('exerciseArr', this.exercisesArr[this.exerciseIndex].lines[this.currentLineIndex].text.join(''));
-        console.log('txtBefore', this.textToRead);
-        // console.log('this.selectedCourse.exercises', this.selectedCourse.exercises[this.exerciseIndex].text[this.currentLetterIndex]);
-        console.log('this.currentLetterIndex', this.currentLetterIndex);
 
         if (this.readingSubscription) {
           this.readingSubscription.unsubscribe();
@@ -453,7 +456,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.readingSubscription = timer(100).subscribe(() => {
           // Handle reading on keydown (read letter/sound/word/sentence).
-          this.speechService.handleReading((event as KeyboardEvent).key, this.readTextOptions, this.textToRead, 'mv_da_acl', this.isLastChar);
+          this.speechService.handleReading((event as KeyboardEvent).key, this.readTextOptions, this.textToRead, 'mv_da_acl', this.isLastChar, charMatch);
         });
       });
   }

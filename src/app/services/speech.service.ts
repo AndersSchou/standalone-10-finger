@@ -1,7 +1,10 @@
-import { REGEX_FOR_LETTERS_WITH_DIACRITICS_AND_NBR } from './../common/constants';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { REGEX_FOR_LETTERS_WITH_DIACRITICS, SENTENCE_READ_REGEX, WHITE_SPACE_REGEX, WORD_READ_REGEX } from '../common/constants';
+import {
+  REGEX_FOR_LETTERS_WITH_DIACRITICS,
+  SENTENCE_READ_REGEX, WHITE_SPACE_REGEX,
+  WORD_READ_REGEX, REGEX_FOR_LETTERS_WITH_DIACRITICS_AND_NBR
+} from '../common/constants';
 import { READING_IDENTIFIER } from '../common/enums';
 import { ReadOptionsDTO, SpeakResultDTO } from '../dto/speak.dto';
 import { VoiceService } from './api/voice.service';
@@ -114,9 +117,17 @@ export class SpeechService {
     return this.speechAudioElement.src ? false : true;
   }
 
-  handleReading(character: string, readOptions: ReadOptionsDTO, txtToRead: string, voiceID: string, isLastChar: boolean): void {
-    console.log('handleReading', txtToRead.split(''));
-
+  /**
+   * Handles reading of the current text.
+   *
+   * @param character Represents the character to read.
+   * @param readOptions Represents the read options.
+   * @param txtToRead Represents the text to read.
+   * @param voiceID Represents the voice id for the speak service.
+   * @param isLastChar Tells if the character is the last character of the text.
+   * @param charMatch Tells if the character is a match of the text (used to disable read word when the chars do not match).
+   */
+  handleReading(character: string, readOptions: ReadOptionsDTO, txtToRead: string, voiceID: string, isLastChar: boolean, charMatch: boolean): void {
     switch (this.getReadingType(
       character, readOptions,
       txtToRead, isLastChar)) {
@@ -124,8 +135,7 @@ export class SpeechService {
         this.readSentence(readOptions, txtToRead, voiceID);
         break;
       case READING_IDENTIFIER.READ_WORD:
-        console.log('read word');
-        this.readWord(readOptions, txtToRead, voiceID, isLastChar);
+        this.readWord(readOptions, txtToRead, voiceID, isLastChar, charMatch);
         break;
       case READING_IDENTIFIER.READ_CHARACTER:
         this.readCharacterOrSound(character, readOptions, voiceID);
@@ -135,6 +145,13 @@ export class SpeechService {
     }
   }
 
+  /**
+   * Triggers read character name or sound.
+   *
+   * @param character Represents the character to read.
+   * @param readOptions Represents the read options.
+   * @param voiceID Represents the voice id for the speak service.
+   */
   readCharacterOrSound(character: string, readOptions: ReadOptionsDTO, voiceID: string): void {
     // Read letter name + sound only if the character is a letter.
     if (character.match(REGEX_FOR_LETTERS_WITH_DIACRITICS)) {
@@ -147,52 +164,42 @@ export class SpeechService {
   }
 
   /**
-     * Reads the word at caret position if read word option in profile settings is enabled.
-     *
-     * @param currentProfile Represents the current profile.
-     *
-     * @returns True if read word option in profile settings is enabled and false otherwise.
-     */
-  readWord(readOptions: ReadOptionsDTO, text: string, voiceID: string, isLastChar: boolean): boolean {
-    if (readOptions.readWord) {
+   * Triggers read word.
+   *
+   * @param readOptions Represents the read options.
+   * @param text Represents the text to read.
+   * @param voiceID Represents the voice id for the speak service.
+   * @param isLastChar Tells if the character is the last character of the text.
+   * @param charMatch Tells if the character is a match of the text (used to disable read word when the chars do not match).
+   */
+  readWord(readOptions: ReadOptionsDTO, text: string, voiceID: string, isLastChar: boolean, charMatch: boolean): void {
+    if (readOptions.readWord && charMatch) {
       const wordToRead = text.split(' ');
-      console.log('wordToRead', wordToRead);
       const txt = isLastChar ? wordToRead[wordToRead.length - 1] : wordToRead[wordToRead.length - 2];
       this.play(txt, voiceID);
-      return true;
-    } else {
-      return false;
     }
   }
 
   /**
-   * Triggers reading the sentence at caret position if read sentence option in profile settings is enabled.
-   * If read word is enabled then reads the word first and then sentence.
+   * Triggers read sentence.
    *
-   * @param currentProfile Represents the current profile.
-   * @param predefinedSentence Represents the sentence to read.
+   * @param readOptions Represents the read options.
+   * @param text Represents the text to read.
+   * @param voiceID Represents the voice id for the speak service.
    */
   readSentence(readOptions: ReadOptionsDTO, text: string, voiceID: string): void {
     if (readOptions.readWord && text.match(REGEX_FOR_LETTERS_WITH_DIACRITICS_AND_NBR)) {
       this.play(text, voiceID);
     }
-    // const readWord = this.readWord(currentProfile);
-    // if (currentProfile.profile.settings.writeSentence) {
-    //   if (readWord) {
-    //     this.shouldReadSentence.profile = currentProfile;
-    //     this.shouldReadSentence.value = true;
-    //   } else {
-    //     this.readSentenceAtCursor(currentProfile, predefinedSentence);
-    //   }
-    // }
   }
 
   /**
-   * Identifies and returns the reading type based on inserted character and current profile.
+   * Identifies and returns the reading type based on inserted character and readOptions.
    *
    * @param character Represents the input letter.
    * @param readOptions Represents the reading options.
    * @param txtToRead Represents text that will be read.
+   * @param isLastChar Tells if the character is the last character of the text.
    *
    * @returns The reading type.
    */
@@ -201,9 +208,6 @@ export class SpeechService {
     readOptions: ReadOptionsDTO,
     txtToRead: string,
     isLastChar: boolean): string {
-    console.log('---txtToRead', txtToRead);
-
-    // if (txtToRead === undefined || txtToRead.length === 0) { return; }
 
     // If the character contains the whiteSpace then it will add this at the end of the word to verify that user press whiteSpace or not.
     if (character === ' ') { txtToRead += character; }
@@ -243,6 +247,8 @@ export class SpeechService {
 
     return '';
   }
+
+  // TODO: Cleanup if read sentence will be removed entirely.
 
   /**
    * This method work as a regex expression and check the second last character of string.
