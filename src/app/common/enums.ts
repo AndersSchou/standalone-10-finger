@@ -29,3 +29,12 @@ export enum TEXT_SETTINGS_TYPE {
   READ_LETTER = 'readLetter',
   READ_TEXT = 'readText',
 }
+
+/**
+ * Enum that holds the reading options.
+ */
+export enum READING_IDENTIFIER {
+  READ_WORD = 'READ_WORD',
+  READ_SENTENCE = 'READ_SENTENCE',
+  READ_CHARACTER = 'READ_CHARACTER',
+}

@@ -1,3 +1,4 @@
+import { CookieService } from 'ngx-cookie-service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { WhoAmIResponseDTO } from './dto/whoami.dto';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly userService: UserService,
     private readonly settingsService: SettingsService,
     private readonly authService: AuthService,
+    private readonly cookieService: CookieService,
   ) { }
 
   /**
@@ -45,7 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.loggedInAction
       .pipe(takeUntil(this.destroyed))
       .subscribe((isLogged?: boolean) => {
-        if (isLogged) {
+        if (isLogged && (!this.cookieService.get('mvf_session_id'))) {
           this.setUserLanguage();
         }
       });

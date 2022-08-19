@@ -95,6 +95,8 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   storedData: StoredCourseResponseDTO[] = [];
   // Reading subscription.
   readingSubscription: Subscription = Subscription.EMPTY;
+  isLastChar: boolean = false;
+  textToRead: string = '';
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
@@ -213,7 +215,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     // Listens for keydown events.
     this.keyDownListener();
   }
-
 
   /**
    *  A lifecycle hook that is called after Angular has fully initialized a component's view.
@@ -337,7 +338,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     const findLastExercise = this.courseHelperService.getLatestExercise(this.selectedCourse);
 
     const findIndex = this.selectedCourse.exercises.findIndex(el => el.name === findLastExercise.name);
-    if (this.resumeCourse) {
+    if (!this.resumeCourse) {
       this.exerciseIndex = findIndex;
     } else {
       if (!findLastExercise.completed) {
@@ -349,7 +350,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
     this.selectedCourse.exercises = this.selectedCourse.exercises.map((el, index) => {
-      const elem = el;
+      const elem: CourseExerciseDTO = el;
       elem.results = el.results ? el.results : [];
       if (index >= this.exerciseIndex) {
         elem.completed = false;
@@ -419,15 +420,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     fromEvent(document, 'keydown')
       .pipe(takeUntil(this.destroyed)).subscribe((event) => {
 
-        if (this.readingSubscription) {
-          this.readingSubscription.unsubscribe();
-        }
-
-        this.readingSubscription = timer(100).subscribe(() => {
-          // Handle reading on keydown (read letter/sound/word/sentence).
-          this.speechService.handleReading((event as KeyboardEvent).key, this.readTextOptions, 'mv_da_acl');
-        });
-
         if (this.currentChar === (event as KeyboardEvent).key) {
           let isSpace = false;
           if ((event as KeyboardEvent).key === ' ') {
@@ -447,6 +439,22 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
             this.markAsMistake();
           }
         }
+
+        // const txt = this.exercisesArr[this.exerciseIndex].lines[this.currentLineIndex].text.join('');
+        // const txtToRead = txt.substring(0, this.currentLetterIndex);
+        console.log('exerciseArr', this.exercisesArr[this.exerciseIndex].lines[this.currentLineIndex].text.join(''));
+        console.log('txtBefore', this.textToRead);
+        // console.log('this.selectedCourse.exercises', this.selectedCourse.exercises[this.exerciseIndex].text[this.currentLetterIndex]);
+        console.log('this.currentLetterIndex', this.currentLetterIndex);
+
+        if (this.readingSubscription) {
+          this.readingSubscription.unsubscribe();
+        }
+
+        this.readingSubscription = timer(100).subscribe(() => {
+          // Handle reading on keydown (read letter/sound/word/sentence).
+          this.speechService.handleReading((event as KeyboardEvent).key, this.readTextOptions, this.textToRead, 'mv_da_acl', this.isLastChar);
+        });
       });
   }
 
@@ -454,6 +462,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Update the letter/line/exercise index based on the current position.
    */
   updateCurrentPosition(): void {
+    this.isLastChar = false;
+    const txt = this.exercisesArr[this.exerciseIndex].lines[this.currentLineIndex].text.join('');
+    this.textToRead = txt.substring(0, this.currentLetterIndex + 1);
     if (this.currentLetterIndex < this.lineLength - 1) {
       this.currentLetterIndex++;
       this.currentPosition();
@@ -464,6 +475,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.currentLetterIndex = 0;
         this.currentPosition();
       } else {
+        this.isLastChar = true;
         // Update the current exercise index.
         this.currentLetterIndex = 0;
         this.currentLineIndex = 0;
