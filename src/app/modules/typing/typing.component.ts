@@ -99,6 +99,8 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   isLastChar: boolean = false;
   // Stores the text that will be read.
   textToRead: string = '';
+  // Tells if the course is completed or not (used for displaying the result view).
+  courseCompleted: boolean = true;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
@@ -246,7 +248,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Cleanup the DOM.
-    if (this.divElement && this.divElement.hasChildNodes()) {
+    if (this.exerciseElem && this.divElement && this.divElement.hasChildNodes()) {
       this.exerciseElem.nativeElement.removeChild(this.divElement);
     }
     this.destroyed.next(true);
@@ -500,8 +502,8 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
           } else {
             // Update the course progress when the user completes all the exercises.
             this.updateProgress(this.exerciseIndex, true);
-            // Show achievement screen.
-            this.router.navigate(['/set-course']);
+            // Show result screen.
+            this.courseCompleted = true;
           }
         }
       }
@@ -712,9 +714,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    if (!isFinished) {
-      this.calculateProgress();
-    }
+    // if (!isFinished) {
+    this.calculateProgress();
+    // }
   }
 
   /**
@@ -936,5 +938,29 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         const textToRead = elemInfo.lines[element.classList[element.classList.length - 1]].text.join('');
         this.speechService.play(textToRead, 'mv_da_acl');
       });
+  }
+
+  replay(): void {
+    // this.selectedCourse.exercises[0].updatedAt = new Date();
+    // console.log('this.storedData', this.storedData);
+    console.log('this.selectedCourse', this.selectedCourse);
+  }
+
+  download(): void { }
+
+  print(): void { }
+
+  nextCourse(): void { }
+
+  calculateSpeed(): number {
+    const lastResult = this.selectedCourse.results[this.selectedCourse.results.length - 1];
+    const speed = Math.round((lastResult.characters * 60000) / lastResult.time);
+    return speed;
+  }
+
+  calculateAccuracy(): number {
+    const lastResult = this.selectedCourse.results[this.selectedCourse.results.length - 1];
+    const accuracy = Math.round((lastResult.characters - lastResult.mistakes) * 100 / lastResult.characters);
+    return accuracy;
   }
 }
