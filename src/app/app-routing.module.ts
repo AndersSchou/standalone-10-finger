@@ -6,6 +6,7 @@ import { AppHomeComponent } from './modules/home/home.component';
 import { AppInfoComponent } from './modules/info/info.component';
 import { AppLoginComponent } from './modules/login/login.component';
 import { AppSetCourseComponent } from './modules/set-course/set-course.component';
+import { AppTypingResultComponent } from './modules/typing/result/result.component';
 import { AppTypingComponent } from './modules/typing/typing.component';
 import { AuthGuardService } from './services/guards/auth-guard.service';
 
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'type',
     component: AppTypingComponent
+  },
+  {
+    path: 'type/result',
+    component: AppTypingResultComponent
   },
   {
     path: 'set-course',

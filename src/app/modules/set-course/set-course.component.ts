@@ -51,6 +51,10 @@ export class AppSetCourseComponent implements OnInit, OnDestroy {
    * A lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
    */
   ngOnInit() {
+    if (this.currentLanguage && this.currentLanguage.length > 0) {
+      this.getCategories();
+    }
+
     // Listens for any changes regarding the current used language.
     this.languageHelperService.OnLanguageChanged
       .pipe(takeUntil(this.destroyed)).subscribe(() => {
@@ -62,8 +66,6 @@ export class AppSetCourseComponent implements OnInit, OnDestroy {
     this.settingsService.viewSettingsAction
       .pipe(takeUntil(this.destroyed))
       .subscribe((viewSettings: boolean) => { this.viewSettings = viewSettings; });
-
-    this.getCategories();
   }
 
   /**

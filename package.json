@@ -24,8 +24,11 @@
     "@angular/router": "^14.0.0",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "ngx-cookie-service": "^14.0.1",
     "ngx-logger": "^5.0.11",
+    "ngx-printer": "^1.2.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

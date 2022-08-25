@@ -1,34 +1,12 @@
 <app-shared-top-menu></app-shared-top-menu>
 <app-shared-settings *ngIf="viewSettings"></app-shared-settings>
 <div class="main-content-hld typing-view">
-  <div class="typing-header" *ngIf="categories && categories.categories">
-    <div class="page-padd">
-      <div fxLayout="row wrap" fxLayoutGap="20px" class="header-content">
-        <div class="left-header" fxFlex>
-          <div class="back-btn-hld" (click)="goBack()">
-            <mat-icon svgIcon="chevron_left" class="mr-10"></mat-icon>
-            Back
-          </div>
-          <div class="course-title">
-            {{currentCategory.name}} - {{selectedCourse.name}}
-          </div>
-        </div>
-        <div class="right-header" fxFlex="nogrow">
-          <div class="course-det-hld">{{selectedCourse.exercises[exerciseIndex].name}}</div>
-          <div class="reset-hld" (click)="resetCourse()">
-            <mat-icon svgIcon="icon_replay" matTooltip="Reset course"></mat-icon>
-          </div>
-        </div>
-      </div>
-    </div>
+  <app-modules-typing-header-view *ngIf="categories && categories.categories" [currentCategory]="currentCategory"
+    [currentProgress]="currentProgress" [exerciseIndex]="exerciseIndex" [selectedCourse]="selectedCourse"
+    (resetCourseEmit)="resetCourse()">
+  </app-modules-typing-header-view>
 
-    <div class="course-progress-hld">
-      <div class="progress" [ngStyle]="{width: currentProgress+'%'}"></div>
-    </div>
-  </div>
-  <div class="percentage-hld">{{currentProgress | number: '1.0-2'}}%</div>
-
-  <div *ngIf="!courseCompleted">
+  <div>
     <div class="keyboard-hld" *ngIf="keyboardTop">
       <app-vkeyboard #vkeyboard></app-vkeyboard>
     </div>
@@ -40,74 +18,6 @@
     </div>
     <div class="keyboard-hld" *ngIf="!keyboardTop">
       <app-vkeyboard #vkeyboard></app-vkeyboard>
-    </div>
-  </div>
-
-  <div *ngIf="courseCompleted" class="result-hld">
-    <div>
-      <div class="result-text">
-        <div class="result-title">Superb job!</div>
-        <div class="result-description">You completed this course</div>
-        <div class="result-btn-hld">
-          <div class="result-btn" (click)="replay()">
-            Replay
-          </div>
-        </div>
-      </div>
-      <div class="padd-tb-44 border-tb">
-        <div fxLayout="row wrap" fxLayoutGap="50px">
-          <div fxFlex="nogrow">
-            <div>
-              <img src="/assets/svg/winner.svg">
-            </div>
-          </div>
-          <div fxFlex class="flex-v-align">
-            <div>
-              <div class="res-title">
-                <mat-icon svgIcon="result" class="mr-16"></mat-icon>
-                Exercise result
-              </div>
-              <div class="pl-40">
-                <div fxLayout="row wrap" class="v-align res-hld" fxLayoutGap="40px">
-                  <div fxFlex class="flex-v-align res-txt">
-                    <mat-icon svgIcon="speed" class="mr-16 speed"></mat-icon>
-                    Speed
-                  </div>
-                  <div fxFlex>{{calculateSpeed()}} keys per minute</div>
-                </div>
-                <div fxLayout="row wrap" class="v-align res-hld" fxLayoutGap="40px">
-                  <div fxFlex class="flex-v-align res-txt">
-                    <mat-icon svgIcon="accuracy" class="mr-16 accuracy"></mat-icon>
-                    Accuracy
-                  </div>
-                  <div fxFlex>{{calculateAccuracy()}} %</div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-      <div class="flex-v-align ptb-30">
-        <div class="flex-v-align">
-          <div class="result-btn" (click)="goBack()">
-            Back to courses
-          </div>
-        </div>
-        <div class="flex-v-align ml-auto">
-          <div class="round-btn" matTooltip="Print" (click)="print()">
-            <mat-icon svgIcon="print"></mat-icon>
-          </div>
-          <div class="round-btn" matTooltip="Download" (click)="download()">
-            <mat-icon svgIcon="download"></mat-icon>
-          </div>
-          <div class="round-btn" matTooltip="Next course" (click)="nextCourse()">
-            <mat-icon svgIcon="arrow_right"></mat-icon>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>

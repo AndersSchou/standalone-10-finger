@@ -1,11 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxPrinterService } from 'ngx-printer';
 import { fromEvent, ReplaySubject, Subscription, takeUntil, timer } from 'rxjs';
 import { colorsMap, REGEX_FOR_LETTERS_WITH_DIACRITICS_AND_NBR, REGEX_WITH_DIACRITICS, SENTENCE_REGEX } from 'src/app/common/constants';
 import { Color, STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE, TextSettings } from 'src/app/common/types';
 import { Courses } from 'src/app/courses';
-import { CategoriesDTO, CourseDTO, CourseExerciseDTO, CourseResponseDTO, StoredCourseResponseDTO } from 'src/app/dto/course.dto';
+import { CategoriesDTO, CourseDTO, CourseExerciseDTO, CourseResponseDTO, createEmptyCategoriesDTO, createEmptyCourseResponseDTO, StoredCourseResponseDTO } from 'src/app/dto/course.dto';
 import { ReadOptionsDTO } from 'src/app/dto/speak.dto';
 import { TranslationsDTO } from 'src/app/dto/translation.dto';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
@@ -50,9 +51,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     results: []
   };
   // Stores the categories object.
-  categories: CourseResponseDTO = {} as CourseResponseDTO;
+  categories: CourseResponseDTO = createEmptyCourseResponseDTO();
   // Stores the current(active) category.
-  currentCategory: CategoriesDTO = {} as CategoriesDTO;
+  currentCategory: CategoriesDTO = createEmptyCategoriesDTO();
   // Stores the current language.
   currentLanguage: string = '';
   // Stores the DOM element.
@@ -99,8 +100,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   isLastChar: boolean = false;
   // Stores the text that will be read.
   textToRead: string = '';
-  // Tells if the course is completed or not (used for displaying the result view).
-  courseCompleted: boolean = true;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
@@ -208,9 +207,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.languageHelperService.OnLanguageChanged.pipe(
       takeUntil(this.destroyed)
     ).subscribe((trans: TranslationsDTO) => {
-      this.currentLanguage = this.languageHelperService.currentLangUsed;
-      this.setLanguage();
-      this.courseProgress(true);
+      this.router.navigate(['/set-course']);
     });
 
     // Listens for any changes regarding the text settings.
@@ -344,9 +341,10 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   setCurrentExercise(langChanged: boolean = false): void {
     const findLastExercise = this.courseHelperService.getLatestExercise(this.selectedCourse);
-
+    console.log('findLastExercise', findLastExercise, langChanged);
     const findIndex = this.selectedCourse.exercises.findIndex(el => el.name === findLastExercise.name);
     if (!this.resumeCourse && !langChanged) {
+      console.log('----');
       this.exerciseIndex = findIndex;
       this.selectedCourse.exercises = this.selectedCourse.exercises.map((el, index) => {
         const elem: CourseExerciseDTO = { ...el };
@@ -503,7 +501,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
             // Update the course progress when the user completes all the exercises.
             this.updateProgress(this.exerciseIndex, true);
             // Show result screen.
-            this.courseCompleted = true;
+            this.router.navigate(['/type/result']);
           }
         }
       }
@@ -616,12 +614,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  /**
-   * Go back method.
-   */
-  goBack(): void {
-    this.router.navigate(['/set-course']);
-  }
+
 
   /**
    * Reset course method.
@@ -940,27 +933,14 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  replay(): void {
-    // this.selectedCourse.exercises[0].updatedAt = new Date();
-    // console.log('this.storedData', this.storedData);
-    console.log('this.selectedCourse', this.selectedCourse);
-  }
+  /**
+   * Save the current changes before the page unloads (used when we refresh the page).
+   *
+   * @param event Before unload event.
+   */
+  // @HostListener('window:beforeunload', ['$event'])
+  // saveBeforeUnload(event: Event): void {
+  //   this.router.navigate(['/set-course']);
+  // }
 
-  download(): void { }
-
-  print(): void { }
-
-  nextCourse(): void { }
-
-  calculateSpeed(): number {
-    const lastResult = this.selectedCourse.results[this.selectedCourse.results.length - 1];
-    const speed = Math.round((lastResult.characters * 60000) / lastResult.time);
-    return speed;
-  }
-
-  calculateAccuracy(): number {
-    const lastResult = this.selectedCourse.results[this.selectedCourse.results.length - 1];
-    const accuracy = Math.round((lastResult.characters - lastResult.mistakes) * 100 / lastResult.characters);
-    return accuracy;
-  }
 }

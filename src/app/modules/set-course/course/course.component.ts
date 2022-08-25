@@ -1,8 +1,6 @@
 import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { Component, Input } from "@angular/core";
-import { Router } from "@angular/router";
-import { STORAGE_KEY_TYPE } from "src/app/common/enums";
-import { CategoriesDTO, CourseDTO, CourseExerciseDTO, StoredCourseResponseDTO } from "src/app/dto/course.dto";
+import { CategoriesDTO, CourseDTO, CourseExerciseDTO } from "src/app/dto/course.dto";
 import { DEFAULT_DEBOUNCE_MIN_TIME } from 'src/app/common/constants';
 
 /**
@@ -41,11 +39,9 @@ export class AppSetCourseCourseComponent {
   /**
    * Constructor function responsible for injecting the needed services.
    *
-   * @param router Reference to Router.
    * @param courseHelperService Reference to CourseHelperService.
    */
   constructor(
-    private readonly router: Router,
     private readonly courseHelperService: CourseHelperService,
   ) { }
 
@@ -60,15 +56,15 @@ export class AppSetCourseCourseComponent {
     let currentCourse = findLatestCourse;
     const findIndex = cat.courses.findIndex((el: CourseDTO) => el.name === findLatestCourse.name);
     this.activeCourseIndex = findIndex;
-    if (findLatestCourse.completed) {
-      if (findIndex && ((findIndex + 1) <= cat.courses.length - 1)) {
-        currentCourse = cat.courses[findIndex + 1];
-        this.activeCourseIndex = findIndex + 1;
-      } else {
-        currentCourse = cat.courses[0];
-        this.activeCourseIndex = 0;
-      }
-    }
+    // if (findLatestCourse.completed) {
+    //   if (findIndex && ((findIndex + 1) <= cat.courses.length - 1)) {
+    //     currentCourse = cat.courses[findIndex + 1];
+    //     this.activeCourseIndex = findIndex + 1;
+    //   } else {
+    //     currentCourse = cat.courses[0];
+    //     this.activeCourseIndex = 0;
+    //   }
+    // }
     this.findLatestExercise(currentCourse);
   }
 
@@ -113,36 +109,6 @@ export class AppSetCourseCourseComponent {
    * @param exerciseIndex Represents the selected exercise index.
    */
   startExercise(courseIndex: number, exerciseIndex: number): void {
-    const findCat = this.categories.find((el: CategoriesDTO) => el.name === this.courseVal.name);
-    if (findCat) {
-      findCat.updatedAt = new Date();
-      findCat.courses[courseIndex].updatedAt = new Date();
-      findCat.courses[courseIndex].exercises[exerciseIndex].updatedAt = new Date();
-    }
-
-    // Update local storage with the new data.
-    const lang = this.currentLanguage.split('-')[0];
-    if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
-      const allCats = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
-      const findLangCategories = allCats.find((el: StoredCourseResponseDTO) => el.language === lang);
-      if (findLangCategories) {
-        findLangCategories.data = { categories: this.categories };
-      } else {
-        allCats.push({
-          language: lang,
-          data: { categories: this.categories }
-        });
-      }
-      localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(allCats));
-    } else {
-      const storedData = [{
-        language: lang,
-        data: { categories: this.categories }
-      }];
-      localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(storedData));
-    }
-    setTimeout(() => {
-      this.router.navigate(['/type']);
-    }, 500);
+    this.courseHelperService.startExercise(courseIndex, exerciseIndex, this.currentLanguage, this.courseVal.name, this.categories);
   }
 }
