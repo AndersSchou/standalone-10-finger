@@ -22,7 +22,7 @@ export class AppSharedTopMenuComponent implements OnInit, OnDestroy {
    * @param settingsService Reference to SettingsService.
    */
   constructor(
-    private readonly settingsService: SettingsService
+    private readonly settingsService: SettingsService,
   ) { }
 
   /**
@@ -50,5 +50,9 @@ export class AppSharedTopMenuComponent implements OnInit, OnDestroy {
   toggleSettings() {
     this.isActive = !this.isActive;
     this.settingsService.toggleSettings(this.isActive);
+  }
+
+  onRouterLinkActive(event: boolean): void {
+    console.log('event', event);
   }
 }

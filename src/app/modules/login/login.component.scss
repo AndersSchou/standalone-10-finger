@@ -31,23 +31,42 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: calc(85vh - 200px);
+  height: 260px;
 }
 
 .footer-bg {
-  background-image: url("/assets/svg/cover_rocket.svg");
+  background-image: url("/assets/svg/cover_skies.svg");
   height: 100%;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
 
+.footer-rocket-hld {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 400px;
+}
+
+.footer-rocket {
+  background-image: url("/assets/svg/cover_rocket_alone.svg");
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 @media(min-width: 1700px) {
-  .logo-container {
+
+  .logo-container,
+  .footer-hld {
     height: 300px;
   }
+}
 
-  .footer-hld {
-    height: calc(75vh - 300px);
+@media(max-width: 1250px) {
+  .logo-container {
+    height: 150px;
   }
 }

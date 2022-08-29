@@ -48,5 +48,17 @@
   "translateYes": "Ja",
   "translateAreYouSure": "Are you sure?",
   "translateAreYouReallySure": "Are you really really sure?",
-  "translateResetWarningDescription": "This will reset all your progress! Are you sure you want to proceed?"
+  "translateResetWarningDescription": "This will reset all your progress! Are you sure you want to proceed?",
+  "translateSuperbJob": "Superb job!",
+  "translateYouCompletedCourse": "You completed this course",
+  "translateReplay": "Replay",
+  "translateExerciseResult": "Exercise result",
+  "translateSpeed": "Speed",
+  "translateKeysPerMinute": "keys per minute",
+  "translateAccuracy": "Accuracy",
+  "translateBackToCourses": "Back to courses",
+  "translatePrint": "Print",
+  "translateDownload": "Download",
+  "translateNextCourse": "Next course",
+  "translateNoCategoriesFor": "There are no categories for "
 }

@@ -253,10 +253,8 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Get course progress.
-   *
-   * @param langChanged Tells if the language has changed.
    */
-  courseProgress(langChanged: boolean = false): void {
+  courseProgress(): void {
     if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
       this.storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
       const findData = this.storedData.find((el: StoredCourseResponseDTO) => el.language === this.currentLanguage.split('-')[0]);
@@ -265,7 +263,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.setCurrentCategory();
         this.setCurrentCourse();
-        this.setCurrentExercise(langChanged);
+        this.setCurrentExercise();
 
         this.calculateProgress();
         this.mapExercises();
@@ -336,15 +334,11 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Set current exercise.
-   *
-   * @param langChanged Tells if the language has changed.
    */
-  setCurrentExercise(langChanged: boolean = false): void {
+  setCurrentExercise(): void {
     const findLastExercise = this.courseHelperService.getLatestExercise(this.selectedCourse);
-    console.log('findLastExercise', findLastExercise, langChanged);
     const findIndex = this.selectedCourse.exercises.findIndex(el => el.name === findLastExercise.name);
-    if (!this.resumeCourse && !langChanged) {
-      console.log('----');
+    if (!this.resumeCourse) {
       this.exerciseIndex = findIndex;
       this.selectedCourse.exercises = this.selectedCourse.exercises.map((el, index) => {
         const elem: CourseExerciseDTO = { ...el };
@@ -357,6 +351,14 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       if (!findLastExercise.completed) {
         this.exerciseIndex = findIndex;
+        this.selectedCourse.exercises = this.selectedCourse.exercises.map((el, index) => {
+          const elem: CourseExerciseDTO = { ...el };
+          elem.results = el.results ? el.results : [];
+          if (index >= this.exerciseIndex) {
+            elem.completed = false;
+          }
+          return elem;
+        });
       } else {
         if (findIndex + 1 <= this.selectedCourse.exercises.length - 1) {
           this.exerciseIndex = findIndex + 1;
@@ -722,6 +724,8 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedCourse.updatedAt = new Date();
     if (isCompleted) {
       this.selectedCourse.completed = true;
+    } else {
+      this.selectedCourse.completed = false;
     }
     this.selectedCourse.exercises[exerciseIndex].completed = true;
     this.selectedCourse.exercises[exerciseIndex].updatedAt = new Date();

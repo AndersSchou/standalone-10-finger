@@ -82,12 +82,20 @@ export class CourseHelperService {
    * @param categoryName Represents the category name.
    * @param categories Represents the categories.
    */
-  startExercise(courseIndex: number, exerciseIndex: number, language: string, categoryName: string, categories: CategoriesDTO[]): void {
+  startExercise(
+    courseIndex: number,
+    exerciseIndex: number,
+    language: string,
+    categoryName: string,
+    categories: CategoriesDTO[]
+  ): void {
     const findCat = categories.find((el: CategoriesDTO) => el.name === categoryName);
     if (findCat) {
       findCat.updatedAt = new Date();
       findCat.courses[courseIndex].updatedAt = new Date();
+      findCat.courses[courseIndex].completed = false;
       findCat.courses[courseIndex].exercises[exerciseIndex].updatedAt = new Date();
+      findCat.courses[courseIndex].exercises[exerciseIndex].completed = false;
     }
 
     // Update local storage with the new data.

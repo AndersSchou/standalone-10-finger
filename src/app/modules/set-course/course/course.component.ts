@@ -56,15 +56,6 @@ export class AppSetCourseCourseComponent {
     let currentCourse = findLatestCourse;
     const findIndex = cat.courses.findIndex((el: CourseDTO) => el.name === findLatestCourse.name);
     this.activeCourseIndex = findIndex;
-    // if (findLatestCourse.completed) {
-    //   if (findIndex && ((findIndex + 1) <= cat.courses.length - 1)) {
-    //     currentCourse = cat.courses[findIndex + 1];
-    //     this.activeCourseIndex = findIndex + 1;
-    //   } else {
-    //     currentCourse = cat.courses[0];
-    //     this.activeCourseIndex = 0;
-    //   }
-    // }
     this.findLatestExercise(currentCourse);
   }
 

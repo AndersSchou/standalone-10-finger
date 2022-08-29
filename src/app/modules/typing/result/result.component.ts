@@ -45,7 +45,7 @@ export class AppTypingResultComponent implements OnInit, OnDestroy {
    * @param courseHelperService Reference to CourseHelperService.
    * @param languageHelperService Reference to LanguageHelperService.
    * @param router Reference to Router.
-   * @param printerService Reference to NgxPrinterService.
+   * @param printerService Reference to Router.
    */
   constructor(
     private readonly settingsService: SettingsService,

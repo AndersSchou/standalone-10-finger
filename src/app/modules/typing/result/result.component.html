@@ -10,11 +10,11 @@
     *ngIf="selectedCourse && selectedCourse.exercises && selectedCourse.exercises.length">
     <div>
       <div class="result-text">
-        <div class="result-title">Superb job!</div>
-        <div class="result-description">You completed this course</div>
+        <div class="result-title">{{ 'translateSuperbJob' | translate }}</div>
+        <div class="result-description">{{ 'translateYouCompletedCourse' | translate }}</div>
         <div class="result-btn-hld">
           <div class="result-btn" (click)="replay()">
-            Replay
+            {{ 'translateReplay' | translate }}
           </div>
         </div>
       </div>
@@ -29,20 +29,20 @@
             <div>
               <div class="res-title">
                 <mat-icon svgIcon="result" class="mr-16"></mat-icon>
-                Exercise result
+                {{ 'translateExerciseResult' | translate }}
               </div>
               <div class="pl-40">
                 <div fxLayout="row wrap" class="v-align res-hld" fxLayoutGap="40px">
                   <div fxFlex class="flex-v-align res-txt">
                     <mat-icon svgIcon="speed" class="mr-16 speed"></mat-icon>
-                    Speed
+                    {{ 'translateSpeed' | translate }}
                   </div>
-                  <div fxFlex>{{calculateSpeed()}} keys per minute</div>
+                  <div fxFlex>{{calculateSpeed()}} {{ 'translateKeysPerMinute' | translate }}</div>
                 </div>
                 <div fxLayout="row wrap" class="v-align res-hld" fxLayoutGap="40px">
                   <div fxFlex class="flex-v-align res-txt">
                     <mat-icon svgIcon="accuracy" class="mr-16 accuracy"></mat-icon>
-                    Accuracy
+                    {{ 'translateAccuracy' | translate }}
                   </div>
                   <div fxFlex>{{calculateAccuracy()}} %</div>
                 </div>
@@ -57,17 +57,17 @@
       <div class="flex-v-align ptb-30">
         <div class="flex-v-align">
           <div class="result-btn" (click)="goBack()">
-            Back to courses
+            {{ 'translateBackToCourses' | translate }}
           </div>
         </div>
         <div class="flex-v-align ml-auto">
-          <div class="round-btn" matTooltip="Print" (click)="print()">
+          <div class="round-btn" matTooltip="{{'translatePrint' | translate}}" (click)="print()">
             <mat-icon svgIcon="print"></mat-icon>
           </div>
-          <div class="round-btn" matTooltip="Download" (click)="downloadAsPDF()">
+          <div class="round-btn" matTooltip="{{'translateDownload' | translate}}" (click)="downloadAsPDF()">
             <mat-icon svgIcon="download"></mat-icon>
           </div>
-          <div class="round-btn" matTooltip="Next course" (click)="nextCourse()">
+          <div class="round-btn" matTooltip="{{'translateNextCourse' | translate}}" (click)="nextCourse()">
             <mat-icon svgIcon="arrow_right"></mat-icon>
           </div>
         </div>
