@@ -1,8 +1,14 @@
-import { CourseDTO, CategoriesDTO, CourseResponseDTO, CourseExerciseDTO } from 'src/app/dto/course.dto';
+import { CourseDTO, CategoriesDTO, CourseResponseDTO, CourseExerciseDTO, StoredCourseResponseDTO } from 'src/app/dto/course.dto';
 import { Injectable } from '@angular/core';
+import { STORAGE_KEY_TYPE } from '../common/enums';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class CourseHelperService {
+
+  constructor(
+    private readonly router: Router,
+  ) { }
 
   /**
    * Get the latest category.
@@ -65,5 +71,56 @@ export class CourseHelperService {
       }
       return prev;
     });
+  }
+
+  /**
+   * Start exercise method.
+   *
+   * @param courseIndex Represents the course index.
+   * @param exerciseIndex Represents the exercise index.
+   * @param language Represents the language.
+   * @param categoryName Represents the category name.
+   * @param categories Represents the categories.
+   */
+  startExercise(
+    courseIndex: number,
+    exerciseIndex: number,
+    language: string,
+    categoryName: string,
+    categories: CategoriesDTO[]
+  ): void {
+    const findCat = categories.find((el: CategoriesDTO) => el.name === categoryName);
+    if (findCat) {
+      findCat.updatedAt = new Date();
+      findCat.courses[courseIndex].updatedAt = new Date();
+      findCat.courses[courseIndex].completed = false;
+      findCat.courses[courseIndex].exercises[exerciseIndex].updatedAt = new Date();
+      findCat.courses[courseIndex].exercises[exerciseIndex].completed = false;
+    }
+
+    // Update local storage with the new data.
+    const lang = language.split('-')[0];
+    if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
+      const allCats = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
+      const findLangCategories = allCats.find((el: StoredCourseResponseDTO) => el.language === lang);
+      if (findLangCategories) {
+        findLangCategories.data = { categories };
+      } else {
+        allCats.push({
+          language: lang,
+          data: { categories }
+        });
+      }
+      localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(allCats));
+    } else {
+      const storedData = [{
+        language: lang,
+        data: { categories }
+      }];
+      localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(storedData));
+    }
+    setTimeout(() => {
+      this.router.navigate(['/type']);
+    }, 500);
   }
 }

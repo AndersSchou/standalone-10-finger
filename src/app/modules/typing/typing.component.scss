@@ -1,99 +1,10 @@
 @import "app-colors";
 
-.typing-header {
-  background: $light-yellow;
-}
-
-.course-title {
-  font-weight: 900;
-  font-size: 16px;
-  margin-left: 16px;
-}
-
-.course-det-hld {
-  font-weight: 400;
-  font-size: 12px;
-  margin-right: 16px;
-}
-
-.header-content {
-  height: 56px;
-}
-
-.left-header,
-.right-header {
-  display: flex;
-  align-items: center;
-}
-
-.back-btn-hld {
-  background: $white-color;
-  display: flex;
-  align-items: center;
-  padding: 6px 16px;
-  box-shadow: 1px 1px 1px rgb(82 61 20 / 14%);
-  -moz-box-shadow: 1px 1px 1px rgb(82 61 20 / 14%);
-  -webkit-box-shadow: 1px 1px 1px rgb(82 61 20 / 14%);
-  border-radius: 12px;
-  font-weight: 300;
-  font-size: 14px;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.back-btn-hld .mat-icon {
-  width: 8px;
-  height: 16px;
-}
-
-.reset-hld {
-  width: 40px;
-  height: 40px;
-  background: $white-color;
-  box-shadow: 1px 1px 1px rgb(82 61 20 / 14%);
-  -moz-box-shadow: 1px 1px 1px rgb(82 61 20 / 14%);
-  -webkit-box-shadow: 1px 1px 1px rgb(82 61 20 / 14%);
-  border-radius: 120px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-::ng-deep .reset-hld .mat-icon svg>path {
-  stroke: $color-active-secondary;
-}
-
-::ng-deep .reset-hld .mat-icon svg>path:nth-of-type(3),
-::ng-deep .reset-hld .mat-icon svg>path:nth-of-type(4) {
-  fill: $color-active-secondary;
-  stroke: none;
-}
-
-.course-progress-hld {
-  height: 4px;
-}
-
-.course-progress-hld .progress {
-  background: $color-active;
-  height: 100%;
-  border-radius: 4px;
-}
-
-.percentage-hld {
-  font-weight: 900;
-  font-size: 16px;
-  text-align: center;
-  margin-top: 16px;
-  margin-bottom: 24px;
-  color: $color-active-secondary;
-}
-
 .exercise-hld {
   display: flex;
   justify-content: center;
-  max-height: calc(100% - 546px);
-  padding: 15px 0 34px 0;
+  max-height: calc(100vh - 612px);
+  padding: 15px 0 25px 0;
 }
 
 .exercises {
@@ -268,18 +179,3 @@
     color: $red-text-color;
   }
 }
-
-// ::ng-deep .current-pos {
-//   animation: current 1s infinite;
-//   -webkit-animation: current 1s infinite;
-// }
-
-// @keyframes current {
-//   from {
-//     border-bottom: 2px solid $default-text-color;
-//   }
-
-//   to {
-//     border-bottom: 2px solid transparent;
-//   }
-// }

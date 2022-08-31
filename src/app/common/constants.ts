@@ -31,12 +31,15 @@ export const WHITE_SPACE_REGEX = '^\\s+$';
 // This array is used only for fetching all the svgs only once, when the app loads.
 // This was done to avoid the errors thrown by MatIconRegistry when it can't find/fetch the svg (on internet connection issues).
 export const APP_ICONS = [
+  'accuracy',
   'achivements',
+  'arrow_right',
   'checkbox_checked',
   'checkbox_unchecked',
   'chevron_down',
   'chevron_left',
   'courses',
+  'download',
   'drag_drop',
   'error',
   'games',
@@ -59,11 +62,15 @@ export const APP_ICONS = [
   'keyboard_mode_3',
   'logo_10_finger',
   'logo_10_finger_text',
+  'print',
   'radio_checked',
   'radio_unchecked',
   'reset',
+  'result',
   'rocket',
-  'settings'
+  'settings',
+  'speed',
+  'winner',
 ];
 
 // Colors map based on the key position on the keyboard.

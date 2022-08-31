@@ -44,50 +44,50 @@ export const nb = {
               "name": "Øvelse 5",
               "text": "fu du"
             },
-            {
-              "name": "Øvelse 6",
-              "text": "du lu"
-            },
-            {
-              "name": "Øvelse 7",
-              "text": "lu ku"
-            },
-            {
-              "name": "Øvelse 8",
-              "text": "ku ju"
-            },
-            {
-              "name": "Øvelse 9",
-              "text": "ju su"
-            },
-            {
-              "name": "Øvelse 10",
-              "text": "su ra"
-            },
-            {
-              "name": "Rimord 1",
-              "text": "sus"
-            },
-            {
-              "name": "Rimord 2",
-              "text": "mus"
-            },
-            {
-              "name": "Rimord 3",
-              "text": "lus"
-            },
-            {
-              "name": "120 hyppige ord 4",
-              "text": "ud"
-            },
-            {
-              "name": "120 hyppige ord 5",
-              "text": "du"
-            },
-            {
-              "name": "120 hyppige ord 6",
-              "text": "fra"
-            },
+            // {
+            //   "name": "Øvelse 6",
+            //   "text": "du lu"
+            // },
+            // {
+            //   "name": "Øvelse 7",
+            //   "text": "lu ku"
+            // },
+            // {
+            //   "name": "Øvelse 8",
+            //   "text": "ku ju"
+            // },
+            // {
+            //   "name": "Øvelse 9",
+            //   "text": "ju su"
+            // },
+            // {
+            //   "name": "Øvelse 10",
+            //   "text": "su ra"
+            // },
+            // {
+            //   "name": "Rimord 1",
+            //   "text": "sus"
+            // },
+            // {
+            //   "name": "Rimord 2",
+            //   "text": "mus"
+            // },
+            // {
+            //   "name": "Rimord 3",
+            //   "text": "lus"
+            // },
+            // {
+            //   "name": "120 hyppige ord 4",
+            //   "text": "ud"
+            // },
+            // {
+            //   "name": "120 hyppige ord 5",
+            //   "text": "du"
+            // },
+            // {
+            //   "name": "120 hyppige ord 6",
+            //   "text": "fra"
+            // },
           ]
         },
         {
@@ -117,86 +117,86 @@ export const nb = {
               "name": "Øvelse 6",
               "text": "fe le"
             },
-            {
-              "name": "Øvelse 7",
-              "text": "le ri"
-            },
-            {
-              "name": "Øvelse 8",
-              "text": "ri ki"
-            },
-            {
-              "name": "Øvelse 9",
-              "text": "ki fi"
-            },
-            {
-              "name": "Øvelse 10",
-              "text": "fi li"
-            },
-            {
-              "name": "120 hyppige ord 7",
-              "text": "alle"
-            },
-            {
-              "name": "120 hyppige ord 8",
-              "text": "eller"
-            },
-            {
-              "name": "120 hyppige ord 9",
-              "text": "skulle"
-            },
-            {
-              "name": "120 hyppige ord 10",
-              "text": "er"
-            },
-            {
-              "name": "120 hyppige ord 11",
-              "text": "de"
-            },
-            {
-              "name": "120 hyppige ord 12",
-              "text": "der"
-            },
-            {
-              "name": "120 hyppige ord 13",
-              "text": "ikke"
-            },
-            {
-              "name": "120 hyppige ord 14",
-              "text": "var"
-            },
-            {
-              "name": "120 hyppige ord 15",
-              "text": "lille"
-            },
-            {
-              "name": "120 hyppige ord 16",
-              "text": "deres"
-            },
-            {
-              "name": "120 hyppige ord 17",
-              "text": "ville"
-            },
-            {
-              "name": "120 hyppige ord 18",
-              "text": "se"
-            },
-            {
-              "name": "120 hyppige ord 19",
-              "text": "fik"
-            },
-            {
-              "name": "120 hyppige ord 20",
-              "text": "jer"
-            },
-            {
-              "name": "120 hyppige ord 21",
-              "text": "fri"
-            },
-            {
-              "name": "120 hyppige ord 22",
-              "text": "sidste"
-            },
+            // {
+            //   "name": "Øvelse 7",
+            //   "text": "le ri"
+            // },
+            // {
+            //   "name": "Øvelse 8",
+            //   "text": "ri ki"
+            // },
+            // {
+            //   "name": "Øvelse 9",
+            //   "text": "ki fi"
+            // },
+            // {
+            //   "name": "Øvelse 10",
+            //   "text": "fi li"
+            // },
+            // {
+            //   "name": "120 hyppige ord 7",
+            //   "text": "alle"
+            // },
+            // {
+            //   "name": "120 hyppige ord 8",
+            //   "text": "eller"
+            // },
+            // {
+            //   "name": "120 hyppige ord 9",
+            //   "text": "skulle"
+            // },
+            // {
+            //   "name": "120 hyppige ord 10",
+            //   "text": "er"
+            // },
+            // {
+            //   "name": "120 hyppige ord 11",
+            //   "text": "de"
+            // },
+            // {
+            //   "name": "120 hyppige ord 12",
+            //   "text": "der"
+            // },
+            // {
+            //   "name": "120 hyppige ord 13",
+            //   "text": "ikke"
+            // },
+            // {
+            //   "name": "120 hyppige ord 14",
+            //   "text": "var"
+            // },
+            // {
+            //   "name": "120 hyppige ord 15",
+            //   "text": "lille"
+            // },
+            // {
+            //   "name": "120 hyppige ord 16",
+            //   "text": "deres"
+            // },
+            // {
+            //   "name": "120 hyppige ord 17",
+            //   "text": "ville"
+            // },
+            // {
+            //   "name": "120 hyppige ord 18",
+            //   "text": "se"
+            // },
+            // {
+            //   "name": "120 hyppige ord 19",
+            //   "text": "fik"
+            // },
+            // {
+            //   "name": "120 hyppige ord 20",
+            //   "text": "jer"
+            // },
+            // {
+            //   "name": "120 hyppige ord 21",
+            //   "text": "fri"
+            // },
+            // {
+            //   "name": "120 hyppige ord 22",
+            //   "text": "sidste"
+            // },
           ]
         },
         {
@@ -226,106 +226,106 @@ export const nb = {
               "name": "Øvelse 6",
               "text": "bu ba"
             },
-            {
-              "name": "Øvelse 7",
-              "text": "ba ne"
-            },
-            {
-              "name": "Øvelse 8",
-              "text": "ne ni"
-            },
-            {
-              "name": "Øvelse 9",
-              "text": "ni nu"
-            },
-            {
-              "name": "Øvelse 10",
-              "text": "nu ne"
-            },
-            {
-              "name": "Rimord 1",
-              "text": "blinke"
-            },
-            {
-              "name": "Rimord 2",
-              "text": "flinke"
-            },
-            {
-              "name": "Rimord 3",
-              "text": "skinke"
-            },
-            {
-              "name": "120 hyppige ord 23",
-              "text": "ind"
-            },
-            {
-              "name": "120 hyppige ord 24",
-              "text": "en"
-            },
-            {
-              "name": "120 hyppige ord 25",
-              "text": "kan"
-            },
-            {
-              "name": "120 hyppige ord 26",
-              "text": "kunne"
-            },
-            {
-              "name": "120 hyppige ord 27",
-              "text": "kun"
-            },
-            {
-              "name": "120 hyppige ord 28",
-              "text": "ned"
-            },
-            {
-              "name": "120 hyppige ord 29",
-              "text": "under"
-            },
-            {
-              "name": "120 hyppige ord 30",
-              "text": "andre"
-            },
-            {
-              "name": "120 hyppige ord 31",
-              "text": "end"
-            },
-            {
-              "name": "120 hyppige ord 32",
-              "text": "sine"
-            },
-            {
-              "name": "120 hyppige ord 33",
-              "text": "nej"
-            },
-            {
-              "name": "120 hyppige ord 34",
-              "text": "fin"
-            },
-            {
-              "name": "120 hyppige ord 35",
-              "text": "sin"
-            },
-            {
-              "name": "120 hyppige ord 36",
-              "text": "den"
-            },
-            {
-              "name": "120 hyppige ord 37",
-              "text": "nu"
-            },
-            {
-              "name": "Skriv sætning 1",
-              "text": "bine kan blaese i en lur"
-            },
-            {
-              "name": "Skriv sætning 2",
-              "text": "basse ser en bus"
-            },
-            {
-              "name": "Skriv sætning 3",
-              "text": "alf bader i en balje"
-            }
+            // {
+            //   "name": "Øvelse 7",
+            //   "text": "ba ne"
+            // },
+            // {
+            //   "name": "Øvelse 8",
+            //   "text": "ne ni"
+            // },
+            // {
+            //   "name": "Øvelse 9",
+            //   "text": "ni nu"
+            // },
+            // {
+            //   "name": "Øvelse 10",
+            //   "text": "nu ne"
+            // },
+            // {
+            //   "name": "Rimord 1",
+            //   "text": "blinke"
+            // },
+            // {
+            //   "name": "Rimord 2",
+            //   "text": "flinke"
+            // },
+            // {
+            //   "name": "Rimord 3",
+            //   "text": "skinke"
+            // },
+            // {
+            //   "name": "120 hyppige ord 23",
+            //   "text": "ind"
+            // },
+            // {
+            //   "name": "120 hyppige ord 24",
+            //   "text": "en"
+            // },
+            // {
+            //   "name": "120 hyppige ord 25",
+            //   "text": "kan"
+            // },
+            // {
+            //   "name": "120 hyppige ord 26",
+            //   "text": "kunne"
+            // },
+            // {
+            //   "name": "120 hyppige ord 27",
+            //   "text": "kun"
+            // },
+            // {
+            //   "name": "120 hyppige ord 28",
+            //   "text": "ned"
+            // },
+            // {
+            //   "name": "120 hyppige ord 29",
+            //   "text": "under"
+            // },
+            // {
+            //   "name": "120 hyppige ord 30",
+            //   "text": "andre"
+            // },
+            // {
+            //   "name": "120 hyppige ord 31",
+            //   "text": "end"
+            // },
+            // {
+            //   "name": "120 hyppige ord 32",
+            //   "text": "sine"
+            // },
+            // {
+            //   "name": "120 hyppige ord 33",
+            //   "text": "nej"
+            // },
+            // {
+            //   "name": "120 hyppige ord 34",
+            //   "text": "fin"
+            // },
+            // {
+            //   "name": "120 hyppige ord 35",
+            //   "text": "sin"
+            // },
+            // {
+            //   "name": "120 hyppige ord 36",
+            //   "text": "den"
+            // },
+            // {
+            //   "name": "120 hyppige ord 37",
+            //   "text": "nu"
+            // },
+            // {
+            //   "name": "Skriv sætning 1",
+            //   "text": "bine kan blaese i en lur"
+            // },
+            // {
+            //   "name": "Skriv sætning 2",
+            //   "text": "basse ser en bus"
+            // },
+            // {
+            //   "name": "Skriv sætning 3",
+            //   "text": "alf bader i en balje"
+            // }
           ]
         },
       ]

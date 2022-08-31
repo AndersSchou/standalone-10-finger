@@ -61,3 +61,37 @@ export interface CourseResultDTO {
   lastIndex?: number;
   updatedAt: Date;
 }
+
+export function createEmptyCourseResponseDTO(): CourseResponseDTO { return { categories: [] }; }
+
+/**
+ * Creates an empty category.
+ *
+ * @returns An object as CategoriesDTO.
+ */
+export function createEmptyCategoriesDTO(): CategoriesDTO {
+  return {
+    name: '',
+    courses: [],
+    completed: false,
+    progress: 0,
+    selected: false,
+    updatedAt: new Date(),
+  };
+}
+
+/**
+ * Creates an empty course.
+ *
+ * @returns An object as CourseDTO.
+ */
+export function createEmptyCourseDTO(): CourseDTO {
+  return {
+    name: '',
+    exercises: [],
+    completed: false,
+    showAll: false,
+    updatedAt: new Date(),
+    results: [],
+  };
+}

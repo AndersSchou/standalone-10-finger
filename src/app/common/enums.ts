@@ -15,7 +15,7 @@ export enum Color {
 export enum STORAGE_KEY_TYPE {
   KEYBOARD_THEME_COLOR = 'keyboardThemeColor',
   KEYBOARD_PRIMARY_LAYOUT = 'keyboardPrimaryLayout',
-  CURRENT_LANGUAGE = 'currentLanguage',
+  CURRENT_LANGUAGE = 'activeLanguage',
   COURSES_PROGRESS = 'coursesProgress',
 }
 

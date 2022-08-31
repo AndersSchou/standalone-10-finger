@@ -1,0 +1,28 @@
+<div class="typing-header">
+  <div class="page-padd">
+    <div fxLayout="row wrap" fxLayoutGap="20px" class="header-content">
+      <div class="left-header" fxFlex>
+        <div class="back-btn-hld" (click)="goBack()">
+          <mat-icon svgIcon="chevron_left" class="mr-10"></mat-icon>
+          Back
+        </div>
+        <div class="course-title">
+          {{currentCategory.name}} - {{selectedCourse.name}}
+        </div>
+      </div>
+      <div class="right-header" fxFlex="nogrow"
+        *ngIf="selectedCourse && selectedCourse.exercises && selectedCourse.exercises.length>0">
+        <div class="course-det-hld">{{selectedCourse.exercises[0].name}} -
+          {{selectedCourse.exercises[exerciseIndex].name}}</div>
+        <div class="reset-hld" (click)="resetCourse()">
+          <mat-icon svgIcon="icon_replay" matTooltip="Reset course"></mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="course-progress-hld">
+    <div class="progress" [ngStyle]="{width: currentProgress+'%'}"></div>
+  </div>
+</div>
+<div class="percentage-hld">{{currentProgress | number: '1.0-2'}}%</div>
