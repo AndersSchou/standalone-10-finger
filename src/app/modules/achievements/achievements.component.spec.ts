@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { LanguageHelperService } from 'src/app/services/language.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { MaterialModule } from '../shared/material.module';
 import { AppAchievementsComponent } from './achievements.component';
@@ -12,6 +13,8 @@ describe('AppAchievementsComponent', () => {
   let fixture: ComponentFixture<AppAchievementsComponent>;
   let settingsServiceSpy: jasmine.SpyObj<SettingsService>;
   let onViewSettingsActionSpy;
+  let languageHelperServiceSpy: jasmine.SpyObj<LanguageHelperService>;
+  let onLanguageChangedSpy;
 
   beforeEach(async () => {
     settingsServiceSpy = jasmine.createSpyObj<SettingsService>(['viewSettingsAction']);
@@ -21,10 +24,18 @@ describe('AppAchievementsComponent', () => {
       }
     );
 
+    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>(['OnLanguageChanged']);
+    (languageHelperServiceSpy as any).OnLanguageChanged = new Observable(
+      (subscriber) => {
+        onLanguageChangedSpy = subscriber;
+      }
+    );
+
     await TestBed.configureTestingModule({
       declarations: [AppAchievementsComponent],
       providers: [
         { provide: SettingsService, useValue: settingsServiceSpy },
+        { provide: LanguageHelperService, useValue: languageHelperServiceSpy },
       ],
       imports: [
         TranslateModule.forRoot(),

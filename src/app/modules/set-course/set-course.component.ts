@@ -86,7 +86,13 @@ export class AppSetCourseComponent implements OnInit, OnDestroy {
       if (findCategories) {
         this.categories = findCategories.data.categories.map((el: CategoriesDTO) => {
           const elem = el;
-          const completedCourses = el.courses.filter((course: CourseDTO) => course.completed);
+          const completedCourses = el.courses.filter((course: CourseDTO) => {
+            const findIncompleteExercise = course.exercises.find(ex => !ex.results || (ex.results && ex.results.length === 0));
+            if (findIncompleteExercise) {
+              return false;
+            }
+            return true;
+          });
           elem.progress = ((100 * completedCourses.length) / el.courses.length);
           return elem;
         });

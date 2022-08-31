@@ -24,7 +24,7 @@
               </div>
             </div>
             <div class="exercise-progress">
-              <div class="progress" [ngClass]="{'full': exercise.completed}"></div>
+              <div class="progress" [ngClass]="{'full': exercise.results && exercise.results.length > 0}"></div>
             </div>
           </div>
         </div>
