@@ -221,9 +221,7 @@ export class AppTypingResultComponent implements OnInit, OnDestroy {
    * @returns Returns the total speed value for the current course.
    */
   calculateSpeed(): number {
-    const lastResult = this.selectedCourse.results[this.selectedCourse.results.length - 1];
-    const speed = Math.round((lastResult.characters * 60000) / lastResult.time);
-    return speed;
+    return this.courseHelperService.calculateSpeed(this.selectedCourse);
   }
 
   /**
@@ -232,9 +230,7 @@ export class AppTypingResultComponent implements OnInit, OnDestroy {
    * @returns Returns the total accuracy value for the current course.
    */
   calculateAccuracy(): number {
-    const lastResult = this.selectedCourse.results[this.selectedCourse.results.length - 1];
-    const accuracy = Math.round((lastResult.characters - lastResult.mistakes) * 100 / lastResult.characters);
-    return accuracy;
+    return this.courseHelperService.calculateAccuracy(this.selectedCourse);
   }
 
   /**

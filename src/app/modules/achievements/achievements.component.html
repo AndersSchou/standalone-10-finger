@@ -1,3 +1,63 @@
 <app-shared-top-menu></app-shared-top-menu>
 <app-shared-settings *ngIf="viewSettings"></app-shared-settings>
-<div class="main-content-hld">achivements</div>
+<div class="course main-content-hld page-padd ptb-34">
+  <div *ngIf="categories && categories.length > 0; else noCategories">
+    <div fxLayout="row wrap" fxLayoutGap="50px">
+      <div fxFlex="300px">
+        <div>
+          <div>
+            <div class="section-title">
+              <mat-icon svgIcon="result"></mat-icon>
+              {{ 'translateOverallResults' | translate }}
+            </div>
+            <div class="pl-40 pb-24">
+              <div fxLayout="row wrap" class="v-align res-hld" fxLayoutGap="40px">
+                <div fxFlex class="flex-v-align res-txt">
+                  <mat-icon svgIcon="speed" class="mr-16 speed"></mat-icon>
+                  {{ 'translateSpeed' | translate }}
+                </div>
+                <div fxFlex>{{calculateSpeedAndAccuracy().speed}} {{ 'translateKeysPerMinute' | translate }}</div>
+              </div>
+              <div fxLayout="row wrap" class="v-align res-hld" fxLayoutGap="40px">
+                <div fxFlex class="flex-v-align res-txt">
+                  <mat-icon svgIcon="accuracy" class="mr-16 accuracy"></mat-icon>
+                  {{ 'translateAccuracy' | translate }}
+                </div>
+                <div fxFlex>{{calculateSpeedAndAccuracy().accuracy}} %</div>
+              </div>
+              <div class="category-progress">
+                <div class="progress" [ngStyle]="{'width': calculateProgress() + '%'}"></div>
+              </div>
+              <div>{{calculateProgress() | number: '1.0-2'}}% {{ 'translateCompleted' | translate }}</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="section-title pt-24">
+            <mat-icon svgIcon="open_book"></mat-icon>
+            {{ 'translateCategories' | translate }}
+          </div>
+          <div class="pl-16">
+            <div *ngFor="let category of categories; let i=index" class="cat-hld"
+              [ngClass]="{'active': category.name === currentCategory.name}" (click)="selectCategory(category)">
+              <div>{{category.name}}</div>
+              <div class="icon-hld">
+                <mat-icon [svgIcon]="i===0 ? 'icon_read' : (i===1 ? 'icon_symbol': 'icon_speed')" class="mr-10">
+                </mat-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="divider"></div>
+      </div>
+      <div fxFlex class="overflow-auto">
+        <app-modules-achievements-awards [currentLanguage]="currentLanguage" [categories]="categories"
+          [currentCategory]="currentCategory" [courses]="completedCourses"></app-modules-achievements-awards>
+      </div>
+    </div>
+  </div>
+  <ng-template #noCategories>
+    <div class="center-content">
+      {{ 'translateNoCategoriesFor' | translate }} {{currentLanguage | translate}}.
+    </div>
+  </ng-template>
+</div>

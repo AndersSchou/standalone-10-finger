@@ -54,11 +54,17 @@
   "translateReplay": "Replay",
   "translateExerciseResult": "Exercise result",
   "translateSpeed": "Speed",
-  "translateKeysPerMinute": "keys per minute",
+  "translateKeysPerMinute": "keys/min",
   "translateAccuracy": "Accuracy",
   "translateBackToCourses": "Back to courses",
   "translatePrint": "Print",
   "translateDownload": "Download",
   "translateNextCourse": "Next course",
-  "translateNoCategoriesFor": "There are no categories for "
+  "translateNoCategoriesFor": "There are no categories for ",
+  "translateViewDetails": "View details",
+  "translateNoAwardsForCategory": "You didn't earn any awards for this category.",
+  "translateDateTime": "Date & time",
+  "translateOverallResults": "Overall results",
+  "translateCompleted": "completed",
+  "translateCategories": "Categories"
 }

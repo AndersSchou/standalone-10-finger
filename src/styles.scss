@@ -73,6 +73,21 @@ body .mat-icon {
   align-items: center;
 }
 
+.achievement-backdrop {
+  background: rgba(252, 169, 3, 0.8);
+  backdrop-filter: blur(16px);
+}
+
+.achievement-class {
+  max-height: 98vh;
+  min-width: 432px;
+}
+
+.achievement-class .mat-dialog-container {
+  padding: 0;
+  overflow: hidden;
+}
+
 @media (max-width: 1199px) {
   .page-padd {
     padding: 0 26px;

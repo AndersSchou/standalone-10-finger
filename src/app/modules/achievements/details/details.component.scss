@@ -1,0 +1,92 @@
+@import "app-colors";
+
+.mat-dialog-title {
+  padding: 30px 30px 0 30px;
+}
+
+.mat-dialog-content {
+  max-height: 74vh;
+}
+
+.pb-30 {
+  padding-bottom: 30px;
+}
+
+.award-header .mat-icon {
+  width: 110px;
+  height: 112px;
+}
+
+.close-row {
+  display: flex;
+}
+
+.icon-hld .mat-icon {
+  cursor: pointer;
+}
+
+.award-header-hld {
+  text-align: center;
+}
+
+.award-header-title {
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 140%;
+  letter-spacing: 0.01em;
+}
+
+.award-desc {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 150%;
+}
+
+.overall-res-hld {
+  padding: 25px;
+  text-align: center;
+}
+
+.details-title-hld {
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 138%;
+  letter-spacing: 0.03em;
+  color: $color-active-secondary;
+}
+
+::ng-deep .overall-res-hld .mat-icon svg>circle,
+::ng-deep .overall-res-hld .mat-icon.calendar svg>rect,
+::ng-deep .overall-res-hld .mat-icon svg>path {
+  stroke: $color-active-secondary;
+}
+
+::ng-deep .overall-res-hld .mat-icon.speed svg>path:nth-of-type(1),
+::ng-deep .overall-res-hld .mat-icon.accuracy svg>path:nth-of-type(3) {
+  fill: $color-active-secondary;
+  stroke: none;
+}
+
+.details-actions-hld {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 25px;
+}
+
+.round-btn {
+  width: 44px;
+  height: 44px;
+  background: $white-color;
+  box-shadow: 1px 1px 1px rgba(82, 61, 20, 0.14);
+  border-radius: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 12px;
+  cursor: pointer;
+}
+
+.round-btn:hover {
+  background: $color-active;
+}

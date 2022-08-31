@@ -2,9 +2,23 @@ import { CourseDTO, CategoriesDTO, CourseResponseDTO, CourseExerciseDTO, StoredC
 import { Injectable } from '@angular/core';
 import { STORAGE_KEY_TYPE } from '../common/enums';
 import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class CourseHelperService {
+  // The subject used to controls the service communication.
+  private closeDetailsModalSource = new Subject<boolean>();
+  // Observable instance of the source object.
+  private closeDetailsModalObservable = this.closeDetailsModalSource.asObservable();
+
+  /**
+   * Getter function for private viewSettings Observable.
+   *
+   * @return Observable<boolean> That listens for any actions.
+   */
+  public get closeDetailsModalAction(): Observable<boolean> {
+    return this.closeDetailsModalObservable;
+  }
 
   constructor(
     private readonly router: Router,
@@ -87,7 +101,8 @@ export class CourseHelperService {
     exerciseIndex: number,
     language: string,
     categoryName: string,
-    categories: CategoriesDTO[]
+    categories: CategoriesDTO[],
+    shouldCloseDetails: boolean = false,
   ): void {
     const findCat = categories.find((el: CategoriesDTO) => el.name === categoryName);
     if (findCat) {
@@ -121,6 +136,31 @@ export class CourseHelperService {
     }
     setTimeout(() => {
       this.router.navigate(['/type']);
-    }, 500);
+      if (shouldCloseDetails) {
+        this.closeDetailsModalSource.next(true);
+      }
+    }, 300);
+  }
+
+  /**
+   * Calculate the speed for the current course.
+   *
+   * @returns The total speed value for the current course.
+   */
+  calculateSpeed(selectedCourse: CourseDTO): number {
+    const lastResult = selectedCourse.results[selectedCourse.results.length - 1];
+    const speed = Math.round((lastResult.characters * 60000) / lastResult.time);
+    return speed;
+  }
+
+  /**
+   * Calculate the accuracy for the current course.
+   *
+   * @returns The total accuracy value for the current course.
+   */
+  calculateAccuracy(selectedCourse: CourseDTO): number {
+    const lastResult = selectedCourse.results[selectedCourse.results.length - 1];
+    const accuracy = Math.round((lastResult.characters - lastResult.mistakes) * 100 / lastResult.characters);
+    return accuracy;
   }
 }
