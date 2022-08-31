@@ -7,6 +7,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
 
 /**
@@ -22,6 +23,7 @@ import { FormsModule } from '@angular/forms';
     MatSnackBarModule,
     MatSelectModule,
     MatTabsModule,
+    MatRadioModule,
     FormsModule,
   ],
   exports: [
@@ -33,6 +35,7 @@ import { FormsModule } from '@angular/forms';
     MatSnackBarModule,
     MatSelectModule,
     MatTabsModule,
+    MatRadioModule,
     FormsModule,
   ],
   providers: [],

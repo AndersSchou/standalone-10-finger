@@ -8,6 +8,7 @@ describe('LanguageHelperService', () => {
   let service: LanguageHelperService;
   let translateServiceSpy: jasmine.SpyObj<TranslateService>;
   const availableLanguages = environment.availableLanguages;
+  let onLanguageChangedSpy: jasmine.SpyObj<Observable<any>>;
 
   beforeEach(() => {
     translateServiceSpy = jasmine.createSpyObj('TranslateService', [
@@ -15,7 +16,11 @@ describe('LanguageHelperService', () => {
       'setDefaultLang',
       'use',
       'currentLang',
+      'onLangChange'
     ]);
+
+    onLanguageChangedSpy = jasmine.createSpyObj<Observable<any>>(['subscribe']);
+    (translateServiceSpy as any).onLangChange = onLanguageChangedSpy;
 
     TestBed.configureTestingModule({
       providers: [

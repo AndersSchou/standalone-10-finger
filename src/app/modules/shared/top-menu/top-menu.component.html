@@ -9,7 +9,7 @@
       </div>
     </div>
     <div fxFlex class="menu-hld">
-      <div class="item-hld" [routerLink]="['/type']" routerLinkActive="active"
+      <div class="item-hld" [routerLink]="['/type']" [queryParams]="{resume:'Course'}" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }">
         <mat-icon svgIcon="rocket" class="mr-10 typing"></mat-icon>
         {{ "translateTyping" | translate }}
@@ -34,7 +34,7 @@
         <mat-icon svgIcon="info" class="mr-10 info"></mat-icon>
         {{ "translateInformation" | translate}}
       </div>
-      <div class="item-hld">
+      <div class="item-hld" (click)="toggleSettings()">
         <mat-icon svgIcon="settings" class="mr-10 setting"></mat-icon>
         {{ "translateSettings" | translate }}
       </div>

@@ -1,4 +1,5 @@
 <app-shared-top-menu></app-shared-top-menu>
+<app-shared-settings *ngIf="viewSettings"></app-shared-settings>
 <div class="main-content-hld bg-img">
   <div class="center-content">
     <div>
@@ -10,7 +11,7 @@
         <div fxLayout="row wrap" fxLayoutGap="100px">
           <div fxFlex>
             <div class="wbtn-hld">
-              <div class="welcome-btn" (click)="navigateTo('/type')">
+              <div class="welcome-btn" (click)="navigateTo('/type', true)">
                 {{ "translateStartTyping" | translate}}
                 <mat-icon svgIcon="keyboard" class="ml-20"></mat-icon>
               </div>

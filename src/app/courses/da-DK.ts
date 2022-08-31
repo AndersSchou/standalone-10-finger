@@ -1164,7 +1164,7 @@ export const da = {
             },
             {
               "name": "Øvelse 3",
-              "text": "Du skal skrive \"\"\""
+              "text": 'Du skal skrive \"\"\"'
             },
             {
               "name": "Øvelse 4",
@@ -1210,23 +1210,23 @@ export const da = {
           "exercises": [
             {
               "name": "Øvelse 1",
-              "text": "Bølle-Bob møder Leslie på gaden.\n- Hej, siger Leslie.\n- Vil du med ned til Valde?"
+              "text": "Bølle-Bob møder Leslie på gaden.- Hej, siger Leslie.- Vil du med ned til Valde?"
             },
             {
               "name": "Øvelse 2",
-              "text": "Valde Underbid bor i en gammel vogn på byens losse-plads.\nHer kommer alle byens unge.\nIsær Leslie. "
+              "text": "Valde Underbid bor i en gammel vogn på byens losse-plads.Her kommer alle byens unge.Især Leslie. "
             },
             {
               "name": "Øvelse 3",
-              "text": "- Jeg kender ikke andre end Valde her i byen, siger Leslie.\n- Og så dig."
+              "text": "- Jeg kender ikke andre end Valde her i byen, siger Leslie.- Og så dig."
             },
             {
               "name": "Øvelse 4",
-              "text": "Du er jo lige flyttet til byen.\n Det tager lidt tid at få venner.\n Kom! De går sammen hen ad gaden.\nSå ser Bølle-Bob to rockere."
+              "text": "Du er jo lige flyttet til byen. Det tager lidt tid at få venner. Kom! De går sammen hen ad gaden.Så ser Bølle-Bob to rockere."
             },
             {
               "name": "Øvelse 5",
-              "text": "- Se der! siger han.\nDe kommer gående lige imod dem.\n- Jeg har da aldrig set rockere før i vores by, siger Bølle-Bob.\nMen det er du vel vant til?"
+              "text": "- Se der! siger han.De kommer gående lige imod dem.- Jeg har da aldrig set rockere før i vores by, siger Bølle-Bob.Men det er du vel vant til?"
             }
           ]
         }
@@ -1244,7 +1244,7 @@ export const da = {
             },
             {
               "name": "Øvelse 2",
-              "text": "Kongen kaldte på sin tjener. \"Væk mig i morgen tidlig klokken fem. Jeg har tænkt mig at skulle på rævejagt, så jeg må tidligt op.\"\n\"Javel Hans Højhed. Jeg skal vække kongen i morgen tidlig klokken fem. Sov godt!\" svarede tjeneren."
+              "text": "Kongen kaldte på sin tjener. \"Væk mig i morgen tidlig klokken fem. Jeg har tænkt mig at skulle på rævejagt, så jeg må tidligt op.\" \"Javel Hans Højhed. Jeg skal vække kongen i morgen tidlig klokken fem. Sov godt!\" svarede tjeneren."
             },
             {
               "name": "Øvelse 3",
@@ -1252,7 +1252,7 @@ export const da = {
             },
             {
               "name": "Øvelse 4",
-              "text": "Så fik tjeneren en god ide! Han kaldte på staldkarlen. \"Den gamle konge vil på rævejagt i morgen tidlig. Jeg har lovet at vække ham klokken fem. Derfor vil jeg have dig til at vække mig klokken fire.\" Staldkarlen var bange for tjeneren og svarede:\n \"Javel herre. Jeg skal vække Dem klokken fire.\""
+              "text": "Så fik tjeneren en god ide! Han kaldte på staldkarlen. \"Den gamle konge vil på rævejagt i morgen tidlig. Jeg har lovet at vække ham klokken fem. Derfor vil jeg have dig til at vække mig klokken fire.\" Staldkarlen var bange for tjeneren og svarede:\"Javel herre. Jeg skal vække Dem klokken fire.\""
             },
             {
               "name": "Øvelse 5",
@@ -1268,15 +1268,15 @@ export const da = {
             },
             {
               "name": "Øvelse 8",
-              "text": "\"Du ved, jeg er en sovetryne, så du må hellere vække mig klokken tre!\" \nStaldkarlen gav hunden en godbid, så hunden ikke kunne gøre andet end at sige ja."
+              "text": "\"Du ved, jeg er en sovetryne, så du må hellere vække mig klokken tre!\" Staldkarlen gav hunden en godbid, så hunden ikke kunne gøre andet end at sige ja."
             },
             {
               "name": "Øvelse 9",
-              "text": "Hunden følte sig lidt presset af opgaven, da den gik over slotsgården til sin lade. Pludselig så den hønsegården og tænkte ved sig selv:\n\"Hanen galer altid tidligt om morgenen. Jeg vil bede ham om at vække mig, da jeg altid sover som en sten om natten.\""
+              "text": "Hunden følte sig lidt presset af opgaven, da den gik over slotsgården til sin lade. Pludselig så den hønsegården og tænkte ved sig selv:\"Hanen galer altid tidligt om morgenen. Jeg vil bede ham om at vække mig, da jeg altid sover som en sten om natten.\""
             },
             {
               "name": "Øvelse 10",
-              "text": "Så sagde hunden til hanen: \"Hør her, du må hjælpe mig!\nI morgen tidlig skal den gamle konge på rævejagt.\nTjeneren skal vække kongen klokken fem, og staldkarlen skal vække tjeneren klokken fire.\nSå derfor er jeg nødt til at vække staldkarlen klokken tre. Vil du gøre mig den tjeneste at vække mig klokken to?"
+              "text": "Så sagde hunden til hanen: \"Hør her, du må hjælpe mig!I morgen tidlig skal den gamle konge på rævejagt.Tjeneren skal vække kongen klokken fem, og staldkarlen skal vække tjeneren klokken fire.Så derfor er jeg nødt til at vække staldkarlen klokken tre. Vil du gøre mig den tjeneste at vække mig klokken to?"
             }
           ]
         },

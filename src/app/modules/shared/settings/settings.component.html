@@ -1,0 +1,33 @@
+<div class="settings-hld" cdkDrag>
+  <div class="drag-hld" cdkDragHandle>
+    <div class="drag-bg">
+      <mat-icon svgIcon="drag_drop"></mat-icon>
+    </div>
+  </div>
+  <div class="header-hld">
+    <div>{{'translateSettings' | translate }}</div>
+    <mat-icon svgIcon="icon_close" class="ml-auto" (click)="close()"></mat-icon>
+  </div>
+  <div class="settings-content-hld" fxLayout="row" fxLayoutGap="24px">
+    <div fxFlex="168px">
+      <div class="setting-hld" *ngFor="let option of settingsOptions" [ngClass]="{'active': option.selected}"
+        (click)="selectOption(option)">
+        <mat-icon *ngIf="option.icon" [svgIcon]="option.icon"></mat-icon>
+        <div class="setting-txt" *ngIf="option.label">{{option.label | translate}}</div>
+      </div>
+      <div class="setting-hld" (click)="selectOption()">
+        <mat-icon [svgIcon]="'reset'"></mat-icon>
+        <div class="setting-txt">{{'translateResetAll' | translate}}</div>
+      </div>
+    </div>
+    <div fxFlex class="bd-l">
+      <ng-container [ngSwitch]="selectedOption.type">
+        <app-shared-settings-keyboard *ngSwitchCase="'keyboard'"></app-shared-settings-keyboard>
+        <app-shared-settings-text *ngSwitchCase="'text'"></app-shared-settings-text>
+        <app-shared-settings-language *ngSwitchCase="'language'"></app-shared-settings-language>
+        <app-shared-settings-read *ngSwitchCase="'read'"></app-shared-settings-read>
+        <app-shared-settings-logout *ngSwitchCase="'logout'"></app-shared-settings-logout>
+      </ng-container>
+    </div>
+  </div>
+</div>

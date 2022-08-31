@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 import { ErrorModalService } from './error-modal.service';
 import { GlobalErrorHandler } from './global-error-handler.service';
 
-// TODO: better tests.
 describe('GlobalErrorHandler', () => {
   let service: GlobalErrorHandler;
   let errorModalServiceSpy: jasmine.SpyObj<ErrorModalService>;

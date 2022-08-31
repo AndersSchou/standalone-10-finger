@@ -1,0 +1,15 @@
+<div>
+  <div *ngFor="let theme of keyboardTheme" class="option-hld" [ngClass]="{'active': theme.selected}"
+    (click)="selectThemeColor(theme)">
+    <mat-icon [svgIcon]="theme.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"></mat-icon>
+    <mat-icon *ngIf="theme.icon" [svgIcon]="theme.icon" class="keyboard-icon"></mat-icon>
+  </div>
+
+  <div class="divider mtb-18"></div>
+
+  <div *ngFor="let mode of keyboardViewMode" class="option-hld" [ngClass]="{'active': mode.selected}"
+    (click)="selectKeyboardMode(mode)">
+    <mat-icon [svgIcon]="mode.selected? 'checkbox_checked': 'checkbox_unchecked'" class="mr-24"></mat-icon>
+    <mat-icon *ngIf="mode.icon" [svgIcon]="mode.icon" class="keyboard-icon"></mat-icon>
+  </div>
+</div>

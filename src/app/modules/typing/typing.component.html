@@ -1,2 +1,42 @@
 <app-shared-top-menu></app-shared-top-menu>
-<div class="main-content-hld">typing</div>
+<app-shared-settings *ngIf="viewSettings"></app-shared-settings>
+<div class="main-content-hld typing-view">
+  <div class="typing-header" *ngIf="categories && categories.categories">
+    <div class="page-padd">
+      <div fxLayout="row wrap" fxLayoutGap="20px" class="header-content">
+        <div class="left-header" fxFlex>
+          <div class="back-btn-hld" (click)="goBack()">
+            <mat-icon svgIcon="chevron_left" class="mr-10"></mat-icon>
+            Back
+          </div>
+          <div class="course-title">
+            {{currentCategory.name}} - {{selectedCourse.name}}
+          </div>
+        </div>
+        <div class="right-header" fxFlex="nogrow">
+          <div class="course-det-hld">{{selectedCourse.exercises[exerciseIndex].name}}</div>
+          <div class="reset-hld" (click)="resetCourse()">
+            <mat-icon svgIcon="icon_replay" matTooltip="Reset course"></mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="course-progress-hld">
+      <div class="progress" [ngStyle]="{width: currentProgress+'%'}"></div>
+    </div>
+  </div>
+  <div class="percentage-hld">{{currentProgress | number: '1.0-2'}}%</div>
+  <div class="keyboard-hld" *ngIf="keyboardTop">
+    <app-vkeyboard #vkeyboard></app-vkeyboard>
+  </div>
+  <div class="exercise-hld">
+    <div class="exercises" [ngClass]="coloredText"
+      [ngStyle]="{fontSize:textSetting['fontSize'],fontFamily:textSetting['fontFamily']}">
+      <div #exerciseElem></div>
+    </div>
+  </div>
+  <div class="keyboard-hld" *ngIf="!keyboardTop">
+    <app-vkeyboard #vkeyboard></app-vkeyboard>
+  </div>
+</div>

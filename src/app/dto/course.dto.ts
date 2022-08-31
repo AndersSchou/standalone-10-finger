@@ -6,14 +6,23 @@ export interface CourseResponseDTO {
 }
 
 /**
+ * Stored categories interface.
+ */
+export interface StoredCourseResponseDTO {
+  language: string;
+  data: CourseResponseDTO;
+}
+
+/**
  * Categories interface.
  */
 export interface CategoriesDTO {
   name: string;
   courses: CourseDTO[];
   completed?: boolean;
-  progress?: string;
+  progress?: number;
   selected?: boolean;
+  updatedAt?: Date;
 }
 
 /**
@@ -24,6 +33,8 @@ export interface CourseDTO {
   exercises: CourseExerciseDTO[];
   completed?: boolean;
   showAll?: boolean;
+  updatedAt?: Date;
+  results: CourseResultDTO[];
 }
 
 /**
@@ -33,6 +44,20 @@ export interface CourseExerciseDTO {
   name: string;
   text: string;
   completed?: boolean;
-  selected?: boolean;
-  progress?: string;
+  progress?: number;
+  results: CourseResultDTO[];
+  updatedAt?: Date;
+}
+
+/**
+ * Result interface.
+ */
+export interface CourseResultDTO {
+  mistakes: number;
+  start?: Date;
+  end?: Date;
+  time: number;
+  characters: number;
+  lastIndex?: number;
+  updatedAt: Date;
 }

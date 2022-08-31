@@ -23,6 +23,12 @@ import { SetCourseModule } from './modules/set-course/set-course.module';
 import { TypingModule } from './modules/typing/typing.module';
 import { CustomIconService } from './services/custom-icon.service';
 import { GlobalErrorHandler } from './services/global-error-handler.service';
+import { VKeyboardComponent } from './vkeyboard/vkeyboard.component';
+import { SettingsService } from './services/settings.service';
+import { VoiceService } from './services/api/voice.service';
+import { SpeechService } from './services/speech.service';
+import { CourseHelperService } from './services/course-helper.service';
+import { UserService } from './services/api/user.service';
 
 
 // TranslateHttpLoader is used to load the translations automatically.
@@ -70,6 +76,11 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     CookieService,
     AuthGuardService,
     CustomIconService,
+    SettingsService,
+    VoiceService,
+    SpeechService,
+    UserService,
+    CourseHelperService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,

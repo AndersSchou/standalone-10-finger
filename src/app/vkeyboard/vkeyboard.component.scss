@@ -1,0 +1,279 @@
+@import './scss/size-vars.scss';
+@import './scss/key-spacing.scss';
+@import './scss/key-theme-color.scss';
+@import './scss/key-layout.scss';
+@import "app-colors";
+
+#keyboard {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  position: relative;
+  background: $keyboard-bg;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+#keyboard #keyboard-bg {
+  position: inherit;
+  box-sizing: content-box;
+}
+
+#keyboard-bg div,
+#keyboard-bg label {
+  position: absolute;
+  box-sizing: border-box;
+  background-clip: padding-box;
+}
+
+.kl0>div,
+.kl3>div,
+.kl6>div,
+.kl9>div {
+  text-align: left;
+}
+
+.kl1>div,
+.kl4>div,
+.kl7>div,
+.kl10>div {
+  text-align: center;
+}
+
+.kl2>div,
+.kl5>div,
+.kl8>div,
+.kl11>div {
+  text-align: right
+}
+
+.kl0>div,
+.kl1>div,
+.kl2>div {
+  vertical-align: top;
+}
+
+.kl3>div,
+.kl4>div,
+.kl5>div {
+  vertical-align: middle;
+}
+
+.kl6>div,
+.kl7>div,
+.kl8>div {
+  vertical-align: bottom;
+}
+
+.kl9,
+.kl10,
+.kl11 {
+  top: 100%;
+  margin-top: -1px;
+  font-size: 9px !important;
+  max-height: 1em !important;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.kl.ts1 {
+  font-size: 8px;
+  line-height: 1em;
+}
+
+.kl.ts2 {
+  font-size: 10px;
+  line-height: 1em;
+}
+
+.kl.ts3 {
+  font-size: 12px;
+  line-height: 1em;
+}
+
+.kl.ts4 {
+  font-size: 14px;
+  line-height: 1em;
+}
+
+.kl.ts5 {
+  font-size: 16px;
+  line-height: 1em;
+}
+
+.kl.ts6 {
+  font-size: 18px;
+  line-height: 1em;
+}
+
+.kl.ts7 {
+  font-size: 20px;
+  line-height: 1em;
+}
+
+.kl.ts8 {
+  font-size: 22px;
+  line-height: 1em;
+}
+
+.kl.ts9 {
+  font-size: 24px;
+  line-height: 1em;
+}
+
+.kb {
+  border-radius: 5px;
+  width: $key-width;
+  height: $key-height;
+  display: block;
+  border-radius: $key-border-radius;
+  border: 1px solid $keyboard-bg  !important;
+  background-color: $key-bg-color;
+}
+
+.kt {
+  width: 42px;
+  height: 42px;
+  display: block;
+}
+
+.kls {
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 3px;
+  width: 42px;
+  height: 42px;
+}
+
+.kl {
+  width: $cell-width;
+  height: $cell-height;
+  color: $default-text-color;
+}
+
+.kl>div {
+  display: table-cell;
+  position: static !important;
+  width: $cell-width;
+  height: $cell-height;
+  max-width: 36px;
+}
+
+.kr1 {
+  top: 0;
+}
+
+.kr2 {
+  top: $top-spacing*2+$key-margin+$key-height*1;
+}
+
+.kr3 {
+  top: $top-spacing*3+$key-margin+$key-height*2;
+}
+
+.kr4 {
+  top: $top-spacing*4+$key-margin+$key-height*3;
+}
+
+.kr5 {
+  top: $top-spacing*5+$key-margin+$key-height*4;
+}
+
+.kr6 {
+  top: $top-spacing*6+$key-margin+$key-height*5;
+}
+
+.kr1 .kt,
+.kr1 .kls,
+.kr2 .kt,
+.kr2 .kls,
+.kr3 .kt,
+.kr3 .kls,
+.kr4 .kt,
+.kr4 .kls,
+.kr5 .kt,
+.kr5 .kls,
+.kr6 .kt,
+.kr6 .kls {
+  top: 3px;
+}
+
+.kr1 .kb,
+.kr2 .kb,
+.kr3 .kb,
+.kr4 .kb,
+.kr5 .kb,
+.kr6 .kb {
+  top: 0px;
+  box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.35);
+}
+
+#keyboard.full {
+  width: 1196px;
+  height: 326px;
+}
+
+#keyboard.minimal,
+#keyboard.partial {
+  width: 806px;
+  height: 266px;
+}
+
+#keyboard.minimal #keyboard-bg,
+#keyboard.partial #keyboard-bg {
+  margin-top: -60px;
+}
+
+#keyboard.no-numbers.minimal,
+#keyboard.no-numbers.partial {
+  width: 806px;
+  height: 212px;
+}
+
+#keyboard.no-numbers.minimal #keyboard-bg,
+#keyboard.no-numbers.partial #keyboard-bg {
+  margin-top: -114px;
+}
+
+.kr3 .kb.kb-enter-top {
+  left: 0px !important;
+  top: 0px;
+  width: 76px;
+  height: 51px;
+  border-right: none !important;
+}
+
+.kr3 .kb.kb-enter-middle {
+  border: none !important;
+  left: 22px !important;
+  top: 1px;
+}
+
+.kr3 .kb.kb-enter-double {
+  border-radius: 4px;
+  left: 14px !important;
+  top: 1px;
+  width: 64px;
+  height: 104px;
+  background: $white-color;
+  border-top: none !important;
+}
+
+.kls-enter {
+  left: 18px !important;
+  top: 0px;
+  width: 56px;
+  height: 103px;
+}
+
+.kls-enter-double {
+  width: 50px !important;
+  max-width: 50px !important;
+  height: 101px !important;
+}
+
+.kr3 .kt.kt-enter {
+  background: $white-color;
+  left: 2px !important;
+  height: 48px;
+  top: 1px;
+  border-radius: 4px;
+}

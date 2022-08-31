@@ -1,0 +1,289 @@
+@import "app-colors";
+
+$simple-key-color: $key-blue;
+$simple-key-color-pressed: $key-blue-pressed;
+
+$group1-color: $key-orange;
+$group1-color-pressed: $key-orange-pressed;
+
+$group2-color: $key-purple;
+$group2-color-pressed: $key-purple-pressed;
+
+$group3-color: $key-green;
+$group3-color-pressed: $key-green-pressed;
+
+$group4-color: $key-red;
+$group4-color-pressed: $key-red-pressed;
+
+$group5-color: $key-blue;
+$group5-color-pressed: $key-blue-pressed;
+
+$group-color-list: $group1-color $group2-color $group3-color $group4-color $group5-color;
+$group-color-pressed-list: $group1-color-pressed $group2-color-pressed $group3-color-pressed $group4-color-pressed $group5-color-pressed;
+
+$theme1-row1-color-group1-list: 1 2 11 12 13;
+$theme1-row2-color-group1-list: 2 11 12 13;
+$theme1-row3-color-group1-list: 2 11 12 13;
+$theme1-row4-color-group1-list: 3 12;
+
+$theme1-row1-color-group2-list: 3 10;
+$theme1-row2-color-group2-list: 3 10;
+$theme1-row3-color-group2-list: 3 10;
+$theme1-row4-color-group2-list: 4 11;
+
+$theme1-row1-color-group3-list: 4 9;
+$theme1-row2-color-group3-list: 4 9;
+$theme1-row3-color-group3-list: 4 9;
+$theme1-row4-color-group3-list: 5 10;
+
+$theme1-row1-color-group4-list: 5 6;
+$theme1-row2-color-group4-list: 5 6;
+$theme1-row3-color-group4-list: 5 6;
+$theme1-row4-color-group4-list: 6 7;
+
+$theme1-row1-color-group5-list: 7 8;
+$theme1-row2-color-group5-list: 7 8;
+$theme1-row3-color-group5-list: 7 8;
+$theme1-row4-color-group5-list: 8 9;
+
+// Theme 2 group keys.
+$theme2-row3-color-group1-list: 2 11;
+$theme2-row3-color-group2-list: 3 10;
+$theme2-row3-color-group3-list: 4 9;
+$theme2-row3-color-group4-list: 5;
+$theme2-row3-color-group5-list: 8;
+
+@function getListFromRowAndGroup($row, $group, $theme: 1) {
+  @if $theme ==2 {
+    @if $row ==3 {
+      @if $group ==1 {
+        @return $theme2-row3-color-group1-list;
+      }
+
+      @else if $group ==2 {
+        @return $theme2-row3-color-group2-list;
+      }
+
+      @else if $group ==3 {
+        @return $theme2-row3-color-group3-list;
+      }
+
+      @else if $group ==4 {
+        @return $theme2-row3-color-group4-list;
+      }
+
+      @else if $group ==5 {
+        @return $theme2-row3-color-group5-list;
+      }
+    }
+
+  }
+
+  @if $row ==1 {
+    @if $group ==1 {
+      @return $theme1-row1-color-group1-list;
+    }
+
+    @else if $group ==2 {
+      @return $theme1-row1-color-group2-list;
+    }
+
+    @else if $group ==3 {
+      @return $theme1-row1-color-group3-list;
+    }
+
+    @else if $group ==4 {
+      @return $theme1-row1-color-group4-list;
+    }
+
+    @else if $group ==5 {
+      @return $theme1-row1-color-group5-list;
+    }
+  }
+
+  @else if $row ==2 {
+    @if $group ==1 {
+      @return $theme1-row2-color-group1-list;
+    }
+
+    @else if $group ==2 {
+      @return $theme1-row2-color-group2-list;
+    }
+
+    @else if $group ==3 {
+      @return $theme1-row2-color-group3-list;
+    }
+
+    @else if $group ==4 {
+      @return $theme1-row2-color-group4-list;
+    }
+
+    @else if $group ==5 {
+      @return $theme1-row2-color-group5-list;
+    }
+  }
+
+  @else if $row ==3 {
+    @if $group ==1 {
+      @return $theme1-row3-color-group1-list;
+    }
+
+    @else if $group ==2 {
+      @return $theme1-row3-color-group2-list;
+    }
+
+    @else if $group ==3 {
+      @return $theme1-row3-color-group3-list;
+    }
+
+    @else if $group ==4 {
+      @return $theme1-row3-color-group4-list;
+    }
+
+    @else if $group ==5 {
+      @return $theme1-row3-color-group5-list;
+    }
+  }
+
+  @else if $row ==4 {
+    @if $group ==1 {
+      @return $theme1-row4-color-group1-list;
+    }
+
+    @else if $group ==2 {
+      @return $theme1-row4-color-group2-list;
+    }
+
+    @else if $group ==3 {
+      @return $theme1-row4-color-group3-list;
+    }
+
+    @else if $group ==4 {
+      @return $theme1-row4-color-group4-list;
+    }
+
+    @else if $group ==5 {
+      @return $theme1-row4-color-group5-list;
+    }
+  }
+}
+
+.simple-key-color-pressed {
+  background-color: $simple-key-color-pressed;
+  animation: blinkingBackground 1s infinite;
+}
+
+@keyframes blinkingBackground {
+  0% {
+    background-color: $simple-key-color-pressed;
+  }
+
+  100% {
+    background-color: $simple-key-color;
+  }
+}
+
+.simple-key-color {
+  background-color: $simple-key-color;
+}
+
+@mixin get-from-group-color-list($index) {
+  background-color: nth($group-color-list, $index);
+}
+
+@mixin get-from-group-color-pressed-list($index) {
+  background-color: nth($group-color-pressed-list, $index);
+  animation: blinkingBackgroundMulti#{$index} 1s infinite;
+}
+
+@for $rowIdx from 1 through 5 {
+  @keyframes blinkingBackgroundMulti#{$rowIdx} {
+    0% {
+      background-color: nth($group-color-pressed-list, $rowIdx);
+    }
+
+    100% {
+      background-color: nth($group-color-list, $rowIdx);
+    }
+  }
+}
+
+@for $groupIdx from 1 through 5 {
+  .group#{$groupIdx} {
+    @include get-from-group-color-list($groupIdx);
+  }
+}
+
+@for $rowIdx from 1 through 5 {
+  @for $colIdx from 1 through 14 {
+
+    #keyboard.ks#{$rowIdx}-#{$colIdx} .kr#{$rowIdx+1} .kc#{$colIdx} .kl,
+    #keyboard.kp#{$rowIdx}-#{$colIdx} .kr#{$rowIdx+1} .kc#{$colIdx} .kl {
+      color: $white-color;
+    }
+
+    #keyboard.ks#{$rowIdx}-#{$colIdx} .kr#{$rowIdx+1} .kc#{$colIdx} .kb {
+      @extend .simple-key-color;
+    }
+
+    #keyboard.kp#{$rowIdx}-#{$colIdx} .kr#{$rowIdx+1} .kc#{$colIdx} .kb {
+      @extend .simple-key-color-pressed;
+    }
+  }
+}
+
+@for $groupIdx from 1 through 5 {
+  $rowIdx: 3;
+  $listOfKeyIndexes: getListFromRowAndGroup($rowIdx, $groupIdx, 2);
+
+  @each $item in $listOfKeyIndexes {
+
+    #keyboard.single-color-group .kr#{$rowIdx+1} .kc#{$item} .kl,
+    #keyboard.single-color-group.kp#{$rowIdx}-#{$item} .kr#{$rowIdx+1} .kc#{$item} .kl {
+      color: $white-color;
+    }
+
+    #keyboard.single-color-group .kr#{$rowIdx+1} .kc#{$item} .kb {
+      @include get-from-group-color-list($groupIdx);
+    }
+
+    #keyboard.single-color-group.kp#{$rowIdx}-#{$item} .kr#{$rowIdx+1} .kc#{$item} .kb {
+      @include get-from-group-color-pressed-list($groupIdx);
+    }
+  }
+
+  @for $rowIdx from 1 through 4 {
+    $listOfKeyIndexes: getListFromRowAndGroup($rowIdx, $groupIdx);
+
+    @each $item in $listOfKeyIndexes {
+
+      #keyboard.color-group .kr#{$rowIdx+1} .kc#{$item} .kl,
+      #keyboard.color-group.kp#{$rowIdx}-#{$item} .kr#{$rowIdx+1} .kc#{$item} .kl {
+        color: $white-color;
+      }
+
+      #keyboard.color-group .kr#{$rowIdx+1} .kc#{$item} .kb {
+        @include get-from-group-color-list($groupIdx);
+      }
+
+      #keyboard.color-group.kp#{$rowIdx}-#{$item} .kr#{$rowIdx+1} .kc#{$item} .kb {
+        @include get-from-group-color-pressed-list($groupIdx);
+      }
+    }
+  }
+}
+
+// ::ng-deep .current-pos {
+//   animation: current 1s infinite;
+//   -webkit-animation: current 1s infinite;
+// }
+
+// @keyframes current {
+//   from {
+//     border-bottom: 2px solid $default-text-color;
+//   }
+
+//   to {
+//     border-bottom: 2px solid transparent;
+//   }
+// }
