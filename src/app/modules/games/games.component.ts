@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { SettingsService } from 'src/app/services/settings.service';
 
@@ -23,6 +24,7 @@ export class AppGamesComponent implements OnInit, OnDestroy {
    */
   constructor(
     private readonly settingsService: SettingsService,
+    private readonly router: Router,
   ) { }
 
   /**
@@ -40,5 +42,9 @@ export class AppGamesComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     this.destroyed.next(true);
+  }
+
+  navigateTo(url: string): void {
+    this.router.navigate(['/games/' + url]);
   }
 }

@@ -1,3 +1,23 @@
 <app-shared-top-menu></app-shared-top-menu>
 <app-shared-settings *ngIf="viewSettings"></app-shared-settings>
-<div class="main-content-hld">games</div>
+<div class="main-content-hld">
+  <div class="center-content">
+    <div>
+      <div class="game-text padd-tb-44">
+        <div class="game-page-title">Welcome to game portal</div>
+        <div class="game-page-description">Improve your typing skills with fun!</div>
+        <div class="games-list" fxLayout="row" fxLayoutGap="30px" fxLayoutAlign="center center">
+          <div>
+            <div class="game-hld" (click)="navigateTo('fish')">
+              <div>
+                <mat-icon svgIcon="fish"></mat-icon>
+              </div>
+              <div class="game-title">Fish typing</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

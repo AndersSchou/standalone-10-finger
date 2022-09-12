@@ -616,8 +616,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-
-
   /**
    * Reset course method.
    */

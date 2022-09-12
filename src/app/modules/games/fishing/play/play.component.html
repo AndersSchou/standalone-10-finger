@@ -1,0 +1,46 @@
+<div class="play-bg" *ngIf="gameLevel">
+  <div class="game-info-hld white-bg">
+    <div class="game-info-title">Your time</div>
+    <div>
+      {{minutes}} : {{seconds}}
+    </div>
+    <div class="divider"></div>
+    <div class="flex-v-align p-16">
+      <mat-icon svgIcon="koi_orange_white" class="koi-icon mr-16"></mat-icon>
+      <mat-icon svgIcon="icon_close" class="times-icon mr-16"></mat-icon>
+      {{completedWords}}
+    </div>
+    <div class="divider"></div>
+    <div class="flex-v-align p-16 txt-uppercase font-500">
+      <mat-icon svgIcon="level_difficulty" class="mr-16"></mat-icon>
+      {{gameLevel.name}}
+    </div>
+  </div>
+  <div class="game-actions-hld white-bg">
+    <mat-icon matTooltip="{{
+      (activeIcon === 'play' ? 'translatePlay' : 'translatePause') | translate
+    }}" svgIcon="{{ activeIcon }}" (click)="togglePlayState()" class="mlr-12 cursor-pointer black-icon"
+      [ngClass]="{'active': activeIcon === 'pause'}">
+    </mat-icon>
+    <mat-icon svgIcon="icon_replay" class="mlr-12 cursor-pointer" matTooltip="Replay" (click)="replay()"></mat-icon>
+    <mat-icon svgIcon="enter" class="mlr-12 cursor-pointer" matTooltip="Select level" (click)="selectLevel()">
+    </mat-icon>
+    <mat-icon svgIcon="icon_logout" class="mlr-12 cursor-pointer" matTooltip="Back to games" (click)="backToGames()">
+    </mat-icon>
+  </div>
+
+  <div *ngIf="countdownNbr > 0" class="countdown-hld">
+    <div class="countdown-text">{{countdownNbr}}</div>
+  </div>
+
+  <div class="boat-bg-hld">
+    <div class="boat-hld">
+    </div>
+  </div>
+  <div class="game-play-hld">
+    <div class="animation-hld">
+      <app-modules-games-fish #fishComp></app-modules-games-fish>
+      <div class="game-word-hld" #wordHld></div>
+    </div>
+  </div>
+</div>

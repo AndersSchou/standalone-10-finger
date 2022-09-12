@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppAchievementsComponent } from './modules/achievements/achievements.component';
+import { AppGamesFishingComponent } from './modules/games/fishing/fishing.component';
+import { AppGamesFishPlayComponent } from './modules/games/fishing/play/play.component';
+import { AppGamesFishSetLevelComponent } from './modules/games/fishing/set-level/set-level.component';
 import { AppGamesComponent } from './modules/games/games.component';
 import { AppHomeComponent } from './modules/home/home.component';
 import { AppInfoComponent } from './modules/info/info.component';
@@ -35,6 +38,18 @@ const routes: Routes = [
   {
     path: 'games',
     component: AppGamesComponent
+  },
+  {
+    path: 'games/fish',
+    component: AppGamesFishingComponent
+  },
+  {
+    path: 'games/fish/level',
+    component: AppGamesFishSetLevelComponent
+  },
+  {
+    path: 'games/fish/level/:id',
+    component: AppGamesFishPlayComponent
   },
   {
     path: 'achivements',

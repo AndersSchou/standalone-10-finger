@@ -1,0 +1,3 @@
+<div [@fishState]="fishState" (@fishState.done)="onAnimationEventEnded($event)" class="fish">
+  <img *ngIf="fishImage" [src]="fishImage" />
+</div>

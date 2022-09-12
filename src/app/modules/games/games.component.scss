@@ -1,0 +1,52 @@
+@import "app-colors";
+
+.center-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.game-text {
+  text-align: center;
+}
+
+.game-page-title {
+  font-weight: 900;
+  font-size: 32px;
+  color: $color-active-secondary;
+  padding-bottom: 16px;
+}
+
+.game-page-description {
+  font-size: 18px;
+  font-weight: 300;
+  padding-bottom: 40px;
+}
+
+.games-list .mat-icon {
+  width: 105px;
+  height: 64px;
+}
+
+.game-hld {
+  padding: 30px;
+  border: 1px solid $color-active;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.game-hld:hover {
+  border-color: $color-active-secondary;
+}
+
+.game-title {
+  font-weight: 900;
+  font-size: 16px;
+  line-height: 140%;
+  text-align: center;
+  letter-spacing: 0.04em;
+  color: $default-text-color;
+  padding-top: 25px;
+}
