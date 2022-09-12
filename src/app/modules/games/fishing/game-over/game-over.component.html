@@ -9,50 +9,50 @@
       <div>
         <mat-icon svgIcon="crab" class="crab-icon"></mat-icon>
       </div>
-      <div class="game-over-header-title">Game over</div>
+      <div class="game-over-header-title">{{ 'translateGameOver' | translate }}</div>
       <div *ngIf="data" class="game-over-header-level pb-16">{{data.level.name}}</div>
     </div>
     <div class="divider"></div>
   </div>
 
   <div mat-dialog-content class="content-hld" *ngIf="data">
-    <!-- <div>{{data.level.name}}</div> -->
-    <!-- <div>
-      <div>Date & time</div>
-      <div>
-        You've caught {{data.wordsCount}} fishes
-      </div>
-    </div> -->
-    <div class="overall-res-hld">
-      <div>
-        <mat-icon svgIcon="calendar" class="calendar"></mat-icon>
-      </div>
-      <div class="details-title-hld">{{ 'translateDateTime' | translate }}</div>
-      <div class="award-desc">
-        {{data.level.updatedAt | date: 'MMMM d, y, h:mm a'}}
-      </div>
+    <div *ngIf="data.level.id===0">
+      <video width="380" height="240" autoplay>
+        <source src="../../../../../assets/sound-game-fish.mp4" type="video/mp4">
+      </video>
     </div>
-    <div class="divider"></div>
-    <div class="overall-res-hld">
-      <div>
-        <mat-icon svgIcon="koi_orange_white" class="koi-fish"></mat-icon>
+    <div *ngIf="data.level.id!==0">
+      <div class="overall-res-hld">
+        <div>
+          <mat-icon svgIcon="calendar" class="calendar"></mat-icon>
+        </div>
+        <div class="details-title-hld">{{ 'translateDateTime' | translate }}</div>
+        <div class="award-desc">
+          {{data.level.updatedAt | date: 'MMMM d, y, h:mm a'}}
+        </div>
       </div>
-      <div class="details-title-hld">Fishes caught</div>
-      <div class="award-desc">
-        You've caught {{data.wordsCount}} fishes
+      <div class="divider"></div>
+      <div class="overall-res-hld">
+        <div>
+          <mat-icon svgIcon="koi_orange_white" class="koi-fish"></mat-icon>
+        </div>
+        <div class="details-title-hld">{{ 'translateFishesCaught' | translate }}</div>
+        <div class="award-desc">
+          {{ 'translateYouCaught' | translate }} {{data.wordsCount}} {{ 'translateFishes' | translate }}
+        </div>
       </div>
+      <div class="divider"></div>
+      <div class="overall-res-hld" *ngIf="findMaxResult">
+        <div>
+          <mat-icon svgIcon="gold_award" class="gold-award"></mat-icon>
+        </div>
+        <div class="details-title-hld">{{ 'translateHighestScore' | translate }}</div>
+        <div class="award-desc">
+          {{ 'translateYouCaught' | translate }} {{findMaxResult.numberOfWords}} {{ 'translateFishes' | translate }}
+        </div>
+      </div>
+      <div class="divider" *ngIf="findMaxResult"></div>
     </div>
-    <div class="divider"></div>
-    <div class="overall-res-hld" *ngIf="findMaxResult">
-      <div>
-        <mat-icon svgIcon="gold_award" class="gold-award"></mat-icon>
-      </div>
-      <div class="details-title-hld">Your highest score</div>
-      <div class="award-desc">
-        You've caught {{findMaxResult.numberOfWords}} fishes
-      </div>
-    </div>
-    <div class="divider" *ngIf="findMaxResult"></div>
   </div>
 
   <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" *ngIf="data" class="pt-24">
@@ -60,13 +60,14 @@
       <div class="round-btn" matTooltip="{{'translateReplay' | translate}}" (click)="replay()">
         <mat-icon svgIcon="icon_replay"></mat-icon>
       </div>
-      <div class="round-btn" matTooltip="Play next level" (click)="playNext()">
+      <div *ngIf="data.showNext" class="round-btn" matTooltip="{{'translatePlayNextLevel' | translate}}"
+        (click)="playNext()">
         <mat-icon svgIcon="arrow_right"></mat-icon>
       </div>
-      <div class="round-btn" matTooltip="Select level" (click)="selectLevel()">
+      <div class="round-btn" matTooltip="{{'translateSelectLevel' | translate}}" (click)="selectLevel()">
         <mat-icon svgIcon="enter"></mat-icon>
       </div>
-      <div class="round-btn" matTooltip="Back to games" (click)="exit()">
+      <div class="round-btn" matTooltip="{{'translateBackToGames' | translate }}" (click)="exit()">
         <mat-icon svgIcon="icon_logout"></mat-icon>
       </div>
     </div>

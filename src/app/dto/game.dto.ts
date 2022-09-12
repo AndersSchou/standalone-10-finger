@@ -1,6 +1,6 @@
 
 export interface GameDTO {
-  id?: number;
+  id: number;
   name: string;
   words: string[];
   selected: boolean;
@@ -25,6 +25,7 @@ export interface GameStorageDTO {
  */
 export function createEmptyLevelDTO(): GameDTO {
   return {
+    id: 0,
     name: '',
     words: [],
     selected: false,

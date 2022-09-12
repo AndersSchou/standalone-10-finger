@@ -9,12 +9,12 @@
               <div class="illustration-hld rule"></div>
             </div>
             <div fxFlex class="instruction-details">
-              <div class="instruction-title">Instructions</div>
-              <div class="instruction-description">Help the fisherman catch the fishes.</div>
-              <div class="instruction-text">Type the word beneath the fish and it will be caught.</div>
+              <div class="instruction-title">{{ 'translateInstructions' | translate }}</div>
+              <div class="instruction-description">{{ 'translateHelpFisherman' | translate }}</div>
+              <div class="instruction-text">{{ 'translateTypeWordBeneath' | translate }}</div>
 
               <div class="instruction-actions-hld flex-v-align">
-                <div class="navigation-btn disabled">
+                <div class="navigation-btn" (click)="previous()">
                   <mat-icon svgIcon="arrow_left"></mat-icon>
                 </div>
                 <div class="navigation-pag">{{selectedIndex+1}}/2</div>
@@ -22,7 +22,7 @@
                   <mat-icon svgIcon="arrow_right"></mat-icon>
                 </div>
                 <div>
-                  <div class="start-btn">Start now</div>
+                  <div class="start-btn" (click)="startPlay()">{{ 'translateStartNow' | translate }}</div>
                 </div>
               </div>
             </div>
@@ -37,10 +37,10 @@
               <div class="illustration-hld time"></div>
             </div>
             <div fxFlex class="instruction-details">
-              <div class="instruction-title">Instructions</div>
-              <div class="instruction-description">Timing is the key.</div>
+              <div class="instruction-title">{{ 'translateInstructions' | translate }}</div>
+              <div class="instruction-description">{{ 'translateTimingIsKey' | translate }}</div>
               <div class="instruction-text">
-                When time is up — you lose. When you catch a fish, then you get extra time.
+                {{ 'translateTimingIsKeyDescription' | translate }}
               </div>
 
               <div class="instruction-actions-hld flex-v-align">
@@ -52,7 +52,7 @@
                   <mat-icon svgIcon="arrow_right"></mat-icon>
                 </div>
                 <div>
-                  <div class="start-btn">Start now</div>
+                  <div class="start-btn" (click)="startPlay()">{{ 'translateStartNow' | translate }}</div>
                 </div>
               </div>
             </div>

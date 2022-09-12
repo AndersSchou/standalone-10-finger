@@ -18,8 +18,13 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   // @ViewChild('fishHolder') fishHolder?: ElementRef;
   @ViewChild('fishComp') fishComponent?: AppGamesFishComponent;
   @ViewChild('wordHld') wordHld?: ElementRef;
-  minutes: number = 0;
-  seconds: number = 3;
+  minutes: number = 2;
+  tensOfMinutes: number = 0;
+  seconds: number = 0;
+  tensOfSeconds: number = 0;
+  totalLevels: number = 0;
+  levelIndex: number = 0;
+  levels: GameDTO[] = [];
   gameLevel: GameDTO = createEmptyLevelDTO();
   timerSubscription: Subscription = Subscription.EMPTY;
   activeIcon: string = 'pause';
@@ -64,12 +69,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngAfterViewInit(): void {
-    console.log('aaa');
-
     this.startReadyCountdown();
-    // if (this.currentLanguage && this.currentLanguage.length > 0) {
-    //   this.getFishGameData();
-    // }
   }
 
   /**
@@ -142,13 +142,18 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
       if (lang in FishGame) {
         const cat = FishGame[lang];
         if (cat) {
+          this.totalLevels = cat.length;
+          this.levels = cat;
           const findLevel = cat.find((level: GameDTO) => level.id === Number(levelID));
           if (findLevel) {
+            this.levelIndex = cat.indexOf(findLevel);
             this.gameLevel = findLevel;
             this.currentWord = this.gameLevel.words[0];
             this.currentChar = this.currentWord[0];
             this.createHTML();
             this.currentPosition();
+          } else {
+            this.router.navigate(['/games']);
           }
         }
       }
@@ -156,17 +161,22 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   createCounter(): void {
-    this.timerSubscription = timer(1000, 1000).pipe(takeUntil(this.destroyed)).subscribe(() => {
+    this.timerSubscription = timer(0, 1000).pipe(takeUntil(this.destroyed)).subscribe(() => {
       if (this.seconds > 0) {
         this.seconds--;
       } else {
-        if (this.minutes > 0) {
-          this.seconds = 59;
-          this.minutes--;
+        if (this.tensOfSeconds > 0) {
+          this.tensOfSeconds--;
         } else {
-          console.log('game over');
-          this.gameOver();
+          if (this.minutes > 0) {
+            this.minutes--;
+          } else {
+            console.log('game over');
+            this.gameOver();
+          }
+          this.tensOfSeconds = !this.isTimeOut ? 5 : 0;
         }
+        this.seconds = !this.isTimeOut ? 9 : 0;
       }
     });
   }
@@ -295,12 +305,12 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     this.createCounter();
   }
 
-  replay(): void {
+  replay(id: number): void {
     this.router.onSameUrlNavigation = 'reload';
     this.router.routeReuseStrategy.shouldReuseRoute = () => {
       return false;
     };
-    this.router.navigate(['/games/fish/level/', this.gameLevel.id]);
+    this.router.navigate(['/games/fish/level/', id]);
   }
 
   gameOver(): void {
@@ -308,20 +318,21 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
       this.timerSubscription.unsubscribe();
     }
     this.isTimeOut = true;
+    const showNextButton = (this.levelIndex < this.totalLevels - 1) ? true : false;
     this.updateLocalStorage();
     const dialogRef = this.dialog.open(AppGamesFishingGameOverComponent, {
       panelClass: 'game-over-class',
       backdropClass: 'game-over-backdrop',
       disableClose: true,
-      data: { level: this.gameLevel, wordsCount: this.completedWords, language: this.currentLanguage }
+      data: { level: this.gameLevel, wordsCount: this.completedWords, language: this.currentLanguage, showNext: showNextButton }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (result === 'replay') {
-          this.replay();
+          this.replay(this.gameLevel.id);
         } else if (result === 'next') {
-          // this.router.navigate(['/games/fish/level/', this.gameLevel.id + 1]);
+          this.replay(this.levels[this.levelIndex + 1].id);
         }
       }
     });

@@ -1,8 +1,12 @@
 <div class="play-bg" *ngIf="gameLevel">
   <div class="game-info-hld white-bg">
-    <div class="game-info-title">Your time</div>
-    <div>
-      {{minutes}} : {{seconds}}
+    <div class="game-info-title">{{ 'translateYourTime' | translate }}</div>
+    <div class="timer-holder ptb-16">
+      <span class="timer-hld">{{tensOfMinutes}}</span>
+      <span class="timer-hld">{{minutes}}</span>
+      <span class="timer-hld no-bg">:</span>
+      <span class="timer-hld">{{tensOfSeconds}}</span>
+      <span class="timer-hld">{{seconds}}</span>
     </div>
     <div class="divider"></div>
     <div class="flex-v-align p-16">
@@ -22,10 +26,14 @@
     }}" svgIcon="{{ activeIcon }}" (click)="togglePlayState()" class="mlr-12 cursor-pointer black-icon"
       [ngClass]="{'active': activeIcon === 'pause'}">
     </mat-icon>
-    <mat-icon svgIcon="icon_replay" class="mlr-12 cursor-pointer" matTooltip="Replay" (click)="replay()"></mat-icon>
-    <mat-icon svgIcon="enter" class="mlr-12 cursor-pointer" matTooltip="Select level" (click)="selectLevel()">
+    <mat-icon svgIcon="icon_replay" class="mlr-12 cursor-pointer replay-icon"
+      matTooltip="{{'translateReplay'|translate}}" (click)="replay(gameLevel.id)">
     </mat-icon>
-    <mat-icon svgIcon="icon_logout" class="mlr-12 cursor-pointer" matTooltip="Back to games" (click)="backToGames()">
+    <mat-icon svgIcon="enter" class="mlr-12 cursor-pointer" matTooltip="{{'translateSelectLevel'|translate}}"
+      (click)="selectLevel()">
+    </mat-icon>
+    <mat-icon svgIcon="icon_logout" class="mlr-12 cursor-pointer back-icon"
+      matTooltip="{{'translateBackToGames'|translate}}" (click)="backToGames()">
     </mat-icon>
   </div>
 

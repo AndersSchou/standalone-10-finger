@@ -3,9 +3,9 @@
     <div class="levels-hld">
       <div class="levels-header">
         <div class="levels-hld-title">
-          Select level
+          {{ 'translateSelectLevel' | translate }}
         </div>
-        <div class="levels-hld-description">Make your choice and then click "Proceed"</div>
+        <div class="levels-hld-description">{{ 'translateMakeLevelChoice' | translate }}</div>
       </div>
       <div class="scroll-hld">
         <div fxLayout="row wrap" class="plr-30">
@@ -25,8 +25,10 @@
         </div>
       </div>
       <div class="proceed-hld">
-        <div class="proceed-btn mr-16" (click)="backToGames()">Back to games</div>
-        <div class="proceed-btn" [ngClass]="{'disabled': !selectedLevel.selected}" (click)="play()">Proceed</div>
+        <div class="proceed-btn mr-16" (click)="backToGames()">{{ 'translateBackToGames' | translate }}</div>
+        <div class="proceed-btn" [ngClass]="{'disabled': !selectedLevel.selected}" (click)="play()">
+          {{ 'translateProceed' | translate }}
+        </div>
       </div>
     </div>
   </div>

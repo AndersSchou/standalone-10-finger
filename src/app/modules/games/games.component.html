@@ -4,17 +4,21 @@
   <div class="center-content">
     <div>
       <div class="game-text padd-tb-44">
-        <div class="game-page-title">Welcome to game portal</div>
-        <div class="game-page-description">Improve your typing skills with fun!</div>
+        <div class="game-page-title">{{ 'translateWelcomeToGamePortal' | translate}}</div>
+        <div class="game-page-description">{{ 'translateGamePortalDescription' | translate }}</div>
         <div class="games-list" fxLayout="row" fxLayoutGap="30px" fxLayoutAlign="center center">
-          <div>
+          <div *ngIf="showGame; else noGamesTemplate">
             <div class="game-hld" (click)="navigateTo('fish')">
               <div>
                 <mat-icon svgIcon="fish"></mat-icon>
               </div>
-              <div class="game-title">Fish typing</div>
+              <div class="game-title">{{ 'translateFishTyping' | translate }}</div>
             </div>
           </div>
+
+          <ng-template #noGamesTemplate>
+            <div>{{ 'translateNoGamesFor' | translate }} {{currentLanguage | translate}}.</div>
+          </ng-template>
 
         </div>
       </div>
