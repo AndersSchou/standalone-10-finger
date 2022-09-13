@@ -30,10 +30,10 @@ steps:
     command: custom
     customCommand: install
 - task: Npm@1
-  displayName: 'npm run-script build'
+  displayName: 'npm devbuild'
   inputs:
     command: custom
-    customCommand: npm run-script build
+    customCommand: run devbuild
 - task: Npm@1
   displayName: 'Lint Angular'
   inputs:
