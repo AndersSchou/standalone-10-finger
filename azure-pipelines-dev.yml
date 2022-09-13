@@ -28,7 +28,7 @@ steps:
   displayName: 'npm install'
   inputs:
     command: custom
-    customCommand: install
+    customCommand: npm install
 - task: Npm@1
   displayName: 'ng build --configuration development'
   inputs:
