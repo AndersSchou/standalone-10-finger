@@ -1,0 +1,56 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+  branches:
+    include:
+      - develop
+pr: none
+pool:
+  name: svasvmcbuild02
+variables:
+  disable.coverage.autogenerate: 'true'
+
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.15.5'
+  displayName: 'Install Node.js'
+- task: DeleteFiles@1
+  displayName: 'Delete JUnit files'
+  inputs:
+    SourceFolder: junit
+    Contents: 'TESTS*.xml'
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    command: custom
+    customCommand: install
+- task: Npm@1
+  displayName: 'npm devbuild'
+  inputs:
+    command: custom
+    customCommand: run devbuild
+- task: Npm@1
+  displayName: 'Lint Angular'
+  inputs:
+    command: custom
+    customCommand: run lint --  --format=stylish
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      cd dist
+      git log -30 --pretty=format:"%h %ad | [%an] => %s %d " | sed s/"2020.*|"//g > 10finger/version.txt
+- task: CopyFiles@2
+  inputs:
+    contents: 'dist/10finger/**'
+    targetFolder: $(Build.ArtifactStagingDirectory)
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)
+    artifactName: dev10finger
