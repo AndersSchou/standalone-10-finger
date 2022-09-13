@@ -8,6 +8,7 @@ import { createEmptyLevelDTO, GameDTO, GameResultDTO, GameStorageDTO } from 'src
 import { MatDialog } from '@angular/material/dialog';
 import { AppGamesFishingGameOverComponent } from '../game-over/game-over.component';
 import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-modules-games-fish-play',
@@ -18,7 +19,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   // @ViewChild('fishHolder') fishHolder?: ElementRef;
   @ViewChild('fishComp') fishComponent?: AppGamesFishComponent;
   @ViewChild('wordHld') wordHld?: ElementRef;
-  minutes: number = 2;
+  minutes: number = 0;
   tensOfMinutes: number = 0;
   seconds: number = 0;
   tensOfSeconds: number = 0;
@@ -42,6 +43,10 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   countdownNbr: number = 3;
   isTimeOut: boolean = false;
   countdownSubscription: Subscription = Subscription.EMPTY;
+  // Stores the total number of typed characters.
+  totalChars: number = 0;
+  // Stores the total number of mistakes.
+  totalMistakes: number = 0;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
   fishesArray: string[] = ['blue_fish_1', 'blue_fish_2', 'koi_black', 'koi_orange_black', 'koi_orange_white', 'koi_orange_white_1',
@@ -55,6 +60,13 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     private readonly dialog: MatDialog,
   ) {
     this.currentLanguage = this.languageHelperService.currentLangUsed;
+    const timeArray = environment.gameTime.split(':');
+    const mins = timeArray[0].split('');
+    const secs = timeArray[1].split('');
+    this.tensOfMinutes = Number(mins[0]);
+    this.minutes = Number(mins[1]);
+    this.tensOfSeconds = Number(secs[0]);
+    this.seconds = Number(secs[1]);
   }
 
   ngOnInit(): void {
@@ -113,10 +125,12 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
           }
 
           if (this.currentChar.toLowerCase() === (event as KeyboardEvent).key.toLowerCase()) {
+            this.totalChars++;
             this.markAsCompleted();
             this.updateCurrentPosition();
           } else {
             if ((event as KeyboardEvent).key !== 'Shift') {
+              this.totalMistakes++;
               this.markAsMistake();
             }
           }
@@ -342,6 +356,10 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   updateLocalStorage(): void {
     const levelResult: GameResultDTO = {
       numberOfWords: this.completedWords,
+      characters: this.totalChars,
+      mistakes: this.totalMistakes,
+      // time: environment.gameTime,
+      time: 0,
       updatedAt: new Date()
     };
     this.gameLevel.updatedAt = new Date();

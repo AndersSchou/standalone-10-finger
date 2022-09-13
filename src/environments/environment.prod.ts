@@ -7,6 +7,7 @@ export const environment = {
   production: true,
   availableLanguages: ['da-DK', 'nn-NO', 'sv-SE', 'nb-NO'],
   logLevel: NgxLoggerLevel.OFF,
+  gameTime: '02:00',
   UrlEndpoints: {
     auth: 'https://signon.vitec-mv.com',
     voiceservice: 'https://voiceservice.vitec-mv.com',

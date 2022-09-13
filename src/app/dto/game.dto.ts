@@ -10,6 +10,9 @@ export interface GameDTO {
 
 export interface GameResultDTO {
   numberOfWords: number;
+  mistakes: number;
+  time: number;
+  characters: number;
   updatedAt: Date;
 }
 

@@ -8,6 +8,7 @@ export const environment = {
   availableLanguages: ['da-DK', 'nn-NO', 'nb-NO', 'sv-SE'],
   logLevel: NgxLoggerLevel.DEBUG,
   location: 'http://localhost:4200/',
+  gameTime: '00:20',
   UrlEndpoints: {
     auth: 'https://signon-test.vitec-mv.com',
     voiceservice: 'https://voiceservice-test.vitec-mv.com',

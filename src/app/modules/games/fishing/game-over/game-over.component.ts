@@ -38,15 +38,12 @@ export class AppGamesFishingGameOverComponent implements OnInit, OnDestroy {
     if (this.data && this.data.language) {
       if (localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS)) {
         const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS) as string);
-        console.log('storedData', storedData);
         if (storedData) {
           const findLanguage = storedData.find((item: GameStorageDTO) => item.language === this.data.language);
-          console.log('findLanguage', findLanguage);
           if (findLanguage) {
             const findLevel = findLanguage.data.find((item: GameDTO) => item.id === this.data.level.id);
             if (findLevel && findLevel.result && findLevel.result.length > 1) {
               this.findMaxResult = findLevel.result.reduce((prev: any, current: any) => (prev.numberOfWords > current.numberOfWords) ? prev : current);
-              console.log('findMaxResult', this.findMaxResult);
             } else {
               this.findMaxResult = undefined;
             }

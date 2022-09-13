@@ -28,6 +28,9 @@ export class AppAchievementsComponent implements OnInit, OnDestroy {
   completedCourses: CourseDTO[] = [];
   // Tells if it should show the settings view or not.
   viewSettings: boolean = false;
+  games = [
+    { name: 'FishTyping', selected: false },
+  ];
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
@@ -132,9 +135,27 @@ export class AppAchievementsComponent implements OnInit, OnDestroy {
    */
   selectCategory(category: CategoriesDTO): void {
     this.currentCategory = { ...category };
+    this.games.forEach(el => {
+      el.selected = false;
+    });
     this.filterCompletedCourses();
   }
 
+  selectGame(game: { name: string, selected: boolean }): void {
+    this.categories.forEach(el => {
+      el.selected = false;
+    });
+    this.games.forEach(el => {
+      el.selected = false;
+    });
+    game.selected = true;
+    const cat: CategoriesDTO = {
+      name: game.name,
+      courses: [],
+      selected: game.selected,
+    };
+    this.currentCategory = cat;
+  }
   /**
    * Calculates the progress of the current category.
    *

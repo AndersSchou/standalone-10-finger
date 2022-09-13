@@ -2,8 +2,8 @@
 <app-shared-settings *ngIf="viewSettings"></app-shared-settings>
 <div class="course main-content-hld page-padd ptb-34">
   <div *ngIf="categories && categories.length > 0; else noCategories">
-    <div fxLayout="row wrap" fxLayoutGap="50px">
-      <div fxFlex="300px">
+    <div fxLayout="row wrap">
+      <div fxFlex="320px" class="left-col">
         <div>
           <div>
             <div class="section-title">
@@ -48,6 +48,20 @@
           </div>
         </div>
         <div class="divider"></div>
+        <div class="section-title pt-24">
+          <mat-icon svgIcon="games"></mat-icon>
+          {{ 'translateGames' | translate }}
+        </div>
+        <div class="pl-16">
+          <div *ngFor="let game of games; let i=index" class="cat-hld" [ngClass]="{'active': game.selected}"
+            (click)="selectGame(game)">
+            <div>{{'translate'+game.name | translate}}</div>
+            <div class="icon-hld">
+              <mat-icon svgIcon="fish" class="mr-10 fish-typing">
+              </mat-icon>
+            </div>
+          </div>
+        </div>
       </div>
       <div fxFlex class="overflow-auto">
         <app-modules-achievements-awards [currentLanguage]="currentLanguage" [categories]="categories"
