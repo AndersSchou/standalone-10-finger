@@ -146,6 +146,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
           this.levels = cat;
           const findLevel = cat.find((level: GameDTO) => level.id === Number(levelID));
           if (findLevel) {
+            console.log('findLevel§', findLevel.words.length);
             this.levelIndex = cat.indexOf(findLevel);
             this.gameLevel = findLevel;
             this.currentWord = this.gameLevel.words[0];
