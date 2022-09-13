@@ -3,10 +3,11 @@
 import { NgxLoggerLevel } from 'ngx-logger';
 
 export const environment = {
-  name: 'prod',
+  name: 'dev',
   production: true,
   availableLanguages: ['da-DK', 'nn-NO', 'sv-SE', 'nb-NO'],
   logLevel: NgxLoggerLevel.OFF,
+  location: 'http://localhost:4200/',
   UrlEndpoints: {
     auth: 'https://signon.vitec-mv.com',
     voiceservice: 'https://voiceservice.vitec-mv.com',
