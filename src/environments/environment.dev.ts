@@ -1,4 +1,4 @@
-// This is local environment used for testing locally on localhost.
+// This is local environment used for https://10-finger-dev.com/.
 
 import { NgxLoggerLevel } from 'ngx-logger';
 
