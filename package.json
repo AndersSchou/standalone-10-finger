@@ -4,12 +4,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
+    "cibuild": "ng lint && ng build --configuration production && ng test --watch=false --code-coverage",
     "devbuild": "ng build --c development",
-    "testbuild": "ng build --c test",
-    "build": "ng build --configuration production"
+    "testbuild": "ng build --c test"
   },
   "private": true,
   "dependencies": {
