@@ -3,7 +3,7 @@
 import { NgxLoggerLevel } from 'ngx-logger';
 
 export const environment = {
-  name: 'dev',
+  name: 'prod',
   production: true,
   availableLanguages: ['da-DK', 'nn-NO', 'sv-SE', 'nb-NO'],
   logLevel: NgxLoggerLevel.OFF,
