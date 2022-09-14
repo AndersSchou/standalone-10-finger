@@ -47,6 +47,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   totalChars: number = 0;
   // Stores the total number of mistakes.
   totalMistakes: number = 0;
+  timeInMs: number = 0;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
   fishesArray: string[] = ['blue_fish_1', 'blue_fish_2', 'koi_black', 'koi_orange_black', 'koi_orange_white', 'koi_orange_white_1',
@@ -61,6 +62,9 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   ) {
     this.currentLanguage = this.languageHelperService.currentLangUsed;
     const timeArray = environment.gameTime.split(':');
+    this.timeInMs = Number(timeArray[0]) * 60 * 1000 + Number(timeArray[1]) * 1000;
+    console.log('environment', environment);
+    console.log('this.timeInMs', this.timeInMs);
     const mins = timeArray[0].split('');
     const secs = timeArray[1].split('');
     this.tensOfMinutes = Number(mins[0]);

@@ -4,10 +4,11 @@ import { NgxLoggerLevel } from 'ngx-logger';
 
 export const environment = {
   name: 'test',
-  production: true,
+  production: false,
   availableLanguages: ['da-DK', 'nn-NO', 'sv-SE', 'nb-NO'],
   logLevel: NgxLoggerLevel.OFF,
   location: 'http://localhost:4200/',
+  gameTime: '00:20',
   UrlEndpoints: {
     auth: 'https://signon-test.vitec-mv.com',
     voiceservice: 'https://voiceservice-test.vitec-mv.com',
