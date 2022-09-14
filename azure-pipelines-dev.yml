@@ -28,27 +28,20 @@ steps:
   displayName: 'npm install'
   inputs:
     command: custom
-    customCommand: npm install
+    customCommand: install
 - task: Npm@1
-  displayName: 'ng build --configuration development'
+  displayName: 'npm devbuild'
   inputs:
     command: custom
-    customCommand: ng build --configuration development
+    customCommand: run devbuild
 - task: Npm@1
   displayName: 'Lint Angular'
   inputs:
     command: custom
     customCommand: run lint --  --format=stylish
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Write your commands here
-      cd dist
-      git log -30 --pretty=format:"%h %ad | [%an] => %s %d " | sed s/"2020.*|"//g > 10finger/version.txt
 - task: CopyFiles@2
   inputs:
-    contents: 'dist/10finger/**'
+    contents: 'dist/10-finger/**'
     targetFolder: $(Build.ArtifactStagingDirectory)
 - task: PublishBuildArtifacts@1
   inputs:
