@@ -1,4 +1,4 @@
-// This is develop environment used for deveopment on https://cloudapp-dev.intowords.com/.
+// This is develop environment used for deveopment on https://10-finger-test.com/.
 
 import { NgxLoggerLevel } from 'ngx-logger';
 
