@@ -33,7 +33,7 @@ steps:
   displayName: 'npm devbuild'
   inputs:
     command: custom
-    customCommand: run build
+    customCommand: run devbuild
 - task: Npm@1
   displayName: 'Lint Angular'
   inputs:
