@@ -114,4 +114,3 @@ getFullName(firstName: string, lastName: string) {
 }
 ```
 
-test
