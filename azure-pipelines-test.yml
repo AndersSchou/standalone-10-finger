@@ -28,7 +28,7 @@ steps:
     customCommand: run testbuild
 - task: CopyFiles@2
   inputs:
-    contents: 'dist/intowords/**'
+    contents: 'dist/10-finger/**'
     targetFolder: $(Build.ArtifactStagingDirectory)
 - task: PublishBuildArtifacts@1
   inputs:
