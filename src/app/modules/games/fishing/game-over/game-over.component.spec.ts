@@ -4,46 +4,24 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgxPrinterService } from 'ngx-printer';
-import { Observable } from 'rxjs';
-import { CourseHelperService } from 'src/app/services/course-helper.service';
-import { MaterialModule } from '../../shared/material.module';
-import { AppAchievementDetailsComponent } from './game-over.component';
+import { MaterialModule } from 'src/app/modules/shared/material.module';
+import { AppGamesFishingGameOverComponent } from './game-over.component';
 
-describe('AppAchievementDetailsComponent', () => {
-  let component: AppAchievementDetailsComponent;
-  let fixture: ComponentFixture<AppAchievementDetailsComponent>;
+describe('AppGamesFishingGameOverComponent', () => {
+  let component: AppGamesFishingGameOverComponent;
+  let fixture: ComponentFixture<AppGamesFishingGameOverComponent>;
   let routerSpy: jasmine.SpyObj<Router>;
-  let courseHelperServiceSpy: jasmine.SpyObj<CourseHelperService>;
-  let oncloseDetailsModalActionSpy;
-  let printerServiceSpy: jasmine.SpyObj<NgxPrinterService>;
   let matDialogRefSpy: jasmine.SpyObj<MatDialogRef<any, any>>;
 
   beforeEach(async () => {
     routerSpy = jasmine.createSpyObj<Router>(['navigate']);
 
-    courseHelperServiceSpy = jasmine.createSpyObj<CourseHelperService>([
-      'calculateSpeed',
-      'calculateAccuracy',
-      'startExercise',
-      'closeDetailsModalAction'
-    ]);
-    (courseHelperServiceSpy as any).closeDetailsModalAction = new Observable(
-      (subscriber) => {
-        oncloseDetailsModalActionSpy = subscriber;
-      }
-    );
-
-    printerServiceSpy = jasmine.createSpyObj<NgxPrinterService>(['printHTMLElement']);
-
     matDialogRefSpy = jasmine.createSpyObj<MatDialogRef<any, any>>(['close']);
 
     await TestBed.configureTestingModule({
-      declarations: [AppAchievementDetailsComponent],
+      declarations: [AppGamesFishingGameOverComponent],
       providers: [
         { provide: Router, useValue: routerSpy },
-        { provide: CourseHelperService, useValue: courseHelperServiceSpy },
-        { provide: NgxPrinterService, useValue: printerServiceSpy },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
       ],
@@ -57,7 +35,7 @@ describe('AppAchievementDetailsComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppAchievementDetailsComponent);
+    fixture = TestBed.createComponent(AppGamesFishingGameOverComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

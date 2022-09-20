@@ -23,8 +23,6 @@ describe('AppAchievementDetailsComponent', () => {
     routerSpy = jasmine.createSpyObj<Router>(['navigate']);
 
     courseHelperServiceSpy = jasmine.createSpyObj<CourseHelperService>([
-      'calculateSpeed',
-      'calculateAccuracy',
       'startExercise',
       'closeDetailsModalAction'
     ]);

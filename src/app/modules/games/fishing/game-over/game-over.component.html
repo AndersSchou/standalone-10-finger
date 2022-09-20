@@ -1,4 +1,4 @@
-<div class="dialog-hld">
+<div class="dialog-hld" *ngIf="data">
   <div mat-dialog-title class="mat-dialog-title">
     <div class="close-row">
       <div class="icon-hld ml-auto">
@@ -10,18 +10,18 @@
         <mat-icon svgIcon="crab" class="crab-icon"></mat-icon>
       </div>
       <div class="game-over-header-title">{{ 'translateGameOver' | translate }}</div>
-      <div *ngIf="data" class="game-over-header-level pb-16">{{data.level.name}}</div>
+      <div class="game-over-header-level pb-16" *ngIf="data.level">{{data.level.name}}</div>
     </div>
     <div class="divider"></div>
   </div>
 
-  <div mat-dialog-content class="content-hld" *ngIf="data">
+  <div mat-dialog-content class="content-hld">
     <div class="overall-res-hld">
       <div>
         <mat-icon svgIcon="calendar" class="calendar"></mat-icon>
       </div>
       <div class="details-title-hld">{{ 'translateDateTime' | translate }}</div>
-      <div class="award-desc">
+      <div class="award-desc" *ngIf="data.level">
         {{data.level.updatedAt | date: 'MMMM d, y, h:mm a'}}
       </div>
     </div>
@@ -47,22 +47,22 @@
     </div>
     <div class="divider" *ngIf="findMaxResult"></div>
   </div>
-</div>
 
-<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" *ngIf="data" class="pt-24">
-  <div class="details-actions-hld">
-    <div class="round-btn" matTooltip="{{'translateReplay' | translate}}" (click)="replay()">
-      <mat-icon svgIcon="icon_replay"></mat-icon>
-    </div>
-    <div *ngIf="data.showNext" class="round-btn" matTooltip="{{'translatePlayNextLevel' | translate}}"
-      (click)="playNext()">
-      <mat-icon svgIcon="arrow_right"></mat-icon>
-    </div>
-    <div class="round-btn" matTooltip="{{'translateSelectLevel' | translate}}" (click)="selectLevel()">
-      <mat-icon svgIcon="enter"></mat-icon>
-    </div>
-    <div class="round-btn" matTooltip="{{'translateBackToGames' | translate }}" (click)="exit()">
-      <mat-icon svgIcon="icon_logout"></mat-icon>
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" class="pt-24">
+    <div class="details-actions-hld">
+      <div class="round-btn" matTooltip="{{'translateReplay' | translate}}" (click)="replay()">
+        <mat-icon svgIcon="icon_replay"></mat-icon>
+      </div>
+      <div *ngIf="data.showNext" class="round-btn" matTooltip="{{'translatePlayNextLevel' | translate}}"
+        (click)="playNext()">
+        <mat-icon svgIcon="arrow_right"></mat-icon>
+      </div>
+      <div class="round-btn" matTooltip="{{'translateSelectLevel' | translate}}" (click)="selectLevel()">
+        <mat-icon svgIcon="enter"></mat-icon>
+      </div>
+      <div class="round-btn" matTooltip="{{'translateBackToGames' | translate }}" (click)="exit()">
+        <mat-icon svgIcon="icon_logout"></mat-icon>
+      </div>
     </div>
   </div>
 </div>

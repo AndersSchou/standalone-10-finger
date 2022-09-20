@@ -4,11 +4,12 @@ import { Component, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewInit, Cha
 import { ActivatedRoute, Router } from '@angular/router';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { FishGame } from 'src/app/games/fish';
-import { createEmptyLevelDTO, GameDTO, GameResultDTO, GameStorageDTO } from 'src/app/dto/game.dto';
+import { createEmptyLevelDTO, GameDTO, GameStorageDTO } from 'src/app/dto/game.dto';
 import { MatDialog } from '@angular/material/dialog';
 import { AppGamesFishingGameOverComponent } from '../game-over/game-over.component';
 import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
 import { environment } from 'src/environments/environment';
+import { ResultDTO } from 'src/app/dto/course.dto';
 
 @Component({
   selector: 'app-modules-games-fish-play',
@@ -63,8 +64,6 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     this.currentLanguage = this.languageHelperService.currentLangUsed;
     const timeArray = environment.gameTime.split(':');
     this.timeInMs = Number(timeArray[0]) * 60 * 1000 + Number(timeArray[1]) * 1000;
-    console.log('environment', environment);
-    console.log('this.timeInMs', this.timeInMs);
     const mins = timeArray[0].split('');
     const secs = timeArray[1].split('');
     this.tensOfMinutes = Number(mins[0]);
@@ -358,12 +357,11 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   updateLocalStorage(): void {
-    const levelResult: GameResultDTO = {
+    const levelResult: ResultDTO = {
       numberOfWords: this.completedWords,
       characters: this.totalChars,
       mistakes: this.totalMistakes,
-      // time: environment.gameTime,
-      time: 0,
+      time: this.timeInMs,
       updatedAt: new Date()
     };
     this.gameLevel.updatedAt = new Date();
@@ -371,21 +369,19 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     if (localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS)) {
       // localStorage.setItem('gameLevel', JSON.stringify(this.gameLevel));
       const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS) as string);
-      console.log('storedData', storedData);
       if (storedData) {
         const findLanguage = storedData.find((item: GameStorageDTO) => item.language === this.currentLanguage);
-        console.log('findLanguage', findLanguage);
         if (findLanguage) {
+          findLanguage.totalLevels = this.totalLevels;
           const findLevel = findLanguage.data.find((item: GameDTO) => item.id === this.gameLevel.id);
           if (findLevel) {
-            findLevel.result.push(levelResult);
+            findLevel.results.push(levelResult);
           } else {
-            this.gameLevel.result = [levelResult];
+            this.gameLevel.results = [levelResult];
             findLanguage.data.push(this.gameLevel);
           }
-          console.log('storedData', storedData);
         } else {
-          storedData.push({ language: this.currentLanguage, data: [this.updateResult(levelResult)] });
+          storedData.push(this.updateResult(levelResult));
         }
         localStorage.setItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS, JSON.stringify(storedData));
       }
@@ -394,10 +390,11 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
-  updateResult(levelResult: GameResultDTO): GameStorageDTO {
-    this.gameLevel.result = [levelResult];
+  updateResult(levelResult: ResultDTO): GameStorageDTO {
+    this.gameLevel.results = [levelResult];
     const gameProgress: GameStorageDTO = {
       language: this.currentLanguage,
+      totalLevels: this.totalLevels,
       data: [this.gameLevel]
     };
     return gameProgress;

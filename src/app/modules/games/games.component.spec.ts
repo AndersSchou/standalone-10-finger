@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
+import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -12,6 +13,7 @@ describe('AppGamesComponent', () => {
   let fixture: ComponentFixture<AppGamesComponent>;
   let settingsServiceSpy: jasmine.SpyObj<SettingsService>;
   let onViewSettingsActionSpy;
+  let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
     settingsServiceSpy = jasmine.createSpyObj<SettingsService>(['viewSettingsAction']);
@@ -21,10 +23,13 @@ describe('AppGamesComponent', () => {
       }
     );
 
+    routerSpy = jasmine.createSpyObj<Router>(['navigate']);
+
     await TestBed.configureTestingModule({
       declarations: [AppGamesComponent],
       providers: [
         { provide: SettingsService, useValue: settingsServiceSpy },
+        { provide: Router, useValue: routerSpy },
       ],
       imports: [
         TranslateModule.forRoot(),
