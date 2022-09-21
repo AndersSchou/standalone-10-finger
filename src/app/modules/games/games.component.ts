@@ -16,6 +16,7 @@ import { SettingsService } from 'src/app/services/settings.service';
 export class AppGamesComponent implements OnInit, OnDestroy {
   // Tells if it should show the settings view or not.
   viewSettings: boolean = false;
+  // Tells if it should show the game or not.
   showGame: boolean = false;
   // Stores the current language.
   currentLanguage: string;
@@ -63,6 +64,9 @@ export class AppGamesComponent implements OnInit, OnDestroy {
     this.destroyed.next(true);
   }
 
+  /**
+   * Gets the fishing game data.
+   */
   gameData(): void {
     const lang = this.currentLanguage.split('-')[0];
     if (lang in FishGame) {
@@ -77,6 +81,11 @@ export class AppGamesComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Navigate to a specific game.
+   *
+   * @param url Represents the url to navigate to.
+   */
   navigateTo(url: string): void {
     this.router.navigate(['/games/' + url]);
   }

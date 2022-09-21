@@ -6,6 +6,7 @@
   background-size: cover;
   height: 100vh;
   position: relative;
+  overflow: hidden;
 }
 
 .game-info-hld {
@@ -76,8 +77,8 @@
 }
 
 .boat-bg-hld {
-  width: 386px;
-  height: 519px;
+  width: 382px;
+  height: 538px;
   position: absolute;
   bottom: 10%;
   left: 0;
@@ -104,12 +105,8 @@
 
 .game-play-hld {
   position: absolute;
-  bottom: 10%;
-  left: calc(50% + 56px);
   display: flex;
-  min-width: 284px;
-  align-items: center;
-  justify-content: center;
+  right: 0;
 }
 
 ::ng-deep .key-fish-hld {

@@ -2,8 +2,16 @@ import { trigger, state, style, transition, animate, AnimationEvent, sequence } 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 
+/**
+ * Fish states.
+ */
 type FishState = 'void' | 'entering' | 'waiting' | 'caught' | 'escaped';
 
+/**
+ *
+ * @param wiggleAmplification
+ * @returns
+ */
 function randomWiggle(wiggleAmplification: number): string {
   const wiggleX = Math.random() * wiggleAmplification - wiggleAmplification / 2;
   const wiggleY = Math.random() * wiggleAmplification - wiggleAmplification / 2;
@@ -18,6 +26,9 @@ function animationRepeat(count = 100): any[] {
   return animationArr;
 }
 
+/**
+ * This component is used to display a fish.
+ */
 @Component({
   selector: 'app-modules-games-fish',
   templateUrl: './fish.component.html',
@@ -113,6 +124,5 @@ export class AppGamesFishComponent implements OnInit, OnDestroy {
   onAnimationEventEnded(event: AnimationEvent) {
     this.onAnimationEventEndedSubject.next(event);
   }
-
 
 }

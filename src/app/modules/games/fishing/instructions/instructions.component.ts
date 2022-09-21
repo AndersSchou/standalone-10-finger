@@ -15,13 +15,21 @@ import { LanguageHelperService } from 'src/app/services/language.service';
 })
 export class AppGamesFishInstructionsComponent implements OnInit, OnDestroy {
   @ViewChild('instructionStepper') instructionStepper?: MatStepper;
+  // Stores the selected index.
   selectedIndex: number = 0;
+  // Stores the selected leved ID.
   selectedLevelId: number = 0;
   // Stores the current language.
   currentLanguage: string;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
+  /**
+   * Constructor function responsible for injecting the needed services.
+   *
+   * @param router Reference to Router.
+   * @param languageHelperService Reference to LanguageHelperService.
+   */
   constructor(
     private readonly router: Router,
     private readonly languageHelperService: LanguageHelperService,
@@ -29,6 +37,9 @@ export class AppGamesFishInstructionsComponent implements OnInit, OnDestroy {
     this.currentLanguage = this.languageHelperService.currentLangUsed;
   }
 
+  /**
+   * Lifecycle hook that is called after data-bound properties of a directive are initialized.
+   */
   ngOnInit(): void {
     if (this.currentLanguage && this.currentLanguage.length > 0) {
       this.findLatestLevel();
@@ -48,26 +59,40 @@ export class AppGamesFishInstructionsComponent implements OnInit, OnDestroy {
     this.destroyed.next(true);
   }
 
+  /**
+   * Go to the next step.
+   */
   next(): void {
     if (this.selectedIndex === 1) {
-      // navigate to set level.
+      // Navigate to set level.
       this.router.navigate(['/games/fish/level']);
     }
     this.instructionStepper?.next();
   }
 
+  /**
+   * Go to the previous step.
+   */
   previous(): void {
     if (this.selectedIndex === 0) {
-      // navigate to set level.
+      // Navigate to games view.
       this.router.navigate(['/games']);
     }
     this.instructionStepper?.previous();
   }
 
+  /**
+   * Selection change listener.
+   *
+   * @param event Represents the event that is triggered when the selection has changed.
+   */
   selectionChange(event: StepperSelectionEvent): void {
     this.selectedIndex = event.selectedIndex;
   }
 
+  /**
+   * Finds the latest level.
+   */
   findLatestLevel(): void {
     if (localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS)) {
       const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS) as string);
@@ -103,6 +128,9 @@ export class AppGamesFishInstructionsComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Start the game.
+   */
   startPlay(): void {
     this.router.navigate(['/games/fish/level/', this.selectedLevelId]);
   }
