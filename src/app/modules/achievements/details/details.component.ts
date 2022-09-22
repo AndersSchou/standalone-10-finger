@@ -78,7 +78,7 @@ export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
    * @returns The total speed value for the current course/game level.
    */
   calculateSpeed(): number {
-    if (this.data) {
+    if (this.data && this.data.details) {
       const highestResult = this.data.details.highestResult;
       return Math.round((highestResult.characters * 60000) / highestResult.time);
     } else {
@@ -92,7 +92,7 @@ export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
    * @returns The total accuracy value for the current course/game level.
    */
   calculateAccuracy(): number {
-    if (this.data) {
+    if (this.data && this.data.details) {
       const highestResult = this.data.details.highestResult;
       return Math.round((highestResult.characters - highestResult.mistakes) * 100 / highestResult.characters);
     } else {

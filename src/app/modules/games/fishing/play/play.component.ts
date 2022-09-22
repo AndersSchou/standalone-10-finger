@@ -265,7 +265,6 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
       const addFishSubs = this.fishComponent.addFish(`assets/svg/${this.fishesArray[Math.floor(Math.random() * this.fishesArray.length)]}.svg`)
         .pipe(takeUntil(this.destroyed))
         .subscribe(() => {
-          console.log('fish added');
           addFishSubs.unsubscribe();
         });
       this.gameFishDivElement = document.createElement('div');

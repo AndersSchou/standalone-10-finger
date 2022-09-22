@@ -2,7 +2,7 @@ import { CategoriesDTO, CourseDTO, ResultDTO } from './course.dto';
 import { GameDTO } from './game.dto';
 
 /**
- * AwardDetailsDTO holds the details of an award.
+ * Award details DTO.
  */
 export interface AwardDetailsDTO {
   course: CourseDTO;
@@ -12,12 +12,18 @@ export interface AwardDetailsDTO {
   isGame?: boolean;
 }
 
+/**
+ * Completed level DTO.
+ */
 export interface CompletedLevelDTO {
   name: string;
   isGame: boolean;
   details: CompletedLevelDetailsDTO;
 }
 
+/**
+ * Completed level details DTO.
+ */
 export interface CompletedLevelDetailsDTO {
   categoryName: string;
   levelName: string;

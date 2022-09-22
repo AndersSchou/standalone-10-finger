@@ -2,19 +2,17 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { MaterialModule } from 'src/app/modules/shared/material.module';
 import { LanguageHelperService } from 'src/app/services/language.service';
-import { AppGamesFishInstructionsComponent } from './instructions.component';
+import { AppGamesFishComponent } from './fish.component';
 
-describe('AppGamesFishInstructionsComponent', () => {
-  let component: AppGamesFishInstructionsComponent;
-  let fixture: ComponentFixture<AppGamesFishInstructionsComponent>;
+describe('AppGamesFishComponent', () => {
+  let component: AppGamesFishComponent;
+  let fixture: ComponentFixture<AppGamesFishComponent>;
   let languageHelperServiceSpy: jasmine.SpyObj<LanguageHelperService>;
   let onLanguageChangedSpy;
-  let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
     languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>(['OnLanguageChanged']);
@@ -24,13 +22,10 @@ describe('AppGamesFishInstructionsComponent', () => {
       }
     );
 
-    routerSpy = jasmine.createSpyObj<Router>(['navigate']);
-
     await TestBed.configureTestingModule({
-      declarations: [AppGamesFishInstructionsComponent],
+      declarations: [AppGamesFishComponent],
       providers: [
         { provide: LanguageHelperService, useValue: languageHelperServiceSpy },
-        { provide: Router, useValue: routerSpy },
       ],
       imports: [
         TranslateModule.forRoot(),
@@ -43,7 +38,7 @@ describe('AppGamesFishInstructionsComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppGamesFishInstructionsComponent);
+    fixture = TestBed.createComponent(AppGamesFishComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

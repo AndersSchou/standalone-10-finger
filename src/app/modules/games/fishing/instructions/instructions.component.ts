@@ -53,8 +53,8 @@ export class AppGamesFishInstructionsComponent implements OnInit, OnDestroy {
   }
 
   /**
-     * Unsubscribe Observables and detach event handlers to avoid memory leaks.
-     */
+   * Unsubscribe Observables and detach event handlers to avoid memory leaks.
+   */
   ngOnDestroy(): void {
     this.destroyed.next(true);
   }

@@ -1,5 +1,8 @@
 import { ResultDTO } from "./course.dto";
 
+/**
+ * Game interface.
+ */
 export interface GameDTO {
   id: number;
   name: string;
@@ -9,12 +12,18 @@ export interface GameDTO {
   updatedAt: Date;
 }
 
+/**
+ * Game storage interface.
+ */
 export interface GameStorageDTO {
   language: string;
   totalLevels: number;
   data: GameDTO[];
 }
 
+/**
+ * Game result interface.
+ */
 export interface GameResultDTO {
   level: GameDTO;
   wordsCount: number;
