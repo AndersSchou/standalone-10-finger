@@ -1,4 +1,4 @@
-// This is develop environment used for deveopment on https://10-finger-test.com/.
+// This is test environment used for development on https://10-finger-test.com/.
 
 import { NgxLoggerLevel } from 'ngx-logger';
 
