@@ -1,0 +1,68 @@
+<div class="dialog-hld" *ngIf="data">
+  <div mat-dialog-title class="mat-dialog-title">
+    <div class="close-row">
+      <div class="icon-hld ml-auto">
+        <mat-icon svgIcon="icon_close" (click)="close()"></mat-icon>
+      </div>
+    </div>
+    <div class="game-over-header">
+      <div>
+        <mat-icon svgIcon="crab" class="crab-icon"></mat-icon>
+      </div>
+      <div class="game-over-header-title">{{ 'translateGameOver' | translate }}</div>
+      <div class="game-over-header-level pb-16" *ngIf="data.level">{{data.level.name}}</div>
+    </div>
+    <div class="divider"></div>
+  </div>
+
+  <div mat-dialog-content class="content-hld">
+    <div class="overall-res-hld">
+      <div>
+        <mat-icon svgIcon="calendar" class="calendar"></mat-icon>
+      </div>
+      <div class="details-title-hld">{{ 'translateDateTime' | translate }}</div>
+      <div class="award-desc" *ngIf="data.level">
+        {{data.level.updatedAt | date: 'MMMM d, y, h:mm a'}}
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="overall-res-hld">
+      <div>
+        <mat-icon svgIcon="koi_orange_white" class="koi-fish"></mat-icon>
+      </div>
+      <div class="details-title-hld">{{ 'translateFishesCaught' | translate }}</div>
+      <div class="award-desc">
+        {{ 'translateYouCaught' | translate }} {{data.wordsCount}} {{ 'translateFishes' | translate }}
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="overall-res-hld" *ngIf="findMaxResult">
+      <div>
+        <mat-icon svgIcon="gold_award" class="gold-award"></mat-icon>
+      </div>
+      <div class="details-title-hld">{{ 'translateHighestScore' | translate }}</div>
+      <div class="award-desc">
+        {{ 'translateYouCaught' | translate }} {{findMaxResult.numberOfWords}} {{ 'translateFishes' | translate }}
+      </div>
+    </div>
+    <div class="divider" *ngIf="findMaxResult"></div>
+  </div>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" class="pt-24">
+    <div class="details-actions-hld">
+      <div class="round-btn" matTooltip="{{'translateReplay' | translate}}" (click)="replay()">
+        <mat-icon svgIcon="icon_replay"></mat-icon>
+      </div>
+      <div *ngIf="data.showNext" class="round-btn" matTooltip="{{'translatePlayNextLevel' | translate}}"
+        (click)="playNext()">
+        <mat-icon svgIcon="arrow_right"></mat-icon>
+      </div>
+      <div class="round-btn" matTooltip="{{'translateSelectLevel' | translate}}" (click)="selectLevel()">
+        <mat-icon svgIcon="enter"></mat-icon>
+      </div>
+      <div class="round-btn" matTooltip="{{'translateBackToGames' | translate }}" (click)="exit()">
+        <mat-icon svgIcon="icon_logout"></mat-icon>
+      </div>
+    </div>
+  </div>
+</div>

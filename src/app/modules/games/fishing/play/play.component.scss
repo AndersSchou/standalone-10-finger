@@ -1,0 +1,290 @@
+@import "app-colors";
+
+.play-bg {
+  background-image: url("/assets/svg/fish_game_bg.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-info-hld {
+  position: absolute;
+  left: 30px;
+  top: 30px;
+  padding: 16px 16px 4px 16px;
+}
+
+.white-bg {
+  background: $white-color;
+  box-shadow: 0px 12px 24px rgb(0 0 0 / 5%);
+  border-radius: 12px;
+}
+
+.game-info-title {
+  font-weight: 900;
+  font-size: 16px;
+  line-height: 140%;
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+::ng-deep .flex-v-align {
+  display: flex;
+  align-items: center;
+}
+
+.koi-icon {
+  width: 42px;
+  height: 32px;
+}
+
+.times-icon {
+  width: 8px;
+}
+
+.p-16 {
+  padding: 16px;
+}
+
+.ptb-16 {
+  padding: 16px 0;
+}
+
+.mr-16 {
+  margin-right: 16px;
+}
+
+.mlr-12 {
+  margin: 0 12px;
+}
+
+.font-500 {
+  font-weight: 500;
+}
+
+.txt-uppercase {
+  text-transform: uppercase;
+}
+
+.game-actions-hld {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  padding: 16px 12px;
+  display: flex;
+}
+
+.boat-bg-hld {
+  width: 382px;
+  height: 538px;
+  position: absolute;
+  bottom: 10%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.boat-hld {
+  background-image: url("/assets/svg/fisher_boat.svg");
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+}
+
+.game-word-hld {
+  margin: 10px 0;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-play-hld {
+  position: absolute;
+  display: flex;
+  right: 0;
+}
+
+::ng-deep .key-fish-hld {
+  border-radius: 8px;
+  background: $white-color;
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 1px;
+}
+
+::ng-deep .key-fish-hld.active {
+  -webkit-animation: blink-fish 1s infinite;
+  -moz-animation: blink-fish 1s infinite;
+  animation: blink-fish 1s infinite;
+}
+
+@keyframes blink-fish {
+  0% {
+    color: $default-text-color;
+  }
+
+  100% {
+    color: $key-blue;
+  }
+}
+
+@-webkit-keyframes blink-fish {
+  0% {
+    color: $default-text-color;
+  }
+
+  100% {
+    color: $key-blue;
+  }
+}
+
+::ng-deep .key-fish-hld.completed {
+  color: $key-blue;
+}
+
+::ng-deep .key-fish-hld.error {
+  color: $red-text-color;
+}
+
+::ng-deep .key-fish-hld.active.error {
+  -webkit-animation: blink-fish-error 0.5s linear;
+  -moz-animation: blink-fish-error 0.5s linear;
+  animation: blink-fish-error 0.5s linear;
+}
+
+@keyframes blink-fish-error {
+  0% {
+    color: $default-text-color;
+  }
+
+  100% {
+    color: $red-text-color;
+  }
+}
+
+@-webkit-keyframes blink-fish-error {
+  0% {
+    color: $default-text-color;
+  }
+
+  100% {
+    color: $red-text-color;
+  }
+}
+
+.countdown-hld {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  background: rgba(24, 99, 165, 0.7);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+.countdown-hld .countdown-text {
+  color: $white-color;
+  -webkit-animation: fontanimation 0.5s infinite alternate;
+  -moz-animation: fontanimation 0.5s infinite alternate;
+  -o-animation: fontanimation 0.5s infinite alternate;
+  animation: fontanimation 0.5s infinite alternate;
+}
+
+@-webkit-keyframes fontanimation {
+  from {
+    font-size: 10vw;
+    font-weight: 500;
+  }
+
+  to {
+    font-size: 16vw;
+    font-weight: 900;
+  }
+}
+
+@-moz-keyframes fontanimation {
+  from {
+    font-size: 10vw;
+    font-weight: 500;
+  }
+
+  to {
+    font-size: 16vw;
+    font-weight: 900;
+  }
+}
+
+@-o-keyframes fontanimation {
+  from {
+    font-size: 10vw;
+    font-weight: 500;
+  }
+
+  to {
+    font-size: 16vw;
+    font-weight: 900;
+  }
+}
+
+@keyframes fontanimation {
+  from {
+    font-size: 10vw;
+    font-weight: 500;
+  }
+
+  to {
+    font-size: 16vw;
+    font-weight: 900;
+  }
+
+}
+
+::ng-deep .game-actions-hld .mat-icon.black-icon svg>path {
+  stroke: $default-text-color;
+}
+
+::ng-deep .game-actions-hld .mat-icon:hover svg>path,
+::ng-deep .game-actions-hld .mat-icon.active svg>path {
+  stroke: $color-active-secondary;
+}
+
+::ng-deep .game-actions-hld .mat-icon.back-icon:hover svg>path:nth-of-type(1),
+::ng-deep .game-actions-hld .mat-icon.replay-icon:hover svg>path:nth-of-type(3),
+::ng-deep .game-actions-hld .mat-icon.replay-icon:hover svg>path:nth-of-type(4) {
+  fill: $color-active-secondary;
+  stroke: none;
+}
+
+.timer-holder {
+  display: flex;
+}
+
+.timer-hld {
+  width: 24px;
+  height: 40px;
+  background: $color-active;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 1px;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.timer-hld.no-bg {
+  background: transparent;
+}

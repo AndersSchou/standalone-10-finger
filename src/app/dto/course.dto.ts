@@ -34,7 +34,7 @@ export interface CourseDTO {
   completed?: boolean;
   showAll?: boolean;
   updatedAt?: Date;
-  results: CourseResultDTO[];
+  results: ResultDTO[];
 }
 
 /**
@@ -45,15 +45,16 @@ export interface CourseExerciseDTO {
   text: string;
   completed?: boolean;
   progress?: number;
-  results: CourseResultDTO[];
+  results: ResultDTO[];
   updatedAt?: Date;
 }
 
 /**
  * Result interface.
  */
-export interface CourseResultDTO {
+export interface ResultDTO {
   mistakes: number;
+  numberOfWords?: number;
   start?: Date;
   end?: Date;
   time: number;

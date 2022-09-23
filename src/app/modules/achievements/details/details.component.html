@@ -13,8 +13,8 @@
         <div class="award-header">
           <mat-icon svgIcon="gold_award"></mat-icon>
         </div>
-        <div class="award-header-title" *ngIf="data.currentCategory">{{data.currentCategory.name}}</div>
-        <div class="award-desc pb-30" *ngIf="data.course">{{data.course.name}}</div>
+        <div class="award-header-title" *ngIf="data.details">{{data.details.categoryName}}</div>
+        <div class="award-desc pb-30">{{data.name}}</div>
       </div>
       <div class="divider"></div>
       <div class="overall-res-hld">
@@ -22,8 +22,8 @@
           <mat-icon svgIcon="calendar" class="calendar"></mat-icon>
         </div>
         <div class="details-title-hld">{{ 'translateDateTime' | translate }}</div>
-        <div class="award-desc" *ngIf="data.course && data.course.results">
-          {{data.course.results[data.course.results.length -1].updatedAt | date: 'MMMM d, y, h:mm a'}}
+        <div class="award-desc" *ngIf="data.details && data.details.highestResult">
+          {{data.details.highestResult.updatedAt | date: 'MMMM d, y, h:mm a'}}
         </div>
       </div>
       <div class="divider"></div>
@@ -57,7 +57,7 @@
       <div class="round-btn" matTooltip="{{'translateDownload' | translate}}" (click)="downloadAsPDF()">
         <mat-icon svgIcon="download"></mat-icon>
       </div>
-      <div class="round-btn" matTooltip="{{'translateNextCourse' | translate}}" (click)="nextCourse()">
+      <div class="round-btn" matTooltip="{{'translatePlayNextLevel' | translate}}" (click)="nextLevel()">
         <mat-icon svgIcon="arrow_right"></mat-icon>
       </div>
     </div>

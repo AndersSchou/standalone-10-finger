@@ -2,8 +2,8 @@
 <app-shared-settings *ngIf="viewSettings"></app-shared-settings>
 <div class="course main-content-hld page-padd ptb-34">
   <div *ngIf="categories && categories.length > 0; else noCategories">
-    <div fxLayout="row wrap" fxLayoutGap="50px">
-      <div fxFlex="300px">
+    <div fxLayout="row wrap">
+      <div fxFlex="320px" class="left-col">
         <div>
           <div>
             <div class="section-title">
@@ -16,19 +16,19 @@
                   <mat-icon svgIcon="speed" class="mr-16 speed"></mat-icon>
                   {{ 'translateSpeed' | translate }}
                 </div>
-                <div fxFlex>{{calculateSpeedAndAccuracy().speed}} {{ 'translateKeysPerMinute' | translate }}</div>
+                <div fxFlex>{{speed}} {{ 'translateKeysPerMinute' | translate }}</div>
               </div>
               <div fxLayout="row wrap" class="v-align res-hld" fxLayoutGap="40px">
                 <div fxFlex class="flex-v-align res-txt">
                   <mat-icon svgIcon="accuracy" class="mr-16 accuracy"></mat-icon>
                   {{ 'translateAccuracy' | translate }}
                 </div>
-                <div fxFlex>{{calculateSpeedAndAccuracy().accuracy}} %</div>
+                <div fxFlex>{{accuracy}} %</div>
               </div>
               <div class="category-progress">
-                <div class="progress" [ngStyle]="{'width': calculateProgress() + '%'}"></div>
+                <div class="progress" [ngStyle]="{'width': categoryProgress + '%'}"></div>
               </div>
-              <div>{{calculateProgress() | number: '1.0-2'}}% {{ 'translateCompleted' | translate }}</div>
+              <div>{{categoryProgress | number: '1.0-2'}}% {{ 'translateCompleted' | translate }}</div>
             </div>
           </div>
           <div class="divider"></div>
@@ -48,10 +48,24 @@
           </div>
         </div>
         <div class="divider"></div>
+        <div class="section-title pt-24">
+          <mat-icon svgIcon="games"></mat-icon>
+          {{ 'translateGames' | translate }}
+        </div>
+        <div class="pl-16">
+          <div *ngFor="let game of games; let i=index" class="cat-hld" [ngClass]="{'active': game.selected}"
+            (click)="selectGame(game)">
+            <div>{{ game.name | translate}}</div>
+            <div class="icon-hld">
+              <mat-icon svgIcon="fish" class="mr-10 fish-typing">
+              </mat-icon>
+            </div>
+          </div>
+        </div>
       </div>
       <div fxFlex class="overflow-auto">
-        <app-modules-achievements-awards [currentLanguage]="currentLanguage" [categories]="categories"
-          [currentCategory]="currentCategory" [courses]="completedCourses"></app-modules-achievements-awards>
+        <app-modules-achievements-awards [completedLevels]="completedLevels">
+        </app-modules-achievements-awards>
       </div>
     </div>
   </div>

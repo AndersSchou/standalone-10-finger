@@ -5,9 +5,10 @@ import { NgxLoggerLevel } from 'ngx-logger';
 export const environment = {
   name: 'dev',
   production: false,
-  availableLanguages: ['da-DK', 'nn-NO', 'sv-SE', 'nb-NO'],
-  logLevel: NgxLoggerLevel.OFF,
-  location: 'http://localhost:4200/',
+  availableLanguages: ['da-DK', 'nn-NO', 'nb-NO', 'sv-SE'],
+  logLevel: NgxLoggerLevel.DEBUG,
+  location: 'https://10finger-dev.intowords.com/',
+  gameTime: '02:00',
   UrlEndpoints: {
     auth: 'https://signon-dev.vitec-mv.com',
     voiceservice: 'https://voiceservice-dev.vitec-mv.com',
