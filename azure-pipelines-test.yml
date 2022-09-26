@@ -33,8 +33,4 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     pathToPublish: $(Build.ArtifactStagingDirectory)
-<<<<<<< HEAD
     artifactName: test10finger
-=======
-    artifactName: test10finger
->>>>>>> master
