@@ -7,7 +7,7 @@ export const environment = {
   production: true,
   availableLanguages: ['da-DK', 'nn-NO', 'sv-SE', 'nb-NO'],
   logLevel: NgxLoggerLevel.OFF,
-  location: 'http://localhost:4200/',
+  location: 'https://10finger-dev.intowords.com/',
   UrlEndpoints: {
     auth: 'https://signon-dev.vitec-mv.com',
     voiceservice: 'https://voiceservice-dev.vitec-mv.com',
