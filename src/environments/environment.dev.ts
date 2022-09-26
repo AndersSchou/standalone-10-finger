@@ -1,13 +1,13 @@
-// This is develop environment used for deveopment on https://cloudapp-dev.intowords.com/.
+// This is develop environment used for development on https://10-finger-dev.com/.
 
 import { NgxLoggerLevel } from 'ngx-logger';
 
 export const environment = {
-  name: 'prod',
-  production: true,
-  availableLanguages: ['da-DK', 'nn-NO', 'sv-SE', 'nb-NO'],
-  logLevel: NgxLoggerLevel.OFF,
+  production: false,
+  availableLanguages: ['da-DK', 'nn-NO', 'nb-NO', 'sv-SE'],
+  logLevel: NgxLoggerLevel.DEBUG,
   location: 'https://10finger-dev.intowords.com/',
+  gameTime: '02:00',
   UrlEndpoints: {
     auth: 'https://signon-dev.vitec-mv.com',
     voiceservice: 'https://voiceservice-dev.vitec-mv.com',

@@ -78,11 +78,22 @@ body .mat-icon {
   backdrop-filter: blur(16px);
 }
 
+.game-over-backdrop {
+  background: rgba(24, 99, 165, 0.8);
+  backdrop-filter: blur(16px);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.game-over-class,
 .achievement-class {
   max-height: 98vh;
   min-width: 432px;
 }
 
+.game-over-class,
 .achievement-class .mat-dialog-container {
   padding: 0;
   overflow: hidden;

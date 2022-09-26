@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
+import { MatStepperModule } from '@angular/material/stepper';
 
 /**
  * Module holding all material component shared dependencies.
@@ -25,6 +26,7 @@ import { FormsModule } from '@angular/forms';
     MatTabsModule,
     MatRadioModule,
     FormsModule,
+    MatStepperModule,
   ],
   exports: [
     MatButtonModule,
@@ -37,6 +39,7 @@ import { FormsModule } from '@angular/forms';
     MatTabsModule,
     MatRadioModule,
     FormsModule,
+    MatStepperModule,
   ],
   providers: [],
 })

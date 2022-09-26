@@ -68,7 +68,6 @@ export class BaseService<T> {
       Accepts: 'application/json' + (isPdfResponse ? ', application/pdf' : ''),
       language: lang
     });
-    console.log('headers', headers);
     return this.httpService
       .get<T>(url, {
         headers,

@@ -12,11 +12,13 @@ export enum Color {
 // KEYBOARD_PRIMARY_LAYOUT is the name for the keyboard primary layout.
 // CURRENT_LANGUAGE is the name for the current language.
 // COURSES_PROGRESS is the name for the courses progress.
+// FISH_GAME_PROGRESS is the name for the fish game progress.
 export enum STORAGE_KEY_TYPE {
   KEYBOARD_THEME_COLOR = 'keyboardThemeColor',
   KEYBOARD_PRIMARY_LAYOUT = 'keyboardPrimaryLayout',
   CURRENT_LANGUAGE = 'activeLanguage',
   COURSES_PROGRESS = 'coursesProgress',
+  FISH_GAME_PROGRESS = 'fishGameProgress',
 }
 
 // Text settings types.

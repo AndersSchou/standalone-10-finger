@@ -51,8 +51,4 @@ export class AppSharedTopMenuComponent implements OnInit, OnDestroy {
     this.isActive = !this.isActive;
     this.settingsService.toggleSettings(this.isActive);
   }
-
-  onRouterLinkActive(event: boolean): void {
-    console.log('event', event);
-  }
 }

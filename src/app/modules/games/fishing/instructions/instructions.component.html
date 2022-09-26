@@ -1,0 +1,65 @@
+<div class="instructions-bg">
+  <div class="center-content">
+    <mat-stepper linear #instructionStepper (selectionChange)="selectionChange($event)">
+      <mat-step>
+        <form>
+          <div class="instructions-hld" fxLayout="row" fxLayoutGap.xs="20px" fxLayoutGap.sm="20px" fxLayoutGap.md="20px"
+            fxLayoutGap="40px">
+            <div fxFlex="nogrow">
+              <div class="illustration-hld rule"></div>
+            </div>
+            <div fxFlex class="instruction-details">
+              <div class="instruction-title">{{ 'translateInstructions' | translate }}</div>
+              <div class="instruction-description">{{ 'translateHelpFisherman' | translate }}</div>
+              <div class="instruction-text">{{ 'translateTypeWordBeneath' | translate }}</div>
+
+              <div class="instruction-actions-hld flex-v-align">
+                <div class="navigation-btn" (click)="previous()">
+                  <mat-icon svgIcon="arrow_left"></mat-icon>
+                </div>
+                <div class="navigation-pag">{{selectedIndex+1}}/2</div>
+                <div class="navigation-btn mr-40" (click)="next()">
+                  <mat-icon svgIcon="arrow_right"></mat-icon>
+                </div>
+                <div>
+                  <div class="start-btn" (click)="startPlay()">{{ 'translateStartNow' | translate }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <form>
+          <div class="instructions-hld" fxLayout="row" fxLayoutGap.xs="20px" fxLayoutGap.sm="20px" fxLayoutGap.md="20px"
+            fxLayoutGap="40px">
+            <div fxFlex="nogrow">
+              <div class="illustration-hld time"></div>
+            </div>
+            <div fxFlex class="instruction-details">
+              <div class="instruction-title">{{ 'translateInstructions' | translate }}</div>
+              <div class="instruction-description">{{ 'translateTimingIsKey' | translate }}</div>
+              <div class="instruction-text">
+                {{ 'translateTimingIsKeyDescription' | translate }}
+              </div>
+
+              <div class="instruction-actions-hld flex-v-align">
+                <div class="navigation-btn" (click)="previous()">
+                  <mat-icon svgIcon="arrow_left"></mat-icon>
+                </div>
+                <div class="navigation-pag">{{selectedIndex+1}}/2</div>
+                <div class="navigation-btn mr-40" (click)="next()">
+                  <mat-icon svgIcon="arrow_right"></mat-icon>
+                </div>
+                <div>
+                  <div class="start-btn" (click)="startPlay()">{{ 'translateStartNow' | translate }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+    </mat-stepper>
+
+  </div>
+</div>

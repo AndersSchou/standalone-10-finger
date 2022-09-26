@@ -1,11 +1,13 @@
 import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
-import { AwardDetailsDTO } from 'src/app/dto/award-details.dto';
+import { CompletedLevelDTO } from 'src/app/dto/award-details.dto';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import { NgxPrinterService } from 'ngx-printer';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { CategoriesDTO } from 'src/app/dto/course.dto';
+import { Router } from '@angular/router';
 
 /**
  * This component is used to show the achievement details in a modal.
@@ -25,16 +27,18 @@ export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
   /**
    * Constructor function responsible for injecting the needed services.
    *
+   * @param router Reference to Router.
    * @param courseHelperService Reference to CourseHelperService.
    * @param printerService Reference to NgxPrinterService.
    * @param dialogRef Is an instance of MatDialogRef.
    * @param data Is an instance of input data.
    */
   constructor(
+    private readonly router: Router,
     private readonly courseHelperService: CourseHelperService,
     private readonly printerService: NgxPrinterService,
     private readonly dialogRef: MatDialogRef<AppAchievementDetailsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AwardDetailsDTO
+    @Inject(MAT_DIALOG_DATA) public data: CompletedLevelDTO
   ) { }
 
   /**
@@ -69,43 +73,52 @@ export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Calculates the speed for the current course.
+   * Calculates the speed for the current course/game level.
    *
-   * @returns The total speed value for the current course.
+   * @returns The total speed value for the current course/game level.
    */
   calculateSpeed(): number {
-    if (this.data) {
-      return this.courseHelperService.calculateSpeed(this.data.course);
+    if (this.data && this.data.details) {
+      const highestResult = this.data.details.highestResult;
+      return Math.round((highestResult.characters * 60000) / highestResult.time);
     } else {
       return 0;
     }
   }
 
   /**
-   * Calculates the accuracy for the current course.
+   * Calculates the accuracy for the current course/game level.
    *
-   * @returns The total accuracy value for the current course.
+   * @returns The total accuracy value for the current course/game level.
    */
   calculateAccuracy(): number {
-    if (this.data) {
-      return this.courseHelperService.calculateAccuracy(this.data.course);
+    if (this.data && this.data.details) {
+      const highestResult = this.data.details.highestResult;
+      return Math.round((highestResult.characters - highestResult.mistakes) * 100 / highestResult.characters);
     } else {
       return 0;
     }
   }
 
   /**
-   * Replays the current course.
+   * Replays the current course/game level.
    */
   replay(): void {
     if (this.data) {
-      this.courseHelperService.startExercise(
-        this.data.currentCategory.courses.indexOf(this.data.course),
-        0,
-        this.data.currentLanguage,
-        this.data.currentCategory.name,
-        this.data.categories,
-        true);
+      if (!this.data.isGame) {
+        // Replay the course.
+        this.courseHelperService.startExercise(
+          this.data.details.indexLevel, // index
+          0,
+          this.data.details.currentLanguage,
+          this.data.details.categoryName,
+          this.data.details.categories as CategoriesDTO[],
+          true);
+      } else {
+        // Replay the game level.
+        this.router.navigate(['/games/fish/level/', this.data.details.indexLevel]);
+        this.close();
+      }
     }
   }
 
@@ -145,21 +158,37 @@ export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
   /**
   * Go to the next course.
   */
-  nextCourse(): void {
+  nextLevel(): void {
     if (this.data) {
-      const currentCourseIndex = this.data.currentCategory.courses.indexOf(this.data.course);
-      if (currentCourseIndex < this.data.currentCategory.courses.length - 1) {
-        this.courseHelperService.startExercise(currentCourseIndex + 1, 0, this.data.currentLanguage, this.data.currentCategory.name, this.data.categories, true);
-      } else {
-        // Go to the next category.
-        const catIndex = this.data.categories.indexOf(this.data.currentCategory);
-        if (catIndex < this.data.categories.length - 1) {
-          this.data.currentCategory = this.data.categories[catIndex + 1];
-          this.courseHelperService.startExercise(0, 0, this.data.currentLanguage, this.data.currentCategory.name, this.data.categories, true);
+      // Start next course.
+      if (!this.data.isGame) {
+        const currentCourseIndex = this.data.details.indexLevel;
+        if (currentCourseIndex < this.data.details.totalLevels - 1) {
+          this.courseHelperService.startExercise(currentCourseIndex + 1, 0, this.data.details.currentLanguage,
+            this.data.details.categoryName, this.data.details.categories as CategoriesDTO[], true);
         } else {
-          // Start from the first category.
-          this.data.currentCategory = this.data.categories[0];
-          this.courseHelperService.startExercise(0, 0, this.data.currentLanguage, this.data.currentCategory.name, this.data.categories, true);
+          // Go to the next category.
+          const catIndex = this.data.details.categories.indexOf(this.data.details.currentCategory);
+          if (catIndex < this.data.details.categories.length - 1) {
+            this.data.details.currentCategory = this.data.details.categories[catIndex + 1];
+            this.courseHelperService.startExercise(0, 0, this.data.details.currentLanguage, this.data.details.categoryName,
+              this.data.details.categories, true);
+          } else {
+            // Start from the first category.
+            this.data.details.currentCategory = this.data.details.categories[0];
+            this.courseHelperService.startExercise(0, 0, this.data.details.currentLanguage, this.data.details.categoryName,
+              this.data.details.categories, true);
+          }
+        }
+      } else {
+        // Start next game level.
+        if (this.data.details.gameLevels) {
+          if (this.data.details.gameLevels.length < this.data.details.totalLevels) {
+            this.router.navigate(['/games/fish/level/', this.data.details.indexLevel + 1]);
+          } else {
+            this.router.navigate(['/games/fish/level/', 0]);
+          }
+          this.close();
         }
       }
     }

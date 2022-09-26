@@ -1,0 +1,35 @@
+<div class="instructions-bg">
+  <div class="center-content">
+    <div class="levels-hld">
+      <div class="levels-header">
+        <div class="levels-hld-title">
+          {{ 'translateSelectLevel' | translate }}
+        </div>
+        <div class="levels-hld-description">{{ 'translateMakeLevelChoice' | translate }}</div>
+      </div>
+      <div class="scroll-hld">
+        <div fxLayout="row wrap" class="plr-30">
+          <div *ngFor="let level of levels;let i=index" fxFlex="25%">
+            <div class="level-hld" [ngClass]="{'active': level.selected}" (click)="selectLevel(level)">
+              <div>
+                <div>
+                  <mat-icon svgIcon="bucket"></mat-icon>
+                </div>
+                <div class="level-nbr-hld">
+                  <div class="level-nbr">{{i+1}}</div>
+                </div>
+                <div class="level-text-hld">{{level.name}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="proceed-hld">
+        <div class="proceed-btn mr-16" (click)="backToGames()">{{ 'translateBackToGames' | translate }}</div>
+        <div class="proceed-btn" [ngClass]="{'disabled': !selectedLevel.selected}" (click)="play()">
+          {{ 'translateProceed' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
