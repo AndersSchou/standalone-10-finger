@@ -175,5 +175,5 @@ export const DefaultReadLetterOptions: KeyboardSettingsDTO[] = [
 // Default read text options.
 export const DefaultReadTextOptions: KeyboardSettingsDTO[] = [
   { type: 'readWord', label: 'Read words', selected: false },
-  // { type: 'readSentence', label: 'Read sentences', selected: false }
+  // { type: 'readSentence', label: 'Read sentences', selected: false } //TODO Remove unused code.
 ];

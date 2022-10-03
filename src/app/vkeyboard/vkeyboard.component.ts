@@ -5,6 +5,7 @@ import { DTDKeyboardLayout_NO } from './keyboards/norwegian.keboard.dtd';
 import { dtd2conf, dtd2skm } from './tools/dtd2skm';
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE } from '../common/types';
 
+//TODO Missing documentation!
 @Component({
   selector: 'app-vkeyboard',
   templateUrl: './vkeyboard.component.html',

@@ -27,6 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * @param userService Reference to UserService.
    * @param settingsService Reference to SettingsService.
    * @param authService Reference to AuthService.
+   * @param cookieService Reference to cookieService.
    */
   constructor(
     private readonly customIconService: CustomIconService,

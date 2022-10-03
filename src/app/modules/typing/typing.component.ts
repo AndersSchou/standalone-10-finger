@@ -879,6 +879,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  //TODO Remove unused code.
   // setNumbers(hasNumbers = true) {
   //   if (this.vkeyboard) {
   //     this.vkeyboard.setNumbers(hasNumbers);
@@ -935,6 +936,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
+  //TODO Remove unused code.
   /**
    * Save the current changes before the page unloads (used when we refresh the page).
    *

@@ -9,7 +9,7 @@ import { LanguageHelperService } from "src/app/services/language.service";
 import { SettingsService } from "src/app/services/settings.service";
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
-
+//TODO Missing component documentation
 @Component({
   selector: 'app-modules-typing-result',
   templateUrl: './result.component.html',
@@ -105,6 +105,7 @@ export class AppTypingResultComponent implements OnInit, OnDestroy {
 
   /**
    * Find the latest category.
+   * //TODO Missing parameter documentation.
    */
   findLatestCat(coursesProgress: CourseResponseDTO): void {
     const findLatestCategory = this.courseHelperService.getLatestCategory(coursesProgress);
