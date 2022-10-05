@@ -1,12 +1,15 @@
-import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxPrinterService } from 'ngx-printer';
 import { fromEvent, ReplaySubject, Subscription, takeUntil, timer } from 'rxjs';
 import { colorsMap, REGEX_FOR_LETTERS_WITH_DIACRITICS_AND_NBR, REGEX_WITH_DIACRITICS, SENTENCE_REGEX } from 'src/app/common/constants';
 import { Color, STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE, TextSettings } from 'src/app/common/types';
 import { Courses } from 'src/app/courses';
-import { CategoriesDTO, CourseDTO, CourseExerciseDTO, CourseResponseDTO, createEmptyCategoriesDTO, createEmptyCourseResponseDTO, StoredCourseResponseDTO } from 'src/app/dto/course.dto';
+import {
+  CategoriesDTO, CourseDTO, CourseExerciseDTO, CourseResponseDTO,
+  createEmptyCategoriesDTO, createEmptyCourseResponseDTO,
+  StoredCourseResponseDTO
+} from 'src/app/dto/course.dto';
 import { ReadOptionsDTO } from 'src/app/dto/speak.dto';
 import { TranslationsDTO } from 'src/app/dto/translation.dto';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
@@ -89,7 +92,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   // Tells if it should start the timer or not.
   startCount = false;
   // Stores the read options.
-  readTextOptions: ReadOptionsDTO = { readLetterName: false, readLetterSound: false, readWord: false, readSentence: false };
+  readTextOptions: ReadOptionsDTO = { readLetterName: false, readLetterSound: false, readWord: false };
   // Tells if it should resume course or not.
   resumeCourse: boolean = false;
   // Stores the data from the local storage.
@@ -160,7 +163,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       const readText = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT) as string);
       for (const opt of readText) {
         if (opt.selected) {
-          const selectedOption: { type: 'readWord' | 'readSentence' } = opt;
+          const selectedOption: { type: 'readWord' } = opt;
           this.readTextOptions[selectedOption.type] = true;
         }
       }
@@ -413,8 +416,8 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
             this.readTextOptions['readLetterSound'] = false;
           }
         } else if (textSettings.type === TEXT_SETTINGS_TYPE.READ_TEXT) {
-          // Set read word/sentence options.
-          const val: 'readWord' | 'readSentence' = textSettings.value as 'readWord' | 'readSentence';
+          // Set read word options.
+          const val: 'readWord' = textSettings.value as 'readWord';
           this.readTextOptions[val] = !this.readTextOptions[val];
         }
         this.cdr.detectChanges();
@@ -457,8 +460,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         this.readingSubscription = timer(100).subscribe(() => {
-          // Handle reading on keydown (read letter/sound/word/sentence).
-          this.speechService.handleReading((event as KeyboardEvent).key, this.readTextOptions, this.textToRead, 'mv_da_acl', this.isLastChar, charMatch);
+          // Handle reading on keydown (read letter/sound/word).
+          this.speechService.handleReading((event as KeyboardEvent).key,
+            this.readTextOptions, this.textToRead, 'mv_da_acl', this.isLastChar, charMatch);
         });
       });
   }
@@ -707,9 +711,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    // if (!isFinished) {
     this.calculateProgress();
-    // }
   }
 
   /**
@@ -879,13 +881,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  //TODO Remove unused code.
-  // setNumbers(hasNumbers = true) {
-  //   if (this.vkeyboard) {
-  //     this.vkeyboard.setNumbers(hasNumbers);
-  //   }
-  // }
-
   /**
    * Set the language of the keyboard.
    */
@@ -935,16 +930,5 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.speechService.play(textToRead, 'mv_da_acl');
       });
   }
-
-  //TODO Remove unused code.
-  /**
-   * Save the current changes before the page unloads (used when we refresh the page).
-   *
-   * @param event Before unload event.
-   */
-  // @HostListener('window:beforeunload', ['$event'])
-  // saveBeforeUnload(event: Event): void {
-  //   this.router.navigate(['/set-course']);
-  // }
 
 }

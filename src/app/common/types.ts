@@ -4,8 +4,6 @@ import { TEXT_SETTINGS_TYPE } from "./enums";
 export type KEYBOARD_COLOR_GROUP_TYPE = '' | 'color-group' | 'single-color-group';
 // Keyboard layout types.
 export type KEYBOARD_LAYOUT_GROUP_TYPE = 'full' | 'partial' | 'minimal';
-
-// export type KEYBOARD_LAYOUT_MODE_TYPE = 'full' | 'partial' | 'minimal' | 'numbers' | 'no-numbers';
 // Keyboard language.
 export type KEYBOARD_LANGUAGE = 'da' | 'sv' | 'nn' | 'nb';
 

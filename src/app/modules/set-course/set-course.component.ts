@@ -107,6 +107,8 @@ export class AppSetCourseComponent implements OnInit, OnDestroy {
 
   /**
    * Find the latest category.
+   *
+   * @param coursesProgress Represents the courses progress data.
    */
   findLatestCat(coursesProgress: CourseResponseDTO): void {
     const findLatestCategory = this.courseHelperService.getLatestCategory(coursesProgress);

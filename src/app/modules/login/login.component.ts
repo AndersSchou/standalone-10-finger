@@ -11,10 +11,10 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class AppLoginComponent {
   /**
-     * Constructor function responsible for injecting the needed services.
-     *
-     * @param authService Reference to AuthService.
-     */
+   * Constructor function responsible for injecting the needed services.
+   *
+   * @param authService Reference to AuthService.
+   */
   constructor(
     private readonly authService: AuthService,
   ) { }

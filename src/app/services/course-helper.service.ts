@@ -4,6 +4,9 @@ import { STORAGE_KEY_TYPE } from '../common/enums';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
+/**
+ * CourseHelperService is used to handle the course data.
+ */
 @Injectable()
 export class CourseHelperService {
   // The subject used to controls the service communication.
@@ -20,6 +23,11 @@ export class CourseHelperService {
     return this.closeDetailsModalObservable;
   }
 
+  /**
+   * Constructor function responsible for injecting the needed services.
+   *
+   * @param router Reference to the Router service.
+   */
   constructor(
     private readonly router: Router,
   ) { }
@@ -95,6 +103,7 @@ export class CourseHelperService {
    * @param language Represents the language.
    * @param categoryName Represents the category name.
    * @param categories Represents the categories.
+   * @param shouldCloseDetails Tells if it should close the details modal or not.
    */
   startExercise(
     courseIndex: number,
@@ -145,6 +154,8 @@ export class CourseHelperService {
   /**
    * Calculate the speed for the current course.
    *
+   * @param selectedCourse Represents the selected course.
+   *
    * @returns The total speed value for the current course.
    */
   calculateSpeed(selectedCourse: CourseDTO): number {
@@ -155,6 +166,8 @@ export class CourseHelperService {
 
   /**
    * Calculate the accuracy for the current course.
+   *
+   * @param selectedCourse Represents the selected course.
    *
    * @returns The total accuracy value for the current course.
    */

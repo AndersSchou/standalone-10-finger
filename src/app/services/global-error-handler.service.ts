@@ -11,6 +11,7 @@ import { ErrorModalService } from './error-modal.service';
 export class GlobalErrorHandler implements ErrorHandler {
   // Tells if the error was showned or not.
   errorShown = true;
+
   /**
    * Constructor function responsible for injecting the needed services.
    *
