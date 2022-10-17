@@ -1,15 +1,18 @@
-import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { Router } from "@angular/router";
-import { NgxPrinterService } from "ngx-printer";
-import { ReplaySubject, takeUntil } from "rxjs";
-import { STORAGE_KEY_TYPE } from "src/app/common/enums";
-import { CategoriesDTO, CourseDTO, CourseResponseDTO, createEmptyCategoriesDTO, createEmptyCourseDTO, StoredCourseResponseDTO } from "src/app/dto/course.dto";
-import { CourseHelperService } from "src/app/services/course-helper.service";
-import { LanguageHelperService } from "src/app/services/language.service";
-import { SettingsService } from "src/app/services/settings.service";
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgxPrinterService } from 'ngx-printer';
+import { ReplaySubject, takeUntil } from 'rxjs';
+import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
+import { CategoriesDTO, CourseDTO, CourseResponseDTO, createEmptyCategoriesDTO, createEmptyCourseDTO, StoredCourseResponseDTO } from 'src/app/dto/course.dto';
+import { CourseHelperService } from 'src/app/services/course-helper.service';
+import { LanguageHelperService } from 'src/app/services/language.service';
+import { SettingsService } from 'src/app/services/settings.service';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 
+/**
+ * This component holds the logic for displaying the result page.
+ */
 @Component({
   selector: 'app-modules-typing-result',
   templateUrl: './result.component.html',
@@ -105,6 +108,8 @@ export class AppTypingResultComponent implements OnInit, OnDestroy {
 
   /**
    * Find the latest category.
+   *
+   * @param coursesProgress Represents the course progress response.
    */
   findLatestCat(coursesProgress: CourseResponseDTO): void {
     const findLatestCategory = this.courseHelperService.getLatestCategory(coursesProgress);

@@ -4,6 +4,9 @@ import { DefaultReadLetterOptions, DefaultReadTextOptions } from "../common/cons
 import { STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from "../common/enums";
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LAYOUT_GROUP_TYPE, TextSettings } from "../common/types";
 
+/**
+ * TextSettingsService is used to handle all the settings.
+ */
 @Injectable()
 export class SettingsService {
   // The subject used to controls the service communication.

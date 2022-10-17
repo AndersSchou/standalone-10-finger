@@ -1,4 +1,4 @@
-import { ResultDTO } from "./course.dto";
+import { ResultDTO } from './course.dto';
 
 /**
  * Game interface.

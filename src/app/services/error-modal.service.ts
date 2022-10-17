@@ -19,6 +19,8 @@ export class ErrorModalService {
    * Opens the error modal.
    *
    * @param message Represents the error message.
+   *
+   * @returns An instance of MatDialogRef.
    */
   openModal(message: HttpErrorResponse): MatDialogRef<ErrorModalComponent> {
     return this.dialog.open(ErrorModalComponent, {

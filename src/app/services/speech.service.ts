@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import {
   REGEX_FOR_LETTERS_WITH_DIACRITICS,
-  SENTENCE_READ_REGEX, WHITE_SPACE_REGEX,
-  WORD_READ_REGEX, REGEX_FOR_LETTERS_WITH_DIACRITICS_AND_NBR
+  WHITE_SPACE_REGEX,
+  WORD_READ_REGEX,
 } from '../common/constants';
 import { READING_IDENTIFIER } from '../common/enums';
 import { ReadOptionsDTO, SpeakResultDTO } from '../dto/speak.dto';
@@ -18,6 +18,9 @@ class AudioElement extends Audio {
   }
 }
 
+/**
+ * This service holds the logic for reading (character/sound/word and sentence).
+ */
 @Injectable()
 export class SpeechService {
   // Responsible for handling audio events.
@@ -42,7 +45,6 @@ export class SpeechService {
     this.speechAudioElement.addEventListener('ended', () => {
       this.unload();
       this.speechEnded.next(true);
-
     });
   }
 
@@ -60,6 +62,7 @@ export class SpeechService {
    *
    * @param speechText Text to play in speech.
    * @param voiceID Represents the voice id for the speak service.
+   * @param speechType Represents the speech type.
    */
   play(
     speechText: string,
@@ -107,7 +110,6 @@ export class SpeechService {
     this.unload();
   }
 
-
   /**
    * Returns true if speech is ended and false otherwise.
    *
@@ -127,13 +129,16 @@ export class SpeechService {
    * @param isLastChar Tells if the character is the last character of the text.
    * @param charMatch Tells if the character is a match of the text (used to disable read word when the chars do not match).
    */
-  handleReading(character: string, readOptions: ReadOptionsDTO, txtToRead: string, voiceID: string, isLastChar: boolean, charMatch: boolean): void {
+  handleReading(
+    character: string,
+    readOptions: ReadOptionsDTO,
+    txtToRead: string,
+    voiceID: string,
+    isLastChar: boolean,
+    charMatch: boolean): void {
     switch (this.getReadingType(
       character, readOptions,
       txtToRead, isLastChar)) {
-      case READING_IDENTIFIER.READ_SENTENCE:
-        this.readSentence(readOptions, txtToRead, voiceID);
-        break;
       case READING_IDENTIFIER.READ_WORD:
         this.readWord(readOptions, txtToRead, voiceID, isLastChar, charMatch);
         break;
@@ -181,19 +186,6 @@ export class SpeechService {
   }
 
   /**
-   * Triggers read sentence.
-   *
-   * @param readOptions Represents the read options.
-   * @param text Represents the text to read.
-   * @param voiceID Represents the voice id for the speak service.
-   */
-  readSentence(readOptions: ReadOptionsDTO, text: string, voiceID: string): void {
-    if (readOptions.readWord && text.match(REGEX_FOR_LETTERS_WITH_DIACRITICS_AND_NBR)) {
-      this.play(text, voiceID);
-    }
-  }
-
-  /**
    * Identifies and returns the reading type based on inserted character and readOptions.
    *
    * @param character Represents the input letter.
@@ -213,26 +205,11 @@ export class SpeechService {
     if (character === ' ') { txtToRead += character; }
 
     // Cleanup the object.
-    const { readWord, readSentence, readLetterName, readLetterSound } = readOptions;
-
-    // Return READ_SENTENCE If readSentence is ON and readWord is off.
-    if (readSentence && this.isReadWordPatternMatch(txtToRead)) {
-      if (character.match(SENTENCE_READ_REGEX)) {
-        return READING_IDENTIFIER.READ_SENTENCE;
-      }
-    }
-
-    // Return READ_SENTENCE if both readSentence and readWord is ON.
-    if (readSentence && readWord && this.isReadSentencePatternMatch(txtToRead)) {
-      if (isLastChar) {
-        return READING_IDENTIFIER.READ_SENTENCE;
-      }
-    }
+    const { readWord, readLetterName, readLetterSound } = readOptions;
 
     // Return READ_WORD if readWord is ON and readSentence is OFF.
     if (readWord && this.isReadWordPatternMatch(txtToRead)) {
       if (
-        character.match(SENTENCE_READ_REGEX) ||
         character.match(WORD_READ_REGEX) ||
         character.match(WHITE_SPACE_REGEX) || isLastChar
       ) {
@@ -248,32 +225,16 @@ export class SpeechService {
     return '';
   }
 
-  // TODO: Cleanup if read sentence will be removed entirely.
-
   /**
    * This method work as a regex expression and check the second last character of string.
    *
    * @param text Represents the last word of the sentence.
+   *
    * @returns True if second last character of the string is not end with specified condition otherwise return false.
    */
   private isReadWordPatternMatch(text: string): boolean {
     return (
       text.length > 1 && (text[text.length - 2].match(/^[.,+<>?!]+$/i))
-        ? false
-        : true
-    );
-  }
-
-  /**
-   * This method work as a regex expression and check the second last character of string.
-   *
-   * @param text Represents the last word of the sentence.
-   *
-   * @returns True if second last character of the string is not end with specified condition otherwise return false.
-   */
-  private isReadSentencePatternMatch(text: string): boolean {
-    return (
-      text.length > 1 && (text[text.length - 2].match(/^[.!?]+$/i))
         ? false
         : true
     );

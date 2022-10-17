@@ -24,8 +24,6 @@ export class AppSharedSettingsKeyboardComponent {
     { type: 'full', icon: 'keyboard_mode_3', selected: false },
     { type: 'partial', icon: 'keyboard_mode_1', selected: false },
     { type: 'minimal', icon: 'keyboard_mode_2', selected: false },
-    // { type: 'numbers', icon: 'keyboard_mode_3', selected: false },
-    // { type: 'no-numbers', icon: 'keyboard_mode_3', selected: false },
   ];
 
   /**

@@ -38,5 +38,4 @@ export interface ReadOptionsDTO {
   readLetterName: boolean;
   readLetterSound: boolean;
   readWord: boolean;
-  readSentence: boolean;
 }

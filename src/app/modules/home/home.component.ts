@@ -49,6 +49,7 @@ export class AppHomeComponent implements OnInit, OnDestroy {
    * Navigate to a specific page.
    *
    * @param url Represents the page url.
+   * @param param Tells if it should add a query param or not.
    */
   navigateTo(url: string, param: boolean = false): void {
     if (param) {

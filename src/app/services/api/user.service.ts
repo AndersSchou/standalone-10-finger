@@ -44,11 +44,11 @@ export class UserService extends BaseService<WhoAmIResponseDTO> {
   }
 
   /**
-   * Converts two letter region code to the language-region code format used on MV profiles.
+   * Converts two letter region code to the language-region code format.
    *
-   * @param regionCode Represents the selected profile/language.
+   * @param regionCode Represents the selected language.
    *
-   * @return The voice for the selected profile/language.
+   * @return The voice for the selected language.
    */
   convertRegionToLanguageIdentifier(regionCode: string): string {
     switch (regionCode) {

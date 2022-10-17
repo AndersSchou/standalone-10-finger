@@ -63,6 +63,11 @@ export interface ResultDTO {
   updatedAt: Date;
 }
 
+/**
+ * Creates an empty course response.
+ *
+ * @returns  An object as CourseResponseDTO.
+ */
 export function createEmptyCourseResponseDTO(): CourseResponseDTO { return { categories: [] }; }
 
 /**

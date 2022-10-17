@@ -1,5 +1,13 @@
+/**
+ * Key mapper for Danish keyboard.
+ * -i represents the index of the keys in the keyMap array.
+ * -m represents the modifier of the key.
+ */
 export const keymapper = [{ i: 0, m: '' }, { i: 1, m: 'shift' }, { i: 4, m: 'alt' }];
 
+/**
+ * Raw data for the keyboard layout.
+ */
 export const DTDKeyboardLayout = {
   "!DOCTYPE": "keyboard SYSTEM \"../dtd/ldmlKeyboard.dtd\"",
   "keyboard": {
@@ -1785,4 +1793,7 @@ export const DTDKeyboardLayout = {
   }
 };
 
+/**
+ * Danish keyboard layout.
+ */
 export const DTDKeyboardLayout_DK = { keymapper, DTDKeyboardLayout };

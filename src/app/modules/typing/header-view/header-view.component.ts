@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { Router } from "@angular/router";
-import { CategoriesDTO, CourseDTO, createEmptyCategoriesDTO, createEmptyCourseDTO } from "src/app/dto/course.dto";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { CategoriesDTO, CourseDTO, createEmptyCategoriesDTO, createEmptyCourseDTO } from 'src/app/dto/course.dto';
 
 /**
  * This component holds the logic for displaying common header for type and result pages.

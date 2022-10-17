@@ -2,48 +2,52 @@ import { Component } from '@angular/core';
 import { DTDKeyboardLayout_DK } from './keyboards/danish.keyboard.dtd';
 import { DTDKeyboardLayout_SW } from './keyboards/swedish.keboard.dtd';
 import { DTDKeyboardLayout_NO } from './keyboards/norwegian.keboard.dtd';
-import { dtd2conf, dtd2skm } from './tools/dtd2skm';
+import { dtd2conf, dtd2skm, KeyboardDefinitionDTO } from './tools/dtd2skm';
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE } from '../common/types';
 
+
+/**
+ * This component holds the logic for the virtual keyboard.
+ */
 @Component({
   selector: 'app-vkeyboard',
   templateUrl: './vkeyboard.component.html',
   styleUrls: ['./vkeyboard.component.scss']
 })
 export class VKeyboardComponent {
+  // Stores the css class for the keyboard.
   class = '';
+  // Stores the alt class name.
   altClassName = '5-3';
+  // Stores the shift class name.
   shiftClassName = '4-1';
 
-  hasNumbers: '' | 'no-numbers' = '';
+  // Stores the theme for the keyboard.
   theme: KEYBOARD_COLOR_GROUP_TYPE = '';
+  // Stores the mode for the keyboard.
   mode: KEYBOARD_LAYOUT_GROUP_TYPE = 'full';
+  // Stores the pressed keys.
   keysPressed: string[] = [];
 
-  keyboardDefinition: {
-    [key: string]: {
-      key: string;
-      value: string;
-      shift: boolean;
-      alt: boolean;
-    };
-  } = {};
-  keyboardKeyDefinition: {
-    [key: string]: {
-      key: string;
-      value: string;
-      shift: boolean;
-      alt: boolean;
-    };
-  } = {};
+  // Stores the keyboard definition.
+  keyboardDefinition: KeyboardDefinitionDTO = {};
+  // Stores the keyboard key definition.
+  keyboardKeyDefinition: KeyboardDefinitionDTO = {};
 
-  constructor(
-  ) {
+  /**
+   * Constructor function responsible for injecting the needed services.
+   */
+  constructor() {
     this.setLanguage('da');
     this.processClass();
   }
 
-  setLanguage(lan: KEYBOARD_LANGUAGE) {
+  /**
+   * Set the language for the keyboard layout.
+   *
+   * @param lan Represents the selected language for the keyboard.
+   */
+  setLanguage(lan: KEYBOARD_LANGUAGE): void {
     if (lan === 'da') {
       this.keyboardDefinition = dtd2skm(DTDKeyboardLayout_DK as any);
       this.keyboardKeyDefinition = dtd2conf(DTDKeyboardLayout_DK as any);
@@ -63,7 +67,12 @@ export class VKeyboardComponent {
    *
    * @returns An object of the key definition or null.
    */
-  getKeyDefinition(key: string) {
+  getKeyDefinition(key: string): {
+    key: string;
+    value: string;
+    shift: boolean;
+    alt: boolean;
+  } | null {
     if (this.keyboardDefinition[key]) {
       return this.keyboardDefinition[key];
     }
@@ -75,7 +84,7 @@ export class VKeyboardComponent {
    *
    * @param key Represents the character to highlight the key/keys for.
    */
-  highlightKey(key: string) {
+  highlightKey(key: string): void {
     this.keysPressed = [];
     if (key in this.keyboardDefinition) {
       const keyPressed = this.keyboardDefinition[key];
@@ -90,31 +99,49 @@ export class VKeyboardComponent {
     this.processClass();
   }
 
-  setTheme(theme: KEYBOARD_COLOR_GROUP_TYPE) {
+  /**
+   * Set the keyboard theme.
+   *
+   * @param theme Represents the selected theme.
+   */
+  setTheme(theme: KEYBOARD_COLOR_GROUP_TYPE): void {
     this.theme = theme;
     this.processClass();
   }
 
-  setMode(mode: KEYBOARD_LAYOUT_GROUP_TYPE) {
+  /**
+   * Set the keyboard mode.
+   *
+   * @param mode Represents the selected keyboard mode.
+   */
+  setMode(mode: KEYBOARD_LAYOUT_GROUP_TYPE): void {
     this.mode = mode;
     this.processClass();
   }
 
-  setNumbers(hasNumbers: boolean) {
-    this.hasNumbers = hasNumbers ? '' : 'no-numbers';
-    this.processClass();
-  }
-
-  getKey(row: number, col: number, shif = false, alt = false) {
-    const key = `${row - 1}-${col}-${shif ? 'shift' : ''}${alt ? 'alt' : ''}`;
+  /**
+   * Get the key for a given position.
+   *
+   * @param row Represents the row of the key.
+   * @param col Represents the column of the key.
+   * @param shift Tells if the key has the shift modifier.
+   * @param alt Tells if the key has the alt modifier.
+   *
+   * @returns The value for the key.
+   */
+  getKey(row: number, col: number, shift = false, alt = false): string {
+    const key = `${row - 1}-${col}-${shift ? 'shift' : ''}${alt ? 'alt' : ''}`;
     if (this.keyboardKeyDefinition[key]) {
       return this.keyboardKeyDefinition[key].value;
     }
     return '';
   }
 
-  private processClass() {
-    this.class = [this.theme, this.hasNumbers, this.mode, ...this.keysPressed.map(el => `kp${el}`)].join(' ');
+  /**
+   * set the css class for the keyboard.
+   */
+  private processClass(): void {
+    this.class = [this.theme, this.mode, ...this.keysPressed.map(el => `kp${el}`)].join(' ');
   }
 
 }
