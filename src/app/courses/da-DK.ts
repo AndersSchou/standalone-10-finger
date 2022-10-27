@@ -2,7 +2,7 @@
 export const da = {
   "categories": [
     {
-      "name": "Læs og skriv",
+      "name": "Begynder skrivning",
       "courses": [
         {
           "name": "Level 1",
@@ -1145,14 +1145,9 @@ export const da = {
               "text": "du må få en kiwi"
             }
           ]
-        }
-      ]
-    },
-    {
-      "name": "Symboler",
-      "courses": [
+        },
         {
-          "name": "Level 1",
+          "name": "Level 11",
           "exercises": [
             {
               "name": "Øvelse 1",
@@ -1177,7 +1172,7 @@ export const da = {
           ]
         },
         {
-          "name": "Level 2",
+          "name": "Level 12",
           "exercises": [
             {
               "name": "Øvelse 1",
@@ -1204,36 +1199,11 @@ export const da = {
               "text": "-?-?-?-? !?-!?-!?-!:!:!:"
             }
           ]
-        },
-        {
-          "name": "Level 3",
-          "exercises": [
-            {
-              "name": "Øvelse 1",
-              "text": "Bølle-Bob møder Leslie på gaden.- Hej, siger Leslie.- Vil du med ned til Valde?"
-            },
-            {
-              "name": "Øvelse 2",
-              "text": "Valde Underbid bor i en gammel vogn på byens losse-plads.Her kommer alle byens unge.Især Leslie. "
-            },
-            {
-              "name": "Øvelse 3",
-              "text": "- Jeg kender ikke andre end Valde her i byen, siger Leslie.- Og så dig."
-            },
-            {
-              "name": "Øvelse 4",
-              "text": "Du er jo lige flyttet til byen. Det tager lidt tid at få venner. Kom! De går sammen hen ad gaden.Så ser Bølle-Bob to rockere."
-            },
-            {
-              "name": "Øvelse 5",
-              "text": "- Se der! siger han.De kommer gående lige imod dem.- Jeg har da aldrig set rockere før i vores by, siger Bølle-Bob.Men det er du vel vant til?"
-            }
-          ]
         }
       ]
     },
     {
-      "name": "Hastighedstræning",
+      "name": "Historie skrivning",
       "courses": [
         {
           "name": "Den gamle konge på rævejagt del 1",
@@ -1318,6 +1288,69 @@ export const da = {
             {
               "name": "Øvelse 9",
               "text": "Så der midt om natten tænkte kongen, tjeneren, staldkarlen, hunden og hanen for sig selv, om det var sådan en god ide at stole på andre til at vække dem."
+            }
+          ]
+        },
+        {
+          "name": "Prinsen og prinsessen",
+          "exercises": [
+            {
+              "name": "Øvelse 1",
+              "text": "Historien om prinsen og prinsessen"
+            },
+            {
+              "name": "Øvelse 2",
+              "text": "Nu vil Kåre og Karen hen til heksen for at befri tudsen som de tror er en prins de ved at det er farligt men vil gøre alt for at redde tudsen fra heksen."
+            },
+            {
+              "name": "Øvelse 3",
+              "text": "Heksen gør sig klar til at fange Kåre og Karen i sit store bur."
+            },
+            {
+              "name": "Øvelse 4",
+              "text": "Hun har nemlig fået at vide af sin krage at Kåre og Karen er på vej til hendes hus."
+            },
+            {
+              "name": "Øvelse 5",
+              "text": "Lige før Kåre og Karen når til heksens hus deler de sig og Kåre går ind ad bagdøren og Karen lader sig fange. Nu er Karen i buret."
+            },
+            {
+              "name": "Øvelse 6",
+              "text": "Heksen forstår ikke hvor Kåre er henne hun går ud for at lede efter ham."
+            },
+            {
+              "name": "Øvelse 7",
+              "text": "Så går Kåre hen og slipper Karen fri Karen løber over til buret med tudsen."
+            }
+            ,
+            {
+              "name": "Øvelse 8",
+              "text": "Hun åbner lågen og tudsen springer ud Karen kysser tudsen på munden"
+            }
+            ,
+            {
+              "name": "Øvelse 9",
+              "text": "og puf tudsen bliver til en smuk prins."
+            }
+            ,
+            {
+              "name": "Øvelse 10",
+              "text": "Prinsen siger at han hedder Peter Peter kysser Karen igen."
+            }
+            ,
+            {
+              "name": "Øvelse 11",
+              "text": "Kåre og Karen og Peter tager hjem til slottet det er en lang tur."
+            }
+            ,
+            {
+              "name": "Øvelse 12",
+              "text": "Da de kommer hjem bliver kong Hans og dronning Rose glade de giver Karen lov til at gifte sig med Peter."
+            }
+            ,
+            {
+              "name": "Øvelse 13",
+              "text": "Hans og Rose vil holde en stor fest for Karen og Peter der kommer mange gæster og de fester alle sammen i hele ni dage."
             }
           ]
         }
