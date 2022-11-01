@@ -2,7 +2,7 @@
 export const da = {
   "categories": [
     {
-      "name": "Begynder skrivning",
+      "name": "Begynder øvelser",
       "courses": [
         {
           "name": "Level 1",
@@ -1203,7 +1203,7 @@ export const da = {
       ]
     },
     {
-      "name": "Historie skrivning",
+      "name": "Historie træning",
       "courses": [
         {
           "name": "Den gamle konge på rævejagt del 1",
