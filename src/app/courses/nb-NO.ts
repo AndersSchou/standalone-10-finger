@@ -8,59 +8,59 @@ export const nb = {
           "name": "Level 1",
           "exercises": [
             {
-              "name": "Øvelse 1",
+              "name": "Trening 1",
               "text": "fdsa"
             },
             {
-              "name": "Øvelse 2",
+              "name": "Trening 2",
               "text": "jklø"
             },
             {
-              "name": "Øvelse 3",
+              "name": "Trening 3",
               "text": "fa"
             },
             {
-              "name": "Øvelse 4",
+              "name": "Trening 4",
               "text": "ja"
             },
             {
-              "name": "Øvelse 5",
+              "name": "Trening 5",
               "text": "da"
             },
             {
-              "name": "Øvelse 6",
+              "name": "Trening 6",
               "text": "la"
             },
             {
-              "name": "Øvelse 7",
+              "name": "Trening 7",
               "text": "ka"
             },
             {
-              "name": "Øvelse 8",
+              "name": "Trening 8",
               "text": "fø"
             },
             {
-              "name": "Øvelse 9",
+              "name": "Trening 9",
               "text": "dø"
             },
             {
-              "name": "Øvelse 10",
+              "name": "Trening 10",
               "text": "kø"
             },
             {
-              "name": "Øvelse 11",
+              "name": "Trening 11",
               "text": "fdsajklø"
             },
             {
-              "name": "Øvelse 12",
+              "name": "Trening 12",
               "text": "sø"
             },
             {
-              "name": "Øvelse 13",
+              "name": "Trening 13",
               "text": "ølkjfdsa"
             },
             {
-              "name": "Øvelse 14",
+              "name": "Trening 14",
               "text": "sldk"
             },
             {
@@ -129,59 +129,59 @@ export const nb = {
           "name": "Level 2",
           "exercises": [
             {
-              "name": "Øvelse 1",
+              "name": "Trening 1",
               "text": "fgf jhj"
             },
             {
-              "name": "Øvelse 2",
+              "name": "Trening 2",
               "text": "gh"
             },
             {
-              "name": "Øvelse 3",
+              "name": "Trening 3",
               "text": "fjghfj"
             },
             {
-              "name": "Øvelse 4",
+              "name": "Trening 4",
               "text": "hgjf"
             },
             {
-              "name": "Øvelse 5",
+              "name": "Trening 5",
               "text": "frf"
             },
             {
-              "name": "Øvelse 6",
+              "name": "Trening 6",
               "text": "ded"
             },
             {
-              "name": "Øvelse 7",
+              "name": "Trening 7",
               "text": "fg"
             },
             {
-              "name": "Øvelse 8",
+              "name": "Trening 8",
               "text": "jh"
             },
             {
-              "name": "Øvelse 9",
+              "name": "Trening 9",
               "text": "jed"
             },
             {
-              "name": "Øvelse 10",
+              "name": "Trening 10",
               "text": "frd"
             },
             {
-              "name": "Øvelse 11",
+              "name": "Trening 11",
               "text": "fefr"
             },
             {
-              "name": "Øvelse 12",
+              "name": "Trening 12",
               "text": "fedj"
             },
             {
-              "name": "Øvelse 13",
+              "name": "Trening 13",
               "text": "dela"
             },
             {
-              "name": "Øvelse 14",
+              "name": "Trening 14",
               "text": "dfke"
             },
             {
@@ -322,51 +322,51 @@ export const nb = {
           "name": "Level 3",
           "exercises": [
             {
-              "name": "Øvelse 1",
+              "name": "Trening 1",
               "text": "dill"
             },
             {
-              "name": "Øvelse 2",
+              "name": "Trening 2",
               "text": "du"
             },
             {
-              "name": "Øvelse 3",
+              "name": "Trening 3",
               "text": "hikk"
             },
             {
-              "name": "Øvelse 4",
+              "name": "Trening 4",
               "text": "fu"
             },
             {
-              "name": "Øvelse 5",
+              "name": "Trening 5",
               "text": "jil"
             },
             {
-              "name": "Øvelse 6",
+              "name": "Trening 6",
               "text": "si lu"
             },
             {
-              "name": "Øvelse 7",
+              "name": "Trening 7",
               "text": "lu li"
             },
             {
-              "name": "Øvelse 8",
+              "name": "Trening 8",
               "text": "lis"
             },
             {
-              "name": "Øvelse 9",
+              "name": "Trening 9",
               "text": "ful"
             },
             {
-              "name": "Øvelse 10",
+              "name": "Trening 10",
               "text": "gus"
             },
             {
-              "name": "Øvelse 11",
+              "name": "Trening 11",
               "text": "fifu"
             },
             {
-              "name": "Øvelse 12",
+              "name": "Trening 12",
               "text": "riru"
             },
             {
@@ -467,51 +467,51 @@ export const nb = {
           "name": "Level 4",
           "exercises": [
             {
-              "name": "Øvelse 1",
+              "name": "Trening 1",
               "text": "fo"
             },
             {
-              "name": "Øvelse 2",
+              "name": "Trening 2",
               "text": "jo"
             },
             {
-              "name": "Øvelse 3",
+              "name": "Trening 3",
               "text": "go"
             },
             {
-              "name": "Øvelse 4",
+              "name": "Trening 4",
               "text": "do jo"
             },
             {
-              "name": "Øvelse 5",
+              "name": "Trening 5",
               "text": "og"
             },
             {
-              "name": "Øvelse 6",
+              "name": "Trening 6",
               "text": "ho ao"
             },
             {
-              "name": "Øvelse 7",
+              "name": "Trening 7",
               "text": "ko"
             },
             {
-              "name": "Øvelse 8",
+              "name": "Trening 8",
               "text": "so"
             },
             {
-              "name": "Øvelse 9",
+              "name": "Trening 9",
               "text": "lo"
             },
             {
-              "name": "Øvelse 10",
+              "name": "Trening 10",
               "text": "ao"
             },
             {
-              "name": "Øvelse 11",
+              "name": "Trening 11",
               "text": "jo go"
             },
             {
-              "name": "Øvelse 12",
+              "name": "Trening 12",
               "text": "fo ro so"
             },
             {
@@ -608,51 +608,51 @@ export const nb = {
           "name": "Level 5",
           "exercises": [
               {
-                "name": "Øvelse 1",
+                "name": "Trening 1",
                 "text": "ft"
               },
               {
-                "name": "Øvelse 2",
+                "name": "Trening 2",
                 "text": "jta"
               },
               {
-                "name": "Øvelse 3",
+                "name": "Trening 3",
                 "text": "dtk"
               },
               {
-                "name": "Øvelse 4",
+                "name": "Trening 4",
                 "text": "kt"
               },
               {
-                "name": "Øvelse 5",
+                "name": "Trening 5",
                 "text": "få"
               },
               {
-                "name": "Øvelse 6",
+                "name": "Trening 6",
                 "text": "jåj"
               },
               {
-                "name": "Øvelse 7",
+                "name": "Trening 7",
                 "text": "ftf"
               },
               {
-                "name": "Øvelse 8",
+                "name": "Trening 8",
                 "text": "ftfå"
               },
               {
-                "name": "Øvelse 9",
+                "name": "Trening 9",
                 "text": "fåtf"
               },
               {
-                "name": "Øvelse 10",
+                "name": "Trening 10",
                 "text": "frt"
               },
               {
-                "name": "Øvelse 11",
+                "name": "Trening 11",
                 "text": "gtfå"
               },
               {
-                "name": "Øvelse 12",
+                "name": "Trening 12",
                 "text": "atkå"
               },
               {
@@ -769,51 +769,51 @@ export const nb = {
           "name": "Level 6",
           "exercises": [
               {
-                "name": "Øvelse 1",
+                "name": "Trening 1",
                 "text": "jul"
               },
               {
-                "name": "Øvelse 2",
+                "name": "Trening 2",
                 "text": "gule"
               },
               {
-                "name": "Øvelse 3",
+                "name": "Trening 3",
                 "text": "ser"
               },
               {
-                "name": "Øvelse 4",
+                "name": "Trening 4",
                 "text": "ler"
               },
               {
-                "name": "Øvelse 5",
+                "name": "Trening 5",
                 "text": "her"
               },
               {
-                "name": "Øvelse 6",
+                "name": "Trening 6",
                 "text": "dill"
               },
               {
-                "name": "Øvelse 7",
+                "name": "Trening 7",
                 "text": "kjeks"
               },
               {
-                "name": "Øvelse 8",
+                "name": "Trening 8",
                 "text": "åler"
               },
               {
-                "name": "Øvelse 9",
+                "name": "Trening 9",
                 "text": "huske"
               },
               {
-                "name": "Øvelse 10",
+                "name": "Trening 10",
                 "text": "ise"
               },
               {
-                "name": "Øvelse 11",
+                "name": "Trening 11",
                 "text": "fra"
               },
               {
-                "name": "Øvelse 12",
+                "name": "Trening 12",
                 "text": "jils"
               },
               {
@@ -910,59 +910,59 @@ export const nb = {
           "name": "Level 7",
           "exercises": [
               {
-                "name": "Øvelse 1",
+                "name": "Trening 1",
                 "text": "jnfn"
               },
               {
-                "name": "Øvelse 2",
+                "name": "Trening 2",
                 "text": "dnln"
               },
               {
-                "name": "Øvelse 3",
+                "name": "Trening 3",
                 "text": "ni"
               },
               {
-                "name": "Øvelse 4",
+                "name": "Trening 4",
                 "text": "no"
               },
               {
-                "name": "Øvelse 5",
+                "name": "Trening 5",
                 "text": "fvf"
               },
               {
-                "name": "Øvelse 6",
+                "name": "Trening 6",
                 "text": "jvj"
               },
               {
-                "name": "Øvelse 7",
+                "name": "Trening 7",
                 "text": "vnfj"
               },
               {
-                "name": "Øvelse 8",
+                "name": "Trening 8",
                 "text": "jnfn"
               },
               {
-                "name": "Øvelse 9",
+                "name": "Trening 9",
                 "text": "vsj"
               },
               {
-                "name": "Øvelse 10",
+                "name": "Trening 10",
                 "text": "nøl"
               },
               {
-                "name": "Øvelse 11",
+                "name": "Trening 11",
                 "text": "fen"
               },
               {
-                "name": "Øvelse 12",
+                "name": "Trening 12",
                 "text": "jiv"
               },
               {
-                "name": "Øvelse 13",
+                "name": "Trening 13",
                 "text": "sen"
               },
               {
-                "name": "Øvelse 14",
+                "name": "Trening 14",
                 "text": "ven"
               },
               {
@@ -1071,67 +1071,67 @@ export const nb = {
           "name": "Level 8",
           "exercises": [
               {
-                "name": "Øvelse 1",
+                "name": "Trening 1",
                 "text": "jmj"
               },
               {
-                "name": "Øvelse 2",
+                "name": "Trening 2",
                 "text": "jbfb"
               },
               {
-                "name": "Øvelse 3",
+                "name": "Trening 3",
                 "text": "jæfb"
               },
               {
-                "name": "Øvelse 4",
+                "name": "Trening 4",
                 "text": "kmgb"
               },
               {
-                "name": "Øvelse 5",
+                "name": "Trening 5",
                 "text": "mil"
               },
               {
-                "name": "Øvelse 6",
+                "name": "Trening 6",
                 "text": "bil"
               },
               {
-                "name": "Øvelse 7",
+                "name": "Trening 7",
                 "text": "jæfr"
               },
               {
-                "name": "Øvelse 8",
+                "name": "Trening 8",
                 "text": "vær"
               },
               {
-                "name": "Øvelse 9",
+                "name": "Trening 9",
                 "text": "sær"
               },
               {
-                "name": "Øvelse 10",
+                "name": "Trening 10",
                 "text": "bær"
               },
               {
-                "name": "Øvelse 11",
+                "name": "Trening 11",
                 "text": "må"
               },
               {
-                "name": "Øvelse 12",
+                "name": "Trening 12",
                 "text": "ble"
               },
               {
-                "name": "Øvelse 13",
+                "name": "Trening 13",
                 "text": "bfmj"
               },
               {
-                "name": "Øvelse 14",
+                "name": "Trening 14",
                 "text": "kmjn"
               },
               {
-                "name": "Øvelse 15",
+                "name": "Trening 15",
                 "text": "fæmj"
               },
               {
-                "name": "Øvelse 16",
+                "name": "Trening 16",
                 "text": "lmjfb"
               },
               {
@@ -1240,63 +1240,63 @@ export const nb = {
           "name": "Level 9",
           "exercises": [
               {
-                "name": "Øvelse 1",
+                "name": "Trening 1",
                 "text": "fcjp"
               },
               {
-                "name": "Øvelse 2",
+                "name": "Trening 2",
                 "text": "lp"
               },
               {
-                "name": "Øvelse 3",
+                "name": "Trening 3",
                 "text": "sx"
               },
               {
-                "name": "Øvelse 4",
+                "name": "Trening 4",
                 "text": "gyg"
               },
               {
-                "name": "Øvelse 5",
+                "name": "Trening 5",
                 "text": "dc"
               },
               {
-                "name": "Øvelse 6",
+                "name": "Trening 6",
                 "text": "øpø"
               },
               {
-                "name": "Øvelse 7",
+                "name": "Trening 7",
                 "text": "fcsx"
               },
               {
-                "name": "Øvelse 8",
+                "name": "Trening 8",
                 "text": "løp"
               },
               {
-                "name": "Øvelse 9",
+                "name": "Trening 9",
                 "text": "plf"
               },
               {
-                "name": "Øvelse 10",
+                "name": "Trening 10",
                 "text": "dkpå"
               },
               {
-                "name": "Øvelse 11",
+                "name": "Trening 11",
                 "text": "fyky"
               },
               {
-                "name": "Øvelse 12",
+                "name": "Trening 12",
                 "text": "opsa"
               },
               {
-                "name": "Øvelse 13",
+                "name": "Trening 13",
                 "text": "dx"
               },
               {
-                "name": "Øvelse 14",
+                "name": "Trening 14",
                 "text": "my fy"
               },
               {
-                "name": "Øvelse 15",
+                "name": "Trening 15",
                 "text": "pappa"
               },
               {
@@ -1405,51 +1405,51 @@ export const nb = {
           "name": "Level 10",
           "exercises": [
               {
-                "name": "Øvelse 1",
+                "name": "Trening 1",
                 "text": "Finn"
               },
               {
-                "name": "Øvelse 2",
+                "name": "Trening 2",
                 "text": "Gunn"
               },
               {
-                "name": "Øvelse 3",
+                "name": "Trening 3",
                 "text": "Jon"
               },
               {
-                "name": "Øvelse 4",
+                "name": "Trening 4",
                 "text": "Hans"
               },
               {
-                "name": "Øvelse 5",
+                "name": "Trening 5",
                 "text": "Dina"
               },
               {
-                "name": "Øvelse 6",
+                "name": "Trening 6",
                 "text": "Kaja"
               },
               {
-                "name": "Øvelse 7",
+                "name": "Trening 7",
                 "text": "Stian"
               },
               {
-                "name": "Øvelse 8",
+                "name": "Trening 8",
                 "text": "Lars"
               },
               {
-                "name": "Øvelse 9",
+                "name": "Trening 9",
                 "text": "Aina"
               },
               {
-                "name": "Øvelse 10",
+                "name": "Trening 10",
                 "text": "Tore"
               },
               {
-                "name": "Øvelse 11",
+                "name": "Trening 11",
                 "text": "Benedicte"
               },
               {
-                "name": "Øvelse 12",
+                "name": "Trening 12",
                 "text": "Anne Lise"
               },
               {
@@ -1526,27 +1526,27 @@ export const nb = {
           "name": "Level 11",
           "exercises": [
               {
-                "name": "Øvelse 1",
+                "name": "Trening 1",
                 "text": "!!!"
               },
               {
-                "name": "Øvelse 2",
+                "name": "Trening 2",
                 "text": "???"
               },
               {
-                "name": "Øvelse 3",
+                "name": "Trening 3",
                 "text": "j,k,"
               },
               {
-                "name": "Øvelse 4",
+                "name": "Trening 4",
                 "text": "f,d,"
               },
               {
-                "name": "Øvelse 5",
+                "name": "Trening 5",
                 "text": "j!"
               },
               {
-                "name": "Øvelse 6",
+                "name": "Trening 6",
                 "text": "d?"
               },
               {
@@ -1625,83 +1625,144 @@ export const nb = {
       "name": "Historiekurs",
       "courses": [
         {
-          "name": "Den gamle kongen",
+          "name": "Den gamle kongen på revejakt del 1",
           "exercises": [
             {
-              "name": "Øvelse 1",
+              "name": "Trening 1",
               "text": "Det var en sen kveld og den gamle kongen var klar til å gå i seng."
             },
             {
-              "name": "Øvelse 2",
+              "name": "Trening 2",
               "text": "Kongen ropte på tjeneren sin. Vekk meg klokka fem i morgen tidlig. Jeg har tenkt meg på revejakt så jeg må tidlig opp. Javel Hans Høyhet. Jeg skal vekke kongen i morgen tidlig klokka fem. Sov godt, svarte tjeneren."
             },
             {
-              "name": "Øvelse 3",
+              "name": "Trening 3",
               "text": "Nå hadde tjeneren et problem. Han var en riktig syvsover, og derfor hadde han problemer med å stå opp tidlig om morgenen."
             },
             {
-              "name": "Øvelse 4",
+              "name": "Trening 4",
               "text": "Da fikk tjeneren en god ide! Han ropte på stallgutten. Den gamle kongen vil på revejakt i morgen tidlig. Jeg har lovet å vekke han klokka fem. Derfor vil jeg ha deg til å vekke meg klokka fire. Stallgutten var redd for tjeneren og svarte han. Javel herre, jeg skal vekke deg klokka fire."
             },
             {
-              "name": "Øvelse 5",
+              "name": "Trening 5",
               "text": "Nå gikk stallgutten med et problem hengende over hodet. Han elsket å sove. Han hadde alltid hatt tungt for å komme tidlig opp av senga."
             },
             {
-              "name": "Øvelse 6",
+              "name": "Trening 6",
               "text": "Da stallgutten kom tilbake til stallen, så han hunden som holdt på å jage en katt. Kom hit! sa stallgutten til hunden."
             },
             {
-              "name": "Øvelse 7",
+              "name": "Trening 7",
               "text": "Hør her! I morgen tidlig skal den gamle kongen på revejakt. Han ønsker å bli vekket av tjeneren klokka fem. Så jeg er nødt til å vekke tjeneren klokka fire."
             },
             {
-              "name": "Øvelse 8",
+              "name": "Trening 8",
               "text": "Du vet at jeg er et sovetryne, så du blir nødt til å vekke meg klokka tre! Stallgutten ga hunden en godbit, slik at hunden ikke kunne gjøre noe annet enn å godta det."
             },
             {
-              "name": "Øvelse 9",
+              "name": "Trening 9",
               "text": "Hunden følte sig litt presset av oppgaven da den gikk over slottsgården til hundehuset sitt. Plutselig så den hønsegården og tenkte for seg selv. Hanen galer alltid tidlig om morgenen. Jeg vil be han om å vekke meg, for jeg sover alltid som en stein om natta."
-            },
+            }
+          ]
+        }, {
+          "name": "Den gamle kongen på revejakt del 2",
+          "exercises": [
             {
-              "name": "Øvelse 10",
+              "name": "Trening 1",
               "text": "Da sa hunden til hanen. Hør her! Du må hjelpe meg! I morgen tidlig skal den gamle kongen på revejakt. Tjeneren skal vekke kongen klokka fem og stallgutten skal vekke tjeneren klokka fire. Så derfor er jeg nødt til å vekke stallgutten klokka tre. Vil du gjøre meg en tjeneste og vekke meg klokka to?"
             },
             {
-              "name": "Øvelse 11",
+              "name": "Trening 2",
               "text": "Du har kommet helt riktige, sa hanen. Du vet, jeg står opp tidlig så selvfølgelig kan jeg vekke deg klokka to!"
             },
             {
-              "name": "Øvelse 12",
+              "name": "Trening 3",
               "text": "Nå gikk sola ned i det landet hvor kongen levde, og dagen ble til natt."
             },
             {
-              "name": "Øvelse 13",
+              "name": "Trening 4",
               "text": "Rundt omkring slottet kunne man høre folk og dyr sove og snorke. Alle tjenestefolkene sov tungt. Hestene og kuene sov tungt. Og selv noen av de vaktene som skulle beskytte kongen, var falt i søvn. Bare fire steder rundt om på slottet kunne man se lys."
             },
             {
-              "name": "Øvelse 14",
+              "name": "Trening 5",
               "text": "I det store soveværelset lå kongen og spekulerte på om tjeneren kom til å huske å vekke han klokka fem."
             },
             {
-              "name": "Øvelse 15",
+              "name": "Trening 6",
               "text": "I det lille soveværelset lå tjeneren og var nervøs fordi han ikke var sikker på om stallgutten ville vekke han klokka fire."
             },
             {
-              "name": "Øvelse 16",
+              "name": "Trening 7",
               "text": "I stallen var stallgutten fortsatt våken. Han var redd for å falle i søvn, for kanskje ville hunden glemme å vekke han klokka fire."
             },
             {
-              "name": "Øvelse 17",
+              "name": "Trening 8",
               "text": "Rett utenfor stallen vandret hunden rastløst rundt og spekulerte på om hanen ville stå så tidlig opp som den hadde sagt, og om den ville huske å gale klokka to."
             },
             {
-              "name": "Øvelse 18",
+              "name": "Trening 9",
               "text": "Og i hønsegården var hanen våken. Ingen skulle vekke han, så han var nødt til å være oppe hele natten. Ellers ville han ikke være i stand til å gale klokka to."
             },
             {
-              "name": "Øvelse 19",
+              "name": "Trening 10",
               "text": "Så midt på natta lurte kongen, tjeneren, stallgutten, hunden og hanen på om det egentlig var en god ide å stole på andre. Moralen er, Det er lurt å ta ansvar selv."
+            }
+          ]
+        },
+        {
+          "name": "Prinsen og prinsessen",
+          "exercises": [
+            {
+              "name": "Trening 1",
+              "text": "Historien om prinsen og prinsessen"
+            },
+            {
+              "name": "Trening 2",
+              "text": "Nå vil Kåre og Karen gå til heksa for å frigjøre padden som de tror er en prins, de vet det er farlig men vil gjøre alt for å redde padden fra heksa."
+            },
+            {
+              "name": "Trening 3",
+              "text": "Heksa gjør seg klar til å fange Kåre og Karen i det store buret hennes."
+            },
+            {
+              "name": "Trening 4",
+              "text": "Hun har fått vite av kråka at Kåre og Karen er på vei hjem til henne."
+            },
+            {
+              "name": "Trening 5",
+              "text": "Rett før Kåre og Karen når heksens hus, splittes de og Kåre går inn gjennom bakdøren og Karen lar seg fange. Nå er Karen i buret."
+            },
+            {
+              "name": "Trening 6",
+              "text": "Heksa skjønner ikke hvor Kåre er, så hun går ut for å lete etter ham."
+            },
+            {
+              "name": "Trening 7",
+              "text": "Så går Kåre og slipper Karen løs.Karen løper bort til buret med padden."
+            },
+            {
+              "name": "Trening 8",
+              "text": "Hun åpner døren og padden hopper ut.Karen kysser padden på munnen"
+            },
+            {
+              "name": "Trening 9",
+              "text": "og Padden Poof blir til en kjekk prins."
+            },
+            {
+              "name": "Trening 10",
+              "text": "Prinsen sier at han heter Peter Peter kysser Karen igjen."
+            },
+            {
+              "name": "Trening 11",
+              "text": "Kåre og Karen og Peter drar hjem til slottet, det er en lang tur."
+            },
+            {
+              "name": "Trening 12",
+              "text": "Når de kommer hjem er kong Hans og dronning Rose glade, de gir Karen tillatelse til å gifte seg med Peter."
+            },
+            {
+              "name": "Trening 13",
+              "text": "Hans og Rose skal holde stor fest for Karen og Peter, det kommer mange gjester og de skal alle feste i ni dager."
             }
           ]
         }
