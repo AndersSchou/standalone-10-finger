@@ -128,7 +128,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setInitialTextSettings();
 
     this.currentLanguage = this.languageHelperService.currentLangUsed;
-    this.setLanguage();
   }
 
   /**
@@ -235,6 +234,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.setMode('full');
     }
+
+    this.setLanguage();
+
     this.cdr.detectChanges();
 
     if (this.exerciseElem.nativeElement && this.exercisesArr.length > 0) {

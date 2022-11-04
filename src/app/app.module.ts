@@ -29,6 +29,8 @@ import { VoiceService } from './services/api/voice.service';
 import { SpeechService } from './services/speech.service';
 import { CourseHelperService } from './services/course-helper.service';
 import { UserService } from './services/api/user.service';
+import { GridService } from './services/grid.service';
+import { LevelService } from './services/level.service';
 
 
 // TranslateHttpLoader is used to load the translations automatically.
@@ -72,6 +74,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     }),
   ],
   providers: [
+    GridService,
     AuthService,
     CookieService,
     AuthGuardService,
@@ -80,6 +83,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     VoiceService,
     SpeechService,
     UserService,
+    LevelService,
     CourseHelperService,
     {
       provide: ErrorHandler,

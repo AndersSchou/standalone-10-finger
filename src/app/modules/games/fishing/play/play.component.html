@@ -45,10 +45,11 @@
     <div class="boat-hld">
     </div>
   </div>
-  <div class="game-play-hld" [ngStyle]="fishHldStyle">
-    <div class="animation-hld">
-      <app-modules-games-fish #fishComp></app-modules-games-fish>
-      <div class="game-word-hld" #wordHld></div>
-    </div>
-  </div>
+
+  <div id="grid" #grid></div>
+  <!-- <app-modules-games-fishing-school-fish *ngIf="currentLevel" [wordsToDisplay]="wordsToDisplay"
+    [activeWordIndex]="activeWordIndex" [typedChar]="typedChar" (wordsProgress)="updateProgressData($event)">
+  </app-modules-games-fishing-school-fish> -->
+  <app-modules-games-fishing-school-fish #schoolFish (wordsProgress)="updateProgressData($event)">
+  </app-modules-games-fishing-school-fish>
 </div>

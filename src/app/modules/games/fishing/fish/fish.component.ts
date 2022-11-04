@@ -1,5 +1,5 @@
 import { trigger, state, style, transition, animate, AnimationEvent, sequence } from '@angular/animations';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, Input } from '@angular/core';
 import { ReplaySubject, Subject, takeUntil, Observable } from 'rxjs';
 
 /**
@@ -56,9 +56,9 @@ function animationRepeat(count = 100): any[] {
     ])
   ],
 })
-export class AppGamesFishComponent implements OnInit, OnDestroy {
+export class AppGamesFishComponent implements OnInit, OnDestroy, AfterViewInit {
   // Stores the fish image.
-  fishImage = '';
+  // fishImage = '';
   // The subjects used to controls the service communication.
   private onAnimationDone = new Subject<FishState>();
   private onAnimationDone_void = new Subject<FishState>();
@@ -68,9 +68,13 @@ export class AppGamesFishComponent implements OnInit, OnDestroy {
   private onAnimationDone_escaped = new Subject<FishState>();
   onAnimationEventEndedSubject = new Subject<AnimationEvent>();
   // Stores the fish state.
-  fishState: FishState = 'void';
+  fishState: FishState = 'entering';
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
+
+  @Input()
+  fishImage = '';
+
 
   /**
    * Lifecycle hook that is called after data-bound properties of a directive are initialized.
@@ -110,8 +114,14 @@ export class AppGamesFishComponent implements OnInit, OnDestroy {
             this.onAnimationDone.next(state);
             this.onAnimationDone_escaped.next(state);
             break;
+          default:
+            break;
         }
       });
+  }
+
+  ngAfterViewInit(): void {
+    this.addFish(this.fishImage);
   }
 
   /**

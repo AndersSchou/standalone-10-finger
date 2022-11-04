@@ -1,3 +1,4 @@
+import { FishDetailsDTO, FishDTO } from '../dto/fish.dto';
 import { KeyboardSettingsDTO } from '../dto/settings.dto';
 import { Color } from './enums';
 
@@ -175,4 +176,46 @@ export const DefaultReadLetterOptions: KeyboardSettingsDTO[] = [
 // Default read text options.
 export const DefaultReadTextOptions: KeyboardSettingsDTO[] = [
   { type: 'readWord', label: 'Read words', selected: false },
+];
+
+export const DefaultFishesArray: FishDTO[] = [
+  {
+    category: 1, min: 1, max: 3, reward: 1, extraTime: 0, errors: 2,
+    data: [
+      { name: 'marine_fish', width: 9, height: 4 },
+      { name: 'marine_fish_1', width: 5, height: 3 },
+      { name: 'blue_fish_1', width: 8, height: 4 },
+      { name: 'blue_fish_2', width: 8, height: 4 },
+    ]
+  },
+  {
+    category: 2, min: 4, max: 6, reward: 2, extraTime: 0, errors: 1,
+    data: [
+      { name: 'striped_fish', width: 6, height: 6 },
+      { name: 'striped_fish_1', width: 6, height: 4 },
+      { name: 'red_fish', width: 5, height: 3 },
+    ]
+  },
+  {
+    category: 3, min: 7, max: 9, reward: 4, extraTime: 0, errors: 0,
+    data: [
+      { name: 'koi_white_red_1', width: 5, height: 4 },
+      { name: 'koi_red_black', width: 6, height: 4 },
+      { name: 'koi_orange_white', width: 6, height: 4 },
+      { name: 'koi_orange_white_1', width: 5, height: 5 },
+      { name: 'koi_orange_black', width: 3, height: 6 },
+    ]
+  },
+  {
+    category: 4, min: 10, max: 100, reward: 5, extraTime: 0, errors: 0,
+    data: [
+      { name: 'koi_black', width: 6, height: 5 },
+      { name: 'koi_yellow', width: 6, height: 5 },
+      { name: 'crab', width: 5, height: 5, xPos: 14, yPos: 6 },
+    ]
+  },
+  {
+    category: 5, min: 12, max: 100, reward: 10, extraTime: 0, errors: 1,
+    data: [{ name: 'chest', width: 5, height: 4, xPos: 23, yPos: 3 }]
+  },
 ];

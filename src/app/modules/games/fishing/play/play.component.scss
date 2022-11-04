@@ -93,21 +93,21 @@
   height: 100%;
 }
 
-.game-word-hld {
-  margin: 10px 0;
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+// .game-word-hld {
+//   margin: 10px 0;
+//   text-transform: uppercase;
+//   font-weight: 700;
+//   font-size: 18px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
 
-.game-play-hld {
-  position: absolute;
-  display: flex;
-  right: 0;
-}
+// .game-play-hld {
+//   position: absolute;
+//   display: flex;
+//   right: 0;
+// }
 
 ::ng-deep .key-fish-hld {
   border-radius: 8px;
@@ -155,9 +155,9 @@
 }
 
 ::ng-deep .key-fish-hld.active.error {
-  -webkit-animation: blink-fish-error 0.5s linear;
-  -moz-animation: blink-fish-error 0.5s linear;
-  animation: blink-fish-error 0.5s linear;
+  -webkit-animation: blink-fish-error 1s infinite;
+  -moz-animation: blink-fish-error 1s infinite;
+  animation: blink-fish-error 1s infinite;
 }
 
 @keyframes blink-fish-error {
@@ -288,3 +288,33 @@
 .timer-hld.no-bg {
   background: transparent;
 }
+
+/* START GRID */
+::ng-deep #grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  .cell {
+    width: 25px;
+    height: 25px;
+    border: 1px solid #000;
+    position: fixed;
+  }
+
+  .cell.empty {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .cell.boat {
+    background: rgba(255, 0, 0, 0.5);
+  }
+
+  .cell.fish {
+    background: rgba(0, 255, 0, 0.5);
+  }
+}
+
+/* END GRID */

@@ -4,8 +4,9 @@ import { NgxLoggerLevel } from 'ngx-logger';
 
 export const environment = {
   name: 'dev',
+  debugDraw: false,
   production: false,
-  availableLanguages: ['da-DK', 'nn-NO', 'nb-NO', 'sv-SE'],
+  availableLanguages: ['da-DK', 'nb-NO', 'sv-SE'],
   logLevel: NgxLoggerLevel.DEBUG,
   location: 'https://10finger-dev.intowords.com/',
   gameTime: '02:00',

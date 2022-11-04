@@ -1,0 +1,7 @@
+<div *ngIf="availableFishes.length > 0">
+  <div *ngFor="let word of availableFishes; let i=index">
+    <app-modules-games-fishing-word-fish #fishList [word]="word" [index]="i" [numberOfwords]="availableFishes.length"
+      (completedWordIndex)="completedWord($event)">
+    </app-modules-games-fishing-word-fish>
+  </div>
+</div>

@@ -1,3 +1,4 @@
+import { DefaultFishesArray } from './../../../../common/constants';
 import { AppGamesFishComponent } from './../fish/fish.component';
 import { fromEvent, ReplaySubject, Subscription, takeUntil, timer } from 'rxjs';
 import { Component, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
@@ -10,6 +11,10 @@ import { AppGamesFishingGameOverComponent } from '../game-over/game-over.compone
 import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
 import { environment } from 'src/environments/environment';
 import { ResultDTO } from 'src/app/dto/course.dto';
+import { FishWithWordDTO, createEmptyFishWithWordDTO } from 'src/app/dto/fish.dto';
+import { GridService } from 'src/app/services/grid.service';
+import { LevelService } from 'src/app/services/level.service';
+import { AppGamesFishingSchoolFishComponent } from '../school-fish/school-fish.component';
 
 /**
  * This component is the main component for the fishing game.
@@ -20,8 +25,11 @@ import { ResultDTO } from 'src/app/dto/course.dto';
   styleUrls: ['./play.component.scss']
 })
 export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('schoolFish') schoolFish?: AppGamesFishingSchoolFishComponent;
+  // TODO: remove.
   @ViewChild('fishComp') fishComponent?: AppGamesFishComponent;
   @ViewChild('wordHld') wordHld?: ElementRef;
+  @ViewChild('grid') grid?: ElementRef;
   // Stores the number of minutes.
   minutes: number = 0;
   // Stores the number of tens of minutes.
@@ -36,6 +44,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   levelIndex: number = 0;
   // Stores the game levels.
   levels: GameDTO[] = [];
+  currentLevel: any;
   // Stores the current level.
   gameLevel: GameDTO = createEmptyLevelDTO();
   // Stores the timer subscription.
@@ -61,7 +70,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   // Stores the number of completed words.
   completedWords: number = 0;
   // Stores the countdown number (3 seconds by default).
-  countdownNbr: number = 3;
+  countdownNbr: number = 1;
   // Tells if the time is over or not.
   isTimeOut: boolean = false;
   // Stores the coundown subscription.
@@ -77,11 +86,16 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   // Default fishes array.
   fishesArray: string[] = ['blue_fish_1', 'blue_fish_2', 'koi_black', 'koi_orange_black', 'koi_orange_white', 'koi_orange_white_1',
     'koi_white_red_1', 'koi_yellow', 'marine_fish_1', 'marine_fish', 'red_fish', 'striped_fish', 'striped_fish_1'];
+
   // Default css stryle for the current fish and word holder.
   fishHldStyle = {
     'left': '0',
     'bottom': '0',
   };
+  activeWordIndex: number = 0;
+  sendActiveIndex = false;
+  activeWord: FishWithWordDTO = createEmptyFishWithWordDTO();
+  reward = 0;
 
   /**
    * Constructor function responsible for injecting the needed services.
@@ -91,13 +105,16 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    * @param languageHelperService Reference to LanguageHelperService.
    * @param cdr Reference to ChangeDetectorRef.
    * @param dialog Reference to MatDialog.
+   * @param levelService Reference to LevelService.
    */
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly languageHelperService: LanguageHelperService,
+    private readonly gridService: GridService,
     private readonly cdr: ChangeDetectorRef,
     private readonly dialog: MatDialog,
+    protected readonly levelService: LevelService,
   ) {
     this.currentLanguage = this.languageHelperService.currentLangUsed;
     const timeArray = environment.gameTime.split(':');
@@ -124,16 +141,74 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     this.keyDownListener();
   }
 
+  initGrid() {
+    this.gridService.initGrid();
+
+    // Create fish array.
+    // Assign position to fish based on grid.
+
+    // if (environment.debugDraw) {
+    //   let space = this.gridService.pickRandomEmptySpace(8, 3);
+    //   if (space) {
+    //     this.gridService.occupySpace(space.x, space.y, 8, 3, 'fish');
+    //   }
+
+    //   space = this.gridService.pickRandomEmptySpace(8, 8);
+    //   if (space) {
+    //     this.gridService.occupySpace(space.x, space.y, 8, 8, 'fish');
+    //   }
+
+    //   space = this.gridService.pickRandomEmptySpace(2, 10);
+    //   if (space) {
+    //     this.gridService.occupySpace(space.x, space.y, 2, 10, 'fish');
+    //   }
+
+    //   // Crab position.
+    //   this.gridService.occupySpace(14, 6, 3, 3, 'fish');
+    //   // Treasure chest position.
+    //   this.gridService.occupySpace(23, 3, 6, 4, 'fish');
+    // setInterval(() => { this.renderGrid(); }, 2000);
+
+    // }
+  }
+
+  // Debug function.
+  renderGrid() {
+    const grid = this.gridService.getGrid();
+    // console.log('grid', grid);
+    if (this.grid) {
+      const gridElement = this.grid.nativeElement;
+      gridElement.innerHTML = '';
+      for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+          gridElement.appendChild(this.renderCell(grid[i][j].x, grid[i][j].y, grid[i][j].ocupied ? grid[i][j].type : ''));
+        }
+      }
+    }
+  }
+
+  // Debug function.
+  renderCell(x: number, y: number, type: string): HTMLElement {
+    const cell = document.createElement('div');
+    cell.classList.add('cell');
+    cell.classList.add(`cell-${x}-${y}`);
+    if (type) { cell.classList.add(type); }
+    cell.style.left = `${x * this.gridService.gridSize}px`;
+    cell.style.top = `${y * this.gridService.gridSize}px`;
+    return cell;
+  }
+
   /**
    * A lifecycle hook that is called after Angular has fully initialized a component's view.
    */
   ngAfterViewInit(): void {
     this.startReadyCountdown();
+    this.initGrid();
   }
 
   /**
-     * Unsubscribe Observables and detach event handlers to avoid memory leaks.
-     */
+   * Unsubscribe Observables and detach event handlers to avoid memory leaks.
+   */
   ngOnDestroy(): void {
     if (this.countdownSubscription) {
       this.countdownSubscription.unsubscribe();
@@ -157,7 +232,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
         this.countdownNbr--;
       } else {
         this.countdownSubscription.unsubscribe();
-        this.createCounter();
+        // this.createCounter();
       }
     });
   }
@@ -166,23 +241,17 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    * Keydown event listener.
    */
   keyDownListener(): void {
-    fromEvent(document, 'keydown')
+    fromEvent<KeyboardEvent>(document, 'keydown')
       .pipe(takeUntil(this.destroyed)).subscribe((event) => {
+        console.log('event', event);
         if (this.activeIcon === 'pause' && !this.isTimeOut) {
           if ((event as KeyboardEvent).key === ' ') {
             // Prevent auto scroll on space.
             event.preventDefault();
           }
 
-          if (this.currentChar.toLowerCase() === (event as KeyboardEvent).key.toLowerCase()) {
-            this.totalChars++;
-            this.markAsCompleted();
-            this.updateCurrentPosition();
-          } else {
-            if ((event as KeyboardEvent).key !== 'Shift') {
-              this.totalMistakes++;
-              this.markAsMistake();
-            }
+          if (this.schoolFish) {
+            this.schoolFish.keyDown(event.key.toLowerCase());
           }
         }
       });
@@ -214,23 +283,23 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
       if (lang in FishGame) {
         const cat = FishGame[lang];
         if (cat) {
-          this.totalLevels = cat.length;
-          this.levels = cat;
-          const findLevel = cat.find((level: GameDTO) => level.id === Number(levelID));
-          if (findLevel) {
-            this.levelIndex = cat.indexOf(findLevel);
-            this.gameLevel = findLevel;
-            this.currentWord = this.gameLevel.words[0];
-            this.currentChar = this.currentWord[0];
-            this.createHTML();
-            this.currentPosition();
-          } else {
-            this.router.navigate(['/games']);
+          this.currentLevel = this.levelService.generateLevel(levelID + 1, cat);
+          if (this.currentLevel) {
+            const words = this.currentLevel.extractAllLevelWords().map((el: FishWithWordDTO) => {
+              const word: FishWithWordDTO = el;
+              word.active = false;
+              return word;
+            });
+            if (this.schoolFish) {
+              this.schoolFish.initSchool(words, this.currentLevel.levelDefinition.wordsToDisplay);
+            }
           }
         }
       }
     }
   }
+
+
 
   /**
    * Create the time counter.
@@ -255,139 +324,15 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     });
   }
 
-  /**
-   * Create the HTML elements.
-   */
-  createHTML(): void {
-    this.updateFishHolderStyle();
-    if (this.fishComponent && this.wordHld) {
-      const wordHld = this.wordHld.nativeElement;
-      const addFishSubs = this.fishComponent.addFish(`assets/svg/${this.fishesArray[Math.floor(Math.random() * this.fishesArray.length)]}.svg`)
-        .pipe(takeUntil(this.destroyed))
-        .subscribe(() => {
-          addFishSubs.unsubscribe();
-        });
-      this.gameFishDivElement = document.createElement('div');
-      this.gameFishDivElement.classList.add('flex-v-align');
-
-      for (let i = 0; i < this.currentWord.length; i++) {
-        const letterElement = document.createElement('span');
-        const keyDefaultClass = ['key-fish-hld', i.toString()];
-        letterElement.classList.add(...keyDefaultClass);
-        letterElement.innerText = this.currentWord[i];
-        this.gameFishDivElement.appendChild(letterElement);
-      }
-      wordHld.appendChild(this.gameFishDivElement);
+  updateProgressData(word: FishWithWordDTO): void {
+    console.log('update progress data', word);
+    this.reward += word.fish.reward;
+    if (this.currentLevel.goal <= this.reward) {
+      console.log('game over');
+      // this.gameOver();
     }
   }
 
-  /**
-   * Update the current position of the fish and text holder.
-   */
-  updateFishHolderStyle(): void {
-    const minY = window.innerHeight * 0.02;
-    const maxY = window.innerHeight - 520;
-    const randomX = Math.random();
-    const widthFixed = Math.round((window.innerWidth - 382) / 2);
-    const xPos = randomX > 0.5 ? Math.floor(randomX * widthFixed / 2) : Math.floor((randomX * (window.innerWidth / 2 - 100)) + window.innerWidth / 2);
-    const yPos = Math.floor(Math.random() * (maxY - minY) + minY);
-    this.fishHldStyle = {
-      'left': xPos + 'px',
-      'bottom': yPos + 'px',
-    };
-  }
-
-  /**
-  * Update the letter/word index based on the current position.
-  */
-  updateCurrentPosition(): void {
-    if (this.currentCharIndex < this.currentWord.length - 1) {
-      // Update the current letter index.
-      this.currentCharIndex++;
-      this.currentChar = this.currentWord[this.currentCharIndex];
-      this.currentPosition();
-    } else {
-      // Update the current word index.
-      this.currentWordIndex++;
-      this.completedWords++;
-      if (this.currentWordIndex < this.gameLevel.words.length) {
-        this.currentWord = this.gameLevel.words[this.currentWordIndex];
-        this.currentCharIndex = 0;
-        this.currentChar = this.currentWord[this.currentCharIndex];
-        this.clearDomElements();
-
-        if (this.fishComponent) {
-          const caughtSub = this.fishComponent.caught()
-            .pipe(takeUntil(this.destroyed))
-            .subscribe(() => {
-              caughtSub.unsubscribe();
-              this.createHTML();
-              this.currentPosition();
-            });
-        }
-      } else {
-        // Should not happen. We should have enough words for a certain level to avoid this situation
-        // (for 2 minutes we need around 420 words).
-        console.log('game finished');
-      }
-    }
-  }
-
-  /**
-   * Display the current position of the active character.
-   */
-  currentPosition(): void {
-    const findSpanEl = document.getElementsByClassName('key-fish-hld ' + this.currentCharIndex)[0];
-    if (findSpanEl) {
-      findSpanEl.classList.add('active');
-      this.currentFishActiveElement = findSpanEl;
-    }
-  }
-
-  /**
-   * Mark the current character as completed.
-   */
-  markAsCompleted(): void {
-    if (this.currentFishActiveElement && this.currentFishActiveElement.classList.contains('active')) {
-      this.currentFishActiveElement.classList.remove('active');
-      // Add completed class (used to change the background for the completed character) to the current character.
-      this.currentFishActiveElement.classList.add('completed');
-    }
-  }
-
-  /**
-   * Mark the current character as mistake and count the number of mistakes.
-   */
-  markAsMistake(): void {
-    this.nbrOfMistakes++;
-    if (this.nbrOfMistakes > 1) {
-      // More than 1 mistake, the fish will swim away.
-      if (this.fishComponent) {
-        const escapeSubs = this.fishComponent.escaped()
-          .pipe(takeUntil(this.destroyed))
-          .subscribe(() => {
-            escapeSubs.unsubscribe();
-            this.currentWordIndex++;
-            if (this.currentWordIndex < this.gameLevel.words.length) {
-              this.currentWord = this.gameLevel.words[this.currentWordIndex];
-              this.currentCharIndex = 0;
-              this.currentChar = this.currentWord[this.currentCharIndex];
-              this.clearDomElements();
-              this.createHTML();
-              this.currentPosition();
-            } else {
-              // Should not happen. We should have enough words for a certain level to avoid this situation.
-              console.log('game finished');
-            }
-            this.nbrOfMistakes = 0;
-          });
-      }
-    } else {
-      if (this.currentFishActiveElement && !this.currentFishActiveElement.classList.contains('error')) {
-        this.currentFishActiveElement.classList.add('error');
-      }
-    }
-  }
 
   /**
    * Pause time.

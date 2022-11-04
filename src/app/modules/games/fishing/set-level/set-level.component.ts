@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ReplaySubject, takeUntil } from "rxjs";
-import { createEmptyLevelDTO, GameDTO } from "src/app/dto/game.dto";
-import { FishGame } from "src/app/games/fish";
+import { createEmptyFishLevelDTO, FishLevelDTO } from "src/app/dto/fish.dto";
+import { LevelDefinitionsData } from "src/app/games/fish/level-definition";
 import { LanguageHelperService } from "src/app/services/language.service";
 
 /**
@@ -15,9 +15,9 @@ import { LanguageHelperService } from "src/app/services/language.service";
 })
 export class AppGamesFishSetLevelComponent implements OnInit, OnDestroy {
   // Stores all the levels for the fishing game.
-  levels: GameDTO[] = [];
+  levels: FishLevelDTO[] = [];
   // Stores the selected level.
-  selectedLevel: GameDTO = createEmptyLevelDTO();
+  selectedLevel: FishLevelDTO = createEmptyFishLevelDTO();
   // Stores the current language.
   currentLanguage: string;
   // Stores the subscribers until they're destroyed.
@@ -63,19 +63,17 @@ export class AppGamesFishSetLevelComponent implements OnInit, OnDestroy {
    * Get the levels for the fish game.
    */
   getFishGameData(): void {
-    if (this.currentLanguage && this.currentLanguage.length > 0) {
-      const lang = this.currentLanguage.split('-')[0];
-      if (lang in FishGame) {
-        const cat = FishGame[lang];
-        if (cat) {
-          this.levels = cat.map((el: GameDTO) => {
-            const elem = el;
-            elem.selected = false;
-            return elem;
-          });
-        }
-      }
-    }
+    // TODO: get levels from localstorage based on the selected language.
+    console.log('LevelDefinitionsData', LevelDefinitionsData);
+    this.levels = LevelDefinitionsData.map((el => {
+      return {
+        id: el.id,
+        name: el.name,
+        goal: el.goal,
+        selected: false,
+        completed: false,
+      };
+    }));
   }
 
   /**
@@ -83,8 +81,8 @@ export class AppGamesFishSetLevelComponent implements OnInit, OnDestroy {
    *
    * @param level Represents the selected level.
    */
-  selectLevel(level: GameDTO) {
-    this.levels.forEach((el: GameDTO) => {
+  selectLevel(level: FishLevelDTO) {
+    this.levels.forEach((el: FishLevelDTO) => {
       el.selected = false;
     });
     level.selected = true;

@@ -83,7 +83,4 @@ export class AppComponent implements OnInit, OnDestroy {
     // Fetch all the icons.
     this.customIconService.fetchCustomIcons(APP_ICONS);
   }
-
-
-
 }
