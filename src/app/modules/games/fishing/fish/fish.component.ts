@@ -50,15 +50,13 @@ function animationRepeat(count = 100): any[] {
       state('caught', style({ opacity: 0 })),
       state('escaped', style({ opacity: 0 })),
       transition('void <=> *', animate(100)),
-      transition('waiting <=> caught', animate('0.5s 0.1s ease-in-out', style({ transform: 'translate(0, -100px)' }))),
-      transition('waiting <=> escaped', animate('0.5s 0.1s ease-in-out', style({ transform: 'translate(200px, 20px)' }))),
+      transition('waiting <=> caught', animate('0.3s 0.1s ease-in-out', style({ transform: 'translate(0, -100px)' }))),
+      transition('waiting <=> escaped', animate('0.3s 0.1s ease-in-out', style({ transform: 'translate(200px, 20px)' }))),
       transition('* <=> waiting', sequence(animationRepeat())),
     ])
   ],
 })
 export class AppGamesFishComponent implements OnInit, OnDestroy, AfterViewInit {
-  // Stores the fish image.
-  // fishImage = '';
   // The subjects used to controls the service communication.
   private onAnimationDone = new Subject<FishState>();
   private onAnimationDone_void = new Subject<FishState>();

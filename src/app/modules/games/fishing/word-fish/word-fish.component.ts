@@ -1,7 +1,7 @@
-import { Component, ElementRef, Input, OnDestroy, ViewChild, AfterViewInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { WPSService } from 'src/app/services/wps.service';
+import { Component, ElementRef, Input, OnDestroy, ViewChild, AfterViewInit, Output, EventEmitter, ChangeDetectorRef, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { DefaultFishesArray } from 'src/app/common/constants';
-import { createEmptyFishWithWordDTO, FishDTO, FishWithWordDTO } from 'src/app/dto/fish.dto';
+import { createEmptyFishWithWordDTO, FishWithWordDTO } from 'src/app/dto/fish.dto';
 import { AppGamesFishComponent } from '../fish/fish.component';
 
 @Component({
@@ -9,66 +9,64 @@ import { AppGamesFishComponent } from '../fish/fish.component';
   templateUrl: './word-fish.component.html',
   styleUrls: ['./word-fish.component.scss']
 })
-export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewInit {
+export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewInit, OnInit {
   @ViewChild('fishComp') fishComponent?: AppGamesFishComponent;
   @ViewChild('wordHld') wordHld?: ElementRef;
   @Input()
   set word(text: FishWithWordDTO) {
     this.currentWord = text;
-    // this.currentWord.component = this;
   }
   get word(): FishWithWordDTO {
     return this.currentWord;
   }
+
   @Input() index: number = 0;
-  @Input() numberOfwords: number = 0;
-
-  keyDown(char: string) {
-    this.typedCharacter = char;
-    if (this.currentCharIndex === 0) {
-      this.currentPosition();
-    }
-    if (this.currentWord.word[this.currentCharIndex] === this.typedCharacter) {
-      this.markAsCompleted();
-      this.updateCurrentPosition();
-    } else {
-      // check for nbr of mistakes and if it is more than fish maxErrors then remove the word.
-      this.countError++;
-      console.log('---', this.currentWord, this.countError, this.currentWord.fish.maxErrors);
-      this.markAsMistake();
-      if (this.countError > this.currentWord.fish.maxErrors) {
-        // console.log('numberOfwords', this.numberOfwords);
-        this.removeWordFish(true);
-        // if (this.numberOfwords === 1) {
-        //   this.completedWordIndex.emit(true);
-        // }
-        // this.completedWordIndex.emit(t);
-      }
-    }
-  }
-
+  // Stores the current word and fish.
   currentWord: FishWithWordDTO = createEmptyFishWithWordDTO();
-  defaultFishesArray: FishDTO[] = DefaultFishesArray;
   // Stores the HTMLElement for the current fish and word.
   gameFishDivElement?: Element;
-  // Stores the subscribers until they're destroyed.
-  private readonly destroyed = new ReplaySubject<boolean>();
-  defaultStyles: any[] = [];
-
   // Stores the current Element.
   currentFishActiveElement?: Element;
   // Stores the current character's index.
   currentCharIndex: number = 0;
   // Stores the current character.
   currentChar: string = '';
+  // Stores the current typed character.
   typedCharacter: string = '';
+  // Stores the number of errors.
   countError = 0;
-  @Output() completedWordIndex: EventEmitter<boolean> = new EventEmitter<boolean>();
+  // Stores the current fish image.
+  currentFishImage = '';
+  // Stores the time for typing the word.
+  timerWords = new Date();
+  // Stores the time for typing the letter.
+  timerLetters = new Date();
+  // Stores the subscribers until they're destroyed.
+  private readonly destroyed = new ReplaySubject<boolean>();
+  // Outputs the event when the word is completed.
+  @Output() isWordCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  /**
+   * Constructor function responsible for injecting the needed services.
+   *
+   * @param wpsService Reference to WPSService.
+   */
   constructor(
-    private readonly cdr: ChangeDetectorRef
+    private readonly wpsService: WPSService
   ) { }
 
+  /**
+   * A lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
+   */
+  ngOnInit() {
+    if (this.currentWord) {
+      this.currentFishImage = `assets/svg/${this.currentWord.fishImage.name}.svg`;
+    }
+  }
+
+  /**
+   * A lifecycle hook that is called after Angular has fully initialized a component's view.
+   */
   ngAfterViewInit(): void {
     this.createHTML();
   }
@@ -80,20 +78,49 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
     // this.clearDomElements();
     this.destroyed.next(true);
   }
-  currentFishImage = '';
+
+  /**
+   * Key down method.
+   *
+   * @param char Represents the character that was typed.
+   * @param shouldRemoveWord Tells if the current word should be removed or not.
+   */
+  keyDown(char: string, shouldRemoveWord: boolean = false): void {
+    console.log('this.currentWord', this.currentWord);
+    if (shouldRemoveWord) {
+      this.removeWordFish(true);
+      return;
+    }
+    this.typedCharacter = char;
+    if (this.currentCharIndex === 0) {
+      this.currentPosition();
+      this.timerWords = new Date();
+      this.timerLetters = new Date();
+    }
+    let diff = this.wpsService.calculateTimeDiff(this.timerLetters, new Date());
+    if (this.currentWord.word[this.currentCharIndex] === this.typedCharacter) {
+      this.markAsCompleted();
+      this.updateCurrentPosition();
+      this.wpsService.updateCLPS(diff);
+      this.updateWordTime();
+    } else {
+      this.updateWordTime();
+      this.countError++;
+      this.markAsMistake();
+      this.wpsService.updateWLPS(diff);
+      // Check for nbr of mistakes and if it's greater than fish maxErrors remove the word.
+      if (this.countError > this.currentWord.fish.maxErrors) {
+        this.removeWordFish(true);
+      }
+    }
+  }
+
   /**
    * Create the HTML elements.
    */
   createHTML(): void {
-    console.log('createHTML', this.currentWord.word);
     if (this.wordHld && this.currentWord) {
       const wordHld = this.wordHld.nativeElement;
-      this.currentFishImage = `assets/svg/${this.currentWord.fishImage.name}.svg`;
-      // const addFishSubs = this.fishComponent.addFish(`assets/svg/${this.currentWord.fishImage.name}.svg`)
-      //   .pipe(takeUntil(this.destroyed))
-      //   .subscribe(() => {
-      //     addFishSubs.unsubscribe();
-      //   });
       this.gameFishDivElement = document.createElement('div');
       this.gameFishDivElement.classList.add('flex-v-align');
 
@@ -119,31 +146,30 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
         this.currentChar = this.currentWord.word[this.currentCharIndex];
         this.currentPosition();
       } else {
-        console.log('else');
-        // remove word.
-        this.markWordAsCompleted();
+        this.removeWordFish();
       }
     }
   }
 
-  markWordAsCompleted(): void {
-    this.removeWordFish();
-  }
-
+  /**
+   * Remove the current word and fish.
+   *
+   * @param escaped Tells if the fish (the word was mispelled) escaped or not.
+   */
   removeWordFish(escaped: boolean = false): void {
     if (this.fishComponent) {
       if (!escaped) {
         const caughtSub = this.fishComponent.caught()
           .pipe(takeUntil(this.destroyed))
           .subscribe(() => {
-            this.completedWordIndex.emit(true);
+            this.isWordCompleted.emit(true);
             caughtSub.unsubscribe();
           });
       } else {
         const escapeSubs = this.fishComponent.escaped()
           .pipe(takeUntil(this.destroyed))
           .subscribe(() => {
-            this.completedWordIndex.emit(false);
+            this.isWordCompleted.emit(false);
             escapeSubs.unsubscribe();
           });
       }
@@ -152,7 +178,6 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
     this.countError = 0;
     this.currentWord.active = false;
     this.currentWord.available = false;
-    // this.currentWord.leftTheSchool = true;
     this.clearDomElements();
   }
 
@@ -190,7 +215,6 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
    * Mark the current character as mistake and count the number of mistakes.
    */
   markAsMistake(): void {
-    console.log('this.currentFishActiveElement', this.currentFishActiveElement);
     if (this.currentFishActiveElement && !this.currentFishActiveElement.classList.contains('error')) {
       this.currentFishActiveElement.classList.add('error');
     }
@@ -200,11 +224,18 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
    * Clear the DOM elements.
    */
   clearDomElements(): void {
-    // console.log('this.wordHld', this.wordHld);
-    // console.log('this.gameFishDivElement', this.gameFishDivElement);
     if (this.wordHld && this.gameFishDivElement && this.gameFishDivElement.hasChildNodes()) {
-      // console.log('this.gameFishDivElement.hasChildNodes()', this.gameFishDivElement.hasChildNodes());
       this.wordHld.nativeElement.removeChild(this.gameFishDivElement);
+    }
+  }
+
+  /**
+   * Updates the time when the current word is completed or not.
+   */
+  updateWordTime(): void {
+    if (this.currentCharIndex === this.currentWord.word.length - 1) {
+      const diffWord = this.wpsService.calculateTimeDiff(this.timerWords, new Date());
+      this.wpsService.updateWWPS(diffWord);
     }
   }
 }

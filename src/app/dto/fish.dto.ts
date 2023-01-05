@@ -47,6 +47,14 @@ export interface FishWithWordDTO {
   _h: number;
 }
 
+export function createFishWithWordDTO(partial: Partial<FishWithWordDTO>): FishWithWordDTO {
+  return {
+    ...createEmptyFishWithWordDTO(),
+    ...partial
+  };
+}
+
+
 export interface FishDefinitionDTO {
   category: number;
   name: string;

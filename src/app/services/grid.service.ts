@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
-// Grid based values.
+/**
+ * Game object interface.
+ */
 export interface GameObject {
   width: number;
   height: number;
@@ -10,14 +12,18 @@ export interface GameObject {
   type: string;
 }
 
+/**
+ * This service is used to handle the grid. The fish/words will be displyed only on the bottm part of the screen (boat area).
+ */
 @Injectable()
 export class GridService {
   // Stores the grid cell size.
   gridSize = 25;
-  // Represents the max number of grid squares that can be displayed on X and Y.
+  // Represents the max number of grid squares that can be displayed on X axis.
   maxX = 0;
+  // Represents the max number of grid squares that can be displayed on Y axis.
   maxY = 0;
-
+  // Stores the boat object.
   private boat: GameObject = {
     width: 200,
     height: 400,
@@ -26,9 +32,12 @@ export class GridService {
     ocupied: true,
     type: 'boat',
   }
-
+  // Stores the grid.
   private grid: GameObject[][] = [];
 
+  /**
+   * Initialize the grid.
+   */
   initGrid() {
     this.grid = [];
     this.maxX = Math.floor(window.innerWidth / this.gridSize);
@@ -49,12 +58,25 @@ export class GridService {
     this.placeBoat();
   }
 
+  /**
+   * Get the grid.
+   *
+   * @returns The grid.
+   */
   getGrid(): GameObject[][] {
     return this.grid;
   }
 
+  /**
+   * Pick a random empty space from left and right of the boat area.
+   *
+   * @param width Represents the width of the object.
+   * @param height Represents the height of the object.
+   * @param iteration Represents the number of iterations.
+   *
+   * @returns An object as GameObject or null if no space was found.
+   */
   pickRandomEmptySpace(width: number, height: number, iteration = 0): GameObject | null {
-    // We pad the map top by the boat y;
     // Failsafe if we don't find any spaces in 100 cicles.
     if (iteration > 100) {
       return null;
@@ -62,11 +84,9 @@ export class GridService {
     iteration++;
     const randX = Math.random();
     const randY = Math.random();
-
     const x = Math.floor((randX == 1 ? 0.9 : randX) * (this.maxX - width));
     const y = Math.floor((randY == 1 ? 0.9 : randY) * (this.maxY - height - this.boat.y)) + this.boat.y;
     if (x + width > this.maxX || y + height > this.maxY) {
-      // console.log('1');
       return this.pickRandomEmptySpace(width, height, iteration);
     }
     // Check if all spaces at the picked location are not ocupied.
@@ -82,7 +102,16 @@ export class GridService {
 
   }
 
-  occupySpace(x: number, y: number, width: number, height: number, type: string) {
+  /**
+   * Occupy a space in the grid.
+   *
+   * @param x Represents the x position of the object.
+   * @param y Represents the y position of the object.
+   * @param width Represents the width of the object.
+   * @param height Represents the height of the object.
+   * @param type Represents the type of the object.
+   */
+  occupySpace(x: number, y: number, width: number, height: number, type: string): void {
     for (let i = x; i < x + width; i++) {
       for (let j = y; j < y + height; j++) {
         if (!this.grid[i] || !this.grid[i][j]) {
@@ -94,6 +123,9 @@ export class GridService {
     }
   }
 
+  /**
+   * Place the boat in the grid.
+   */
   private placeBoat(): void {
     this.calculateBoatPostion();
     for (let i = this.boat.x; i < this.boat.x + this.boat.width; i++) {
@@ -104,7 +136,10 @@ export class GridService {
     }
   }
 
-  // The boat is postioned in the center of the grid and has padding.
+  /**
+   * Calculate the boat position. The boat is positioned in the center of the grid and has padding (the shown fish/word
+   * should not overlap with the boat).
+   */
   private calculateBoatPostion(): void {
     const bottomPercent = 10;
     const paddedWidth = 426;

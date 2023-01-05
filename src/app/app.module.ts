@@ -31,6 +31,7 @@ import { CourseHelperService } from './services/course-helper.service';
 import { UserService } from './services/api/user.service';
 import { GridService } from './services/grid.service';
 import { LevelService } from './services/level.service';
+import { WPSService } from './services/wps.service';
 
 
 // TranslateHttpLoader is used to load the translations automatically.
@@ -84,6 +85,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SpeechService,
     UserService,
     LevelService,
+    WPSService,
     CourseHelperService,
     {
       provide: ErrorHandler,

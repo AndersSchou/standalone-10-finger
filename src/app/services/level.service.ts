@@ -3,9 +3,11 @@ import { FishDetailsDTO } from '../dto/fish.dto';
 import { LevelDefinitionsData } from '../games/fish/level-definition';
 import { FishDefinitionsData } from '../games/fish/fish-definition';
 
-class LevelDefinition {
+export class LevelDefinition {
   /**
+   * Constructor function responsible for injecting the needed services.
    *
+   * @param id Represents the level id.
    * @param name Represents the name of the level.
    * @param goal Represents the goal score of the level.
    * @param wordsToDisplay Represents the number of words to display for each level.
@@ -14,9 +16,9 @@ class LevelDefinition {
    */
   constructor(
     protected id: number,
-    protected name: string,
-    protected goal: number,
-    protected wordsToDisplay: number,
+    public name: string,
+    public goal: number,
+    public wordsToDisplay: number,
     protected categoryPercentage: { [key: number]: number },
     protected bonusCategory: { [key: number]: number }) { }
 
@@ -72,6 +74,18 @@ class LevelDefinition {
 }
 
 class FishDefinition {
+  /**
+   * Constructor function responsible for injecting the needed services.
+   *
+   * @param category Represents the category number of the level.
+   * @param name Represents the name of the level.
+   * @param wordMinSize Represents the minimum word size for the level.
+   * @param wordMaxSize Represents the maximum word size for the level.
+   * @param maxErrors Represents the maximum number of errors for the level.
+   * @param extraTime Represents the extra time for the level.
+   * @param reward Represents the reward for the level.
+   * @param images Represents the images for the level.
+   */
   constructor(
     protected category: number,
     protected name: string,
@@ -83,29 +97,57 @@ class FishDefinition {
     protected images: FishDetailsDTO[],
   ) { }
 
+  /**
+   * Get the category id of the level.
+   *
+   * @returns The category id of the level.
+   */
   getCategoryId(): number {
     return this.category;
   }
 
+  /**
+   * Get the name of the level.
+   *
+   * @returns The name of the level.
+   */
   getName(): string {
     return this.name;
   }
 
+  /**
+   * Get the minimum word size for the level.
+   *
+   * @returns The minimum word size for the level.
+   */
   getWordMinSize(): number {
     return this.wordMinSize;
   }
 
+  /**
+   * Get the maximum word size for the level.
+   *
+   * @returns The maximum word size for the level.
+   */
   getWordMaxSize(): number {
     return this.wordMaxSize;
   }
 
+  /**
+   * Get the fish details.
+   *
+   * @returns The fish details.
+   */
   getImages(): FishDetailsDTO[] {
     return this.images;
   }
 }
 
-class FishWithWord {
-  protected fishImage: FishDetailsDTO;
+/**
+ *
+ */
+export class FishWithWord {
+  fishImage: FishDetailsDTO;
   constructor(
     protected fish: FishDefinition,
     protected word: string,
@@ -289,7 +331,7 @@ export class LevelService {
   }
 }
 
-class Level {
+export class Level {
   // The word pool containing all available words for each fish category.
   wordPool: { [key: number]: FishWithWord[] } = {};
   // Remember the list of fish categories we added to the word pool.
@@ -298,7 +340,7 @@ class Level {
   usedWordsByFishCategory: { [key: number]: FishWithWord[] } = {};
 
   constructor(
-    private levelDefinition: LevelDefinition,
+    public levelDefinition: LevelDefinition,
     words: string[],
     fishDefinitions: FishDefinitions,
   ) {
@@ -336,6 +378,7 @@ class Level {
     if (!fishCategory) {
       fishCategory = this.wordLevels[Math.floor(Math.random() * this.wordLevels.length)];
     }
+    console.log('fishCategory', fishCategory);
     if (this.wordPool[fishCategory]) {
       if (this.wordPool[fishCategory].length === 0) {
         // Replace the pool with the used fish.
