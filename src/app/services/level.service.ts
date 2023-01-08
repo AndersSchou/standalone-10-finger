@@ -149,8 +149,8 @@ class FishDefinition {
 export class FishWithWord {
   fishImage: FishDetailsDTO;
   constructor(
-    protected fish: FishDefinition,
-    protected word: string,
+    public fish: FishDefinition,
+    public word: string,
   ) {
     this.fishImage = fish.getImages()[Math.floor(Math.random() * fish.getImages().length)];
   }
@@ -392,7 +392,7 @@ export class Level {
         if (!(fishCategory in this.usedWordsByFishCategory)) {
           this.usedWordsByFishCategory[fishCategory] = [];
         }
-        this.usedWordsByFishCategory[fishCategory].push(selectedWord);
+        this.usedWordsByFishCategory[fishCategory].push(new FishWithWord(selectedWord.fish, selectedWord.word));
       }
       return selectedWord;
     }

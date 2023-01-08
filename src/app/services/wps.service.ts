@@ -36,7 +36,7 @@ export class WPSService {
    */
   updateCLPS(msToWriteOneLetter: number): void {
     if (msToWriteOneLetter > 50) {
-      console.log('---msToWriteOneLetter', msToWriteOneLetter);
+      // console.log('---msToWriteOneLetter', msToWriteOneLetter);
       // The value counts only as 10% of the total.
 
       this.correctLettersPerSecond = this.correctLettersPerSecond * 0.9 + 1000 / msToWriteOneLetter * 0.1;
@@ -81,7 +81,7 @@ export class WPSService {
    */
   updateWWPS(msToWriteOneWord: number): void {
     if (msToWriteOneWord > 50) {
-      console.log('---updateWWPS', msToWriteOneWord);
+      // console.log('---updateWWPS', msToWriteOneWord);
       // The value counts only as 10% of the total.
 
       this.wrongWordsPerSecond = this.wrongWordsPerSecond * 0.9 + 1000 / msToWriteOneWord * 0.1;

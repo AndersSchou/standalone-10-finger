@@ -76,7 +76,6 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
       }
     } else {
       let space = this.gridService.pickRandomEmptySpace(maxWidth, maxHeight);
-      console.log('space: ', space, maxWidth, maxHeight, this.gridService.maxX, this.gridService.maxY);
       if (space) {
         // fishImage.height + 1 (add additional height for word).
         this.gridService.occupySpace(space.x, space.y, maxWidth, maxHeight, 'fish');
@@ -110,7 +109,7 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
     this.availableFishes = this.availableFishes.filter((el) => !el.leftTheSchool);
 
     if (completed && this.activeFish) {
-      console.log('this.activeFish.word: ', this.activeFish.word);
+      // console.log('this.activeFish.word: ', this.activeFish.word);
       this.completedFishes++;
       this.correctChars += this.activeFish.word.length;
       this.score += this.activeFish.fish.reward;
@@ -227,48 +226,51 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
     }
   }
 
-  getNewWord(rec = 0): FishWithWordDTO | undefined {
-    if (rec > 30) {
-      return undefined;
-    }
-    const newWord = this.currentLevel.extractWordByLevel(this.allAvailableFishes.length ? this.allAvailableFishes[0].fish.category : 0);
-    if (newWord) {
-      const findWord = this.availableFishes.find((el: FishWithWordDTO) => newWord.word.toLowerCase().startsWith(el.word[0]));
-      if (!findWord) {
-        // Remove the first fish element from allAvailableFishes since it's category was already used (this is needed to
-        // keep the category percentage the same).
-        this.allAvailableFishes.shift();
+  getNewWord(): FishWithWordDTO | undefined {
+    // Try and get a new word for each available word level. If this fail reuse a random used word.
+    const levelWordShuffled = this.shuffle([...this.currentLevel.wordLevels]);
+    for (let i = 0; i < levelWordShuffled.length; i++) {
+      // TODO: pass the letter array to be excluded in the search and all the levels it should search for.
+      const newWord = this.currentLevel.extractWordByLevel(levelWordShuffled[i]);
+      if (newWord) {
         return newWord;
       }
     }
-    return this.getNewWord(rec++);
+    return undefined;
+  }
+
+  getWordWithDifferentLetter(cnt = 0): FishWithWordDTO | undefined {
+    if (cnt > 10) {
+      // We could not find one.
+      return undefined;
+    }
+    // TODO: pass the letter array to be excluded in the search.
+    const newWord = this.getNewWord();
+    // Check that the new word doesn't start with the same letter as any of the available words.
+    if (newWord) {
+      const foundWordWithSameStartingLetter = this.availableFishes.filter(
+        // Only compare to fish in the school.
+        fish => !fish.leftTheSchool
+      ).find((el: FishWithWordDTO) =>
+        el.word[0].toLowerCase() === newWord.word[0].toLowerCase());
+      if (!foundWordWithSameStartingLetter) {
+        return newWord;
+      }
+    }
+    return this.getWordWithDifferentLetter(cnt + 1);
   }
 
   addFishToAvailableFishes(): void {
     let fish;
-    if (this.availableFishes.length > 0) {
-      const findWord = this.allAvailableFishes.find((el: FishWithWordDTO) => {
-        for (const word of this.availableFishes) {
-          if (!el.word.toLowerCase().startsWith(word.word[0])) {
-            return el;
-          }
-        }
-        return null;
-      });
-      // console.log('findWord', findWord);
-      if (findWord) {
-        this.allAvailableFishes = this.allAvailableFishes.filter((el) => el !== findWord);
-        fish = findWord;
-      } else {
-        // console.log('else error', this.allAvailableFishes.length, this.availableFishes.length);
-        let newWord = this.getNewWord();
-        if (newWord) {
-          fish = newWord;
-        }
-        // console.log('newW', newWord);
-      }
-    } else {
+    // Try and find a new word. If this fails, then reuse a random word.
+    const newWord = this.getWordWithDifferentLetter();
+    if (newWord) {
+      fish = newWord;
+      console.log('newWord', fish.word);
+    } else if (this.allAvailableFishes.length > 0) {
+      // Failsafe, should not happen.
       fish = this.allAvailableFishes.shift();
+      console.log('oldWord', fish?.word);
     }
     // console.log('fish', fish);
     if (fish) {
@@ -277,6 +279,9 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
       this.occupySpace(fish);
       this.fishAdded = true;
       this.addedWords++;
+      console.log('addedWords', fish.word);
+    } else {
+      console.log('No more words to add');
     }
   }
 
@@ -289,5 +294,31 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
         fish.leftTheSchool = true;
       }
     }
+  }
+
+  // TODO: add in a helper file
+  /**
+   * Shuffle the words in the word pool.
+   *
+   * @param words Represents the array of words to shuffle.
+   *
+   * @returns An array of words shuffled.
+   */
+  protected shuffle<T>(arr: T[]): T[] {
+    let currentIndex = arr.length, randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [arr[currentIndex], arr[randomIndex]] = [
+        arr[randomIndex], arr[currentIndex]];
+    }
+
+    return arr;
   }
 }

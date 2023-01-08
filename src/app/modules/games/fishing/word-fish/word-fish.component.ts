@@ -86,7 +86,7 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
    * @param shouldRemoveWord Tells if the current word should be removed or not.
    */
   keyDown(char: string, shouldRemoveWord: boolean = false): void {
-    console.log('this.currentWord', this.currentWord);
+    // console.log('this.currentWord', this.currentWord);
     if (shouldRemoveWord) {
       this.removeWordFish(true);
       return;

@@ -300,7 +300,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
             };
             const words = this.currentLevel.extractAllLevelWords().map((el: FishWithWord) => {
               // console.log('el', el);
-              const word: FishWithWordDTO = { ...el } as FishWithWordDTO;
+              const word: FishWithWordDTO = { ...el } as any;
               word.active = false;
               return word;
             });
