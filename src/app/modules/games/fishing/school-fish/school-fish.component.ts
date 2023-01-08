@@ -6,6 +6,12 @@ import { ReplaySubject, Subscription, takeUntil, timer } from 'rxjs';
 import { GridService } from 'src/app/services/grid.service';
 import { WPSService } from 'src/app/services/wps.service';
 
+export interface ScoreUpdateDTO {
+  score: number;
+  completedWords: number;
+  chars: number;
+}
+
 @Component({
   selector: 'app-modules-games-fishing-school-fish',
   templateUrl: './school-fish.component.html',
@@ -17,12 +23,13 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
   availableFishes: FishWithWordDTO[] = [];
 
   // @Output() wordsProgress: EventEmitter<FishWithWordDTO> = new EventEmitter<FishWithWordDTO>();
-  @Output() currentScore: EventEmitter<number> = new EventEmitter<number>();
+  @Output() currentScore: EventEmitter<ScoreUpdateDTO> = new EventEmitter<ScoreUpdateDTO>();
   /** Get handle on cmp tags in the template */
   @ViewChildren('fishList') fishList?: QueryList<AppGamesFishingWordFishComponent>;
 
   activeFish?: FishWithWordDTO;
   score = 0;
+  completedFishes = 0;
   goal = 0;
   currentLevel: any;
   // Stores the time to wait before removing the word/words if no correct key was pressed.
@@ -41,6 +48,7 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
   fishAdded = false;
   // Stores the number of words that were displayed.
   addedWords = 0;
+  correctChars = 0;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
@@ -92,14 +100,25 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
     return Math.max(wordFishToDisplay.fishImage.width, wordFishToDisplay.word.length);
   }
 
+  /**
+   * Event listener for when a word/fish was removed from the screen.
+   *
+   * @param completed Tells if the word was completed or not.
+   */
   completedWord(completed: boolean): void {
-    // console.log('++++completedWord', completed);
-    // 1. empty availableFishes array
     this.availableFishes = this.availableFishes.filter((el) => !el.leftTheSchool);
 
     if (completed && this.activeFish) {
+      console.log('this.activeFish.word: ', this.activeFish.word);
+      this.completedFishes++;
+      this.correctChars += this.activeFish.word.length;
       this.score += this.activeFish.fish.reward;
-      this.currentScore.emit(this.score);
+      const dataUpdate: ScoreUpdateDTO = {
+        score: this.score,
+        completedWords: this.completedFishes,
+        chars: this.correctChars
+      };
+      this.currentScore.emit(dataUpdate);
     }
   }
 
@@ -168,17 +187,30 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
 
   initSchool(arr: FishWithWordDTO[], currentLevel: Level): void {
     console.log('currentLevel init school', currentLevel);
-    // show one fish and after a default time(average user speed) add another fish.
     this.maxFishInSchool = currentLevel.levelDefinition.wordsToDisplay;
     this.currentLevel = currentLevel;
     this.goal = currentLevel.levelDefinition.goal;
-    // this.fishCountToShow = Math.ceil(this.goal / this.maxFishInSchool);
     console.log('this.defaultNumberOfWords', this.fishCountToShow);
     if (arr.length > 0) {
       this.allAvailableFishes = [...arr];
-      // console.log('this.allAvailableFishes', this.allAvailableFishes);
     }
     this.renderNextFish();
+  }
+
+  /**
+   * Progresive calculation starting from one fish and adding one fish after a percentage of fishes are completed.
+   *
+   * @param alreadyShown Represents the number of fishes that are already shown.
+   * @param min Represents the minimum number of fishes to show.
+   * @param max Represents the maximum number of fishes to show.
+   * @param totalFish Represents the total number of fishes to show.
+   *
+   * @returns The number of fishes to show.
+   */
+  calculateMaxFishInSchool(alreadyShown: number, min: number, max: number, totalFish: number): number {
+    const percentage = alreadyShown / totalFish;
+    const maxFish = Math.ceil((max - min) * percentage + min);
+    return maxFish;
   }
 
   renderNextFish(): void {
@@ -189,6 +221,7 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
         return word;
       });
     }
+    this.fishCountToShow = this.calculateMaxFishInSchool(this.completedFishes, 1, this.maxFishInSchool, this.goal);
     for (let i = this.availableFishes.filter(f => !f.leftTheSchool).length; i < this.fishCountToShow; i++) {
       this.addFishToAvailableFishes();
     }

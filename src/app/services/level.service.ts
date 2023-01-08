@@ -15,7 +15,7 @@ export class LevelDefinition {
    * @param bonusCategory Represents the number of words from category 5 (bonus category).
    */
   constructor(
-    protected id: number,
+    public id: number,
     public name: string,
     public goal: number,
     public wordsToDisplay: number,

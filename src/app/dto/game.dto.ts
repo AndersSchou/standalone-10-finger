@@ -6,10 +6,10 @@ import { ResultDTO } from './course.dto';
 export interface GameDTO {
   id: number;
   name: string;
-  words: string[];
-  selected: boolean;
+  // words: string[];
+  selected?: boolean;
   results: ResultDTO[];
-  updatedAt: Date;
+  updatedAt?: Date;
 }
 
 /**
@@ -40,7 +40,7 @@ export function createEmptyLevelDTO(): GameDTO {
   return {
     id: 0,
     name: '',
-    words: [],
+    // words: [],
     selected: false,
     updatedAt: new Date(),
     results: [],

@@ -89,5 +89,6 @@
   "translateYouCaught": "You've caught",
   "translateFishes": "fishes",
   "translateHighestScore": "Your highest score",
-  "translatePlayNextLevel": "Play next level"
+  "translatePlayNextLevel": "Play next level",
+  "translateHighScore": "High score"
 }

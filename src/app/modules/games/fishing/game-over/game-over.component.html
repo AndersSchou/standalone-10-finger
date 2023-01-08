@@ -2,14 +2,18 @@
   <div mat-dialog-title class="mat-dialog-title">
     <div class="close-row">
       <div class="icon-hld ml-auto">
-        <mat-icon svgIcon="icon_close" (click)="close()"></mat-icon>
+        <mat-icon svgIcon="icon_close" (click)="selectLevel()"></mat-icon>
       </div>
     </div>
     <div class="game-over-header">
       <div>
-        <mat-icon svgIcon="crab" class="crab-icon"></mat-icon>
+        <mat-icon svgIcon="crab" class="crab-icon" *ngIf="!isHighScore"></mat-icon>
+        <mat-icon svgIcon="gold_award" class="crab-icon" *ngIf="isHighScore"></mat-icon>
       </div>
-      <div class="game-over-header-title">{{ 'translateGameOver' | translate }}</div>
+      <div class="game-over-header-title">
+        <span *ngIf="!isHighScore">{{ 'translateGameOver' | translate }}</span>
+        <span *ngIf="isHighScore">{{ 'translateHighScore' | translate }}</span>
+      </div>
       <div class="game-over-header-level pb-16" *ngIf="data.level">{{data.level.name}}</div>
     </div>
     <div class="divider"></div>
@@ -32,20 +36,10 @@
       </div>
       <div class="details-title-hld">{{ 'translateFishesCaught' | translate }}</div>
       <div class="award-desc">
-        {{ 'translateYouCaught' | translate }} {{data.wordsCount}} {{ 'translateFishes' | translate }}
+        {{ 'translateYouCaught' | translate }} {{data.wordsCount}} {{ 'translateFishes' | translate }} in {{time}}
       </div>
     </div>
     <div class="divider"></div>
-    <div class="overall-res-hld" *ngIf="findMaxResult">
-      <div>
-        <mat-icon svgIcon="gold_award" class="gold-award"></mat-icon>
-      </div>
-      <div class="details-title-hld">{{ 'translateHighestScore' | translate }}</div>
-      <div class="award-desc">
-        {{ 'translateYouCaught' | translate }} {{findMaxResult.numberOfWords}} {{ 'translateFishes' | translate }}
-      </div>
-    </div>
-    <div class="divider" *ngIf="findMaxResult"></div>
   </div>
 
   <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" class="pt-24">
