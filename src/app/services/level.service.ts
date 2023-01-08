@@ -378,7 +378,7 @@ export class Level {
     if (!fishCategory) {
       fishCategory = this.wordLevels[Math.floor(Math.random() * this.wordLevels.length)];
     }
-    console.log('fishCategory', fishCategory);
+    // console.log('fishCategory', fishCategory);
     if (this.wordPool[fishCategory]) {
       if (this.wordPool[fishCategory].length === 0) {
         // Replace the pool with the used fish.

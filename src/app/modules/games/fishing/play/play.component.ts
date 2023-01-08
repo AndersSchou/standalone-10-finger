@@ -131,6 +131,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    * A lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
    */
   ngOnInit(): void {
+    this.initGrid();
     // Listens for any changes regarding the current used language.
     this.languageHelperService.OnLanguageChanged
       .pipe(takeUntil(this.destroyed)).subscribe(() => {
@@ -206,7 +207,6 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    */
   ngAfterViewInit(): void {
     this.startReadyCountdown();
-    this.initGrid();
   }
 
   /**
@@ -299,12 +299,13 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
               results: []
             };
             const words = this.currentLevel.extractAllLevelWords().map((el: FishWithWord) => {
-              console.log('el', el);
+              // console.log('el', el);
               const word: FishWithWordDTO = { ...el } as FishWithWordDTO;
               word.active = false;
               return word;
             });
             if (this.schoolFish) {
+              console.log('loadGameData complete');
               this.schoolFish.initSchool(words, this.currentLevel);
             }
           }

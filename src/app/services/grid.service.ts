@@ -39,6 +39,7 @@ export class GridService {
    * Initialize the grid.
    */
   initGrid() {
+    console.log('GridService.initGrid()');
     this.grid = [];
     this.maxX = Math.floor(window.innerWidth / this.gridSize);
     this.maxY = Math.floor(window.innerHeight / this.gridSize);

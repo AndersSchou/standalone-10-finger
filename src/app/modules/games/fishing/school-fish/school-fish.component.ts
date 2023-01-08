@@ -76,6 +76,7 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
       }
     } else {
       let space = this.gridService.pickRandomEmptySpace(maxWidth, maxHeight);
+      console.log('space: ', space, maxWidth, maxHeight, this.gridService.maxX, this.gridService.maxY);
       if (space) {
         // fishImage.height + 1 (add additional height for word).
         this.gridService.occupySpace(space.x, space.y, maxWidth, maxHeight, 'fish');
@@ -186,11 +187,10 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
   }
 
   initSchool(arr: FishWithWordDTO[], currentLevel: Level): void {
-    console.log('currentLevel init school', currentLevel);
+    console.log('AppGamesFishingSchoolFishComponent.initSchool', currentLevel);
     this.maxFishInSchool = currentLevel.levelDefinition.wordsToDisplay;
     this.currentLevel = currentLevel;
     this.goal = currentLevel.levelDefinition.goal;
-    console.log('this.defaultNumberOfWords', this.fishCountToShow);
     if (arr.length > 0) {
       this.allAvailableFishes = [...arr];
     }
