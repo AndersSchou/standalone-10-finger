@@ -18,6 +18,8 @@ export interface ScoreUpdateDTO {
   styleUrls: ['./school-fish.component.scss']
 })
 export class AppGamesFishingSchoolFishComponent implements OnInit {
+  @Input() isPaused: boolean = false;
+  @Input() isGameOver: boolean = false;
   maxFishInSchool = 0;
   allAvailableFishes: FishWithWordDTO[] = [];
   availableFishes: FishWithWordDTO[] = [];
@@ -52,13 +54,19 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
+  private gameFrameInterval = 500;
+
   constructor(
     private readonly gridService: GridService,
     private readonly wps: WPSService,
   ) { }
 
   ngOnInit(): void {
-    const a = 1;
+    // We create a gameFrameInterval interval to check if we need to increment the fish count.
+    timer(0, this.gameFrameInterval).pipe(takeUntil(this.destroyed)).subscribe(() => {
+      this.removeFishes();
+      this.renderNextFish();
+    });
   }
 
   unoccupySpace(currentWord: FishWithWordDTO): void {
@@ -206,13 +214,16 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
    *
    * @returns The number of fishes to show.
    */
-  calculateMaxFishInSchool(alreadyShown: number, min: number, max: number, totalFish: number): number {
-    const percentage = alreadyShown / totalFish;
+  calculateMaxFishInSchool(percentValueDone: number, min: number, max: number, percentValueMax: number): number {
+    const percentage = percentValueDone / percentValueMax;
     const maxFish = Math.ceil((max - min) * percentage + min);
-    return maxFish;
+    return maxFish < min ? min : maxFish > max ? max : maxFish;
   }
 
   renderNextFish(): void {
+    if (this.isGameOver) {
+      return;
+    }
     if (this.allAvailableFishes.length <= 0) {
       this.allAvailableFishes = this.currentLevel.extractAllLevelWords().map((el: FishWithWordDTO) => {
         const word: FishWithWordDTO = el;
@@ -220,7 +231,7 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
         return word;
       });
     }
-    this.fishCountToShow = this.calculateMaxFishInSchool(this.completedFishes, 1, this.maxFishInSchool, this.goal);
+    this.fishCountToShow = this.calculateMaxFishInSchool(this.score, 1, this.maxFishInSchool, this.goal);
     for (let i = this.availableFishes.filter(f => !f.leftTheSchool).length; i < this.fishCountToShow; i++) {
       this.addFishToAvailableFishes();
     }

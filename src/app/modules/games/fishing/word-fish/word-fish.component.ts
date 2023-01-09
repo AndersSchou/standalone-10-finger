@@ -1,8 +1,9 @@
 import { WPSService } from 'src/app/services/wps.service';
 import { Component, ElementRef, Input, OnDestroy, ViewChild, AfterViewInit, Output, EventEmitter, ChangeDetectorRef, OnInit } from '@angular/core';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, Subject, takeUntil, timer } from 'rxjs';
 import { createEmptyFishWithWordDTO, FishWithWordDTO } from 'src/app/dto/fish.dto';
 import { AppGamesFishComponent } from '../fish/fish.component';
+import { getStopWatch } from 'src/app/common/stopwatch';
 
 @Component({
   selector: 'app-modules-games-fishing-word-fish',
@@ -21,6 +22,13 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
   }
 
   @Input() index: number = 0;
+  @Input() set isPaused(val: boolean) {
+    if (val) {
+      this.watch.control$.next('STOP');
+    } else {
+      this.watch.control$.next('START');
+    }
+  }
   // Stores the current word and fish.
   currentWord: FishWithWordDTO = createEmptyFishWithWordDTO();
   // Stores the HTMLElement for the current fish and word.
@@ -46,6 +54,17 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
   // Outputs the event when the word is completed.
   @Output() isWordCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  // Flag to keep track if the fish was interacted with.
+  isFishInteracted = false;
+
+  defaultWaitTimeMax = 8000;
+  defaultWaitTimeMin = 4000;
+
+  watch: {
+    control$: Subject<string>;
+    display$: Observable<number>;
+  } = getStopWatch();
+
   /**
    * Constructor function responsible for injecting the needed services.
    *
@@ -62,6 +81,17 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
     if (this.currentWord) {
       this.currentFishImage = `assets/svg/${this.currentWord.fishImage.name}.svg`;
     }
+
+    const disapearInMS = Math.floor(Math.random() * (this.defaultWaitTimeMax - this.defaultWaitTimeMin + 1)) / this.currentWord.fish.reward + this.defaultWaitTimeMin;
+    // We wait a default time to give the user a chance to interact with the fish, otherwise the fish will be removed.
+    // We track using a timeout (rxjs).
+    this.watch.display$.pipe(takeUntil(this.destroyed)).subscribe(res => {
+      if (!this.isFishInteracted && res * 1000 > disapearInMS) {
+        this.removeWordFish(true);
+        this.watch.control$.next("STOP");
+      }
+    });
+    this.watch.control$.next("START");
   }
 
   /**
@@ -86,6 +116,7 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
    * @param shouldRemoveWord Tells if the current word should be removed or not.
    */
   keyDown(char: string, shouldRemoveWord: boolean = false): void {
+    this.isFishInteracted = true;
     // console.log('this.currentWord', this.currentWord);
     if (shouldRemoveWord) {
       this.removeWordFish(true);
@@ -157,6 +188,7 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
    * @param escaped Tells if the fish (the word was mispelled) escaped or not.
    */
   removeWordFish(escaped: boolean = false): void {
+    this.watch.control$.next("STOP");
     if (this.fishComponent) {
       if (!escaped) {
         const caughtSub = this.fishComponent.caught()

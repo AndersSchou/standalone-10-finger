@@ -235,7 +235,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
         this.countdownNbr--;
       } else {
         this.countdownSubscription.unsubscribe();
-        // this.createCounter();
+        this.createCounter();
       }
     });
   }

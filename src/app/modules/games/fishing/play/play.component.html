@@ -50,6 +50,7 @@
   <!-- <app-modules-games-fishing-school-fish *ngIf="currentLevel" [wordsToDisplay]="wordsToDisplay"
     [activeWordIndex]="activeWordIndex" [typedChar]="typedChar" (wordsProgress)="updateProgressData($event)">
   </app-modules-games-fishing-school-fish> -->
-  <app-modules-games-fishing-school-fish #schoolFish (currentScore)="updateScore($event)">
+  <app-modules-games-fishing-school-fish #schoolFish (currentScore)="updateScore($event)"
+    [isPaused]="activeIcon === 'play' ? true : false" [isGameOver]="isTimeOut">
   </app-modules-games-fishing-school-fish>
 </div>
