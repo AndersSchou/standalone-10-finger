@@ -1,5 +1,8 @@
 import { AppGamesFishingWordFishComponent } from "../modules/games/fishing/word-fish/word-fish.component";
 
+/**
+ * Fish level interface.
+ */
 export interface FishLevelDTO {
   id: number;
   name: string;
@@ -8,6 +11,9 @@ export interface FishLevelDTO {
   completed?: boolean;
 }
 
+/**
+ * Fish interface.
+ */
 export interface FishDTO {
   category: number;
   data: FishDetailsDTO[];
@@ -18,6 +24,9 @@ export interface FishDTO {
   errors: number;
 }
 
+/**
+ * Fish details interface.
+ */
 export interface FishDetailsDTO {
   name: string;
   // Grid width (1 = 25px).
@@ -28,6 +37,9 @@ export interface FishDetailsDTO {
   yPos?: number;
 }
 
+/**
+ * Fish with word interface.
+ */
 export interface FishWithWordDTO {
   fish: FishDefinitionDTO;
   fishImage: FishDetailsDTO;
@@ -47,6 +59,13 @@ export interface FishWithWordDTO {
   _h: number;
 }
 
+/**
+ * Creates a fish with word default object.
+ *
+ * @param partial Represents the partial object.
+ *
+ * @returns An object as FishWithWordDTO.
+ */
 export function createFishWithWordDTO(partial: Partial<FishWithWordDTO>): FishWithWordDTO {
   return {
     ...createEmptyFishWithWordDTO(),
@@ -54,7 +73,9 @@ export function createFishWithWordDTO(partial: Partial<FishWithWordDTO>): FishWi
   };
 }
 
-
+/**
+ * Fish definition interface.
+ */
 export interface FishDefinitionDTO {
   category: number;
   name: string;
@@ -66,14 +87,14 @@ export interface FishDefinitionDTO {
 }
 
 /**
- * Creates an empty level.
+ * Creates an empty fish with word object.
  *
- * @returns An object as GameDTO.
+ * @returns An object as FishWithWordDTO.
  */
 export function createEmptyFishWithWordDTO(): FishWithWordDTO {
   return {
-    fish: createEmptyFishDetailsDTO(),
-    fishImage: createEmptyFishDefinitionDTO(),
+    fish: createEmptyFishDefinitionDTO(),
+    fishImage: createEmptyFishDetailsDTO(),
     word: '',
     active: false,
     available: false,
@@ -88,11 +109,11 @@ export function createEmptyFishWithWordDTO(): FishWithWordDTO {
 }
 
 /**
- * Creates an empty level.
+ * Creates an empty fish with default definition object.
  *
- * @returns An object as GameDTO.
+ * @returns An object as FishDefinitionDTO.
  */
-export function createEmptyFishDetailsDTO(): FishDefinitionDTO {
+export function createEmptyFishDefinitionDTO(): FishDefinitionDTO {
   return {
     category: 0,
     name: '',
@@ -105,11 +126,11 @@ export function createEmptyFishDetailsDTO(): FishDefinitionDTO {
 }
 
 /**
- * Creates an empty level.
+ * Creates an empty fish details object.
  *
- * @returns An object as GameDTO.
+ * @returns An object as FishDetailsDTO.
  */
-export function createEmptyFishDefinitionDTO(): FishDetailsDTO {
+export function createEmptyFishDetailsDTO(): FishDetailsDTO {
   return {
     name: '',
     width: 0,
@@ -120,7 +141,7 @@ export function createEmptyFishDefinitionDTO(): FishDetailsDTO {
 /**
  * Creates an empty level.
  *
- * @returns An object as GameDTO.
+ * @returns An object as FishLevelDTO.
  */
 export function createEmptyFishLevelDTO(): FishLevelDTO {
   return {

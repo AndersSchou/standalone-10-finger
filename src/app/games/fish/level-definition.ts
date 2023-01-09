@@ -21,5 +21,5 @@ export const LevelDefinitionsData = [
   { id: 6, name: 'Level 7', goal: 110, wordsToDisplay: 2, categoryPercentage: { 1: 33, 2: 11, 3: 9, 4: 5 }, bonusCategory: { 5: 1 } },
   { id: 7, name: 'Level 8', goal: 125, wordsToDisplay: 1, categoryPercentage: { 1: 38, 2: 10, 3: 11, 4: 5 }, bonusCategory: { 5: 2 } },
   { id: 8, name: 'Level 9', goal: 150, wordsToDisplay: 1, categoryPercentage: { 1: 38, 2: 8, 3: 15, 4: 8 }, bonusCategory: { 5: 2 } },
-  { id: 9, name: 'Level 10', goal: 175, wordsToDisplay: 4, categoryPercentage: { 1: 27, 2: 14, 3: 18, 4: 11 }, bonusCategory: { 5: 3 } }
+  { id: 9, name: 'Level 10', goal: 175, wordsToDisplay: 1, categoryPercentage: { 1: 27, 2: 14, 3: 18, 4: 11 }, bonusCategory: { 5: 3 } }
 ];

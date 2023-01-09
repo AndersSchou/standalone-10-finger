@@ -10,7 +10,7 @@ export const environment = {
   availableLanguages: ['da-DK', 'sv-SE', 'nb-NO'],
   logLevel: NgxLoggerLevel.OFF,
   location: 'https://10finger.intowords.com/',
-  gameTime: '02:00',
+  gameTime: '01:30',
   UrlEndpoints: {
     auth: 'https://signon.vitec-mv.com',
     voiceservice: 'https://voiceservice.vitec-mv.com',
