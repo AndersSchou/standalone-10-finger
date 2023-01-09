@@ -83,7 +83,7 @@ export const FishDefinitionsData = [
     images: [
       { name: 'koi_black', width: 6, height: 5 },
       { name: 'koi_yellow', width: 6, height: 5 },
-      { name: 'crab', width: 5, height: 5, xPos: 10, yPos: 6 },
+      { name: 'crab', width: 5, height: 5, xPos: 11, yPos: 6 },
     ]
   },
   {

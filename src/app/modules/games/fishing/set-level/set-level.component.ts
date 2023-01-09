@@ -1,6 +1,8 @@
+import { GameStorageDTO } from 'src/app/dto/game.dto';
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ReplaySubject, takeUntil } from "rxjs";
+import { STORAGE_KEY_TYPE } from "src/app/common/enums";
 import { createEmptyFishLevelDTO, FishLevelDTO } from "src/app/dto/fish.dto";
 import { LevelDefinitionsData } from "src/app/games/fish/level-definition";
 import { LanguageHelperService } from "src/app/services/language.service";
@@ -63,8 +65,6 @@ export class AppGamesFishSetLevelComponent implements OnInit, OnDestroy {
    * Get the levels for the fish game.
    */
   getFishGameData(): void {
-    // TODO: get levels from localstorage based on the selected language.
-    console.log('LevelDefinitionsData', LevelDefinitionsData);
     this.levels = LevelDefinitionsData.map((el => {
       return {
         id: el.id,
@@ -74,6 +74,34 @@ export class AppGamesFishSetLevelComponent implements OnInit, OnDestroy {
         completed: false,
       };
     }));
+    this.checkForCompletedLevels();
+  }
+
+  /**
+   * Check for completed levels and unblock the next level as well.
+   */
+  checkForCompletedLevels(): void {
+    if (this.currentLanguage) {
+      if (localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS)) {
+        const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS) as string);
+        if (storedData) {
+          const findLanguage = storedData.find((item: GameStorageDTO) => item.language === this.currentLanguage);
+          if (findLanguage) {
+            this.levels.forEach((el: FishLevelDTO, index: number) => {
+              const findLevel = findLanguage.data.find((item: FishLevelDTO) => item.id === el.id);
+              if (findLevel) {
+                el.completed = true;
+                if (index < this.levels.length - 1) {
+                  this.levels[index + 1].completed = true;
+                }
+              }
+            });
+          }
+        }
+      } else {
+        this.levels[0].completed = true;
+      }
+    }
   }
 
   /**
@@ -82,11 +110,13 @@ export class AppGamesFishSetLevelComponent implements OnInit, OnDestroy {
    * @param level Represents the selected level.
    */
   selectLevel(level: FishLevelDTO) {
-    this.levels.forEach((el: FishLevelDTO) => {
-      el.selected = false;
-    });
-    level.selected = true;
-    this.selectedLevel = level;
+    if (level.completed) {
+      this.levels.forEach((el: FishLevelDTO) => {
+        el.selected = false;
+      });
+      level.selected = true;
+      this.selectedLevel = level;
+    }
   }
 
   /**

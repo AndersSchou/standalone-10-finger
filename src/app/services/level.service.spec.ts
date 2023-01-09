@@ -6,7 +6,7 @@ describe('LevelService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: []
+      providers: [LevelService]
     });
     service = TestBed.inject(LevelService);
   });

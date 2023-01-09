@@ -6,7 +6,6 @@ import { ResultDTO } from './course.dto';
 export interface GameDTO {
   id: number;
   name: string;
-  // words: string[];
   selected?: boolean;
   results: ResultDTO[];
   updatedAt?: Date;
@@ -29,6 +28,7 @@ export interface GameResultDTO {
   wordsCount: number;
   language: string;
   showNext: boolean;
+  timeOut: boolean;
 }
 
 /**

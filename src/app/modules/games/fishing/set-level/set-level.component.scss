@@ -109,10 +109,17 @@
   border-radius: 16px;
   cursor: pointer;
   margin: 0 5px;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.level-hld.active,
-.level-hld:hover {
+.level-hld.available {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.level-hld.available.active,
+.level-hld.available:hover {
   border-color: $color-active;
 }
 

@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -99,8 +100,17 @@ export class AppGamesFishingGameOverComponent implements OnInit {
    * @returns The total time in minutes and seconds.
    */
   calculateTime(time: number): string {
-    const minutes = Math.floor(time / 60000);
-    const seconds = ((time % 60000) / 1000).toFixed(0);
+    let minutes = 0;
+    let seconds = 0;
+    if (!this.data.timeOut) {
+      minutes = Math.floor(time / 60000);
+      seconds = Number(((time % 60000) / 1000).toFixed(0));
+    } else {
+      const timeArray = environment.gameTime.split(':');
+      const mins = timeArray[0].split('');
+      minutes = Number(mins[1]);
+      seconds = Number(timeArray[1]);
+    }
     return minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
   }
 }

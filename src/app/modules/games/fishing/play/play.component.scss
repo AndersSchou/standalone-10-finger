@@ -9,6 +9,27 @@
   overflow: hidden;
 }
 
+.island-chest-bg {
+  background-image: url("/assets/svg/island_chest.svg");
+  background-repeat: no-repeat;
+  height: 230px;
+  width: 494px;
+  position: absolute;
+  overflow: hidden;
+  left: 450px;
+}
+
+.island-crab-bg {
+  background-image: url("/assets/svg/island_crab.svg");
+  background-repeat: no-repeat;
+  height: 145px;
+  width: 202px;
+  position: absolute;
+  overflow: hidden;
+  top: 166px;
+  left: 324px;
+}
+
 .game-info-hld {
   position: absolute;
   left: 30px;
@@ -92,22 +113,6 @@
   width: 100%;
   height: 100%;
 }
-
-// .game-word-hld {
-//   margin: 10px 0;
-//   text-transform: uppercase;
-//   font-weight: 700;
-//   font-size: 18px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// }
-
-// .game-play-hld {
-//   position: absolute;
-//   display: flex;
-//   right: 0;
-// }
 
 ::ng-deep .key-fish-hld {
   border-radius: 8px;

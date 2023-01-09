@@ -70,6 +70,8 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   startTimeCount = false;
   // Stores the total number of levels.
   totalNbrOfLevels = 0;
+  // Stores the goal of the game level.
+  levelGoal = 0;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
@@ -124,7 +126,6 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    */
   initGrid() {
     this.gridService.initGrid();
-    setInterval(() => { this.renderGrid(); }, 2000);
   }
 
   // TODO: Debug function (to be removed later).
@@ -249,6 +250,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
               name: this.currentLevel.levelDefinition.name,
               results: []
             };
+            this.levelGoal = this.currentLevel.levelDefinition.goal;
             const words = this.currentLevel.extractAllLevelWords().map((el: FishWithWord) => {
               const word: FishWithWordDTO = createFishWithWordDTO({
                 fish: el.fish.toDTO(),
@@ -281,7 +283,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
           if (this.minutes > 0) {
             this.minutes--;
           } else {
-            this.gameOver();
+            this.gameOver(true);
           }
           this.tensOfSeconds = !this.isTimeOut ? 5 : 0;
         }
@@ -322,7 +324,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   /**
    * Opens the game over modal.
    */
-  gameOver(): void {
+  gameOver(timeOut: boolean = false): void {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
     }
@@ -333,7 +335,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
       panelClass: 'game-over-class',
       backdropClass: 'game-over-backdrop',
       disableClose: true,
-      data: { level: this.gameLevel, wordsCount: this.completedWords, language: this.currentLanguage, showNext: showNextButton }
+      data: { level: this.gameLevel, wordsCount: this.completedWords, language: this.currentLanguage, showNext: showNextButton, timeOut: timeOut }
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -887,7 +887,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Set the language of the keyboard.
    */
   setLanguage() {
-    if (this.vkeyboard) {
+    if (this.vkeyboard && this.currentLanguage) {
       const lang = this.currentLanguage.split('-')[0];
       this.vkeyboard.setLanguage(lang as KEYBOARD_LANGUAGE);
     }
