@@ -1,21 +1,18 @@
-import { ScoreUpdateDTO } from './../school-fish/school-fish.component';
-import { AppGamesFishComponent } from './../fish/fish.component';
 import { fromEvent, ReplaySubject, Subscription, takeUntil, timer } from 'rxjs';
 import { Component, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { FishGame } from 'src/app/games/fish';
-import { createEmptyLevelDTO, GameDTO, GameStorageDTO } from 'src/app/dto/game.dto';
+import { createEmptyLevelDTO, GameDTO, GameStorageDTO, ScoreUpdateDTO } from 'src/app/dto/game.dto';
 import { MatDialog } from '@angular/material/dialog';
 import { AppGamesFishingGameOverComponent } from '../game-over/game-over.component';
 import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
 import { environment } from 'src/environments/environment';
 import { ResultDTO } from 'src/app/dto/course.dto';
-import { FishWithWordDTO, createEmptyFishWithWordDTO } from 'src/app/dto/fish.dto';
+import { FishWithWordDTO, createFishWithWordDTO } from 'src/app/dto/fish.dto';
 import { GridService } from 'src/app/services/grid.service';
 import { Level, LevelService, FishWithWord } from 'src/app/services/level.service';
 import { AppGamesFishingSchoolFishComponent } from '../school-fish/school-fish.component';
-import { WPSService } from 'src/app/services/wps.service';
 
 /**
  * This component is the main component for the fishing game.
@@ -27,8 +24,6 @@ import { WPSService } from 'src/app/services/wps.service';
 })
 export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('schoolFish') schoolFish?: AppGamesFishingSchoolFishComponent;
-  // TODO: remove.
-  @ViewChild('fishComp') fishComponent?: AppGamesFishComponent;
   @ViewChild('wordHld') wordHld?: ElementRef;
   @ViewChild('grid') grid?: ElementRef;
   // Stores the number of minutes.
@@ -39,14 +34,11 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   seconds: number = 0;
   // Stores the number of tens of seconds.
   tensOfSeconds: number = 0;
-  // Stores the total game levels.
-  totalLevels: number = 0;
-  // Stores the level index.
-  // levelIndex: number = 0;
   // Stores the game levels.
   levels: GameDTO[] = [];
+  // Stores the level.
   currentLevel?: Level;
-  // Stores the current level.
+  // Stores the current game level.
   gameLevel: GameDTO = createEmptyLevelDTO();
   // Stores the timer subscription.
   timerSubscription: Subscription = Subscription.EMPTY;
@@ -54,46 +46,32 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   activeIcon: string = 'pause';
   // Stores the current language.
   currentLanguage: string;
-  // Stores the current word.
-  currentWord: string = '';
-  // Stores the current word index.
-  currentWordIndex: number = 0;
-  // Stores the current character.
-  currentChar: string = '';
-  // Stores the current character's index.
-  currentCharIndex: number = 0;
-  // Stores the number of mistakes.
-  nbrOfMistakes: number = 0;
-  // Stores the current Element.
-  currentFishActiveElement?: Element;
   // Stores the HTMLElement for the current fish and word.
   gameFishDivElement?: Element;
-
   // Stores the countdown number (3 seconds by default).
-  countdownNbr: number = 1;
+  countdownNbr: number = 3;
   // Tells if the time is over or not.
   isTimeOut: boolean = false;
   // Stores the coundown subscription.
   countdownSubscription: Subscription = Subscription.EMPTY;
-  // Stores the total number of typed characters.
-  // totalChars: number = 0;
-  // Stores the total number of mistakes.
-  // totalMistakes: number = 0;
   // Stores the time in milliseconds.
   timeInMs: number = 0;
-  // Stores the subscribers until they're destroyed.
-  private readonly destroyed = new ReplaySubject<boolean>();
-  activeWordIndex: number = 0;
-  sendActiveIndex = false;
-  activeWord: FishWithWordDTO = createEmptyFishWithWordDTO();
-  reward = 0;
+  // Stores the current score.
   score = 0;
   // Stores the number of completed words.
   completedWords: number = 0;
+  // Stores the number of characters.
   charNbr = 0;
+  // Stores the number of times when the game was paused.
   pauseCount = 0;
+  // Stores the time when the user pressed the first key.
   startTime = new Date();
+  // Tells if the user started the game by oressing a key or not.
   startTimeCount = false;
+  // Stores the total number of levels.
+  totalNbrOfLevels = 0;
+  // Stores the subscribers until they're destroyed.
+  private readonly destroyed = new ReplaySubject<boolean>();
 
   /**
    * Constructor function responsible for injecting the needed services.
@@ -114,7 +92,6 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     private readonly cdr: ChangeDetectorRef,
     private readonly dialog: MatDialog,
     protected readonly levelService: LevelService,
-    private readonly wpsService: WPSService,
   ) {
     this.currentLanguage = this.languageHelperService.currentLangUsed;
     const timeArray = environment.gameTime.split(':');
@@ -147,36 +124,10 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    */
   initGrid() {
     this.gridService.initGrid();
-
-    // Create fish array.
-    // Assign position to fish based on grid.
-
-    // if (environment.debugDraw) {
-    //   let space = this.gridService.pickRandomEmptySpace(8, 3);
-    //   if (space) {
-    //     this.gridService.occupySpace(space.x, space.y, 8, 3, 'fish');
-    //   }
-
-    //   space = this.gridService.pickRandomEmptySpace(8, 8);
-    //   if (space) {
-    //     this.gridService.occupySpace(space.x, space.y, 8, 8, 'fish');
-    //   }
-
-    //   space = this.gridService.pickRandomEmptySpace(2, 10);
-    //   if (space) {
-    //     this.gridService.occupySpace(space.x, space.y, 2, 10, 'fish');
-    //   }
-
-    //   // Crab position.
-    //   this.gridService.occupySpace(14, 6, 3, 3, 'fish');
-    //   // Treasure chest position.
-    //   this.gridService.occupySpace(23, 3, 6, 4, 'fish');
-    // setInterval(() => { this.renderGrid(); }, 2000);
-
-    // }
+    setInterval(() => { this.renderGrid(); }, 2000);
   }
 
-  // Debug function.
+  // TODO: Debug function (to be removed later).
   renderGrid() {
     const grid = this.gridService.getGrid();
     // console.log('grid', grid);
@@ -191,7 +142,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
-  // Debug function.
+  // TODO: Debug function (to be removed later).
   renderCell(x: number, y: number, type: string): HTMLElement {
     const cell = document.createElement('div');
     cell.classList.add('cell');
@@ -246,10 +197,10 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   keyDownListener(): void {
     fromEvent<KeyboardEvent>(document, 'keydown')
       .pipe(takeUntil(this.destroyed)).subscribe((event) => {
+        // Start counting the time only when the user pressed the first key.
         if (!this.startTimeCount) {
           this.startTime = new Date();
         }
-        // console.log('event', event);
         if (this.activeIcon === 'pause' && !this.isTimeOut) {
           if ((event as KeyboardEvent).key === ' ') {
             // Prevent auto scroll on space.
@@ -265,7 +216,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   /**
-   * Gets the game data.
+   * Gets the game data based on the id from the URL.
    */
   getFishGameData(): void {
     this.activatedRoute.paramMap
@@ -291,7 +242,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
         const cat = FishGame[lang];
         if (cat && cat.length > 0) {
           this.currentLevel = this.levelService.generateLevel(levelID + 1, cat);
-          console.log('this.currentLevel', this.currentLevel);
+          this.totalNbrOfLevels = this.levelService.getNumberOfLevels();
           if (this.currentLevel) {
             this.gameLevel = {
               id: this.currentLevel.levelDefinition.id,
@@ -299,13 +250,15 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
               results: []
             };
             const words = this.currentLevel.extractAllLevelWords().map((el: FishWithWord) => {
-              // console.log('el', el);
-              const word: FishWithWordDTO = { ...el } as any;
-              word.active = false;
+              const word: FishWithWordDTO = createFishWithWordDTO({
+                fish: el.fish.toDTO(),
+                word: el.word,
+                fishImage: el.fishImage,
+                active: false,
+              });
               return word;
             });
             if (this.schoolFish) {
-              console.log('loadGameData complete');
               this.schoolFish.initSchool(words, this.currentLevel);
             }
           }
@@ -374,7 +327,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
       this.timerSubscription.unsubscribe();
     }
     this.isTimeOut = true;
-    const showNextButton = (this.gameLevel.id < this.totalLevels - 1) ? true : false;
+    const showNextButton = (this.gameLevel.id < this.totalNbrOfLevels - 1) ? true : false;
     this.updateLocalStorage();
     const dialogRef = this.dialog.open(AppGamesFishingGameOverComponent, {
       panelClass: 'game-over-class',
@@ -388,7 +341,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
         if (result === 'replay') {
           this.replay(this.gameLevel.id);
         } else if (result === 'next') {
-          this.replay(this.levels[this.gameLevel.id + 1].id);
+          this.replay(this.gameLevel.id + 1);
         }
       }
     });
@@ -398,7 +351,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    * Update the local storage with the result for the current level.
    */
   updateLocalStorage(): void {
-    const timeDiff = this.wpsService.calculateTimeDiff(this.startTime, new Date());
+    const timeDiff = this.levelService.calculateTimeDiff(this.startTime, new Date());
     const levelResult: ResultDTO = {
       numberOfWords: this.completedWords,
       characters: this.charNbr,
@@ -413,7 +366,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
       if (storedData) {
         const findLanguage = storedData.find((item: GameStorageDTO) => item.language === this.currentLanguage);
         if (findLanguage) {
-          findLanguage.totalLevels = this.totalLevels;
+          findLanguage.totalLevels = this.totalNbrOfLevels;
           const findLevel = findLanguage.data.find((item: GameDTO) => item.id === this.gameLevel.id);
           if (findLevel) {
             findLevel.results.push(levelResult);
@@ -442,7 +395,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     this.gameLevel.results = [levelResult];
     const gameProgress: GameStorageDTO = {
       language: this.currentLanguage,
-      totalLevels: this.totalLevels,
+      totalLevels: this.totalNbrOfLevels,
       data: [this.gameLevel]
     };
     return gameProgress;
@@ -452,9 +405,8 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    * Toggle pause/play.
    */
   togglePlayState(): void {
-    console.log('toggle play state', this.activeIcon, this.pauseCount);
-    // Allow max 3 pauses.
     if (this.activeIcon === 'pause') {
+      // Allow max 3 pauses.
       if (this.pauseCount <= 2) {
         this.activeIcon = 'play';
         this.pause();
@@ -474,29 +426,33 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   /**
-   * Clear the DOM elements.
-   */
-  clearDomElements(): void {
-    if (this.wordHld && this.gameFishDivElement && this.gameFishDivElement.hasChildNodes()) {
-      this.wordHld.nativeElement.removeChild(this.gameFishDivElement);
-    }
-  }
-
-  /**
    * Navigate to select level view.
    */
   selectLevel(): void {
     this.router.navigate(['/games/fish/level']);
   }
 
+  /**
+   * Update the score.
+   *
+   * @param scoreData Represents the score data.
+   */
   updateScore(scoreData: ScoreUpdateDTO): void {
     this.score = scoreData.score;
     this.completedWords = scoreData.completedWords;
     this.charNbr = scoreData.chars;
 
     if (this.currentLevel && this.score >= this.currentLevel.levelDefinition.goal) {
-      console.log('this.currentLevel.goal', this.currentLevel.levelDefinition.goal);
       this.gameOver();
+    }
+  }
+
+  /**
+   * Clear the DOM elements.
+   */
+  clearDomElements(): void {
+    if (this.wordHld && this.gameFishDivElement && this.gameFishDivElement.hasChildNodes()) {
+      this.wordHld.nativeElement.removeChild(this.gameFishDivElement);
     }
   }
 }

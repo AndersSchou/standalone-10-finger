@@ -6,26 +6,41 @@ import { Observable, defer, timer, map, of, concat, catchError, filter, switchMa
  * Usecase:
  *
  * const watch = getStopWatch();
- * watch.display$.subscribe(); // Numbers emitted here every interval once started by control$
- * watch.control$.next("START");
- * watch.control$.next("STOP");
- * watch.control$.next("RESET");
- * // Completing the control cleans up everything
- * watch.control$.complete();
+ * watch.display.subscribe(); // Numbers emitted here every interval once started by control.
+ * watch.control.next("START");
+ * watch.control.next("STOP");
+ * watch.control.next("RESET");
+ * // Completing the control cleans up everything.
+ * watch.control.complete();
  */
 
+/**
+ * Get the stopwatch.
+ *
+ * @param interval Represents the interval in milliseconds.
+ *
+ * @returns An object with a control and display property.
+ */
 export function getStopWatch(interval: number = 1000): {
-  control$: Subject<string>,
-  display$: Observable<number>
+  control: Subject<string>,
+  display: Observable<number>
 } {
-  const control$ = new Subject<string>();
+  const control = new Subject<string>();
   return {
-    control$,
-    display$: createStopwatch(control$, interval)
+    control,
+    display: createStopwatch(control, interval)
   }
 }
 
-export function createStopwatch(control$: Observable<string>, interval = 1000): Observable<number> {
+/**
+ * Creates a stopwatch.
+ *
+ * @param control Represents the control observable.
+ * @param interval Represents the interval in milliseconds.
+ *
+ * @returns An observable that emits numbers every interval.
+ */
+export function createStopwatch(control: Observable<string>, interval = 1000): Observable<number> {
   return defer(() => {
     let toggle: boolean = false;
     let count: number = 0;
@@ -33,13 +48,13 @@ export function createStopwatch(control$: Observable<string>, interval = 1000): 
     const ticker = timer(0, interval).pipe(
       map(x => count++)
     );
-    const end$ = of("END");
+    const end = of("END");
 
     return concat(
-      control$,
-      end$
+      control,
+      end
     ).pipe(
-      catchError(_ => end$),
+      catchError(_ => end),
       filter(control =>
         control === "START" ||
         control === "STOP" ||

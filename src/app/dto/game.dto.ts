@@ -32,6 +32,15 @@ export interface GameResultDTO {
 }
 
 /**
+ * Score update interface.
+ */
+export interface ScoreUpdateDTO {
+  score: number;
+  completedWords: number;
+  chars: number;
+}
+
+/**
  * Creates an empty level.
  *
  * @returns An object as GameDTO.

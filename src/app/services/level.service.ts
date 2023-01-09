@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FishDetailsDTO } from '../dto/fish.dto';
+import { FishDefinitionDTO, FishDetailsDTO } from '../dto/fish.dto';
 import { LevelDefinitionsData } from '../games/fish/level-definition';
 import { FishDefinitionsData } from '../games/fish/fish-definition';
 
@@ -73,6 +73,9 @@ export class LevelDefinition {
 
 }
 
+/**
+ * Class used for managing the fish definition.
+ */
 class FishDefinition {
   /**
    * Constructor function responsible for injecting the needed services.
@@ -96,6 +99,23 @@ class FishDefinition {
     protected reward: number,
     protected images: FishDetailsDTO[],
   ) { }
+
+  /**
+   * Converts from class to DTO.
+   *
+   * @returns The fish definition as FishDefinitionDTO.
+   */
+  toDTO(): FishDefinitionDTO {
+    return {
+      category: this.category,
+      name: this.name,
+      wordMinSize: this.wordMinSize,
+      wordMaxSize: this.wordMaxSize,
+      extraTime: this.extraTime,
+      reward: this.reward,
+      maxErrors: this.maxErrors,
+    };
+  }
 
   /**
    * Get the category id of the level.
@@ -144,10 +164,18 @@ class FishDefinition {
 }
 
 /**
- *
+ * Class used for managing the fish with word definitions.
  */
 export class FishWithWord {
+  // Stores the fish image.
   fishImage: FishDetailsDTO;
+
+  /**
+   * Constructor function responsible for injecting the needed services.
+   *
+   * @param fish Represents the fish definition.
+   * @param word Represents the word.
+   */
   constructor(
     public fish: FishDefinition,
     public word: string,
@@ -155,190 +183,117 @@ export class FishWithWord {
     this.fishImage = fish.getImages()[Math.floor(Math.random() * fish.getImages().length)];
   }
 
+  /**
+   * Get the fish.
+   *
+   * @returns The fish definition.
+   */
   getFish(): FishDefinition {
     return this.fish;
   }
 
+  /**
+   * Get the word.
+   *
+   * @returns The word.
+   */
   getWord(): string {
     return this.word;
   }
 }
 
+/**
+ * Class used for managing the fish definitions.
+ */
 class FishDefinitions {
+  /**
+   * Constructor function responsible for injecting the needed services.
+   *
+   * @param fishDefinitions Represents the fish definitions.
+   */
   constructor(
     protected fishDefinitions: FishDefinition[],
   ) { }
 
+  /**
+   * Get the fish definition for the given word size.
+   *
+   * @param wordSize Represents the word size.
+   *
+   * @returns The fish definition for the given word size.
+   */
   getFishLevelByWordSize(wordSize: number): FishDefinition | undefined {
     return this.fishDefinitions.find(fish => wordSize >= fish.getWordMinSize() && wordSize <= fish.getWordMaxSize());
   }
 
+  /**
+   * Get the fish definition for the given name.
+   *
+   * @param name Represents the name of the fish definition.
+   *
+   * @returns The fish definition for the given name.
+   */
   getFishDefinition(name: string): FishDefinition | undefined {
     return this.fishDefinitions.find(fish => fish.getName() === name);
   }
 
+  /**
+   * Get all the fish definitions.
+   *
+   * @returns All the fish definitions.
+   */
   getFishDefinitions(): FishDefinition[] {
     return this.fishDefinitions;
   }
 
+  /**
+   * Get the fish definition for the given index.
+   *
+   * @param index Represents the index of the fish category.
+   *
+   * @returns The fish definition for the given index.
+   */
   getFishCategory(index: number): FishDefinition {
     return this.fishDefinitions[index];
   }
 
+  /**
+   * Get the maximum word size for all the fish definitions.
+   *
+   * @returns The maximum word size for all the fish definitions.
+   */
   getMaxWordSize(): number {
     return Math.max(...this.fishDefinitions.map(fish => fish.getWordMaxSize()));
   }
 
+  /**
+   * Get the minimum word size for all the fish definitions.
+   *
+   * @returns The minimum word size for all the fish definitions.
+   */
   getMinWordSize(): number {
     return Math.min(...this.fishDefinitions.map(fish => fish.getWordMinSize()));
   }
 }
 
-@Injectable()
-export class LevelService {
-  /**
-   * Level 1: Goal: 10 - 100% Category 1
-   * Level 2: Goal: 20 - 90% Category 1, 10% category 2
-   * Level 3: Goal: 40 - 60% Category 1, 30% category 2, 10% category 3
-   * Level 4: Goal: 60 - 50% Category 1, 30% category 2, 20% category 3
-   * Level 5: Goal: 75 - 45% Category 1, 25% category 2, 20% category 3, 10% category 4, 1 category 5
-   * Level 6: Goal: 90 - 40% Category 1, 20% category 2, 25% category 3, 15% category 4, 1 category 5
-   * Level 7: Goal: 110 - 30% Category 1, 20% category 2, 30% category 3, 20% category 4, 1 category 5
-   * Level 8: Goal: 125 - 30% Category 1, 15% category 2, 35% category 3, 20% category 4, 2 category 5
-   * Level 9: Goal: 150 - 25% Category 1, 10% category 2, 40% category 3, 25% category 4, 2 category 5
-   * Level 10: Goal: 175 - 15% Category 1, 15% category 2, 40% category 3, 30% category 4, 3 category 5
-   */
-  // protected levels: LevelDefinition[] = [
-  //   new LevelDefinition('Level 1', 10, 4, { 1: 10 }, {}),
-  //   new LevelDefinition('Level 2', 20, 4, { 1: 18, 2: 1 }, {}),
-  //   new LevelDefinition('Level 3', 40, 4, { 1: 24, 2: 6, 3: 3 }, {}),
-  //   new LevelDefinition('Level 4', 60, 3, { 1: 30, 2: 9, 3: 3 }, {}),
-  //   new LevelDefinition('Level 5', 75, 3, { 1: 34, 2: 10, 3: 4, 4: 2 }, { 5: 1 }),
-  //   new LevelDefinition('Level 6', 90, 2, { 1: 36, 2: 9, 3: 6, 4: 3 }, { 5: 1 }),
-  //   new LevelDefinition('Level 7', 110, 2, { 1: 33, 2: 11, 3: 9, 4: 5 }, { 5: 1 }),
-  //   new LevelDefinition('Level 8', 125, 1, { 1: 38, 2: 10, 3: 11, 4: 5 }, { 5: 2 }),
-  //   new LevelDefinition('Level 9', 150, 1, { 1: 38, 2: 8, 3: 15, 4: 8 }, { 5: 2 }),
-  //   new LevelDefinition('Level 10', 175, 1, { 1: 27, 2: 14, 3: 18, 4: 11 }, { 5: 3 }),
-  // ];
-
-  /**
-   * Fish category 1 - Word length max 3 (max 2 errors)
-   * marine_fish - Reward: 1
-   * marine_fish_1 - Reward: 1
-   * blue_fish_1 - Reward: 1
-   * blue_fish_2 - Reward: 1
-   *
-   * Fish category 2 - Word length 4-6 (max 1 error)
-   * striped_fish - Reward: 2
-   * striped_fish_1 - Reward: 2
-   * red_fish - Reward: 2
-   *
-   * Fish category 3 - Word length 7-9 (no error)
-   * koi_white_red_1 - Reward: 4
-   * koi_red_black - Reward: 4
-   * koi_orange_white - Reward: 4
-   * koi_orange_white_1 - Reward: 4
-   * koi_orange_black - Reward: 4
-   *
-   * Fish category 4 Word length 10+ (no error)
-   * koi_black - Reward: 5
-   * koi_yellow - Reward: 5
-   * crap - Reward: 5
-   *
-   * Fish category 5 Word length 12+ (1 error)
-   * chest - Reward: 10
-   */
-  // protected fish: FishDefinitions = new FishDefinitions([
-  //   new FishDefinition(1, 'Category 1', 1, 3, 2, 0, 1, [
-  //     { name: 'marine_fish', width: 9, height: 4 },
-  //     { name: 'marine_fish_1', width: 5, height: 3 },
-  //     { name: 'blue_fish_1', width: 8, height: 4 },
-  //     { name: 'blue_fish_2', width: 8, height: 4 },
-  //   ]),
-  //   new FishDefinition(2, 'Category 2', 4, 6, 1, 0, 2, [
-  //     { name: 'striped_fish', width: 6, height: 6 },
-  //     { name: 'striped_fish_1', width: 6, height: 4 },
-  //     { name: 'red_fish', width: 5, height: 3 },
-  //   ]),
-  //   new FishDefinition(3, 'Category 3', 7, 9, 0, 0, 4, [
-  //     { name: 'koi_white_red_1', width: 5, height: 4 },
-  //     { name: 'koi_red_black', width: 6, height: 4 },
-  //     { name: 'koi_orange_white', width: 6, height: 4 },
-  //     { name: 'koi_orange_white_1', width: 5, height: 5 },
-  //     { name: 'koi_orange_black', width: 3, height: 6 },
-  //   ]),
-  //   new FishDefinition(4, 'Category 4', 10, 11, 0, 0, 5, [
-  //     { name: 'koi_black', width: 6, height: 5 },
-  //     { name: 'koi_yellow', width: 6, height: 5 },
-  //     { name: 'crab', width: 5, height: 5, xPos: 14, yPos: 6 },
-  //   ]),
-  //   new FishDefinition(5, 'Category 5', 12, 100, 1, 0, 10, [
-  //     { name: 'chest', width: 5, height: 4, xPos: 23, yPos: 3 }
-  //   ]),
-  // ]);
-  protected levels: LevelDefinition[] = [];
-  protected fish: FishDefinitions;
-
-  constructor() {
-    this.levels = LevelDefinitionsData.map(el => {
-      const level = new LevelDefinition(el.id, el.name, el.goal, el.wordsToDisplay, el.categoryPercentage as { [key: number]: number },
-        el.bonusCategory as { [key: number]: number });
-      return level;
-    });
-
-    this.fish = new FishDefinitions(FishDefinitionsData.map(el => {
-      const fish = new FishDefinition(el.id, el.categoryName, el.wordMinSize, el.wordMaxSize, el.maxErrors, el.extraTime,
-        el.reward, el.images as FishDetailsDTO[]);
-      return fish;
-    }));
-  }
-
-  /**
-   * Calculate the number of words based on the goal and category percentage.
-   *
-   * @param goal Represents the level's goal.
-   * @param precentage Represents the percentage of the goal for each category.
-   * @param reward Represens the reward for each category.
-   *
-   * @returns The number of words for each category.
-   */
-  protected calculateWordCount(goal: number, precentage: number, reward: number): number {
-    return Math.ceil((goal * precentage) / (reward * 100));
-  }
-
-  getLevels(): LevelDefinition[] {
-    return this.levels;
-  }
-
-  /**
-   *
-   * @param levelNumber Array index
-   * @returns
-   */
-  generateLevel(levelNumber: number, words: string[]): Level | undefined {
-    const level = this.getLevel(levelNumber);
-    if (!level) {
-      return undefined;
-    }
-    return new Level(level, words, this.fish);
-  }
-
-  protected getLevel(level: number): LevelDefinition | undefined {
-    if (level > 0 && level <= this.levels.length) {
-      return this.levels[level - 1];
-    }
-    return undefined;
-  }
-}
-
+/**
+ * Class used for managing the level information.
+ */
 export class Level {
   // The word pool containing all available words for each fish category.
   wordPool: { [key: number]: FishWithWord[] } = {};
   // Remember the list of fish categories we added to the word pool.
   wordLevels: number[] = [];
-
+  // Stores the used words for each fish category.
   usedWordsByFishCategory: { [key: number]: FishWithWord[] } = {};
 
+  /**
+   * Constructor function responsible for injecting the needed services.
+   *
+   * @param levelDefinition Represents the level definition.
+   * @param words Represents the list of words.
+   * @param fishDefinitions Represents the fish definitions.
+   */
   constructor(
     public levelDefinition: LevelDefinition,
     words: string[],
@@ -365,20 +320,25 @@ export class Level {
     }
   }
 
+  /**
+   * Get the word pool.
+   *
+   * @returns The word pool.
+   */
   getWordPool(): { [key: string]: FishWithWord[] } {
     return this.wordPool;
   }
 
   /**
    *
-   * @param level Fish level
-   * @returns
+   * @param fishCategory Represents the fish category to extract the word from.
+   *
+   * @returns A word from the word pool as FishWithWord if found, undefined otherwise.
    */
   extractWordByLevel(fishCategory?: number): FishWithWord | undefined {
     if (!fishCategory) {
       fishCategory = this.wordLevels[Math.floor(Math.random() * this.wordLevels.length)];
     }
-    // console.log('fishCategory', fishCategory);
     if (this.wordPool[fishCategory]) {
       if (this.wordPool[fishCategory].length === 0) {
         // Replace the pool with the used fish.
@@ -399,6 +359,11 @@ export class Level {
     return undefined;
   }
 
+  /**
+   * Extracts all the words for the level.
+   *
+   * @returns An array of words as FishWithWord.
+   */
   extractAllLevelWords(): FishWithWord[] {
     const words: FishWithWord[] = [];
     for (const fishCategory of this.levelDefinition.getAvailableCategories()) {
@@ -436,5 +401,127 @@ export class Level {
     }
 
     return words;
+  }
+}
+
+/**
+ * Service used to manage the levels.
+ */
+@Injectable()
+export class LevelService {
+  // Levels array.
+  protected levels: LevelDefinition[] = [];
+  // Fish definitions.
+  protected fish: FishDefinitions;
+
+  /**
+   * Constructor function responsible for injecting the needed services.
+   */
+  constructor() {
+    this.levels = LevelDefinitionsData.map(el => {
+      const level = new LevelDefinition(el.id, el.name, el.goal, el.wordsToDisplay, el.categoryPercentage as { [key: number]: number },
+        el.bonusCategory as { [key: number]: number });
+      return level;
+    });
+
+    this.fish = new FishDefinitions(FishDefinitionsData.map(el => {
+      const fish = new FishDefinition(el.id, el.categoryName, el.wordMinSize, el.wordMaxSize, el.maxErrors, el.extraTime,
+        el.reward, el.images as FishDetailsDTO[]);
+      return fish;
+    }));
+  }
+
+  /**
+   * Calculate the number of words based on the goal and category percentage.
+   *
+   * @param goal Represents the level's goal.
+   * @param precentage Represents the percentage of the goal for each category.
+   * @param reward Represens the reward for each category.
+   *
+   * @returns The number of words for each category.
+   */
+  protected calculateWordCount(goal: number, precentage: number, reward: number): number {
+    return Math.ceil((goal * precentage) / (reward * 100));
+  }
+
+  /**
+   * Get the levels.
+   *
+   * @returns An array of levels.
+   */
+  getLevels(): LevelDefinition[] {
+    return this.levels;
+  }
+
+  /**
+   * Get the number of levels.
+   */
+  getNumberOfLevels(): number { return this.levels.length; }
+
+  /**
+   * Generate a level based on the provided id.
+   *
+   * @param levelNumber Represents the level number.
+   *
+   * @returns The level or undefined if not found.
+   */
+  generateLevel(levelNumber: number, words: string[]): Level | undefined {
+    const level = this.getLevel(levelNumber);
+    if (!level) {
+      return undefined;
+    }
+    return new Level(level, words, this.fish);
+  }
+
+  /**
+   * Get the level based on the provided id.
+   *
+   * @param levelId Represents the level number.
+   *
+   * @returns The level definition or undefined if not found.
+   */
+  protected getLevel(levelId: number): LevelDefinition | undefined {
+    if (levelId > 0 && levelId <= this.levels.length) {
+      return this.levels[levelId - 1];
+    }
+    return undefined;
+  }
+
+  /**
+   * Calculate time difference in milliseconds.
+   *
+   * @param start Represents the time when the user started typing.
+   * @param end Represents the time when the user stopped typing.
+   *
+   * @returns The time difference in milliseconds.
+   */
+  calculateTimeDiff(start: Date, end: Date): number {
+    return end.getTime() - start.getTime();
+  }
+
+  // TODO: Add in a helper file.
+  /**
+  * Shuffle the words in the word pool.
+  *
+  * @param arr Represents the array of words to shuffle.
+  *
+  * @returns An array of words shuffled.
+  */
+  shuffle<T>(arr: T[]): T[] {
+    let currentIndex = arr.length, randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [arr[currentIndex], arr[randomIndex]] = [
+        arr[randomIndex], arr[currentIndex]];
+    }
+
+    return arr;
   }
 }

@@ -32,9 +32,7 @@ export class AppGamesFishingGameOverComponent implements OnInit {
     private readonly router: Router,
     private readonly dialogRef: MatDialogRef<AppGamesFishingGameOverComponent>,
     @Inject(MAT_DIALOG_DATA) public data: GameResultDTO,
-  ) {
-    console.log('data', this.data);
-  }
+  ) { }
 
   /**
    * Lifecycle hook that is called after data-bound properties of a directive are initialized.

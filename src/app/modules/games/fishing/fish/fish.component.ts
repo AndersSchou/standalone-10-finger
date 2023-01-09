@@ -70,9 +70,7 @@ export class AppGamesFishComponent implements OnInit, OnDestroy, AfterViewInit {
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
-  @Input()
-  fishImage = '';
-
+  @Input() fishImage = '';
 
   /**
    * Lifecycle hook that is called after data-bound properties of a directive are initialized.
@@ -118,6 +116,9 @@ export class AppGamesFishComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
+  /**
+   * A lifecycle hook that is called after Angular has fully initialized a component's view.
+   */
   ngAfterViewInit(): void {
     this.addFish(this.fishImage);
   }
