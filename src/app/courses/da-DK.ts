@@ -2,7 +2,7 @@
 export const da = {
   "categories": [
     {
-      "name": "Læs og skriv",
+      "name": "Træningsforløb",
       "courses": [
         {
           "name": "Level 1",
@@ -48,27 +48,27 @@ export const da = {
               "text": "fæ sæ"
             },
             {
-              "name": "Rimord 1",
+              "name": "Skriv ord 1",
               "text": "aks"
             },
             {
-              "name": "Rimord 2",
+              "name": "Skriv ord 2",
               "text": "saks"
             },
             {
-              "name": "Rimord 3",
+              "name": "Skriv ord 3",
               "text": "laks"
             },
             {
-              "name": "120 hyppige ord 1",
+              "name": "Skriv ord 4",
               "text": "af"
             },
             {
-              "name": "120 hyppige ord 2",
+              "name": "Skriv ord 5",
               "text": "skal"
             },
             {
-              "name": "120 hyppige ord 3",
+              "name": "Skriv ord 6",
               "text": "da"
             },
             {
@@ -129,27 +129,27 @@ export const da = {
               "text": "su ra"
             },
             {
-              "name": "Rimord 1",
+              "name": "Skriv ord 1",
               "text": "sus"
             },
             {
-              "name": "Rimord 2",
+              "name": "Skriv ord 2",
               "text": "mus"
             },
             {
-              "name": "Rimord 3",
+              "name": "Skriv ord 3",
               "text": "lus"
             },
             {
-              "name": "120 hyppige ord 4",
+              "name": "Skriv ord 4",
               "text": "ud"
             },
             {
-              "name": "120 hyppige ord 5",
+              "name": "Skriv ord 5",
               "text": "du"
             },
             {
-              "name": "120 hyppige ord 6",
+              "name": "Skriv ord 6",
               "text": "fra"
             },
             {
@@ -210,79 +210,79 @@ export const da = {
               "text": "fi li"
             },
             {
-              "name": "Rimord 1",
+              "name": "Skriv ord 1",
               "text": "æde"
             },
             {
-              "name": "Rimord 2",
+              "name": "Skriv ord 2",
               "text": "sæde"
             },
             {
-              "name": "Rimord 3",
+              "name": "Skriv ord 3",
               "text": "kæde"
             },
             {
-              "name": "120 hyppige ord 7",
+              "name": "Skriv ord 4",
               "text": "alle"
             },
             {
-              "name": "120 hyppige ord 8",
+              "name": "Skriv ord 5",
               "text": "eller"
             },
             {
-              "name": "120 hyppige ord 9",
+              "name": "Skriv ord 6",
               "text": "skulle"
             },
             {
-              "name": "120 hyppige ord 10",
+              "name": "Skriv ord 7",
               "text": "er"
             },
             {
-              "name": "120 hyppige ord 11",
+              "name": "Skriv ord 8",
               "text": "de"
             },
             {
-              "name": "120 hyppige ord 12",
+              "name": "Skriv ord 9",
               "text": "der"
             },
             {
-              "name": "120 hyppige ord 13",
+              "name": "Skriv ord 10",
               "text": "ikke"
             },
             {
-              "name": "120 hyppige ord 14",
+              "name": "Skriv ord 11",
               "text": "var"
             },
             {
-              "name": "120 hyppige ord 15",
+              "name": "Skriv ord 12",
               "text": "lille"
             },
             {
-              "name": "120 hyppige ord 16",
+              "name": "Skriv ord 13",
               "text": "deres"
             },
             {
-              "name": "120 hyppige ord 17",
+              "name": "Skriv ord 14",
               "text": "ville"
             },
             {
-              "name": "120 hyppige ord 18",
+              "name": "Skriv ord 15",
               "text": "se"
             },
             {
-              "name": "120 hyppige ord 19",
+              "name": "Skriv ord 16",
               "text": "fik"
             },
             {
-              "name": "120 hyppige ord 20",
+              "name": "Skriv ord 17",
               "text": "jer"
             },
             {
-              "name": "120 hyppige ord 21",
+              "name": "Skriv ord 18",
               "text": "fri"
             },
             {
-              "name": "120 hyppige ord 22",
+              "name": "Skriv ord 19",
               "text": "sidste"
             },
             {
@@ -343,75 +343,75 @@ export const da = {
               "text": "nu ne"
             },
             {
-              "name": "Rimord 1",
+              "name": "Skriv ord 1",
               "text": "blinke"
             },
             {
-              "name": "Rimord 2",
+              "name": "Skriv ord 2",
               "text": "flinke"
             },
             {
-              "name": "Rimord 3",
+              "name": "Skriv ord 3",
               "text": "skinke"
             },
             {
-              "name": "120 hyppige ord 23",
+              "name": "Skriv ord 4",
               "text": "ind"
             },
             {
-              "name": "120 hyppige ord 24",
+              "name": "Skriv ord 5",
               "text": "en"
             },
             {
-              "name": "120 hyppige ord 25",
+              "name": "Skriv ord 6",
               "text": "kan"
             },
             {
-              "name": "120 hyppige ord 26",
+              "name": "Skriv ord 7",
               "text": "kunne"
             },
             {
-              "name": "120 hyppige ord 27",
+              "name": "Skriv ord 8",
               "text": "kun"
             },
             {
-              "name": "120 hyppige ord 28",
+              "name": "Skriv ord 9",
               "text": "ned"
             },
             {
-              "name": "120 hyppige ord 29",
+              "name": "Skriv ord 10",
               "text": "under"
             },
             {
-              "name": "120 hyppige ord 30",
+              "name": "Skriv ord 11",
               "text": "andre"
             },
             {
-              "name": "120 hyppige ord 31",
+              "name": "Skriv ord 12",
               "text": "end"
             },
             {
-              "name": "120 hyppige ord 32",
+              "name": "Skriv ord 13",
               "text": "sine"
             },
             {
-              "name": "120 hyppige ord 33",
+              "name": "Skriv ord 14",
               "text": "nej"
             },
             {
-              "name": "120 hyppige ord 34",
+              "name": "Skriv ord 15",
               "text": "fin"
             },
             {
-              "name": "120 hyppige ord 35",
+              "name": "Skriv ord 16",
               "text": "sin"
             },
             {
-              "name": "120 hyppige ord 36",
+              "name": "Skriv ord 17",
               "text": "den"
             },
             {
-              "name": "120 hyppige ord 37",
+              "name": "Skriv ord 18",
               "text": "nu"
             },
             {
@@ -472,87 +472,87 @@ export const da = {
               "text": "ge gi"
             },
             {
-              "name": "Rimord 1",
+              "name": "Skriv ord 1",
               "text": "tale"
             },
             {
-              "name": "Rimord 2",
+              "name": "Skriv ord 2",
               "text": "hale"
             },
             {
-              "name": "Rimord 3",
+              "name": "Skriv ord 3",
               "text": "gale"
             },
             {
-              "name": "120 hyppige ord 38",
+              "name": "Skriv ord 4",
               "text": "gik"
             },
             {
-              "name": "120 hyppige ord 39",
+              "name": "Skriv ord 5",
               "text": "hende"
             },
             {
-              "name": "120 hyppige ord 40",
+              "name": "Skriv ord 6",
               "text": "hele"
             },
             {
-              "name": "120 hyppige ord 41",
+              "name": "Skriv ord 7",
               "text": "dag"
             },
             {
-              "name": "120 hyppige ord 42",
+              "name": "Skriv ord 8",
               "text": "lige"
             },
             {
-              "name": "120 hyppige ord 43",
+              "name": "Skriv ord 9",
               "text": "hen"
             },
             {
-              "name": "120 hyppige ord 44",
+              "name": "Skriv ord 10",
               "text": "igen"
             },
             {
-              "name": "120 hyppige ord 45",
+              "name": "Skriv ord 11",
               "text": "dig"
             },
             {
-              "name": "120 hyppige ord 46",
+              "name": "Skriv ord 12",
               "text": "glad"
             },
             {
-              "name": "120 hyppige ord 47",
+              "name": "Skriv ord 13",
               "text": "lang"
             },
             {
-              "name": "120 hyppige ord 48",
+              "name": "Skriv ord 14",
               "text": "sagde"
             },
             {
-              "name": "120 hyppige ord 49",
+              "name": "Skriv ord 15",
               "text": "hans"
             },
             {
-              "name": "120 hyppige ord 50",
+              "name": "Skriv ord 16",
               "text": "her"
             },
             {
-              "name": "120 hyppige ord 51",
+              "name": "Skriv ord 17",
               "text": "han"
             },
             {
-              "name": "120 hyppige ord 52",
+              "name": "Skriv ord 18",
               "text": "sig"
             },
             {
-              "name": "120 hyppige ord 53",
+              "name": "Skriv ord 19",
               "text": "jeg"
             },
             {
-              "name": "120 hyppige ord 54",
+              "name": "Skriv ord 20",
               "text": "hun"
             },
             {
-              "name": "120 hyppige ord 55",
+              "name": "Skriv ord 21",
               "text": "har"
             },
             {
@@ -613,47 +613,47 @@ export const da = {
               "text": "ly ky"
             },
             {
-              "name": "Rimord 1",
+              "name": "Skriv ord 1",
               "text": "tyr"
             },
             {
-              "name": "Rimord 2",
+              "name": "Skriv ord 2",
               "text": "fyr"
             },
             {
-              "name": "Rimord 3",
+              "name": "Skriv ord 3",
               "text": "styr"
             },
             {
-              "name": "120 hyppige ord 56",
+              "name": "Skriv ord 4",
               "text": "efter"
             },
             {
-              "name": "120 hyppige ord 57",
+              "name": "Skriv ord 5",
               "text": "at"
             },
             {
-              "name": "120 hyppige ord 58",
+              "name": "Skriv ord 6",
               "text": "det"
             },
             {
-              "name": "120 hyppige ord 59",
+              "name": "Skriv ord 7",
               "text": "til"
             },
             {
-              "name": "120 hyppige ord 60",
+              "name": "Skriv ord 8",
               "text": "et"
             },
             {
-              "name": "120 hyppige ord 61",
+              "name": "Skriv ord 9",
               "text": "alt"
             },
             {
-              "name": "120 hyppige ord 62",
+              "name": "Skriv ord 10",
               "text": "tid"
             },
             {
-              "name": "120 hyppige ord 63",
+              "name": "Skriv ord 11",
               "text": "lidt"
             },
             {
@@ -714,111 +714,111 @@ export const da = {
               "text": "me ma"
             },
             {
-              "name": "Rimord 1",
+              "name": "Skriv ord 1",
               "text": "ild"
             },
             {
-              "name": "Rimord 2",
+              "name": "Skriv ord 2",
               "text": "sild"
             },
             {
-              "name": "Rimord 3",
+              "name": "Skriv ord 3",
               "text": "mild"
             },
             {
-              "name": "120 hyppige ord 64",
+              "name": "Skriv ord 4",
               "text": "selv"
             },
             {
-              "name": "120 hyppige ord 65",
+              "name": "Skriv ord 5",
               "text": "mig"
             },
             {
-              "name": "120 hyppige ord 66",
+              "name": "Skriv ord 6",
               "text": "have"
             },
             {
-              "name": "120 hyppige ord 67",
+              "name": "Skriv ord 7",
               "text": "været"
             },
             {
-              "name": "120 hyppige ord 68",
+              "name": "Skriv ord 8",
               "text": "mere"
             },
             {
-              "name": "120 hyppige ord 69",
+              "name": "Skriv ord 9",
               "text": "bliver"
             },
             {
-              "name": "120 hyppige ord 70",
+              "name": "Skriv ord 10",
               "text": "hvis"
             },
             {
-              "name": "120 hyppige ord 71",
+              "name": "Skriv ord 11",
               "text": "min"
             },
             {
-              "name": "120 hyppige ord 72",
+              "name": "Skriv ord 12",
               "text": "hjem"
             },
             {
-              "name": "120 hyppige ord 73",
+              "name": "Skriv ord 13",
               "text": "hver"
             },
             {
-              "name": "120 hyppige ord 74",
+              "name": "Skriv ord 14",
               "text": "dem"
             },
             {
-              "name": "120 hyppige ord 75",
+              "name": "Skriv ord 15",
               "text": "ham"
             },
             {
-              "name": "120 hyppige ord 76",
+              "name": "Skriv ord 16",
               "text": "vil"
             },
             {
-              "name": "120 hyppige ord 77",
+              "name": "Skriv ord 17",
               "text": "kom"
             },
             {
-              "name": "120 hyppige ord 78",
+              "name": "Skriv ord 18",
               "text": "meget"
             },
             {
-              "name": "120 hyppige ord 79",
+              "name": "Skriv ord 19",
               "text": "med"
             },
             {
-              "name": "120 hyppige ord 80",
+              "name": "Skriv ord 20",
               "text": "men"
             },
             {
-              "name": "120 hyppige ord 81",
+              "name": "Skriv ord 21",
               "text": "ved"
             },
             {
-              "name": "120 hyppige ord 82",
+              "name": "Skriv ord 22",
               "text": "havde"
             },
             {
-              "name": "120 hyppige ord 83",
+              "name": "Skriv ord 23",
               "text": "hvad"
             },
             {
-              "name": "120 hyppige ord 84",
+              "name": "Skriv ord 24",
               "text": "man"
             },
             {
-              "name": "120 hyppige ord 85",
+              "name": "Skriv or 25",
               "text": "blev"
             },
             {
-              "name": "120 hyppige ord 86",
+              "name": "Skriv ord 26",
               "text": "være"
             },
             {
-              "name": "120 hyppige ord 87",
+              "name": "Skriv ord 27",
               "text": "vi"
             },
             {
@@ -879,103 +879,103 @@ export const da = {
               "text": "pi pæ"
             },
             {
-              "name": "Rimord 1",
+              "name": "Skriv ord 1",
               "text": "op"
             },
             {
-              "name": "Rimord 2",
+              "name": "Skriv ord 2",
               "text": "kop"
             },
             {
-              "name": "Rimord 3",
+              "name": "Skriv ord 3",
               "text": "stop"
             },
             {
-              "name": "120 hyppige ord 88",
+              "name": "Skriv ord 4",
               "text": "noget"
             },
             {
-              "name": "120 hyppige ord 89",
+              "name": "Skriv ord 5",
               "text": "jo"
             },
             {
-              "name": "120 hyppige ord 90",
+              "name": "Skriv ord 6",
               "text": "store"
             },
             {
-              "name": "120 hyppige ord 91",
+              "name": "Skriv ord 7",
               "text": "mod"
             },
             {
-              "name": "120 hyppige ord 92",
+              "name": "Skriv ord 8",
               "text": "dog"
             },
             {
-              "name": "120 hyppige ord 93",
+              "name": "Skriv ord 9",
               "text": "nok"
             },
             {
-              "name": "120 hyppige ord 94",
+              "name": "Skriv ord 10",
               "text": "godt"
             },
             {
-              "name": "120 hyppige ord 95",
+              "name": "Skriv ord 11",
               "text": "os"
             },
             {
-              "name": "120 hyppige ord 96",
+              "name": "Skriv ord 12",
               "text": "kommer"
             },
             {
-              "name": "120 hyppige ord 97",
+              "name": "Skriv ord 13",
               "text": "mon"
             },
             {
-              "name": "120 hyppige ord 98",
+              "name": "Skriv ord 14",
               "text": "tog"
             },
             {
-              "name": "120 hyppige ord 99",
+              "name": "Skriv ord 15",
               "text": "stor"
             },
             {
-              "name": "120 hyppige ord 100",
+              "name": "Skriv ord 16",
               "text": "fordi"
             },
             {
-              "name": "120 hyppige ord 101",
+              "name": "Skriv ord 17",
               "text": "forbi"
             },
             {
-              "name": "120 hyppige ord 102",
+              "name": "Skriv ord 18",
               "text": "op"
             },
             {
-              "name": "120 hyppige ord 103",
+              "name": "Skriv ord 19",
               "text": "bort"
             },
             {
-              "name": "120 hyppige ord 104",
+              "name": "Skriv ord 20",
               "text": "hvor"
             },
             {
-              "name": "120 hyppige ord 105",
+              "name": "Skriv ord 21",
               "text": "og"
             },
             {
-              "name": "120 hyppige ord 106",
+              "name": "Skriv ord 22",
               "text": "for"
             },
             {
-              "name": "120 hyppige ord 107",
+              "name": "Skriv ord 23",
               "text": "som"
             },
             {
-              "name": "120 hyppige ord 108",
+              "name": "Skriv ord 24",
               "text": "om"
             },
             {
-              "name": "120 hyppige ord 109",
+              "name": "Skriv ord 25",
               "text": "over"
             },
             {
@@ -1036,51 +1036,51 @@ export const da = {
               "text": "mø rø"
             },
             {
-              "name": "Rimord 1",
+              "name": "Skriv ord 1",
               "text": "øde"
             },
             {
-              "name": "Rimord 2",
+              "name": "Skriv ord 2",
               "text": "bøde"
             },
             {
-              "name": "Rimord 3",
+              "name": "Skriv ord 3",
               "text": "fløde"
             },
             {
-              "name": "120 hyppige ord 112",
+              "name": "Skriv ord 4",
               "text": "også"
             },
             {
-              "name": "120 hyppige ord 113",
+              "name": "Skriv ord 5",
               "text": "så"
             },
             {
-              "name": "120 hyppige ord 114",
+              "name": "Skriv ord 6",
               "text": "på"
             },
             {
-              "name": "120 hyppige ord 115",
+              "name": "Skriv ord 7",
               "text": "når"
             },
             {
-              "name": "120 hyppige ord 116",
+              "name": "Skriv ord 8",
               "text": "små"
             },
             {
-              "name": "120 hyppige ord 117",
+              "name": "Skriv ord 9",
               "text": "løb"
             },
             {
-              "name": "120 hyppige ord 118",
+              "name": "Skriv ord 10",
               "text": "år"
             },
             {
-              "name": "120 hyppige ord 119",
+              "name": "Skriv ord 11",
               "text": "får"
             },
             {
-              "name": "120 hyppige ord 120",
+              "name": "Skriv ord 12",
               "text": "må"
             },
             {
@@ -1145,14 +1145,9 @@ export const da = {
               "text": "du må få en kiwi"
             }
           ]
-        }
-      ]
-    },
-    {
-      "name": "Symboler",
-      "courses": [
+        },
         {
-          "name": "Level 1",
+          "name": "Level 11",
           "exercises": [
             {
               "name": "Øvelse 1",
@@ -1177,7 +1172,7 @@ export const da = {
           ]
         },
         {
-          "name": "Level 2",
+          "name": "Level 12",
           "exercises": [
             {
               "name": "Øvelse 1",
@@ -1204,36 +1199,11 @@ export const da = {
               "text": "-?-?-?-? !?-!?-!?-!:!:!:"
             }
           ]
-        },
-        {
-          "name": "Level 3",
-          "exercises": [
-            {
-              "name": "Øvelse 1",
-              "text": "Bølle-Bob møder Leslie på gaden.- Hej, siger Leslie.- Vil du med ned til Valde?"
-            },
-            {
-              "name": "Øvelse 2",
-              "text": "Valde Underbid bor i en gammel vogn på byens losse-plads.Her kommer alle byens unge.Især Leslie. "
-            },
-            {
-              "name": "Øvelse 3",
-              "text": "- Jeg kender ikke andre end Valde her i byen, siger Leslie.- Og så dig."
-            },
-            {
-              "name": "Øvelse 4",
-              "text": "Du er jo lige flyttet til byen. Det tager lidt tid at få venner. Kom! De går sammen hen ad gaden.Så ser Bølle-Bob to rockere."
-            },
-            {
-              "name": "Øvelse 5",
-              "text": "- Se der! siger han.De kommer gående lige imod dem.- Jeg har da aldrig set rockere før i vores by, siger Bølle-Bob.Men det er du vel vant til?"
-            }
-          ]
         }
       ]
     },
     {
-      "name": "Hastighedstræning",
+      "name": "Historieforløb",
       "courses": [
         {
           "name": "Den gamle konge på rævejagt del 1",
@@ -1318,6 +1288,63 @@ export const da = {
             {
               "name": "Øvelse 9",
               "text": "Så der midt om natten tænkte kongen, tjeneren, staldkarlen, hunden og hanen for sig selv, om det var sådan en god ide at stole på andre til at vække dem."
+            }
+          ]
+        },
+        {
+          "name": "Prinsen og prinsessen",
+          "exercises": [
+            {
+              "name": "Øvelse 1",
+              "text": "Historien om prinsen og prinsessen"
+            },
+            {
+              "name": "Øvelse 2",
+              "text": "Nu vil Kåre og Karen hen til heksen for at befri tudsen som de tror er en prins de ved at det er farligt men vil gøre alt for at redde tudsen fra heksen."
+            },
+            {
+              "name": "Øvelse 3",
+              "text": "Heksen gør sig klar til at fange Kåre og Karen i sit store bur."
+            },
+            {
+              "name": "Øvelse 4",
+              "text": "Hun har nemlig fået at vide af sin krage at Kåre og Karen er på vej til hendes hus."
+            },
+            {
+              "name": "Øvelse 5",
+              "text": "Lige før Kåre og Karen når til heksens hus deler de sig og Kåre går ind ad bagdøren og Karen lader sig fange. Nu er Karen i buret."
+            },
+            {
+              "name": "Øvelse 6",
+              "text": "Heksen forstår ikke hvor Kåre er henne hun går ud for at lede efter ham."
+            },
+            {
+              "name": "Øvelse 7",
+              "text": "Så går Kåre hen og slipper Karen fri Karen løber over til buret med tudsen."
+            },
+            {
+              "name": "Øvelse 8",
+              "text": "Hun åbner lågen og tudsen springer ud Karen kysser tudsen på munden"
+            },
+            {
+              "name": "Øvelse 9",
+              "text": "og puf tudsen bliver til en smuk prins."
+            },
+            {
+              "name": "Øvelse 10",
+              "text": "Prinsen siger at han hedder Peter Peter kysser Karen igen."
+            },
+            {
+              "name": "Øvelse 11",
+              "text": "Kåre og Karen og Peter tager hjem til slottet det er en lang tur."
+            },
+            {
+              "name": "Øvelse 12",
+              "text": "Da de kommer hjem bliver kong Hans og dronning Rose glade de giver Karen lov til at gifte sig med Peter."
+            },
+            {
+              "name": "Øvelse 13",
+              "text": "Hans og Rose vil holde en stor fest for Karen og Peter der kommer mange gæster og de fester alle sammen i hele ni dage."
             }
           ]
         }
