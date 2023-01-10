@@ -96,7 +96,11 @@ export class AppGamesFishSetLevelComponent implements OnInit, OnDestroy {
                 }
               }
             });
+          } else {
+            this.levels[0].completed = true;
           }
+        } else {
+          this.levels[0].completed = true;
         }
       } else {
         this.levels[0].completed = true;
