@@ -25,7 +25,7 @@ export class VKeyboardComponent {
   // Stores the theme for the keyboard.
   theme: KEYBOARD_COLOR_GROUP_TYPE = '';
   // Stores the mode for the keyboard.
-  mode: KEYBOARD_LAYOUT_GROUP_TYPE = 'full';
+  mode: KEYBOARD_LAYOUT_GROUP_TYPE = 'partial';
   // Stores the pressed keys.
   keysPressed: string[] = [];
 
