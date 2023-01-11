@@ -566,8 +566,11 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     const currentLine = this.exercisesArr[this.exerciseIndex].lines[this.currentLineIndex];
     this.lineLength = currentLine.text.length;
     this.currentChar = currentLine.text[this.currentLetterIndex];
-
-    this.showCurrentKeyComb(this.currentChar);
+    // Reset the css animation.
+    this.showCurrentKeyComb('');
+    setTimeout(() => {
+      this.showCurrentKeyComb(this.currentChar);
+    }, 1);
     const findHtmlElement = document.getElementsByClassName('exercise-' + this.exerciseIndex)[0];
     if (findHtmlElement) {
       const findLineEl = findHtmlElement.getElementsByClassName('line-' + this.currentLineIndex)[0];
