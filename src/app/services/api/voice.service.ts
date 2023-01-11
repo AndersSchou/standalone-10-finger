@@ -43,6 +43,7 @@ export class VoiceService extends BaseService<SpeakResultDTO> {
     voiceID: string,
     speechType?: string
   ): Observable<SpeakResultDTO> {
+    console.log('----voiceID----', voiceID);
     const speakSettings = {
       format: (this.platform.SAFARI || this.platform.WEBKIT) ? 'mp3' : 'OGG',
       speed: 1,

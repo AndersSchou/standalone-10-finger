@@ -462,7 +462,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.readingSubscription = timer(100).subscribe(() => {
           // Handle reading on keydown (read letter/sound/word).
           this.speechService.handleReading((event as KeyboardEvent).key,
-            this.readTextOptions, this.textToRead, 'mv_da_acl', this.isLastChar, charMatch);
+            this.readTextOptions, this.textToRead, this.currentLanguage, this.isLastChar, charMatch);
         });
       });
   }
@@ -927,7 +927,8 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroyed))
       .subscribe(() => {
         const textToRead = elemInfo.lines[element.classList[element.classList.length - 1]].text.join('');
-        this.speechService.play(textToRead, 'mv_da_acl');
+        const voiceID = this.speechService.getVoiceID(this.currentLanguage);
+        this.speechService.play(textToRead, voiceID);
       });
   }
 
