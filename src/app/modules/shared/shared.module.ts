@@ -17,6 +17,7 @@ import { AppSharedSettingsTextComponent } from './settings/text/text.component';
 import { AppSharedSettingsLanguageComponent } from './settings/language/language.component';
 import { AppSharedSettingsReadComponent } from './settings/read/read.component';
 import { WarningModalComponent } from './modals/warning-modal/warning-modal.component';
+import { AppSharedSettingsThemeComponent } from './settings/theme/theme.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { WarningModalComponent } from './modals/warning-modal/warning-modal.comp
     AppSharedSettingsLanguageComponent,
     AppSharedSettingsReadComponent,
     AppSharedSettingsLogoutComponent,
+    AppSharedSettingsThemeComponent,
   ],
   imports: [
     FormsModule,
@@ -50,6 +52,7 @@ import { WarningModalComponent } from './modals/warning-modal/warning-modal.comp
     AppSharedSettingsLanguageComponent,
     AppSharedSettingsReadComponent,
     AppSharedSettingsLogoutComponent,
+    AppSharedSettingsThemeComponent,
   ],
   providers: [
     ErrorModalService,

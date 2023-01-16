@@ -3,6 +3,8 @@
 @import './scss/key-theme-color.scss';
 @import './scss/key-layout.scss';
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 #keyboard {
   margin-top: 0px;
@@ -126,7 +128,7 @@
   height: $key-height;
   display: block;
   border-radius: $key-border-radius;
-  border: 1px solid $keyboard-bg  !important;
+  border: 1px solid $keyboard-bg !important;
   background-color: $key-bg-color;
 }
 

@@ -1,4 +1,6 @@
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 .ptb-34 {
   padding-top: 34px;
@@ -30,7 +32,20 @@
 
 .cat-hld.active,
 .cat-hld:hover {
-  background: $color-active;
+  background: theme-var($--color-active);
+  color: theme-var($--color-active-text);
+}
+
+::ng-deep .cat-hld.active .mat-icon.read svg>path,
+::ng-deep .cat-hld:hover .mat-icon.read svg>path {
+  fill: theme-var($--color-active-text);
+}
+
+::ng-deep .cat-hld.active .mat-icon.symbol svg>path,
+::ng-deep .cat-hld:hover .mat-icon.symbol svg>path,
+::ng-deep .cat-hld.active .mat-icon svg>path:last-of-type,
+::ng-deep .cat-hld:hover .mat-icon svg>path:last-of-type {
+  stroke: theme-var($--color-active-text);
 }
 
 .center-content {
@@ -83,12 +98,12 @@
 
 ::ng-deep .res-txt .mat-icon svg>path,
 ::ng-deep .res-txt .mat-icon svg>circle {
-  stroke: $color-active-secondary;
+  stroke: theme-var($--color-active-secondary);
 }
 
 ::ng-deep .res-txt .mat-icon.accuracy svg>path:nth-of-type(3),
 ::ng-deep .res-txt .mat-icon.speed svg>path:first-of-type {
-  fill: $color-active-secondary;
+  fill: theme-var($--color-active-secondary);
   stroke: none;
 }
 
@@ -111,14 +126,14 @@
 
 .category-progress {
   height: 6px;
-  border: 1px solid $color-active;
+  border: 1px solid theme-var($--color-active);
   background: $white-color;
   border-radius: 4px;
   margin-top: 10px;
 }
 
 .category-progress .progress {
-  background: $color-active;
+  background: theme-var($--color-active);
   height: 6px;
   width: 0;
   border-radius: 4px;

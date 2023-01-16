@@ -1,4 +1,6 @@
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 .instructions-bg {
   background-color: $game-blue-bg;
@@ -37,7 +39,7 @@
   font-size: 32px;
   line-height: 138%;
   text-align: center;
-  color: $color-active;
+  color: theme-var($--color-active);
 }
 
 .levels-hld-description {
@@ -91,7 +93,8 @@
 
 .proceed-btn:hover,
 .proceed-btn.active {
-  background: $color-active;
+  background: theme-var($--color-active);
+  color: theme-var($--color-active-text);
 }
 
 .proceed-btn.disabled,
@@ -99,6 +102,7 @@
   opacity: 0.6;
   background: $light-gray;
   cursor: not-allowed;
+  color: $default-text-color;
 }
 
 .level-hld {
@@ -113,7 +117,7 @@
 
 .level-hld.active,
 .level-hld:hover {
-  border-color: $color-active;
+  border-color: theme-var($--color-active);
 }
 
 .level-nbr-hld {
@@ -125,14 +129,14 @@
 .level-nbr {
   width: 32px;
   height: 32px;
-  background: $light-yellow;
+  background: theme-var($--active-light-bg);
   border-radius: 12px;
   font-weight: 700;
   font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $color-active;
+  color: theme-var($--color-active);
 }
 
 .level-text-hld {

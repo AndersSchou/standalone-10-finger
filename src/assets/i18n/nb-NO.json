@@ -27,6 +27,7 @@
   "translateText": "Text",
   "translateRead": "Read",
   "translateLanguage": "Language",
+  "translateTheme": "Theme",
   "translateLogout": "Log out",
   "translateResetAll": "Reset all",
   "translateLogoutDetails": "You are about to log out. If you do this - then you will not be able to gain points and achievments until sign in again.",
@@ -90,5 +91,7 @@
   "translateYouCaught": "You've caught",
   "translateFishes": "fishes",
   "translateHighestScore": "Your highest score",
-  "translatePlayNextLevel": "Play next level"
+  "translatePlayNextLevel": "Play next level",
+  "translateStartTypingFromWhereLeft": "Start typing right away from where you left",
+  "translateDefineNewLevel": "Or, you can set a new course to define your level"
 }

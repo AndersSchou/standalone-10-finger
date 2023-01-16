@@ -25,6 +25,7 @@ export class AppSharedSettingsComponent implements OnInit, OnDestroy {
     { type: 'text', icon: 'icon_text', label: 'Text', selected: false },
     { type: 'read', icon: 'icon_read', label: 'Read', selected: false },
     { type: 'language', icon: 'icon_language', label: 'Language', selected: false },
+    { type: 'theme', icon: 'settings', label: 'Theme', selected: false },
     { type: 'logout', icon: 'icon_logout', label: 'Logout', selected: false },
   ];
   // Stores the translations.

@@ -1,4 +1,6 @@
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 .logout-title {
   font-weight: 900;
@@ -31,5 +33,5 @@
 }
 
 .logout-btn:hover {
-  background: $active-bg-hover;
+  background: theme-var($--active-bg-hover);
 }

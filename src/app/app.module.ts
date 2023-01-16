@@ -17,7 +17,6 @@ import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { GamesModule } from './modules/games/games.module';
-import { InfoModule } from './modules/info/info.module';
 import { HomeModule } from './modules/home/home.module';
 import { SetCourseModule } from './modules/set-course/set-course.module';
 import { TypingModule } from './modules/typing/typing.module';
@@ -49,7 +48,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AchievementsModule,
     GamesModule,
     HomeModule,
-    InfoModule,
     SetCourseModule,
     TypingModule,
     HttpClientModule,

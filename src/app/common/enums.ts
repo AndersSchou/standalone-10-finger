@@ -8,12 +8,14 @@ export enum Color {
 }
 
 // Storage keys enum.
+// MAIN_THEME_COLOR is the name for the main theme color.
 // KEYBOARD_THEME_COLOR is the name for the keyboard theme color.
 // KEYBOARD_PRIMARY_LAYOUT is the name for the keyboard primary layout.
 // CURRENT_LANGUAGE is the name for the current language.
 // COURSES_PROGRESS is the name for the courses progress.
 // FISH_GAME_PROGRESS is the name for the fish game progress.
 export enum STORAGE_KEY_TYPE {
+  MAIN_THEME_COLOR = 'mainThemeColor',
   KEYBOARD_THEME_COLOR = 'keyboardThemeColor',
   KEYBOARD_PRIMARY_LAYOUT = 'keyboardPrimaryLayout',
   CURRENT_LANGUAGE = 'activeLanguage',

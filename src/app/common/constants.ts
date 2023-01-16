@@ -69,8 +69,7 @@ export const APP_ICONS = [
   'keyboard_mode_3',
   'koi_orange_white',
   'level_difficulty',
-  'logo_10_finger',
-  'logo_10_finger_text',
+  'logo_10_finger_up_full',
   'open_book',
   'pause',
   'play',
@@ -175,4 +174,10 @@ export const DefaultReadLetterOptions: KeyboardSettingsDTO[] = [
 // Default read text options.
 export const DefaultReadTextOptions: KeyboardSettingsDTO[] = [
   { type: 'readWord', label: 'Read words', selected: false },
+];
+
+// Default theme options.
+export const DefaultThemeOptions: KeyboardSettingsDTO[] = [
+  { type: 'blue', label: '', selected: false },
+  { type: 'orange', label: '', selected: false },
 ];

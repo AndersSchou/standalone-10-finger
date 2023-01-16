@@ -1,4 +1,6 @@
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 .result-hld {
   display: flex;
@@ -24,8 +26,8 @@
 }
 
 .result-hld .border-tb {
-  border-top: 1px solid $color-active;
-  border-bottom: 1px solid $color-active;
+  border-top: 1px solid theme-var($--color-active);
+  border-bottom: 1px solid theme-var($--color-active);
 }
 
 .padd-tb-44 {
@@ -44,7 +46,7 @@
   -moz-box-shadow: 12px 12px 24px rgb(247 160 0 / 20%);
   -webkit-box-shadow: 12px 12px 24px rgb(247 160 0 / 20%);
   border-radius: 12px;
-  background: $color-active;
+  background: theme-var($--color-active);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -86,12 +88,12 @@
 
 ::ng-deep .res-txt .mat-icon svg>path,
 ::ng-deep .res-txt .mat-icon svg>circle {
-  stroke: $color-active-secondary;
+  stroke: theme-var($--color-active-secondary);
 }
 
 ::ng-deep .res-txt .mat-icon.accuracy svg>path:nth-of-type(3),
 ::ng-deep .res-txt .mat-icon.speed svg>path:first-of-type {
-  fill: $color-active-secondary;
+  fill: theme-var($--color-active-secondary);
   stroke: none;
 }
 
@@ -113,7 +115,7 @@
 }
 
 .round-btn:hover {
-  background: $color-active;
+  background: theme-var($--color-active);
 }
 
 .ptb-30 {

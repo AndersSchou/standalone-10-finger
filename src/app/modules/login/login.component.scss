@@ -1,4 +1,6 @@
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 .login-hld {
   position: relative;
@@ -7,7 +9,7 @@
   background-size: cover;
   background-position: center;
   background-color: $default-text-color;
-  background-image: url("/assets/svg/cover_space.svg");
+  background-image: theme-var($--cover-space);
 }
 
 .logo-container {
@@ -19,7 +21,7 @@
 }
 
 .logo-hld {
-  background-image: url("/assets/svg/cover_text.svg");
+  background-image: theme-var($--cover-text);
   height: 100%;
   background-repeat: no-repeat;
   background-size: contain;
@@ -35,7 +37,7 @@
 }
 
 .footer-bg {
-  background-image: url("/assets/svg/cover_skies.svg");
+  background-image: theme-var($--cover-clouds);
   height: 100%;
   background-repeat: no-repeat;
   background-position: center;
@@ -51,7 +53,7 @@
 }
 
 .footer-rocket {
-  background-image: url("/assets/svg/cover_rocket_alone.svg");
+  background-image: theme-var($--cover-rocket);
   height: 100%;
   background-repeat: no-repeat;
   background-position: center;

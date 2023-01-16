@@ -1,4 +1,6 @@
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 .award-item {
   font-weight: 400;
@@ -29,12 +31,12 @@
 
 ::ng-deep .awards-actions-hld .mat-icon:hover svg>circle,
 ::ng-deep .awards-actions-hld .mat-icon:hover svg>path {
-  stroke: $color-active-secondary;
+  stroke: theme-var($--color-active-secondary);
 }
 
 ::ng-deep .awards-actions-hld .mat-icon:hover svg>path:nth-of-type(3),
 ::ng-deep .awards-actions-hld .mat-icon:hover svg>path:nth-of-type(4) {
-  fill: $color-active-secondary;
+  fill: theme-var($--color-active-secondary);
   stroke: none;
 }
 

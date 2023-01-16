@@ -1,4 +1,6 @@
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 .play-bg {
   background-image: url("/assets/svg/fish_game_bg.svg");
@@ -258,13 +260,13 @@
 
 ::ng-deep .game-actions-hld .mat-icon:hover svg>path,
 ::ng-deep .game-actions-hld .mat-icon.active svg>path {
-  stroke: $color-active-secondary;
+  stroke: theme-var($--color-active-secondary);
 }
 
 ::ng-deep .game-actions-hld .mat-icon.back-icon:hover svg>path:nth-of-type(1),
 ::ng-deep .game-actions-hld .mat-icon.replay-icon:hover svg>path:nth-of-type(3),
 ::ng-deep .game-actions-hld .mat-icon.replay-icon:hover svg>path:nth-of-type(4) {
-  fill: $color-active-secondary;
+  fill: theme-var($--color-active-secondary);
   stroke: none;
 }
 
@@ -275,7 +277,8 @@
 .timer-hld {
   width: 24px;
   height: 40px;
-  background: $color-active;
+  background: theme-var($--color-active);
+  color: theme-var($--color-active-text);
   border-radius: 4px;
   display: flex;
   justify-content: center;
