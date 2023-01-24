@@ -232,7 +232,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
       this.setMode(localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT) as KEYBOARD_LAYOUT_GROUP_TYPE);
     } else {
-      this.setMode('full');
+      this.setMode('partial');
     }
 
     this.setLanguage();

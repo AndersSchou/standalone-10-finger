@@ -49,7 +49,7 @@ export class AppSharedSettingsKeyboardComponent {
         findPrimaryLayout.selected = true;
       }
     } else {
-      this.keyboardViewMode[0].selected = true;
+      this.keyboardViewMode[1].selected = true;
     }
   }
 
