@@ -49,7 +49,6 @@ export function createEmptyLevelDTO(): GameDTO {
   return {
     id: 0,
     name: '',
-    // words: [],
     selected: false,
     updatedAt: new Date(),
     results: [],

@@ -128,32 +128,6 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     this.gridService.initGrid();
   }
 
-  // TODO: Debug function (to be removed later).
-  renderGrid() {
-    const grid = this.gridService.getGrid();
-    // console.log('grid', grid);
-    if (this.grid) {
-      const gridElement = this.grid.nativeElement;
-      gridElement.innerHTML = '';
-      for (let i = 0; i < grid.length; i++) {
-        for (let j = 0; j < grid[i].length; j++) {
-          gridElement.appendChild(this.renderCell(grid[i][j].x, grid[i][j].y, grid[i][j].ocupied ? grid[i][j].type : ''));
-        }
-      }
-    }
-  }
-
-  // TODO: Debug function (to be removed later).
-  renderCell(x: number, y: number, type: string): HTMLElement {
-    const cell = document.createElement('div');
-    cell.classList.add('cell');
-    cell.classList.add(`cell-${x}-${y}`);
-    if (type) { cell.classList.add(type); }
-    cell.style.left = `${x * this.gridService.gridSize}px`;
-    cell.style.top = `${y * this.gridService.gridSize}px`;
-    return cell;
-  }
-
   /**
    * A lifecycle hook that is called after Angular has fully initialized a component's view.
    */
