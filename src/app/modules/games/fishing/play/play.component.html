@@ -1,4 +1,6 @@
-<div class="play-bg" *ngIf="gameLevel">
+<div class="play-bg">
+  <div class="island-chest-bg"></div>
+  <div class="island-crab-bg"></div>
   <div class="game-info-hld white-bg">
     <div class="game-info-title">{{ 'translateYourTime' | translate }}</div>
     <div class="timer-holder ptb-16">
@@ -12,12 +14,12 @@
     <div class="flex-v-align p-16">
       <mat-icon svgIcon="koi_orange_white" class="koi-icon mr-16"></mat-icon>
       <mat-icon svgIcon="icon_close" class="times-icon mr-16"></mat-icon>
-      {{completedWords}}
+      {{score}} / {{levelGoal}}
     </div>
     <div class="divider"></div>
-    <div class="flex-v-align p-16 txt-uppercase font-500">
+    <div class="flex-v-align p-16 txt-uppercase font-500" *ngIf="currentLevel">
       <mat-icon svgIcon="level_difficulty" class="mr-16"></mat-icon>
-      {{gameLevel.name}}
+      {{currentLevel.levelDefinition.name}}
     </div>
   </div>
   <div class="game-actions-hld white-bg">
@@ -45,10 +47,9 @@
     <div class="boat-hld">
     </div>
   </div>
-  <div class="game-play-hld" [ngStyle]="fishHldStyle">
-    <div class="animation-hld">
-      <app-modules-games-fish #fishComp></app-modules-games-fish>
-      <div class="game-word-hld" #wordHld></div>
-    </div>
-  </div>
+
+  <div id="grid" #grid></div>
+  <app-modules-games-fishing-school-fish #schoolFish (currentScore)="updateScore($event)"
+    [isPaused]="activeIcon === 'play' ? true : false" [isGameOver]="isTimeOut">
+  </app-modules-games-fishing-school-fish>
 </div>

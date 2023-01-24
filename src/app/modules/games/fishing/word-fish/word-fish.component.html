@@ -1,0 +1,7 @@
+<div class="game-play-hld" [ngStyle]="{left:currentWord.left,top:currentWord.top}">
+  <div class="animation-hld" [ngClass]="{'active': currentWord.active}">
+    <app-modules-games-fish *ngIf="currentFishImage!==''" [fishImage]="currentFishImage" #fishComp>
+    </app-modules-games-fish>
+    <div class="game-word-hld" #wordHld></div>
+  </div>
+</div>

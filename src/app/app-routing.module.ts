@@ -20,43 +20,52 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: AppLoginComponent
+    component: AppLoginComponent,
   },
   {
     path: 'type',
-    component: AppTypingComponent
+    component: AppTypingComponent,
+    canActivate: [AuthGuardService],
   },
   {
     path: 'type/result',
-    component: AppTypingResultComponent
+    component: AppTypingResultComponent,
+    canActivate: [AuthGuardService],
   },
   {
     path: 'set-course',
-    component: AppSetCourseComponent
+    component: AppSetCourseComponent,
+    canActivate: [AuthGuardService],
   },
   {
     path: 'games',
-    component: AppGamesComponent
+    component: AppGamesComponent,
+    canActivate: [AuthGuardService],
   },
   {
     path: 'games/fish',
-    component: AppGamesFishingComponent
+    component: AppGamesFishingComponent,
+    canActivate: [AuthGuardService],
   },
   {
     path: 'games/fish/level',
-    component: AppGamesFishSetLevelComponent
+    component: AppGamesFishSetLevelComponent,
+    canActivate: [AuthGuardService],
   },
   {
     path: 'games/fish/level/:id',
-    component: AppGamesFishPlayComponent
+    component: AppGamesFishPlayComponent,
+    canActivate: [AuthGuardService],
   },
   {
     path: 'achivements',
-    component: AppAchievementsComponent
+    component: AppAchievementsComponent,
+    canActivate: [AuthGuardService],
   },
   {
     path: 'info',
-    component: AppHomeComponent
+    component: AppHomeComponent,
+    canActivate: [AuthGuardService],
   }
 ];
 

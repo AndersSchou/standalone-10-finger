@@ -19,13 +19,13 @@ export class VKeyboardComponent {
   class = '';
   // Stores the alt class name.
   altClassName = '5-3';
-  // Stores the shift class name.
+  // Stores the shift class name (default is set to the left shift key).
   shiftClassName = '4-1';
 
   // Stores the theme for the keyboard.
   theme: KEYBOARD_COLOR_GROUP_TYPE = '';
   // Stores the mode for the keyboard.
-  mode: KEYBOARD_LAYOUT_GROUP_TYPE = 'full';
+  mode: KEYBOARD_LAYOUT_GROUP_TYPE = 'partial';
   // Stores the pressed keys.
   keysPressed: string[] = [];
 
@@ -89,7 +89,12 @@ export class VKeyboardComponent {
     if (key in this.keyboardDefinition) {
       const keyPressed = this.keyboardDefinition[key];
       this.keysPressed = [keyPressed.key];
+
       if (keyPressed.shift) {
+        const keyPos = keyPressed.key.split('-');
+        const keyRow = Number(keyPos[0]);
+        const keyCol = Number(keyPos[1]);
+        this.shiftClassName = this.getShiftClass(keyRow, keyCol);
         this.keysPressed.push(this.shiftClassName);
       }
       if (keyPressed.alt) {
@@ -98,6 +103,7 @@ export class VKeyboardComponent {
     }
     this.processClass();
   }
+
 
   /**
    * Set the keyboard theme.
@@ -142,6 +148,24 @@ export class VKeyboardComponent {
    */
   private processClass(): void {
     this.class = [this.theme, this.mode, ...this.keysPressed.map(el => `kp${el}`)].join(' ');
+  }
+
+  /**
+   * Get shift class based on the key position.
+   *
+   * @param row Represents the row of the key.
+   * @param col Represents the column of the key.
+   *
+   * @returns The shift class name.
+   */
+  getShiftClass(row: number, col: number): string {
+    if (((row === 1 || row === 4) && col > 7) || ((row === 2 || row === 3) && col > 6)) {
+      // Right shift.
+      return '4-1';
+    } else {
+      // Left shift.
+      return '4-13';
+    }
   }
 
 }

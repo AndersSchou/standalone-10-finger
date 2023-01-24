@@ -21,7 +21,6 @@
   "translateExercises": "exercises",
   "da-DK": "Danska",
   "nb-NO": "Norska (NB)",
-  "nn-NO": "Nynorsk",
   "sv-SE": "Svenska",
   "translateKeyboard": "Keyboard",
   "translateText": "Text",
@@ -93,5 +92,7 @@
   "translateHighestScore": "Your highest score",
   "translatePlayNextLevel": "Play next level",
   "translateStartTypingFromWhereLeft": "Start typing right away from where you left",
-  "translateDefineNewLevel": "Or, you can set a new course to define your level"
+  "translateDefineNewLevel": "Or, you can set a new course to define your level",
+  "translateHighScore": "High score",
+  "translateIn": "in"
 }

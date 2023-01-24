@@ -181,3 +181,23 @@
     color: $red-text-color;
   }
 }
+
+.hands-hld {
+  display: flex;
+  align-items: center;
+}
+
+.hands-bg {
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 140px;
+  height: 222px;
+}
+
+.hands-bg.left {
+  background-image: url('../../../assets/svg/hand_left.svg');
+}
+
+.hands-bg.right {
+  background-image: url('../../../assets/svg/hand_right.svg');
+}

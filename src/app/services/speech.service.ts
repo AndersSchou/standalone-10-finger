@@ -125,7 +125,7 @@ export class SpeechService {
    * @param character Represents the character to read.
    * @param readOptions Represents the read options.
    * @param txtToRead Represents the text to read.
-   * @param voiceID Represents the voice id for the speak service.
+   * @param language Represents the current language.
    * @param isLastChar Tells if the character is the last character of the text.
    * @param charMatch Tells if the character is a match of the text (used to disable read word when the chars do not match).
    */
@@ -133,9 +133,10 @@ export class SpeechService {
     character: string,
     readOptions: ReadOptionsDTO,
     txtToRead: string,
-    voiceID: string,
+    language: string,
     isLastChar: boolean,
     charMatch: boolean): void {
+    const voiceID = this.getVoiceID(language);
     switch (this.getReadingType(
       character, readOptions,
       txtToRead, isLastChar)) {
@@ -238,5 +239,24 @@ export class SpeechService {
         ? false
         : true
     );
+  }
+
+  /**
+   * Get the voice id based on the language.
+   *
+   * @param language Represents the language.
+   *
+   * @returns The voice id as string.
+   */
+  getVoiceID(language: string): string {
+    switch (language) {
+      case 'nb-NO':
+      case 'nn-NO':
+        return 'mv_nb_hk';
+      case 'sv-SE':
+        return 'mv_sv_jm';
+      default:
+        return 'mv_da_acl';
+    }
   }
 }

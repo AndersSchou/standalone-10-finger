@@ -12,6 +12,8 @@ import { AppGamesFishingComponent } from './fishing/fishing.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppGamesFishingGameOverComponent } from './fishing/game-over/game-over.component';
+import { AppGamesFishingSchoolFishComponent } from './fishing/school-fish/school-fish.component';
+import { AppGamesFishingWordFishComponent } from './fishing/word-fish/word-fish.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { AppGamesFishingGameOverComponent } from './fishing/game-over/game-over.
     AppGamesFishPlayComponent,
     AppGamesFishComponent,
     AppGamesFishingGameOverComponent,
+    AppGamesFishingSchoolFishComponent,
+    AppGamesFishingWordFishComponent,
   ],
   imports: [
     CommonModule,

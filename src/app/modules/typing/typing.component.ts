@@ -128,7 +128,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setInitialTextSettings();
 
     this.currentLanguage = this.languageHelperService.currentLangUsed;
-    this.setLanguage();
   }
 
   /**
@@ -233,8 +232,11 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
       this.setMode(localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT) as KEYBOARD_LAYOUT_GROUP_TYPE);
     } else {
-      this.setMode('full');
+      this.setMode('partial');
     }
+
+    this.setLanguage();
+
     this.cdr.detectChanges();
 
     if (this.exerciseElem.nativeElement && this.exercisesArr.length > 0) {
@@ -462,7 +464,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.readingSubscription = timer(100).subscribe(() => {
           // Handle reading on keydown (read letter/sound/word).
           this.speechService.handleReading((event as KeyboardEvent).key,
-            this.readTextOptions, this.textToRead, 'mv_da_acl', this.isLastChar, charMatch);
+            this.readTextOptions, this.textToRead, this.currentLanguage, this.isLastChar, charMatch);
         });
       });
   }
@@ -566,8 +568,11 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     const currentLine = this.exercisesArr[this.exerciseIndex].lines[this.currentLineIndex];
     this.lineLength = currentLine.text.length;
     this.currentChar = currentLine.text[this.currentLetterIndex];
-
-    this.showCurrentKeyComb(this.currentChar);
+    // Reset the css animation.
+    this.showCurrentKeyComb('');
+    setTimeout(() => {
+      this.showCurrentKeyComb(this.currentChar);
+    }, 1);
     const findHtmlElement = document.getElementsByClassName('exercise-' + this.exerciseIndex)[0];
     if (findHtmlElement) {
       const findLineEl = findHtmlElement.getElementsByClassName('line-' + this.currentLineIndex)[0];
@@ -885,7 +890,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Set the language of the keyboard.
    */
   setLanguage() {
-    if (this.vkeyboard) {
+    if (this.vkeyboard && this.currentLanguage) {
       const lang = this.currentLanguage.split('-')[0];
       this.vkeyboard.setLanguage(lang as KEYBOARD_LANGUAGE);
     }
@@ -927,7 +932,8 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroyed))
       .subscribe(() => {
         const textToRead = elemInfo.lines[element.classList[element.classList.length - 1]].text.join('');
-        this.speechService.play(textToRead, 'mv_da_acl');
+        const voiceID = this.speechService.getVoiceID(this.currentLanguage);
+        this.speechService.play(textToRead, voiceID);
       });
   }
 

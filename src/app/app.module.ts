@@ -11,7 +11,6 @@ import { AppLoginComponent } from './modules/login/login.component';
 import { AuthService } from './services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-import { AppHomeComponent } from './modules/home/home.component';
 import { AuthGuardService } from './services/guards/auth-guard.service';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -22,12 +21,13 @@ import { SetCourseModule } from './modules/set-course/set-course.module';
 import { TypingModule } from './modules/typing/typing.module';
 import { CustomIconService } from './services/custom-icon.service';
 import { GlobalErrorHandler } from './services/global-error-handler.service';
-import { VKeyboardComponent } from './vkeyboard/vkeyboard.component';
 import { SettingsService } from './services/settings.service';
 import { VoiceService } from './services/api/voice.service';
 import { SpeechService } from './services/speech.service';
 import { CourseHelperService } from './services/course-helper.service';
 import { UserService } from './services/api/user.service';
+import { GridService } from './services/grid.service';
+import { LevelService } from './services/level.service';
 
 
 // TranslateHttpLoader is used to load the translations automatically.
@@ -70,6 +70,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     }),
   ],
   providers: [
+    GridService,
     AuthService,
     CookieService,
     AuthGuardService,
@@ -78,6 +79,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     VoiceService,
     SpeechService,
     UserService,
+    LevelService,
     CourseHelperService,
     {
       provide: ErrorHandler,
