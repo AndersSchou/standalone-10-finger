@@ -6,10 +6,9 @@ import { ResultDTO } from './course.dto';
 export interface GameDTO {
   id: number;
   name: string;
-  words: string[];
-  selected: boolean;
+  selected?: boolean;
   results: ResultDTO[];
-  updatedAt: Date;
+  updatedAt?: Date;
 }
 
 /**
@@ -29,6 +28,16 @@ export interface GameResultDTO {
   wordsCount: number;
   language: string;
   showNext: boolean;
+  timeOut: boolean;
+}
+
+/**
+ * Score update interface.
+ */
+export interface ScoreUpdateDTO {
+  score: number;
+  completedWords: number;
+  chars: number;
 }
 
 /**
@@ -40,7 +49,6 @@ export function createEmptyLevelDTO(): GameDTO {
   return {
     id: 0,
     name: '',
-    words: [],
     selected: false,
     updatedAt: new Date(),
     results: [],

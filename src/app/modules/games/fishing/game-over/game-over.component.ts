@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -16,12 +17,16 @@ import { GameDTO, GameResultDTO, GameStorageDTO } from 'src/app/dto/game.dto';
 export class AppGamesFishingGameOverComponent implements OnInit {
   // Stores the maximum result of the current level.
   findMaxResult?: ResultDTO;
+  // Stores the time as string.
+  time = '';
+  // Tells if the current result is the highest or not.
+  isHighScore = false;
 
   /**
    * Constructor function responsible for injecting the needed services.
    *
+   * @param router Is an instance of Router.
    * @param dialogRef Is an instance of MatDialogRef.
-   * @param data Is an instance of input data.
    * @param data Is an instance of input data.
    */
   constructor(
@@ -42,22 +47,19 @@ export class AppGamesFishingGameOverComponent implements OnInit {
           if (findLanguage) {
             const findLevel = findLanguage.data.find((item: GameDTO) => item.id === this.data.level.id);
             if (findLevel && findLevel.results && findLevel.results.length > 1) {
-              this.findMaxResult = findLevel.results.reduce((prev: any, current: any) => (prev.numberOfWords > current.numberOfWords) ? prev : current);
+              this.findMaxResult = findLevel.results.reduce((prev: any, current: any) => (prev.time < current.time) ? prev : current);
+              if (this.findMaxResult && this.findMaxResult.time === findLevel.results[findLevel.results.length - 1].time
+                && this.findMaxResult.numberOfWords === findLevel.results[findLevel.results.length - 1].numberOfWords) {
+                this.isHighScore = true;
+              }
             } else {
               this.findMaxResult = undefined;
             }
+            this.time = this.calculateTime(findLevel.results[findLevel.results.length - 1].time);
           }
         }
       }
     }
-  }
-
-  /**
-   * Closes the modal.
-   */
-  close(): void {
-    this.router.navigate(['/games/fish/level']);
-    this.dialogRef.close();
   }
 
   /**
@@ -76,7 +78,7 @@ export class AppGamesFishingGameOverComponent implements OnInit {
   }
 
   /**
-   * Play to next level.
+   * Play next level.
    */
   playNext(): void {
     this.dialogRef.close('next');
@@ -88,5 +90,27 @@ export class AppGamesFishingGameOverComponent implements OnInit {
   selectLevel(): void {
     this.router.navigate(['/games/fish/level']);
     this.dialogRef.close();
+  }
+
+  /**
+   * Calculate the time from milliseconds to minutes and seconds.
+   *
+   * @param time Represents the time in milliseconds.
+   *
+   * @returns The total time in minutes and seconds.
+   */
+  calculateTime(time: number): string {
+    let minutes = 0;
+    let seconds = 0;
+    if (!this.data.timeOut) {
+      minutes = Math.floor(time / 60000);
+      seconds = Number(((time % 60000) / 1000).toFixed(0));
+    } else {
+      const timeArray = environment.gameTime.split(':');
+      const mins = timeArray[0].split('');
+      minutes = Number(mins[1]);
+      seconds = Number(timeArray[1]);
+    }
+    return minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
   }
 }

@@ -176,3 +176,4 @@ export const DefaultReadLetterOptions: KeyboardSettingsDTO[] = [
 export const DefaultReadTextOptions: KeyboardSettingsDTO[] = [
   { type: 'readWord', label: 'Read words', selected: false },
 ];
+

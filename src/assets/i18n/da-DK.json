@@ -21,7 +21,6 @@
   "translateExercises": "exercises",
   "da-DK": "Dansk",
   "nb-NO": "Norsk (NB)",
-  "nn-NO": "Nynorsk",
   "sv-SE": "Svensk",
   "translateKeyboard": "Keyboard",
   "translateText": "Text",
@@ -90,5 +89,7 @@
   "translateYouCaught": "You've caught",
   "translateFishes": "fishes",
   "translateHighestScore": "Your highest score",
-  "translatePlayNextLevel": "Play next level"
+  "translatePlayNextLevel": "Play next level",
+  "translateHighScore": "High score",
+  "translateIn": "in"
 }

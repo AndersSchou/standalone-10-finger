@@ -128,7 +128,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setInitialTextSettings();
 
     this.currentLanguage = this.languageHelperService.currentLangUsed;
-    this.setLanguage();
   }
 
   /**
@@ -235,6 +234,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.setMode('full');
     }
+
+    this.setLanguage();
+
     this.cdr.detectChanges();
 
     if (this.exerciseElem.nativeElement && this.exercisesArr.length > 0) {
@@ -885,7 +887,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Set the language of the keyboard.
    */
   setLanguage() {
-    if (this.vkeyboard) {
+    if (this.vkeyboard && this.currentLanguage) {
       const lang = this.currentLanguage.split('-')[0];
       this.vkeyboard.setLanguage(lang as KEYBOARD_LANGUAGE);
     }

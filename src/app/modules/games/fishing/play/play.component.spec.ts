@@ -1,3 +1,5 @@
+import { LevelService } from 'src/app/services/level.service';
+import { GridService } from 'src/app/services/grid.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,6 +18,8 @@ describe('AppGamesFishPlayComponent', () => {
   let onLanguageChangedSpy;
   let routerSpy: jasmine.SpyObj<Router>;
   let matDialogSpy: jasmine.SpyObj<MatDialog>;
+  let gridServiceSpy: jasmine.SpyObj<GridService>;
+  let levelServiceSpy: jasmine.SpyObj<LevelService>;
 
   beforeEach(async () => {
     languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>(['OnLanguageChanged']);
@@ -32,6 +36,9 @@ describe('AppGamesFishPlayComponent', () => {
       afterClosed: () => of(true),
     } as any);
 
+    gridServiceSpy = jasmine.createSpyObj<GridService>(['initGrid']);
+    levelServiceSpy = jasmine.createSpyObj<LevelService>(['generateLevel', 'getNumberOfLevels']);
+
     await TestBed.configureTestingModule({
       declarations: [AppGamesFishPlayComponent],
       providers: [
@@ -39,6 +46,8 @@ describe('AppGamesFishPlayComponent', () => {
         { provide: Router, useValue: routerSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ActivatedRoute, useValue: { queryParams: new Subject() } },
+        { provide: GridService, useValue: gridServiceSpy },
+        { provide: LevelService, useValue: levelServiceSpy },
       ],
       imports: [
         TranslateModule.forRoot(),
