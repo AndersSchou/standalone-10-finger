@@ -1,4 +1,6 @@
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 .loading-bg {
   background-color: $game-blue-bg;

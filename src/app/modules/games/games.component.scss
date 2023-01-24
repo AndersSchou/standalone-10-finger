@@ -1,4 +1,6 @@
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 .center-content {
   display: flex;
@@ -15,7 +17,7 @@
 .game-page-title {
   font-weight: 900;
   font-size: 32px;
-  color: $color-active-secondary;
+  color: theme-var($--color-active-secondary);
   padding-bottom: 16px;
 }
 
@@ -32,13 +34,13 @@
 
 .game-hld {
   padding: 30px;
-  border: 1px solid $color-active;
+  border: 1px solid theme-var($--color-active);
   border-radius: 6px;
   cursor: pointer;
 }
 
 .game-hld:hover {
-  border-color: $color-active-secondary;
+  border-color: theme-var($--color-active-secondary);
 }
 
 .game-title {

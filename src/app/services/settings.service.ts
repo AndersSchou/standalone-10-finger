@@ -25,6 +25,10 @@ export class SettingsService {
   private textSettingsSource = new Subject<TextSettings>();
   // Observable instance of the source object.
   private textSettingsObservable = this.textSettingsSource.asObservable();
+  // The subject used to controls the service communication.
+  private themeSettingsSource = new Subject<string>();
+  // Observable instance of the source object.
+  private themeSettingsObservable = this.themeSettingsSource.asObservable();
 
   /**
    * Getter function for private viewSettings Observable.
@@ -63,6 +67,15 @@ export class SettingsService {
   }
 
   /**
+   * Getter function for private viewSettings Observable.
+   *
+   * @return Observable<string> That listens for any actions.
+   */
+  public get themeSettingsAction(): Observable<string> {
+    return this.themeSettingsObservable;
+  }
+
+  /**
    * Calls the source of the observable and cascades the action.
    *
    * @param value Is the action object you want to cascade.
@@ -96,6 +109,15 @@ export class SettingsService {
    */
   setTextSetting(value: TextSettings): void {
     this.textSettingsSource.next(value);
+  }
+
+  /**
+   * Calls the source of the observable and cascades the action.
+   *
+   * @param value Is the action object you want to cascade.
+   */
+  setThemeSetting(value: string): void {
+    this.themeSettingsSource.next(value);
   }
 
   /**
@@ -139,6 +161,10 @@ export class SettingsService {
 
     if (!localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
       localStorage.setItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT, 'partial');
+    }
+
+    if (!localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR)) {
+      localStorage.setItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR, 'blue');
     }
   }
 

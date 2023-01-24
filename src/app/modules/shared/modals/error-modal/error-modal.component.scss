@@ -1,4 +1,6 @@
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 .title {
   font-size: 22px;
@@ -26,11 +28,11 @@
   padding: 10px 15px;
   min-width: 40px;
   text-align: center;
-  color: $color-active;
+  color: theme-var($--color-active);
 }
 
 .action-btn:hover {
-  color: $color-active-secondary;
+  color: theme-var($--color-active-secondary);
 }
 
 .icon-hld {

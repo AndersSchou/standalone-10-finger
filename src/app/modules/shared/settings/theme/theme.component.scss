@@ -1,0 +1,15 @@
+@import "app-colors";
+
+.theme-bg-hld {
+  width: calc(100% - 48px);
+  border-radius: 12px;
+  height: 24px;
+}
+
+.theme-bg-hld.blue {
+  background: $color-active-blue;
+}
+
+.theme-bg-hld.orange {
+  background: $color-active;
+}

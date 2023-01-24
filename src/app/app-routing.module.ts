@@ -6,7 +6,6 @@ import { AppGamesFishPlayComponent } from './modules/games/fishing/play/play.com
 import { AppGamesFishSetLevelComponent } from './modules/games/fishing/set-level/set-level.component';
 import { AppGamesComponent } from './modules/games/games.component';
 import { AppHomeComponent } from './modules/home/home.component';
-import { AppInfoComponent } from './modules/info/info.component';
 import { AppLoginComponent } from './modules/login/login.component';
 import { AppSetCourseComponent } from './modules/set-course/set-course.component';
 import { AppTypingResultComponent } from './modules/typing/result/result.component';
@@ -65,7 +64,7 @@ const routes: Routes = [
   },
   {
     path: 'info',
-    component: AppInfoComponent,
+    component: AppHomeComponent,
     canActivate: [AuthGuardService],
   }
 ];

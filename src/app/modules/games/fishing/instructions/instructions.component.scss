@@ -1,4 +1,6 @@
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 .instructions-bg {
   background-color: $game-blue-bg;
@@ -47,7 +49,7 @@
   font-weight: 900;
   font-size: 32px;
   line-height: 138%;
-  color: $color-active;
+  color: theme-var($--color-active);
 }
 
 .instruction-description {
@@ -76,7 +78,8 @@
 }
 
 .navigation-btn:hover {
-  background: $color-active;
+  background: theme-var($--color-active);
+  color: theme-var($--color-active-text);
 }
 
 .navigation-btn.disabled:hover,
@@ -92,7 +95,7 @@
 }
 
 ::ng-deep .navigation-btn:hover .mat-icon svg>path {
-  stroke: $default-text-color;
+  stroke: theme-var($--color-active-text);
 }
 
 .instruction-actions-hld {
@@ -119,7 +122,8 @@
   -moz-box-shadow: 12px 12px 24px rgb(247 160 0 / 20%);
   -webkit-box-shadow: 12px 12px 24px rgb(247 160 0 / 20%);
   border-radius: 12px;
-  background: $color-active;
+  background: theme-var($--color-active);
+  color: theme-var($--color-active-text);
   display: flex;
   flex-direction: row;
   align-items: center;

@@ -1,42 +1,39 @@
+import { AppSharedSettingsThemeComponent } from './theme.component';
+import { MaterialModule } from '../../material.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
 import { SettingsService } from 'src/app/services/settings.service';
-import { MaterialModule } from '../shared/material.module';
-import { AppInfoComponent } from './info.component';
 
-describe('AppInfoComponent', () => {
-  let component: AppInfoComponent;
-  let fixture: ComponentFixture<AppInfoComponent>;
+describe('AppSharedSettingsThemeComponent', () => {
+  let component: AppSharedSettingsThemeComponent;
+  let fixture: ComponentFixture<AppSharedSettingsThemeComponent>;
   let settingsServiceSpy: jasmine.SpyObj<SettingsService>;
-  let onViewSettingsActionSpy;
 
   beforeEach(async () => {
-    settingsServiceSpy = jasmine.createSpyObj<SettingsService>(['viewSettingsAction']);
-    (settingsServiceSpy as any).viewSettingsAction = new Observable(
-      (subscriber) => {
-        onViewSettingsActionSpy = subscriber;
-      }
-    );
+    settingsServiceSpy = jasmine.createSpyObj<SettingsService>([
+      'setThemeSetting'
+    ]);
 
     await TestBed.configureTestingModule({
-      declarations: [AppInfoComponent],
+      declarations: [AppSharedSettingsThemeComponent],
       providers: [
         { provide: SettingsService, useValue: settingsServiceSpy },
       ],
       imports: [
         TranslateModule.forRoot(),
         MaterialModule,
-        MatIconTestingModule
+        MatIconTestingModule,
+        RouterTestingModule
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppInfoComponent);
+    fixture = TestBed.createComponent(AppSharedSettingsThemeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

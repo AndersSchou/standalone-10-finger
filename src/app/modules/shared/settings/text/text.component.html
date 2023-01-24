@@ -16,7 +16,8 @@
   <!-- Font family options -->
   <div *ngFor="let option of fontFamilies" class="option-hld mtb-10" [ngClass]="{'active': option.selected}"
     (click)="selectFontFamily(option)">
-    <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"></mat-icon>
+    <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"
+      [ngClass]="{'radio-checked': option.selected}"></mat-icon>
     {{option.label}}
   </div>
   <div fxlayout="row" mat-button [matMenuTriggerFor]="menuFontFamily" class="dropdown-btn"
@@ -35,7 +36,8 @@
   <!-- Text color options -->
   <div *ngFor="let option of textColorBgOptions" class="option-hld mtb-10" [ngClass]="{'active': option.selected}"
     (click)="selectThemeColor(option)">
-    <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"></mat-icon>
+    <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"
+      [ngClass]="{'radio-checked': option.selected}"></mat-icon>
     <span *ngIf="option.label">{{option.label | translate }}</span>
   </div>
   <div class="ptb-5">
@@ -54,7 +56,8 @@
   <div class="divider mtb-18"></div>
   <div class="section-title">{{ 'translateLayout' | translate}}</div>
   <div *ngFor="let option of layoutTypes" class="option-hld mtb-10" (click)="selectDisplayLayout(option)">
-    <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"></mat-icon>
+    <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"
+      [ngClass]="{'radio-checked': option.selected}"></mat-icon>
     <div class="layout-opt">
       <div *ngIf="option.type==='top'">{{option.label}}</div>
       <mat-icon svgIcon="keyboard_3" class="keyboard-icon"></mat-icon>

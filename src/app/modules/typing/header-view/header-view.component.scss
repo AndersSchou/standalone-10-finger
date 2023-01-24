@@ -1,7 +1,9 @@
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 .typing-header {
-  background: $light-yellow;
+  background: theme-var($--active-light-bg);
 }
 
 .header-content {
@@ -61,12 +63,12 @@
 }
 
 ::ng-deep .reset-hld .mat-icon svg>path {
-  stroke: $color-active-secondary;
+  stroke: theme-var($--color-active-secondary);
 }
 
 ::ng-deep .reset-hld .mat-icon svg>path:nth-of-type(3),
 ::ng-deep .reset-hld .mat-icon svg>path:nth-of-type(4) {
-  fill: $color-active-secondary;
+  fill: theme-var($--color-active-secondary);
   stroke: none;
 }
 
@@ -75,7 +77,7 @@
 }
 
 .course-progress-hld .progress {
-  background: $color-active;
+  background: theme-var($--color-active);
   height: 100%;
   border-radius: 4px;
 }
@@ -86,5 +88,5 @@
   text-align: center;
   margin-top: 16px;
   margin-bottom: 24px;
-  color: $color-active-secondary;
+  color: theme-var($--color-active-secondary);
 }

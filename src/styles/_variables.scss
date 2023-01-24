@@ -1,0 +1,50 @@
+$--color-active: --color-active;
+$--color-active-secondary: --color-active-secondary;
+$--color-active-text: --color-active-text;
+$--active-bg-hover: --active-bg-hover;
+$--active-light-bg: --active-light-bg;
+$--welcome-bg: --welcome-bg;
+$--welcome-img-man: --welcome-img-man;
+$--welcome-img-woman: --welcome-img-woman;
+$--shadow: --shadow;
+$--cover-space: --cover-space;
+$--cover-text: --cover-text;
+$--cover-clouds: --cover-clouds;
+$--cover-rocket: --cover-rocket;
+$--logo: --logo;
+
+// Default blue theme.
+$theme-map-blue: (
+  $--color-active: #106ebe,
+    $--color-active-secondary: #1488eb,
+      $--color-active-text: #fff,
+        $--active-bg-hover: #E3F1FC,
+          $--active-light-bg: #F3F7FC,
+            $--welcome-bg: url('../assets/svg/welcome_bg.svg'),
+              $--welcome-img-man: url('../assets/svg/man_typing.svg'),
+                $--welcome-img-woman: url('../assets/svg/woman_showing.svg'),
+                  $--shadow: 12px 12px 24px rgb(16, 110, 190, 0.2),
+                    $--cover-text: url('../assets/svg/cover_text.svg'),
+                      $--logo: url('../assets/svg/logo_10_finger_full.svg'),
+                        $--cover-clouds: url('../assets/svg/cover_clouds.svg'),
+                          $--cover-space: url('../assets/svg/cover_space.svg'),
+                            $--cover-rocket: url('../assets/svg/cover_rocket_alone.svg'),
+                            );
+
+                          // Orange theme.
+                          $theme-map-orange: (
+                            $--color-active: #FFC757,
+                              $--color-active-secondary: #D38E03,
+                                $--color-active-text: #212631,
+                                  $--active-bg-hover: #FFEBC2,
+                                    $--active-light-bg: #FBF8F4,
+                                      $--welcome-bg: url('../assets/svg/welcome_bg_orange.svg'),
+                                        $--welcome-img-man: url('../assets/svg/man_typing_orange.svg'),
+                                          $--welcome-img-woman: url('../assets/svg/woman_showing_orange.svg'),
+                                            $--shadow: 12px 12px 24px rgb(247 160 0 / 20%),
+                                              $--cover-text: url('../assets/svg/cover_text_orange.svg'),
+                                                $--logo: url('../assets/svg/logo_10_finger_full_orange.svg'),
+                                                  $--cover-clouds: url('../assets/svg/cover_clouds_orange.svg'),
+                                                    $--cover-space: url('../assets/svg/cover_space_orange.svg'),
+                                                      $--cover-rocket: url('../assets/svg/cover_rocket_alone_orange.svg'),
+                                                      );

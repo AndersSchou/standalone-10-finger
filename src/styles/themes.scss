@@ -1,0 +1,10 @@
+@import 'variables';
+@import 'mixins';
+
+:root.blue {
+  @include spread-map($theme-map-blue);
+}
+
+:root.orange {
+  @include spread-map($theme-map-orange);
+}

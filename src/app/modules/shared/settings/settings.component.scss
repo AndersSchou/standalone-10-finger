@@ -1,4 +1,6 @@
 @import "app-colors";
+@import "variables";
+@import "mixins";
 
 .settings-hld {
   position: fixed;
@@ -7,7 +9,7 @@
   z-index: 2;
   width: 450px;
   background: $white-color;
-  border: 1px solid $color-active;
+  border: 1px solid theme-var($--color-active);
   box-shadow: 20px 20px 40px rgb(0 0 0 / 7%);
   border-radius: 16px;
   padding: 24px 32px;
@@ -23,7 +25,7 @@
 .drag-bg {
   cursor: pointer;
   text-align: center;
-  background: $active-bg-hover;
+  background: theme-var($--active-bg-hover);
   border-radius: 12px;
   height: 16px;
   line-height: 20px;
@@ -66,7 +68,7 @@
 }
 
 .setting-hld.active {
-  background: $active-bg-hover;
+  background: theme-var($--active-bg-hover);
 }
 
 :host ::ng-deep .option-hld {
@@ -83,7 +85,7 @@
 }
 
 :host ::ng-deep .option-hld.active .mat-icon.keyboard-icon {
-  border: 3px solid $active-bg-hover;
+  border: 3px solid theme-var($--active-bg-hover);
 }
 
 :host ::ng-deep .mr-24 {
@@ -107,4 +109,16 @@
   font-size: 16px;
   letter-spacing: 0.02em;
   margin-bottom: 18px;
+}
+
+:host ::ng-deep .settings .mat-icon.radio-checked svg>circle:first-of-type {
+  stroke: theme-var($--color-active);
+}
+
+:host ::ng-deep .settings .mat-icon.radio-checked svg>circle:last-of-type {
+  fill: theme-var($--color-active);
+}
+
+:host ::ng-deep .settings .mat-icon.checkbox-checked svg>rect {
+  fill: theme-var($--color-active);
 }

@@ -2,34 +2,29 @@
 <app-shared-settings *ngIf="viewSettings"></app-shared-settings>
 <div class="main-content-hld bg-img">
   <div class="center-content">
-    <div>
-      <div class="welcome-text padd-tb-44">
-        <div class="welcome-title">{{ "translateWelcome10Fingers" | translate}}</div>
-        <div class="welcome-description">{{ "translateWelcomeMsg" | translate}}</div>
-      </div>
-      <div class="padd-tb-44">
-        <div fxLayout="row wrap" fxLayoutGap="100px">
-          <div fxFlex>
-            <div class="wbtn-hld">
-              <div class="welcome-btn" (click)="navigateTo('/type', true)">
-                {{ "translateStartTyping" | translate}}
-                <mat-icon svgIcon="keyboard" class="ml-20"></mat-icon>
-              </div>
-            </div>
-            <div>
-              <img src="/assets/svg/illustration_start.svg">
-            </div>
+    <div class="row wrap" fxLayoutGap="64px">
+      <div fxFlex="640px" class="video-hld"></div>
+      <div fxFlex="360px">
+        <div class="welcome-title mb-32">{{ "translateWelcome10Fingers" | translate }}</div>
+        <div class="row mb-32">
+          <div fxFlex="120px" class="img-hld man"></div>
+          <div fxFlex class="flex-display v-align lh-22">{{ 'translateStartTypingFromWhereLeft' | translate }}</div>
+        </div>
+        <div class="wbtn-hld">
+          <div class="welcome-btn" (click)="navigateTo('/type', true)">
+            {{ "translateStartTyping" | translate}}
+            <mat-icon svgIcon="keyboard" class="ml-20"></mat-icon>
           </div>
-          <div fxFlex>
-            <div class="wbtn-hld">
-              <div class="welcome-btn" (click)="navigateTo('/set-course')">
-                {{ "translateSetCourse" | translate}}
-                <mat-icon svgIcon="courses" class="ml-20"></mat-icon>
-              </div>
-            </div>
-            <div>
-              <img src="/assets/svg/illustration_course.svg">
-            </div>
+        </div>
+        <div class="divider mb-32"></div>
+        <div class="row mb-32">
+          <div fxFlex="120px" class="img-hld woman"></div>
+          <div fxFlex class="flex-display v-align lh-22">{{ 'translateDefineNewLevel' | translate }}</div>
+        </div>
+        <div class="wbtn-hld">
+          <div class="welcome-btn" (click)="navigateTo('/set-course')">
+            {{ "translateSetCourse" | translate}}
+            <mat-icon svgIcon="courses" class="ml-20"></mat-icon>
           </div>
         </div>
       </div>

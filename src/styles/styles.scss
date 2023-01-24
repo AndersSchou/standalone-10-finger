@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import "./assets/app-colors";
+@import "../assets/app-colors";
 
 html,
 body {
@@ -69,12 +69,21 @@ body .mat-icon {
   margin-left: auto;
 }
 
+.flex-display {
+  display: flex;
+}
+
 .v-align {
   align-items: center;
 }
 
-.achievement-backdrop {
+.orange .achievement-backdrop {
   background: rgba(252, 169, 3, 0.8);
+  backdrop-filter: blur(16px);
+}
+
+.blue .achievement-backdrop {
+  background: rgba(16, 110, 190, 0.8);
   backdrop-filter: blur(16px);
 }
 

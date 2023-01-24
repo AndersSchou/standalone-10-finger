@@ -9,7 +9,8 @@
             [ngClass]="{'active': category.name === currentCategory.name}" (click)="selectCategory(category)">
             <div>{{category.name}}</div>
             <div class="icon-hld">
-              <mat-icon [svgIcon]="i===0 ? 'icon_read' : (i===1 ? 'icon_symbol': 'icon_speed')" class="mr-10">
+              <mat-icon [svgIcon]="i===0 ? 'icon_read' : (i===1 ? 'icon_symbol': 'icon_speed')" class="mr-10"
+                [ngClass]="{'symbol': i===1, 'read': i===0}">
               </mat-icon>
             </div>
           </div>

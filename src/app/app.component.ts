@@ -8,6 +8,7 @@ import { CustomIconService } from './services/custom-icon.service';
 import { LanguageHelperService } from './services/language.service';
 import { AuthService } from './services/auth.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { STORAGE_KEY_TYPE } from './common/enums';
 
 /** Main app component. */
 @Component({
@@ -53,6 +54,20 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
     this.settingsService.setDefaultSettings();
+
+    // Listens for theme changes.
+    this.settingsService.themeSettingsAction
+      .pipe(takeUntil(this.destroyed)).subscribe((theme: string) => {
+        this.changeTheme(theme);
+      });
+
+    // Set the theme if it's already stored in the local storage.
+    if (localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR)) {
+      const mainThemeOption = localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR);
+      if (mainThemeOption) {
+        this.changeTheme(mainThemeOption);
+      }
+    }
   }
 
   /**
@@ -83,4 +98,17 @@ export class AppComponent implements OnInit, OnDestroy {
     // Fetch all the icons.
     this.customIconService.fetchCustomIcons(APP_ICONS);
   }
+
+  /**
+   * Change the theme.
+   *
+   * @param theme Represent the new selected theme.
+   */
+  changeTheme(theme: string): void {
+    const target = document.getElementsByTagName('html')[0];
+    target.className = '';
+    target.className = theme;
+    localStorage.setItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR, theme);
+  }
+
 }

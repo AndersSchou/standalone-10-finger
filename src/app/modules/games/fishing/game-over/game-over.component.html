@@ -46,7 +46,7 @@
   <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" class="pt-24">
     <div class="details-actions-hld">
       <div class="round-btn" matTooltip="{{'translateReplay' | translate}}" (click)="replay()">
-        <mat-icon svgIcon="icon_replay"></mat-icon>
+        <mat-icon svgIcon="icon_replay" class="replay"></mat-icon>
       </div>
       <div *ngIf="data.showNext" class="round-btn" matTooltip="{{'translatePlayNextLevel' | translate}}"
         (click)="playNext()">
@@ -56,7 +56,7 @@
         <mat-icon svgIcon="enter"></mat-icon>
       </div>
       <div class="round-btn" matTooltip="{{'translateBackToGames' | translate }}" (click)="exit()">
-        <mat-icon svgIcon="icon_logout"></mat-icon>
+        <mat-icon svgIcon="icon_logout" class="back-to-games"></mat-icon>
       </div>
     </div>
   </div>
