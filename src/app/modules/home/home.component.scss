@@ -87,5 +87,5 @@
   border-radius: 12px;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url('../../../assets/svg/video.svg');
+  background-image: theme-var($--video-holder);
 }
