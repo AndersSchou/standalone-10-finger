@@ -857,6 +857,7 @@ export const sv = [
   'förklarar',
   'ledningen',
   'föräldrar',
+  'intowords',
   'medlemmar',
   'avgörande',
   'anledning',

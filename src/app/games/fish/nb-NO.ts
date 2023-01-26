@@ -491,6 +491,7 @@ export const nb = [
   'politiske',
   'vanskelig',
   'problemer',
+  'intowords',
   'hverandre',
   'samarbeid',
   'selskapet',
