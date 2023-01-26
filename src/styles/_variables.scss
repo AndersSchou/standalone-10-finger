@@ -12,6 +12,7 @@ $--cover-text: --cover-text;
 $--cover-clouds: --cover-clouds;
 $--cover-rocket: --cover-rocket;
 $--logo: --logo;
+$--video-holder: --video-holder;
 
 // Default blue theme.
 $theme-map-blue: (
@@ -29,22 +30,24 @@ $theme-map-blue: (
                         $--cover-clouds: url('../assets/svg/cover_clouds.svg'),
                           $--cover-space: url('../assets/svg/cover_space.svg'),
                             $--cover-rocket: url('../assets/svg/cover_rocket_alone.svg'),
-                            );
+                              $--video-holder: url('../assets/svg/video.svg'),
+                              );
 
-                          // Orange theme.
-                          $theme-map-orange: (
-                            $--color-active: #FFC757,
-                              $--color-active-secondary: #D38E03,
-                                $--color-active-text: #212631,
-                                  $--active-bg-hover: #FFEBC2,
-                                    $--active-light-bg: #FBF8F4,
-                                      $--welcome-bg: url('../assets/svg/welcome_bg_orange.svg'),
-                                        $--welcome-img-man: url('../assets/svg/man_typing_orange.svg'),
-                                          $--welcome-img-woman: url('../assets/svg/woman_showing_orange.svg'),
-                                            $--shadow: 12px 12px 24px rgb(247 160 0 / 20%),
-                                              $--cover-text: url('../assets/svg/cover_text_orange.svg'),
-                                                $--logo: url('../assets/svg/logo_10_finger_full_orange.svg'),
-                                                  $--cover-clouds: url('../assets/svg/cover_clouds_orange.svg'),
-                                                    $--cover-space: url('../assets/svg/cover_space_orange.svg'),
-                                                      $--cover-rocket: url('../assets/svg/cover_rocket_alone_orange.svg'),
-                                                      );
+                            // Orange theme.
+                            $theme-map-orange: (
+                              $--color-active: #FFC757,
+                                $--color-active-secondary: #D38E03,
+                                  $--color-active-text: #212631,
+                                    $--active-bg-hover: #FFEBC2,
+                                      $--active-light-bg: #FBF8F4,
+                                        $--welcome-bg: url('../assets/svg/welcome_bg_orange.svg'),
+                                          $--welcome-img-man: url('../assets/svg/man_typing_orange.svg'),
+                                            $--welcome-img-woman: url('../assets/svg/woman_showing_orange.svg'),
+                                              $--shadow: 12px 12px 24px rgb(247 160 0 / 20%),
+                                                $--cover-text: url('../assets/svg/cover_text_orange.svg'),
+                                                  $--logo: url('../assets/svg/logo_10_finger_full_orange.svg'),
+                                                    $--cover-clouds: url('../assets/svg/cover_clouds_orange.svg'),
+                                                      $--cover-space: url('../assets/svg/cover_space_orange.svg'),
+                                                        $--cover-rocket: url('../assets/svg/cover_rocket_alone_orange.svg'),
+                                                          $--video-holder: url('../assets/svg/video_orange.svg'),
+                                                          );
