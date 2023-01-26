@@ -40,18 +40,6 @@
       [ngClass]="{'radio-checked': option.selected}"></mat-icon>
     <span *ngIf="option.label">{{option.label | translate }}</span>
   </div>
-  <div class="ptb-5">
-    <div class="dropdown-label">{{ 'translateOneWordRepeat' | translate }}</div>
-    <div fxlayout="row" mat-button [matMenuTriggerFor]="wordRepeat" class="dropdown-btn">
-      <div fxFlex>{{selectedWordRepeat+1}}</div>
-      <div fxFlex="nogrow">
-        <mat-icon svgIcon="chevron_down"></mat-icon>
-      </div>
-    </div>
-    <mat-menu #wordRepeat="matMenu">
-      <button mat-menu-item *ngFor="let opt of wordToRepeat" (click)="selectWordRepeat(opt)">{{opt+1}}</button>
-    </mat-menu>
-  </div>
 
   <div class="divider mtb-18"></div>
   <div class="section-title">{{ 'translateLayout' | translate}}</div>
