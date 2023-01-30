@@ -72,6 +72,8 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   totalNbrOfLevels = 0;
   // Stores the goal of the game level.
   levelGoal = 0;
+  // Stores the total number of errors.
+  errorCount = 0;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
@@ -183,7 +185,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
           }
 
           if (this.schoolFish) {
-            this.schoolFish.keyDown(event.key.toLowerCase());
+            this.schoolFish.keyDown(event.key);
           }
         }
         this.startTimeCount = true;
@@ -331,7 +333,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     const levelResult: ResultDTO = {
       numberOfWords: this.completedWords,
       characters: this.charNbr,
-      mistakes: 0,
+      mistakes: this.errorCount,
       time: timeDiff,
       updatedAt: new Date()
     };
@@ -417,6 +419,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     this.score = scoreData.score;
     this.completedWords = scoreData.completedWords;
     this.charNbr = scoreData.chars;
+    this.errorCount = scoreData.errors;
 
     if (this.currentLevel && this.score >= this.currentLevel.levelDefinition.goal) {
       this.gameOver();
