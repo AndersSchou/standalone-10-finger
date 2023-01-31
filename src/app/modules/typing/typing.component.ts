@@ -10,6 +10,7 @@ import {
   createEmptyCategoriesDTO, createEmptyCourseResponseDTO,
   StoredCourseResponseDTO
 } from 'src/app/dto/course.dto';
+import { createEmptyTextSettingsSizeDTO, TextSettingsSizeDTO } from 'src/app/dto/settings.dto';
 import { ReadOptionsDTO } from 'src/app/dto/speak.dto';
 import { TranslationsDTO } from 'src/app/dto/translation.dto';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
@@ -66,7 +67,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   // Tells if it should show the settings view or not.
   viewSettings: boolean = false;
   // Stores the text settings (font size and font family).
-  textSetting: { [key: string]: string } = {};
+  textSetting: TextSettingsSizeDTO = createEmptyTextSettingsSizeDTO();
   // Stores the text color option for the exercise.
   coloredText: string = '';
   // Tells if the keyboard should be displayed on top or on the bottom of the exercises holder.
@@ -103,6 +104,8 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   isLastChar: boolean = false;
   // Stores the text that will be read.
   textToRead: string = '';
+  // Stores the selected keyboard theme.
+  keyboardTheme: string = '';
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
@@ -134,40 +137,30 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Set initial settings based on the stored settings from local storage.
    */
   setInitialTextSettings(): void {
-    if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
-      this.textSetting = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE) as string);
+    this.textSetting = this.settingsService.getDefaultTextSize();
+    this.coloredText = this.settingsService.getDefaultTextColor();
+    const option = this.settingsService.getDefaultTextDisplayLayout();
+    if (option === 'top') {
+      this.keyboardTop = true;
+    } else {
+      this.keyboardTop = false;
     }
-    if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR)) {
-      this.coloredText = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR) as string);
-    }
-    if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT)) {
-      const option = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT) as string);
-      if (option === 'top') {
-        this.keyboardTop = true;
-      } else {
-        this.keyboardTop = false;
-      }
-    }
+
     // Set read letter option.
-    if (localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER)) {
-      const readOption = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER) as string);
-      if (readOption.type !== 'none') {
-        const selectedOption: { type: 'readLetterName' | 'readLetterSound' } = readOption;
-        this.readTextOptions[selectedOption.type] = true;
-      }
+    const readOption = this.settingsService.getDefaultReadLetter();
+    if (readOption.type !== 'none') {
+      const selectedOption = readOption.type;
+      this.readTextOptions[selectedOption as keyof typeof this.readTextOptions] = true;
     }
 
     // Set read text options.
-    if (localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT)) {
-      const readText = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT) as string);
-      for (const opt of readText) {
-        if (opt.selected) {
-          const selectedOption: { type: 'readWord' } = opt;
-          this.readTextOptions[selectedOption.type] = true;
-        }
+    const readText = this.settingsService.getDefaultReadText();
+    for (const opt of readText) {
+      if (opt.selected) {
+        const selectedOption = opt.type;
+        this.readTextOptions[selectedOption as keyof typeof this.readTextOptions] = true;
       }
     }
-
   }
 
   /**
@@ -191,6 +184,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.settingsService.keyboardThemeColorAction
       .pipe(takeUntil(this.destroyed))
       .subscribe((themeColor: KEYBOARD_COLOR_GROUP_TYPE) => {
+        this.keyboardTheme = themeColor;
         this.setTheme(themeColor);
       });
 
@@ -223,18 +217,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    *  A lifecycle hook that is called after Angular has fully initialized a component's view.
    */
   ngAfterViewInit(): void {
-    if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR)) {
-      this.setTheme(localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR) as KEYBOARD_COLOR_GROUP_TYPE);
-    } else {
-      this.setTheme('');
-    }
-
-    if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
-      this.setMode(localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT) as KEYBOARD_LAYOUT_GROUP_TYPE);
-    } else {
-      this.setMode('partial');
-    }
-
+    this.keyboardTheme = this.settingsService.getDefaultKeyboardThemeColor() as KEYBOARD_COLOR_GROUP_TYPE;
+    this.setTheme(this.keyboardTheme as KEYBOARD_COLOR_GROUP_TYPE);
+    this.setMode(this.settingsService.getDefaultKeyboardPrimaryLayout() as KEYBOARD_LAYOUT_GROUP_TYPE);
     this.setLanguage();
 
     this.cdr.detectChanges();

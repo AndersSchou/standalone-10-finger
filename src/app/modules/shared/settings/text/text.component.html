@@ -18,7 +18,8 @@
     (click)="selectFontFamily(option)">
     <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"
       [ngClass]="{'radio-checked': option.selected}"></mat-icon>
-    {{option.label}}
+    <span *ngIf="option.type!=='other'">{{option.label}}</span>
+    <span *ngIf="option.type==='other'">{{'translate'+option.label | translate}}</span>
   </div>
   <div fxlayout="row" mat-button [matMenuTriggerFor]="menuFontFamily" class="dropdown-btn"
     [ngClass]="{'disabled': !fontFamilies[fontFamilies.length-1].selected}">
@@ -38,7 +39,7 @@
     (click)="selectThemeColor(option)">
     <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"
       [ngClass]="{'radio-checked': option.selected}"></mat-icon>
-    <span *ngIf="option.label">{{option.label | translate }}</span>
+    <span *ngIf="option.label">{{'translate'+option.label | translate }}</span>
   </div>
   <div class="ptb-5">
     <div class="dropdown-label">{{ 'translateOneWordRepeat' | translate }}</div>

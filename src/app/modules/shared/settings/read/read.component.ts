@@ -34,26 +34,15 @@ export class AppSharedSettingsReadComponent {
    */
   setInitialValues() {
     // Set read letter initial value.
-    if (localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER)) {
-      const readLetterOption = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER) as string);
-      const findLetter = this.readLetterOptions.find(el => el.type === readLetterOption.type);
-      if (findLetter) {
-        findLetter.selected = true;
-      }
-    } else {
-      this.readLetterOptions[this.readLetterOptions.length - 1].selected = true;
+    const readLetterOption = this.settingsService.getDefaultReadLetter();
+    const findLetter = this.readLetterOptions.find(el => el.type === readLetterOption.type);
+    if (findLetter) {
+      findLetter.selected = true;
     }
 
     // Set read text initial value.
-    if (localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT)) {
-      const readTextOption = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT) as string);
-      this.readTextOptions = readTextOption;
-    } else {
-      this.readTextOptions = DefaultReadTextOptions;
-      for (const option of this.readTextOptions) {
-        option.selected = true;
-      }
-    }
+    const readTextOption = this.settingsService.getDefaultReadText();
+    this.readTextOptions = readTextOption;
   }
 
   /**

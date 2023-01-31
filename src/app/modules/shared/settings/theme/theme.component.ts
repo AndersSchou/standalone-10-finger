@@ -1,7 +1,6 @@
 import { SettingsService } from 'src/app/services/settings.service';
 import { Component } from '@angular/core';
 import { DefaultThemeOptions } from 'src/app/common/constants';
-import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
 import { KeyboardSettingsDTO } from 'src/app/dto/settings.dto';
 
 /**
@@ -24,15 +23,17 @@ export class AppSharedSettingsThemeComponent {
   constructor(
     private readonly settingsService: SettingsService
   ) {
-    if (localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR)) {
-      const mainThemeOption = localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR);
-      const findTheme = this.themes.find(el => el.type === mainThemeOption);
-      if (findTheme) {
-        findTheme.selected = true;
-      }
-    } else {
-      this.themes[0].selected = true;
-      this.changeTheme(this.themes[0]);
+    this.setInitialValues();
+  }
+
+  /**
+   * Sets the initial values for the settings.
+   */
+  setInitialValues(): void {
+    const mainThemeOption = this.settingsService.getDefaultMainThemeColor();
+    const findTheme = this.themes.find(el => el.type === mainThemeOption);
+    if (findTheme) {
+      findTheme.selected = true;
     }
   }
 

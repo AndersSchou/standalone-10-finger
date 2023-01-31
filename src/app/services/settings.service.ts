@@ -1,3 +1,4 @@
+import { KeyboardSettingsDTO, TextSettingsSizeDTO } from 'src/app/dto/settings.dto';
 import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 import { DefaultReadLetterOptions, DefaultReadTextOptions } from "../common/constants";
@@ -124,48 +125,14 @@ export class SettingsService {
    * Set default settings if they're not set.
    */
   setDefaultSettings(): void {
-    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
-      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_SIZE, JSON.stringify(
-        {
-          fontSize: '24px',
-          fontFamily: 'Roboto'
-        }
-      ));
-    }
-
-    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR)) {
-      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_COLOR, JSON.stringify('no-color'));
-    }
-
-    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT)) {
-      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify('bottom'));
-    }
-
-    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER)) {
-      const readLetter = DefaultReadLetterOptions[DefaultReadLetterOptions.length - 1];
-      readLetter.selected = true;
-      localStorage.setItem(TEXT_SETTINGS_TYPE.READ_LETTER, JSON.stringify(readLetter));
-    }
-
-    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT)) {
-      const readText = DefaultReadTextOptions;
-      for (const opt of readText) {
-        opt.selected = true;
-      }
-      localStorage.setItem(TEXT_SETTINGS_TYPE.READ_TEXT, JSON.stringify(readText));
-    }
-
-    if (!localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR)) {
-      localStorage.setItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR, '');
-    }
-
-    if (!localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
-      localStorage.setItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT, 'partial');
-    }
-
-    if (!localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR)) {
-      localStorage.setItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR, 'blue');
-    }
+    this.setDefaultTextSize();
+    this.setDefaultTextColor();
+    this.setDefaultTextDisplayLayout();
+    this.setDefaultReadLetter();
+    this.setDefaultReadText();
+    this.setDefaultKeyboardThemeColor();
+    this.setDefaultKeyboardPrimaryLayout();
+    this.setDefaultThemeColor();
   }
 
   /**
@@ -187,7 +154,6 @@ export class SettingsService {
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT)) {
       localStorage.removeItem(TEXT_SETTINGS_TYPE.READ_TEXT);
     }
-
     if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
       localStorage.removeItem(STORAGE_KEY_TYPE.COURSES_PROGRESS);
     }
@@ -197,6 +163,172 @@ export class SettingsService {
     if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
       localStorage.removeItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT);
     }
+    if (localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR)) {
+      localStorage.removeItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR);
+    }
+  }
+
+  /**
+   * Set default text size.
+   */
+  setDefaultTextSize(): void {
+    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
+      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_SIZE, JSON.stringify(
+        {
+          fontSize: '24px',
+          fontFamily: 'Roboto'
+        }
+      ));
+    }
+  }
+
+  /**
+   * Set default text color.
+   */
+  setDefaultTextColor(): void {
+    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR)) {
+      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_COLOR, JSON.stringify('no-color'));
+    }
+  }
+
+  /**
+   * Set default text display layout.
+   */
+  setDefaultTextDisplayLayout(): void {
+    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT)) {
+      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify('bottom'));
+    }
+  }
+
+  /**
+   * Set default read letter.
+   */
+  setDefaultReadLetter(): void {
+    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER)) {
+      const readLetter = DefaultReadLetterOptions[DefaultReadLetterOptions.length - 1];
+      readLetter.selected = true;
+      localStorage.setItem(TEXT_SETTINGS_TYPE.READ_LETTER, JSON.stringify(readLetter));
+    }
+  }
+
+  /**
+   * Set default read text.
+   */
+  setDefaultReadText(): void {
+    if (!localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT)) {
+      const readText = DefaultReadTextOptions;
+      for (const opt of readText) {
+        opt.selected = true;
+      }
+      localStorage.setItem(TEXT_SETTINGS_TYPE.READ_TEXT, JSON.stringify(readText));
+    }
+  }
+
+  /**
+   * Set default keyboard theme color.
+   */
+  setDefaultKeyboardThemeColor(): void {
+    if (!localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR)) {
+      localStorage.setItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR, 'single-color-group');
+    }
+  }
+
+  /**
+   * Set default keyboard primary layout.
+   */
+  setDefaultKeyboardPrimaryLayout(): void {
+    if (!localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
+      localStorage.setItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT, 'partial');
+    }
+  }
+
+  /**
+   * Set default theme color.
+   */
+  setDefaultThemeColor(): void {
+    if (!localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR)) {
+      localStorage.setItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR, 'blue');
+    }
+  }
+
+  /**
+   * Get default text size settings.
+   *
+   * @returns The default text size settings.
+   */
+  getDefaultTextSize(): TextSettingsSizeDTO {
+    this.setDefaultTextSize();
+    return JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE) as string);
+  }
+
+  /**
+   * Get default text color settings.
+   *
+   * @returns The default text color settings.
+   */
+  getDefaultTextColor(): string {
+    this.setDefaultTextColor();
+    return JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR) as string);
+  }
+
+  /**
+   * Get default text display layout settings
+   *
+   * @returns The default text display layout settings.
+   */
+  getDefaultTextDisplayLayout(): string {
+    this.setDefaultTextDisplayLayout();
+    return JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT) as string);
+  }
+
+  /**
+   * Get default read letter settings.
+   *
+   * @returns The default read letter settings.
+   */
+  getDefaultReadLetter(): KeyboardSettingsDTO {
+    this.setDefaultReadLetter();
+    return JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER) as string);
+  }
+
+  /**
+   * Get default read text settings.
+   *
+   * @returns The default read text settings.
+   */
+  getDefaultReadText(): KeyboardSettingsDTO[] {
+    this.setDefaultReadText();
+    return JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT) as string);
+  }
+
+  /**
+   * Get default keyboard theme color settings.
+   *
+   * @returns The default keyboard theme color settings.
+   */
+  getDefaultKeyboardThemeColor(): string {
+    this.setDefaultKeyboardThemeColor();
+    return localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR) as string;
+  }
+
+  /**
+   * Get default keyboard primary layout settings.
+   *
+   * @returns The default keyboard primary layout settings.
+   */
+  getDefaultKeyboardPrimaryLayout(): string {
+    this.setDefaultKeyboardPrimaryLayout();
+    return localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT) as string;
+  }
+
+  /**
+   * Get default main theme color settings.
+   *
+   * @returns The default main theme color settings.
+   */
+  getDefaultMainThemeColor(): string {
+    this.setDefaultThemeColor();
+    return localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR) as string;
   }
 
 }
