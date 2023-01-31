@@ -54,7 +54,7 @@ export class AppSharedSettingsLanguageComponent {
     });
     lang.selected = true;
     if (lang.label) {
-      this.languageHelperService.setLanguage(lang.label);
+      this.languageHelperService.setLanguage(lang.label, true);
     }
   }
 }

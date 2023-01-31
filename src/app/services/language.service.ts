@@ -1,6 +1,7 @@
+import { DEFAULT_DEBOUNCE_MIN_TIME } from 'src/app/common/constants';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject, timer } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { STORAGE_KEY_TYPE } from '../common/enums';
 import { TranslationsDTO, TranslationsResponseDTO } from '../dto/translation.dto';
@@ -19,11 +20,21 @@ export class LanguageHelperService {
   private currentLanguage: string = '';
   // Available languages.
   readonly availableLanguages = environment.availableLanguages;
+  // Tells if the language should be changed or not.
+  shouldChange = true;
   private getTransSource = new Subject<TranslationsDTO>();
   /**
    * Observable instance of the source object.
    */
   public OnLanguageChanged = this.getTransSource.asObservable();
+  /**
+   * The subject used to controls the service communication.
+   */
+  private initLangSource = new ReplaySubject<boolean>();
+  /**
+   * Observable instance of the source object.
+   */
+  public initLangChanged = this.initLangSource.asObservable();
 
   /**
    * Gets the translations object.
@@ -45,9 +56,15 @@ export class LanguageHelperService {
    * @param translateService Is an instance of TranslateService from TranslateModule.
    */
   constructor(private readonly translateService: TranslateService) {
+    // An EventEmitter to listen to language change events.
     this.translateService.onLangChange.subscribe((data) => {
+      if (this.shouldChange) {
+        this.shouldChange = false;
+        timer(DEFAULT_DEBOUNCE_MIN_TIME).subscribe(() => this.initLangSource.next(true));
+      }
       return this.getCurrentLanguageAndTranslations(data);
     });
+
     // Add languages to the translations array.
     this.translateService.addLangs(this.availableLanguages);
 
@@ -82,10 +99,13 @@ export class LanguageHelperService {
    * Changes the language currently used.
    *
    * @param language Represents the selected language.
+   * @param shouldSave Represents the flag that deteremines whether the language should be saved or not.
    */
-  setLanguage(language: string): void {
+  setLanguage(language: string, shouldSave = false): void {
     this.translateService.use(language);
-    window.localStorage.setItem(STORAGE_KEY_TYPE.CURRENT_LANGUAGE, language);
+    if (shouldSave) {
+      window.localStorage.setItem(STORAGE_KEY_TYPE.CURRENT_LANGUAGE, language);
+    }
   }
 
 }
