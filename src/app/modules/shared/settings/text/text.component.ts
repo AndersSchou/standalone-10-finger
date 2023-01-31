@@ -23,12 +23,8 @@ export class AppSharedSettingsTextComponent {
   textColorBgOptions: KeyboardSettingsDTO[] = DefaultTextBgColor;
   // Stores the layout types.
   layoutTypes: KeyboardSettingsDTO[] = DefaultExerciseLayout;
-  // Stores the default numbers for word to repeat.
-  wordToRepeat: number[] = [];
   // Stores the selected font size.
   selectedFontSize: number = 24;
-  // Stores the selected number of word to repeat.
-  selectedWordRepeat: number;
   // Stores the selected extra font family.
   selectedExtraFontFamily: KeyboardSettingsDTO = {} as KeyboardSettingsDTO;
   // Stores the selected font size and font family options.
@@ -45,11 +41,7 @@ export class AppSharedSettingsTextComponent {
   constructor(
     private readonly settingsService: SettingsService
   ) {
-    for (let i = 0; i < 9; i++) {
-      this.wordToRepeat.push(i);
-    }
     this.setInitialValues();
-    this.selectedWordRepeat = this.wordToRepeat[2];
   }
 
   /**
@@ -145,19 +137,6 @@ export class AppSharedSettingsTextComponent {
     this.settingsService.setTextSetting({
       type: TEXT_SETTINGS_TYPE.TEXT_SIZE,
       value: opt.toString()
-    });
-  }
-
-  /**
-   * Selects the word to repeat number.
-   *
-   * @param opt The selected number for word to repeat.
-   */
-  selectWordRepeat(opt: number): void {
-    this.selectedWordRepeat = opt;
-    this.settingsService.setTextSetting({
-      type: TEXT_SETTINGS_TYPE.TEXT_REPEAT,
-      value: (opt + 1).toString()
     });
   }
 
