@@ -159,8 +159,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     if (readText) {
       for (const opt of readText) {
         if (opt.selected) {
-          const selectedOption = opt.type;
-          this.readTextOptions[selectedOption as keyof typeof this.readTextOptions] = true;
+          this.readTextOptions[this.stringToReadType(opt.type)] = true;
         }
       }
     }
@@ -173,10 +172,11 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    *
    * @returns The read option type.
    */
-  stringToReadType(type: string): 'readLetterName' | 'readLetterSound' {
+  stringToReadType(type: string): 'readLetterName' | 'readLetterSound' | 'readWord' {
     switch (type) {
       case 'readLetterName':
       case 'readLetterSound':
+      case 'readWord':
         return type;
     }
     return 'readLetterName';
