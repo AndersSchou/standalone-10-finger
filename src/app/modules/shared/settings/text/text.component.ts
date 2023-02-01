@@ -59,18 +59,20 @@ export class AppSharedSettingsTextComponent {
     // Set the selected font size and font family based on the saved settings.
     // Set font size.
     this.textStyle = this.settingsService.getDefaultTextSize();
-    this.selectedFontSize = Number(this.textStyle['fontSize'].split(/\D/g)[0]);
-    // Set font family.
-    const findFamily = this.fontFamilies.find(el => el.label === this.textStyle['fontFamily']);
-    if (findFamily) {
-      findFamily.selected = true;
-      this.selectedExtraFontFamily = this.otherFontFam[0];
-    } else {
-      const findOtherFamily = this.otherFontFam.find(el => el.label === this.textStyle['fontFamily']);
-      if (findOtherFamily) {
-        this.fontFamilies[this.fontFamilies.length - 1].selected = true;
-        findOtherFamily.selected = true;
-        this.selectedExtraFontFamily = findOtherFamily;
+    if (this.textStyle) {
+      this.selectedFontSize = Number(this.textStyle['fontSize'].split(/\D/g)[0]);
+      // Set font family.
+      const findFamily = this.fontFamilies.find(el => el.label === this.textStyle['fontFamily']);
+      if (findFamily) {
+        findFamily.selected = true;
+        this.selectedExtraFontFamily = this.otherFontFam[0];
+      } else {
+        const findOtherFamily = this.otherFontFam.find(el => el.label === this.textStyle['fontFamily']);
+        if (findOtherFamily) {
+          this.fontFamilies[this.fontFamilies.length - 1].selected = true;
+          findOtherFamily.selected = true;
+          this.selectedExtraFontFamily = findOtherFamily;
+        }
       }
     }
 

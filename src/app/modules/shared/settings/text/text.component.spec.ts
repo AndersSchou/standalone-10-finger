@@ -14,7 +14,10 @@ describe('AppSharedSettingsTextComponent', () => {
 
   beforeEach(async () => {
     settingsServiceSpy = jasmine.createSpyObj<SettingsService>([
-      'setTextSetting'
+      'setTextSetting',
+      'getDefaultTextSize',
+      'getDefaultTextColor',
+      'getDefaultTextDisplayLayout'
     ]);
 
     await TestBed.configureTestingModule({

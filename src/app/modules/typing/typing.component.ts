@@ -137,7 +137,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Set initial settings based on the stored settings from local storage.
    */
   setInitialTextSettings(): void {
-    this.textSetting = this.settingsService.getDefaultTextSize();
+    if (this.settingsService.getDefaultTextSize()) {
+      this.textSetting = this.settingsService.getDefaultTextSize();
+    }
     this.coloredText = this.settingsService.getDefaultTextColor();
     const option = this.settingsService.getDefaultTextDisplayLayout();
     if (option === 'top') {
@@ -148,19 +150,36 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Set read letter option.
     const readOption = this.settingsService.getDefaultReadLetter();
-    if (readOption.type !== 'none') {
-      const selectedOption = readOption.type;
-      this.readTextOptions[selectedOption as keyof typeof this.readTextOptions] = true;
+    if (readOption && readOption.type !== 'none') {
+      this.readTextOptions[this.stringToReadType(readOption.type)] = true;
     }
 
     // Set read text options.
     const readText = this.settingsService.getDefaultReadText();
-    for (const opt of readText) {
-      if (opt.selected) {
-        const selectedOption = opt.type;
-        this.readTextOptions[selectedOption as keyof typeof this.readTextOptions] = true;
+    if (readText) {
+      for (const opt of readText) {
+        if (opt.selected) {
+          const selectedOption = opt.type;
+          this.readTextOptions[selectedOption as keyof typeof this.readTextOptions] = true;
+        }
       }
     }
+  }
+
+  /**
+   * Convert from string to read option type.
+   *
+   * @param type Represents the type of the read option.
+   *
+   * @returns The read option type.
+   */
+  stringToReadType(type: string): 'readLetterName' | 'readLetterSound' {
+    switch (type) {
+      case 'readLetterName':
+      case 'readLetterSound':
+        return type;
+    }
+    return 'readLetterName';
   }
 
   /**

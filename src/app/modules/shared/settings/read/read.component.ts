@@ -35,9 +35,11 @@ export class AppSharedSettingsReadComponent {
   setInitialValues() {
     // Set read letter initial value.
     const readLetterOption = this.settingsService.getDefaultReadLetter();
-    const findLetter = this.readLetterOptions.find(el => el.type === readLetterOption.type);
-    if (findLetter) {
-      findLetter.selected = true;
+    if (readLetterOption) {
+      const findLetter = this.readLetterOptions.find(el => el.type === readLetterOption.type);
+      if (findLetter) {
+        findLetter.selected = true;
+      }
     }
 
     // Set read text initial value.
