@@ -89,5 +89,7 @@
   "translateStartTypingFromWhereLeft": "Fortsett der du slapp.",
   "translateDefineNewLevel": "Velg en øvelse.",
   "translateHighScore": "Rekorder",
-  "translateIn": "på"
+  "translateIn": "på",
+  "translateSoundOn": "Sound ON",
+  "translateSoundOff": "Sound OFF"
 }

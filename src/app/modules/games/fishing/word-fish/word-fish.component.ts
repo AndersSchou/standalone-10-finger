@@ -25,12 +25,14 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
 
   @Input() index: number = 0;
   @Input() set isPaused(val: boolean) {
+    // TODO: Check why the watch control is not stoped sometimes (the fish keep dissapearing even when the game is paused).
     if (val) {
       this.watch.control.next('STOP');
     } else {
       this.watch.control.next('START');
     }
   }
+  @Input() playSound: boolean = false;
   // Stores the current word and fish.
   currentWord: FishWithWordDTO = createEmptyFishWithWordDTO();
   // Stores the HTMLElement for the current fish and word.
@@ -53,6 +55,10 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
   defaultWaitTimeMax = 8000;
   // The default min time to wait before removing the fish.
   defaultWaitTimeMin = 4000;
+  // Tells if the fish escaped.
+  isEscaped = false;
+  // Tells if the fish was caught.
+  isCaught = false;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
   // Outputs the event when the word is completed.
@@ -172,6 +178,8 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
     this.watch.control.next("STOP");
     if (this.fishComponent) {
       if (!escaped) {
+        this.isCaught = true;
+        this.isEscaped = false;
         const caughtSub = this.fishComponent.caught()
           .pipe(takeUntil(this.destroyed))
           .subscribe(() => {
@@ -179,6 +187,8 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
             caughtSub.unsubscribe();
           });
       } else {
+        this.isEscaped = true;
+        this.isCaught = false;
         const escapeSubs = this.fishComponent.escaped()
           .pipe(takeUntil(this.destroyed))
           .subscribe(() => {
@@ -237,7 +247,8 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
    * Clear the DOM elements.
    */
   clearDomElements(): void {
-    if (this.wordHld && this.gameFishDivElement && this.gameFishDivElement.hasChildNodes()) {
+    if (this.wordHld && this.wordHld.nativeElement.hasChildNodes() &&
+      this.gameFishDivElement && this.gameFishDivElement.hasChildNodes()) {
       this.wordHld.nativeElement.removeChild(this.gameFishDivElement);
     }
   }

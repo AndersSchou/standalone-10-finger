@@ -90,9 +90,9 @@
   color: theme-var($--color-active-secondary);
 }
 
-::ng-deep .overall-res-hld .mat-icon svg>circle,
+::ng-deep .overall-res-hld .mat-icon.calendar svg>circle,
 ::ng-deep .overall-res-hld .mat-icon.calendar svg>rect,
-::ng-deep .overall-res-hld .mat-icon svg>path {
+::ng-deep .overall-res-hld .mat-icon.calendar svg>path {
   stroke: theme-var($--color-active-secondary);
 }
 

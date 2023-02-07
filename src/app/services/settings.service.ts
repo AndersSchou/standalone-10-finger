@@ -166,6 +166,8 @@ export class SettingsService {
     if (!localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR)) {
       localStorage.setItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR, 'blue');
     }
+
+    this.setDefaultGameSoundOption();
   }
 
   /**
@@ -197,6 +199,28 @@ export class SettingsService {
     if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
       localStorage.removeItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT);
     }
+    if (localStorage.getItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION)) {
+      localStorage.removeItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION);
+    }
+  }
+
+  /**
+   * Set default game sound option if it's not set.
+   */
+  setDefaultGameSoundOption(): void {
+    if (!localStorage.getItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION)) {
+      localStorage.setItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION, 'on');
+    }
+  }
+
+  /**
+   * Get the default game sound option.
+   *
+   * @returns The game sound option.
+   */
+  getDefaultGameSoundOption(): string {
+    this.setDefaultGameSoundOption();
+    return localStorage.getItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION) as string;
   }
 
 }

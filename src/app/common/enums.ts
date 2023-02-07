@@ -14,6 +14,7 @@ export enum Color {
 // CURRENT_LANGUAGE is the name for the current language.
 // COURSES_PROGRESS is the name for the courses progress.
 // FISH_GAME_PROGRESS is the name for the fish game progress.
+// GAME_SOUND_OPTION is the name for the game sound option.
 export enum STORAGE_KEY_TYPE {
   MAIN_THEME_COLOR = 'mainThemeColor',
   KEYBOARD_THEME_COLOR = 'keyboardThemeColor',
@@ -21,6 +22,7 @@ export enum STORAGE_KEY_TYPE {
   CURRENT_LANGUAGE = 'activeLanguage',
   COURSES_PROGRESS = 'coursesProgress',
   FISH_GAME_PROGRESS = 'fishGameProgress',
+  GAME_SOUND_OPTION = 'gameSoundOption',
 }
 
 // Text settings types.
@@ -40,4 +42,13 @@ export enum TEXT_SETTINGS_TYPE {
 export enum READING_IDENTIFIER {
   READ_WORD = 'READ_WORD',
   READ_CHARACTER = 'READ_CHARACTER',
+}
+
+/**
+ * Enum that holds the fish game audio options.
+ */
+export enum FISH_GAME_SOUND_TYPE {
+  COUNTDOWN = 'countdown',
+  BACKGROUND = 'background',
+  TIMER = 'timer'
 }

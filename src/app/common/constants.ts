@@ -80,6 +80,8 @@ export const APP_ICONS = [
   'result',
   'rocket',
   'settings',
+  'sound_on',
+  'sound_off',
   'speed',
   'winner',
 ];

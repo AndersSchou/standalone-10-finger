@@ -1,3 +1,4 @@
+import { FISH_GAME_SOUND_TYPE } from './../common/enums';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import {
@@ -93,6 +94,7 @@ export class SpeechService {
     if (!this.speechAudioElement.src || !this.speakResult) {
       return;
     }
+    this.pause();
     this.speechAudioElement.removeAttribute('src');
   }
 
@@ -104,10 +106,50 @@ export class SpeechService {
   }
 
   /**
-   * Unload all audio elements.
+   * Play/Resume the current running audio speech.
+   *
+   * @param isCountdown Tells if the sound is a countdown sound.
+   * @param isMuted Tells if the sound is muted or not.
    */
-  unloadAll(): void {
-    this.unload();
+  playFishGameSound(type: FISH_GAME_SOUND_TYPE, isMuted = false): void {
+    // Resume the audio if it is paused.
+    if (this.speechAudioElement.src) {
+      const oldSrc = this.speechAudioElement.src.split('/')[this.speechAudioElement.src.split('/').length - 1];
+      // If the type is TIMER and the loaded src is for the coundtdown sound, then unload the coundtodwn sound and add the src for timer.
+      if (type === FISH_GAME_SOUND_TYPE.TIMER && oldSrc === 'background.wav') {
+        this.unload();
+        this.speechAudioElement.src = this.getFishGameSoundSrc(type);
+        this.speechAudioElement.loop = true;
+        this.speechAudioElement.load();
+      }
+      this.speechAudioElement.volume = isMuted ? 0 : 0.4;
+      this.speechAudioElement.play();
+      return;
+    }
+
+    this.speechAudioElement.src = this.getFishGameSoundSrc(type);
+    this.speechAudioElement.load();
+    this.speechAudioElement.volume = isMuted ? 0 : 0.4;
+    this.speechAudioElement.loop = true;
+    this.speechAudioElement.play();
+  }
+
+  /**
+   * Get the audio scr based on the provided FISH_GAME_SOUND_TYPE.
+   *
+   * @param soundType Represents the audio type.
+   *
+   * @returns The audio src.
+   */
+  getFishGameSoundSrc(soundType: string): string {
+    switch (soundType) {
+      case FISH_GAME_SOUND_TYPE.COUNTDOWN:
+        return '../../assets/sounds/fishing-game/water_drop.wav';
+      case FISH_GAME_SOUND_TYPE.TIMER:
+        return '../../assets/sounds/fishing-game/timer_countdown.wav';
+      default:
+        return '../../assets/sounds/fishing-game/background.wav';
+    }
   }
 
   /**

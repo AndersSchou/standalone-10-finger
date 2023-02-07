@@ -6,13 +6,15 @@ import { FishGame } from 'src/app/games/fish';
 import { createEmptyLevelDTO, GameDTO, GameStorageDTO, ScoreUpdateDTO } from 'src/app/dto/game.dto';
 import { MatDialog } from '@angular/material/dialog';
 import { AppGamesFishingGameOverComponent } from '../game-over/game-over.component';
-import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
+import { FISH_GAME_SOUND_TYPE, STORAGE_KEY_TYPE } from 'src/app/common/enums';
 import { environment } from 'src/environments/environment';
 import { ResultDTO } from 'src/app/dto/course.dto';
 import { FishWithWordDTO, createFishWithWordDTO } from 'src/app/dto/fish.dto';
 import { GridService } from 'src/app/services/grid.service';
 import { Level, LevelService, FishWithWord } from 'src/app/services/level.service';
 import { AppGamesFishingSchoolFishComponent } from '../school-fish/school-fish.component';
+import { SpeechService } from 'src/app/services/speech.service';
+import { SettingsService } from 'src/app/services/settings.service';
 
 /**
  * This component is the main component for the fishing game.
@@ -54,8 +56,8 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   isTimeOut: boolean = false;
   // Stores the coundown subscription.
   countdownSubscription: Subscription = Subscription.EMPTY;
-  // Stores the time in milliseconds.
-  timeInMs: number = 0;
+  // Stores the time in seconds.
+  timeInSec: number = 0;
   // Stores the current score.
   score = 0;
   // Stores the number of completed words.
@@ -72,6 +74,12 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   totalNbrOfLevels = 0;
   // Stores the goal of the game level.
   levelGoal = 0;
+  // Tells if it should play the countdown sound or not.
+  playCountdownSound = false;
+  // Stores the name of the sound icon.
+  soundIcon = '';
+  // Tells if the sound is muted or not.
+  soundMuted = false;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
@@ -85,6 +93,8 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    * @param cdr Reference to ChangeDetectorRef.
    * @param dialog Reference to MatDialog.
    * @param levelService Reference to LevelService.
+   * @param speechService Reference to SpeechService.
+   * @param settingsService Reference to SettingsService.
    */
   constructor(
     private readonly router: Router,
@@ -94,16 +104,26 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     private readonly cdr: ChangeDetectorRef,
     private readonly dialog: MatDialog,
     protected readonly levelService: LevelService,
+    private readonly speechService: SpeechService,
+    private readonly settingsService: SettingsService,
   ) {
     this.currentLanguage = this.languageHelperService.currentLangUsed;
     const timeArray = environment.gameTime.split(':');
-    this.timeInMs = Number(timeArray[0]) * 60 * 1000 + Number(timeArray[1]) * 1000;
+    this.timeInSec = Number(timeArray[0]) * 60 + Number(timeArray[1]);
     const mins = timeArray[0].split('');
     const secs = timeArray[1].split('');
     this.tensOfMinutes = Number(mins[0]);
     this.minutes = Number(mins[1]);
     this.tensOfSeconds = Number(secs[0]);
     this.seconds = Number(secs[1]);
+
+    if (this.settingsService.getDefaultGameSoundOption() === 'on') {
+      this.soundMuted = false;
+      this.soundIcon = 'sound_on'
+    } else {
+      this.soundIcon = 'sound_off';
+      this.soundMuted = true;
+    }
   }
 
   /**
@@ -145,6 +165,9 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
     }
+    if (this.speechService.isPlaying()) {
+      this.speechService.unload();
+    }
     this.clearDomElements();
     this.destroyed.next(true);
   }
@@ -156,12 +179,17 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     if (this.currentLanguage && this.currentLanguage.length > 0) {
       this.getFishGameData();
     }
+    this.speechService.playFishGameSound(FISH_GAME_SOUND_TYPE.COUNTDOWN, this.soundMuted);
     this.countdownSubscription = timer(1000, 1000).pipe(takeUntil(this.destroyed)).subscribe(() => {
       if (this.countdownNbr > 0) {
+        if (this.countdownNbr === 1) {
+          this.speechService.unload();
+        }
         this.countdownNbr--;
       } else {
         this.countdownSubscription.unsubscribe();
         this.createCounter();
+        this.speechService.playFishGameSound(FISH_GAME_SOUND_TYPE.BACKGROUND, this.soundMuted);
       }
     });
   }
@@ -248,22 +276,27 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    */
   createCounter(): void {
     this.timerSubscription = timer(0, 1000).pipe(takeUntil(this.destroyed)).subscribe(() => {
-      if (this.seconds > 0) {
-        this.seconds--;
-      } else {
-        if (this.tensOfSeconds > 0) {
-          this.tensOfSeconds--;
-        } else {
-          if (this.minutes > 0) {
-            this.minutes--;
-          } else {
-            this.gameOver(true);
-          }
-          this.tensOfSeconds = !this.isTimeOut ? 5 : 0;
+      if (this.timeInSec > 0) {
+        this.timeInSec--;
+        this.convertFromSecToMinAndSec();
+        if (this.timeInSec === 10) {
+          this.playCountdownSound = true;
+          this.speechService.playFishGameSound(FISH_GAME_SOUND_TYPE.TIMER, this.soundMuted);
         }
-        this.seconds = !this.isTimeOut ? 9 : 0;
+      } else {
+        this.gameOver(true);
       }
     });
+  }
+
+  /**
+   * Converts seconds to minutes and seconds.
+   */
+  convertFromSecToMinAndSec(): void {
+    this.minutes = Math.floor(this.timeInSec / 60);
+    const seconds = this.timeInSec - this.minutes * 60;
+    this.tensOfSeconds = Math.floor(seconds / 10);
+    this.seconds = seconds - this.tensOfSeconds * 10;
   }
 
   /**
@@ -299,6 +332,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    * Opens the game over modal.
    */
   gameOver(timeOut: boolean = false): void {
+    this.speechService.unload();
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
     }
@@ -309,7 +343,13 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
       panelClass: 'game-over-class',
       backdropClass: 'game-over-backdrop',
       disableClose: true,
-      data: { level: this.gameLevel, wordsCount: this.completedWords, language: this.currentLanguage, showNext: showNextButton, timeOut: timeOut }
+      data: {
+        level: this.gameLevel,
+        wordsCount: this.completedWords,
+        language: this.currentLanguage,
+        showNext: showNextButton,
+        timeOut: timeOut
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -384,6 +424,10 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     if (this.activeIcon === 'pause') {
       // Allow max 3 pauses.
       if (this.pauseCount <= 2) {
+        if (this.speechService.isPlaying()) {
+          // Unload the sound if the countdown is playing (this is needed to match the time with the timer sound).
+          this.playCountdownSound ? this.speechService.unload() : this.speechService.pause();
+        }
         this.activeIcon = 'play';
         this.pause();
         this.pauseCount++;
@@ -391,7 +435,25 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     } else {
       this.activeIcon = 'pause';
       this.play();
+      this.speechService.playFishGameSound(this.playCountdownSound ? FISH_GAME_SOUND_TYPE.TIMER : FISH_GAME_SOUND_TYPE.BACKGROUND, this.soundMuted);
     }
+  }
+
+  /**
+   * Toggle sound on/off.
+   */
+  toggleSoundState(): void {
+    if (this.soundIcon === 'sound_on') {
+      this.soundIcon = 'sound_off';
+      this.soundMuted = true;
+    } else {
+      this.soundIcon = 'sound_on';
+      this.soundMuted = false;
+    }
+    if (this.activeIcon === 'pause') {
+      this.speechService.playFishGameSound(this.playCountdownSound ? FISH_GAME_SOUND_TYPE.TIMER : FISH_GAME_SOUND_TYPE.BACKGROUND, this.soundMuted);
+    }
+    localStorage.setItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION, this.soundMuted ? 'off' : 'on');
   }
 
   /**

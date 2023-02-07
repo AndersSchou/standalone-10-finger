@@ -28,6 +28,11 @@
     }}" svgIcon="{{ activeIcon }}" (click)="togglePlayState()" class="mlr-12 cursor-pointer black-icon"
       [ngClass]="{'active': activeIcon === 'pause'}">
     </mat-icon>
+    <mat-icon matTooltip="{{
+      (soundIcon === 'sound_on' ? 'translateSoundOn' : 'translateSoundOff') | translate
+    }}" svgIcon="{{ soundIcon }}" (click)="toggleSoundState()" class="mlr-12 cursor-pointer black-icon"
+      [ngClass]="{'active': soundIcon === 'sound_on'}">
+    </mat-icon>
     <mat-icon svgIcon="icon_replay" class="mlr-12 cursor-pointer replay-icon"
       matTooltip="{{'translateReplay'|translate}}" (click)="replay(gameLevel.id)">
     </mat-icon>
@@ -50,6 +55,7 @@
 
   <div id="grid" #grid></div>
   <app-modules-games-fishing-school-fish #schoolFish (currentScore)="updateScore($event)"
-    [isPaused]="activeIcon === 'play' ? true : false" [isGameOver]="isTimeOut">
+    [isPaused]="activeIcon === 'play' ? true : false" [isGameOver]="isTimeOut"
+    [playSound]="soundIcon === 'sound_on' ? true: false">
   </app-modules-games-fishing-school-fish>
 </div>
