@@ -1,7 +1,7 @@
 <app-shared-top-menu></app-shared-top-menu>
 <app-shared-settings *ngIf="viewSettings"></app-shared-settings>
 <div class="main-content-hld typing-view">
-  <app-modules-typing-header-view *ngIf="categories && categories.categories" [currentCategory]="currentCategory"
+  <app-modules-typing-header-view *ngIf="categories && categories" [currentCategory]="currentCategory"
     [currentProgress]="currentProgress" [exerciseIndex]="exerciseIndex" [selectedCourse]="selectedCourse"
     (resetCourseEmit)="resetCourse()">
   </app-modules-typing-header-view>

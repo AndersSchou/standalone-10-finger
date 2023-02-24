@@ -1,53 +1,129 @@
+/** *********************** */
+/** ***** COMMON DTOs ***** */
+/** *********************** */
 /**
- * Course response.
+ * Common properties interface.
  */
-export interface CourseResponseDTO {
-  categories: CategoriesDTO[];
+export interface CommonPropDTO {
+  id: number;
 }
 
 /**
- * Stored categories interface.
+ * Extended properties interface.
  */
-export interface StoredCourseResponseDTO {
-  language: string;
-  data: CourseResponseDTO;
-}
-
-/**
- * Categories interface.
- */
-export interface CategoriesDTO {
-  name: string;
-  courses: CourseDTO[];
+export interface ExtendedDataDTO extends CommonPropDTO {
   completed?: boolean;
   progress?: number;
   selected?: boolean;
   updatedAt?: Date;
+  results?: ResultDTO[];
+}
+
+/** ******************** */
+/** ***** API DTOs ***** */
+/** ******************** */
+/**
+ * Courses data DTO.
+ */
+export interface CoursesDataDTO {
+  categories: CategoryDataDTO[];
 }
 
 /**
- * Course interface.
+ * Category data DTO.
  */
-export interface CourseDTO {
+export interface CategoryDataDTO extends CommonPropDTO {
   name: string;
-  exercises: CourseExerciseDTO[];
-  completed?: boolean;
-  showAll?: boolean;
-  updatedAt?: Date;
-  results: ResultDTO[];
+  courses: CourseDataDTO[];
 }
 
 /**
- * Exercise interface.
+ * Course data DTO.
  */
-export interface CourseExerciseDTO {
+export interface CourseDataDTO extends CommonPropDTO {
+  name: string;
+  exercises: CourseExerciseDataDTO[];
+}
+
+/**
+ * Course exercise data DTO.
+ */
+export interface CourseExerciseDataDTO extends CommonPropDTO {
   name: string;
   text: string;
-  completed?: boolean;
-  progress?: number;
-  results: ResultDTO[];
-  updatedAt?: Date;
 }
+
+/** ******************* */
+/** ***** UI DTOs ***** */
+/** ******************* */
+/**
+ * Courses DTO.
+ */
+export interface CoursesDTO {
+  language: string;
+  data: ExtendedCategoryDTO[];
+}
+
+/**
+ * Extended Ccategory DTO.
+ */
+export interface ExtendedCategoryDTO extends CommonPropDTO, ExtendedDataDTO {
+  name: string;
+  courses: ExtendedCourseDTO[];
+}
+
+/**
+ * Extended Course DTO.
+ */
+export interface ExtendedCourseDTO extends CommonPropDTO, ExtendedDataDTO {
+  name: string;
+  exercises: ExtendedCourseExerciseDTO[];
+}
+
+/**
+ * Extended Course Exercise DTO.
+ */
+export interface ExtendedCourseExerciseDTO extends CommonPropDTO, ExtendedDataDTO {
+  name: string;
+  text: string;
+}
+
+/** *********************** */
+/** ***** Stored DTOs ***** */
+/** *********************** */
+/**
+ * Stored courses DTO.
+ */
+export interface StoredCoursesDTO {
+  language: string;
+  data: StoredCoursesDataDTO[];
+}
+
+/**
+ * Stored courses data DTO.
+ */
+export interface StoredCoursesDataDTO {
+  categories: StoredCategoryDataDTO[];
+}
+
+/**
+ * Stored category data DTO.
+ */
+export interface StoredCategoryDataDTO extends CommonPropDTO, ExtendedDataDTO {
+  courses: StoredCourseDataDTO[];
+}
+
+/**
+ * Stored course data DTO.
+ */
+export interface StoredCourseDataDTO extends CommonPropDTO, ExtendedDataDTO {
+  exercises: StoredCourseExerciseDataDTO[];
+}
+
+/**
+ * Stored course exercise data DTO.
+ */
+export interface StoredCourseExerciseDataDTO extends CommonPropDTO, ExtendedDataDTO { }
 
 /**
  * Result interface.
@@ -64,40 +140,66 @@ export interface ResultDTO {
 }
 
 /**
- * Creates an empty course response.
- *
- * @returns  An object as CourseResponseDTO.
+ * Set exercise interface.
  */
-export function createEmptyCourseResponseDTO(): CourseResponseDTO { return { categories: [] }; }
+export interface SetExerciseDTO {
+  index: number;
+  course: ExtendedCourseDTO;
+}
 
 /**
- * Creates an empty category.
+ * Create empty courses.
  *
- * @returns An object as CategoriesDTO.
+ * @returns Returns an empty courses DTO.
  */
-export function createEmptyCategoriesDTO(): CategoriesDTO {
+export function createEmptyCoursesDTO(): CoursesDTO {
   return {
+    language: '',
+    data: []
+  };
+}
+
+/**
+ * Create empty stored courses.
+ *
+ * @returns Returns an empty stored courses DTO.
+ */
+export function createEmptyExtendedCategoryDTO(): ExtendedCategoryDTO {
+  return {
+    id: 0,
     name: '',
     courses: [],
     completed: false,
     progress: 0,
     selected: false,
-    updatedAt: new Date(),
   };
 }
 
 /**
- * Creates an empty course.
+ * Create empty extended course.
  *
- * @returns An object as CourseDTO.
+ * @returns Returns an empty extended course DTO.
  */
-export function createEmptyCourseDTO(): CourseDTO {
+export function createEmptyExtendedCourseDTO(): ExtendedCourseDTO {
   return {
+    id: 0,
     name: '',
     exercises: [],
     completed: false,
-    showAll: false,
-    updatedAt: new Date(),
     results: [],
+  };
+}
+
+/**
+ * Create empty result.
+ *
+ * @returns Returns an empty result DTO.
+ */
+export function createEmptyResultDTO(): ResultDTO {
+  return {
+    mistakes: 0,
+    time: 0,
+    characters: 0,
+    updatedAt: new Date(),
   };
 }

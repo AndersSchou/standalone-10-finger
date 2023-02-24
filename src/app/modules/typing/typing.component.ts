@@ -4,14 +4,15 @@ import { fromEvent, ReplaySubject, Subscription, takeUntil, timer } from 'rxjs';
 import { colorsMap, REGEX_FOR_LETTERS_WITH_DIACRITICS_AND_NBR, REGEX_WITH_DIACRITICS, SENTENCE_REGEX } from 'src/app/common/constants';
 import { Color, STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE, TextSettings } from 'src/app/common/types';
-import { Courses } from 'src/app/courses';
 import {
-  CategoriesDTO, CourseDTO, CourseExerciseDTO, CourseResponseDTO,
-  createEmptyCategoriesDTO, createEmptyCourseResponseDTO,
-  StoredCourseResponseDTO
+  createEmptyExtendedCategoryDTO,
+  createEmptyExtendedCourseDTO,
+  ExtendedCategoryDTO,
+  ExtendedCourseDTO,
+  CoursesDTO,
+  createEmptyCoursesDTO
 } from 'src/app/dto/course.dto';
 import { ReadOptionsDTO } from 'src/app/dto/speak.dto';
-import { TranslationsDTO } from 'src/app/dto/translation.dto';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -48,15 +49,11 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('exerciseElem') exerciseElem: ElementRef<HTMLElement> = {} as ElementRef;
   @ViewChild('vkeyboard') vkeyboard: VKeyboardComponent | undefined;
   // Stores the selected course;
-  selectedCourse: CourseDTO = {
-    name: '',
-    exercises: [],
-    results: []
-  };
+  selectedCourse: ExtendedCourseDTO = createEmptyExtendedCourseDTO();
   // Stores the categories object.
-  categories: CourseResponseDTO = createEmptyCourseResponseDTO();
+  categories: ExtendedCategoryDTO[] = [];
   // Stores the current(active) category.
-  currentCategory: CategoriesDTO = createEmptyCategoriesDTO();
+  currentCategory: ExtendedCategoryDTO = createEmptyExtendedCategoryDTO();
   // Stores the current language.
   currentLanguage: string = '';
   // Stores the DOM element.
@@ -96,7 +93,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   // Tells if it should resume course or not.
   resumeCourse: boolean = false;
   // Stores the data from the local storage.
-  storedData: StoredCourseResponseDTO[] = [];
+  storedData: CoursesDTO = createEmptyCoursesDTO();
   // Reading subscription.
   readingSubscription: Subscription = Subscription.EMPTY;
   // Tells if the character is the last character of the text.
@@ -208,7 +205,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     // Listens for any changes regarding the current used language.
     this.languageHelperService.OnLanguageChanged.pipe(
       takeUntil(this.destroyed)
-    ).subscribe((trans: TranslationsDTO) => {
+    ).subscribe(() => {
       this.router.navigate(['/set-course']);
     });
 
@@ -260,125 +257,17 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    * Get course progress.
    */
   courseProgress(): void {
-    if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
-      this.storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
-      const findData = this.storedData.find((el: StoredCourseResponseDTO) => el.language === this.currentLanguage.split('-')[0]);
-      if (findData) {
-        this.categories = { ...findData.data };
+    this.storedData = this.courseHelperService.getCategories(this.currentLanguage);
+    this.categories = this.storedData.data;
 
-        this.setCurrentCategory();
-        this.setCurrentCourse();
-        this.setCurrentExercise();
+    this.currentCategory = this.courseHelperService.setCurrentCategory(this.categories, this.resumeCourse);
+    const course = this.courseHelperService.setCurrentCourse(this.currentCategory, this.resumeCourse);
+    const exercise = this.courseHelperService.setCurrentExercise(course, this.resumeCourse);
+    this.exerciseIndex = exercise.index;
+    this.selectedCourse = exercise.course;
 
-        this.calculateProgress();
-        this.mapExercises();
-      } else {
-        this.getAllCategories();
-      }
-    } else {
-      this.getAllCategories();
-    }
-  }
-
-  /**
-   * Set current category.
-   */
-  setCurrentCategory(): void {
-    const findLatestCategory = this.courseHelperService.getLatestCategory(this.categories);
-
-    if (!this.resumeCourse) {
-      this.currentCategory = findLatestCategory;
-    } else {
-      // Resume course. Check if the latest category is completed.
-      if (findLatestCategory.completed) {
-        // If it's completed, find the next category.
-        const findNextCat = this.categories.categories.find((cat: CategoriesDTO) => !cat.completed);
-        if (findNextCat) {
-          this.currentCategory = findNextCat;
-        } else {
-          // If all categories are completed, then start from the beginning.
-          this.currentCategory = this.categories.categories[0];
-        }
-      } else {
-        this.currentCategory = findLatestCategory;
-      }
-    }
-  }
-
-  /**
-   * Set current course.
-   */
-  setCurrentCourse(): void {
-    const findLatestCourse = this.courseHelperService.getLatestCourse(this.currentCategory);
-
-    if (!this.resumeCourse) {
-      this.selectedCourse = findLatestCourse;
-    } else {
-      // Resume course. Check if the latest category is completed.
-      if (findLatestCourse.completed) {
-        // If it's completed, find the next category.
-        const findNextCourse = this.currentCategory.courses.find(course => !course.completed);
-        if (findNextCourse) {
-          this.selectedCourse = findNextCourse;
-        } else {
-          // If all categories are completed, then start from the beginning.
-          this.selectedCourse = this.currentCategory.courses[0];
-        }
-      } else {
-        this.selectedCourse = findLatestCourse;
-      }
-    }
-
-    this.selectedCourse.results = this.selectedCourse.results ? this.selectedCourse.results : [];
-    this.selectedCourse.exercises = this.selectedCourse.exercises.map(el => {
-      const elem = el;
-      elem.results = el.results ? el.results : [];
-      return elem;
-    });
-  }
-
-  /**
-   * Set current exercise.
-   */
-  setCurrentExercise(): void {
-    const findLastExercise = this.courseHelperService.getLatestExercise(this.selectedCourse);
-    const findIndex = this.selectedCourse.exercises.findIndex(el => el.name === findLastExercise.name);
-    if (!this.resumeCourse) {
-      this.exerciseIndex = findIndex;
-      this.selectedCourse.exercises = this.selectedCourse.exercises.map((el, index) => {
-        const elem: CourseExerciseDTO = { ...el };
-        elem.results = el.results ? el.results : [];
-        if (index >= this.exerciseIndex) {
-          elem.completed = false;
-        }
-        return elem;
-      });
-    } else {
-      if (!findLastExercise.completed) {
-        this.exerciseIndex = findIndex;
-        this.selectedCourse.exercises = this.selectedCourse.exercises.map((el, index) => {
-          const elem: CourseExerciseDTO = { ...el };
-          elem.results = el.results ? el.results : [];
-          if (index >= this.exerciseIndex) {
-            elem.completed = false;
-          }
-          return elem;
-        });
-      } else {
-        if (findIndex + 1 <= this.selectedCourse.exercises.length - 1) {
-          this.exerciseIndex = findIndex + 1;
-        }
-      }
-    }
-  }
-
-  /**
-   * Calculate course progress based on completed exercises.
-   */
-  calculateProgress(): void {
-    const completedExercises = this.selectedCourse.exercises.filter((exercise: CourseExerciseDTO) => exercise.completed);
-    let index = completedExercises.length > 0 ? completedExercises.length : 0;
-    this.currentProgress = (100 * index) / this.selectedCourse.exercises.length;
+    this.currentProgress = this.courseHelperService.calculateCourseProgress(this.selectedCourse);
+    this.mapExercises();
   }
 
   /**
@@ -517,51 +406,6 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Get all categories for the current language.
-   */
-  getAllCategories(): void {
-    this.categories = {} as CourseResponseDTO;
-    const courseLang = this.currentLanguage.split('-')[0];
-    if (courseLang in Courses) {
-      const cat = Courses[courseLang];
-      if (cat && cat.categories) {
-        cat.categories[0].updatedAt = new Date();
-        cat.categories[0].courses[0].updatedAt = new Date();
-
-        this.categories = cat;
-        this.currentCategory = cat.categories[0];
-        this.selectedCourse = this.currentCategory.courses[0];
-        this.selectedCourse.results = [];
-        this.selectedCourse.exercises = this.selectedCourse.exercises.map(el => {
-          const elem = el;
-          elem.results = [];
-          return elem;
-        });
-        this.exerciseIndex = 0;
-
-        const storeData: StoredCourseResponseDTO = {
-          language: courseLang, data: this.categories
-        };
-        this.storedData.push(storeData);
-        localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.storedData));
-        this.mapExercises();
-      } else {
-        this.categories = {} as CourseResponseDTO;
-        this.currentCategory = {} as CategoriesDTO;
-        this.selectedCourse = {
-          name: '',
-          exercises: [],
-          results: []
-        };
-        // Clean up the DOM.
-        if (this.exerciseElem.nativeElement && this.divElement && this.divElement.hasChildNodes()) {
-          this.divElement.remove();
-        }
-      }
-    }
-  }
-
-  /**
    * Display the current position of the selected character.
    */
   currentPosition(): void {
@@ -669,6 +513,7 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedCourse.updatedAt = new Date();
     this.selectedCourse.exercises = this.selectedCourse.exercises.map(el => {
       const exercise = {
+        id: el.id,
         name: el.name,
         text: el.text,
         results: [],
@@ -689,34 +534,36 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
       let totalMistakes = 0;
       let totalTime = 0;
       for (const exercise of this.selectedCourse.exercises) {
-        charsNbr += exercise.text.length;
-        totalMistakes += exercise.results[exercise.results.length - 1].mistakes;
-        totalTime += exercise.results[exercise.results.length - 1].time;
-      }
-      this.selectedCourse.results.push({
-        mistakes: totalMistakes,
-        time: totalTime,
-        characters: charsNbr,
-        updatedAt: new Date()
-      });
-    }
-    // Update course progress in local storage.
-    const findItem = this.storedData.find(el => el.language === this.currentLanguage.split('-')[0]);
-    if (findItem) {
-      const findCat = findItem.data.categories.find(el => el.name === this.currentCategory.name);
-      if (findCat) {
-        findCat.updatedAt = new Date();
-        if (isFinished) {
-          const findIncompleteCourse = findCat.courses.find(el => !el.completed);
-          if (!findIncompleteCourse) {
-            findCat.completed = true;
-          }
+        if (exercise.text) {
+          charsNbr += exercise.text.length;
         }
-        localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.storedData));
+        totalMistakes += exercise.results ? exercise.results[exercise.results.length - 1].mistakes : 0;
+        totalTime += exercise.results ? exercise.results[exercise.results.length - 1].time : 0;
+      }
+      if (this.selectedCourse.results) {
+        this.selectedCourse.results.push({
+          mistakes: totalMistakes,
+          time: totalTime,
+          characters: charsNbr,
+          updatedAt: new Date()
+        });
       }
     }
 
-    this.calculateProgress();
+    // Update course progress in local storage.
+    const findCat = this.storedData.data.find(el => el.id === this.currentCategory.id);
+    if (findCat) {
+      findCat.updatedAt = new Date();
+      if (isFinished) {
+        const findIncompleteCourse = findCat.courses.find(el => !el.completed);
+        if (!findIncompleteCourse) {
+          findCat.completed = true;
+        }
+      }
+      this.courseHelperService.updateLocalStorageData(this.storedData);
+    }
+
+    this.currentProgress = this.courseHelperService.calculateCourseProgress(this.selectedCourse);
   }
 
   /**
@@ -727,17 +574,13 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   updateProgress(exerciseIndex: number, isCompleted = false): void {
     this.selectedCourse.updatedAt = new Date();
-    if (isCompleted) {
-      this.selectedCourse.completed = true;
-    } else {
-      this.selectedCourse.completed = false;
-    }
+    this.selectedCourse.completed = isCompleted;
     this.selectedCourse.exercises[exerciseIndex].completed = true;
     this.selectedCourse.exercises[exerciseIndex].updatedAt = new Date();
 
     this.exercisesArr[exerciseIndex].completed = true;
 
-    this.selectedCourse.exercises[exerciseIndex].results.push({
+    this.selectedCourse.exercises[exerciseIndex].results?.push({
       mistakes: this.nbrOfMistakes,
       time: new Date().getTime() - new Date(this.startTime).getTime(),
       characters: this.selectedCourse.exercises[exerciseIndex].text.length,

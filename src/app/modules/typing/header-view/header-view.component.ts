@@ -1,6 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { CategoriesDTO, CourseDTO, createEmptyCategoriesDTO, createEmptyCourseDTO } from 'src/app/dto/course.dto';
+import {
+  createEmptyExtendedCategoryDTO,
+  createEmptyExtendedCourseDTO,
+  ExtendedCategoryDTO,
+  ExtendedCourseDTO
+} from 'src/app/dto/course.dto';
 
 /**
  * This component holds the logic for displaying common header for type and result pages.
@@ -11,8 +16,8 @@ import { CategoriesDTO, CourseDTO, createEmptyCategoriesDTO, createEmptyCourseDT
   styleUrls: ['./header-view.component.scss']
 })
 export class AppTypingHeaderViewComponent {
-  @Input() currentCategory: CategoriesDTO = createEmptyCategoriesDTO();
-  @Input() selectedCourse: CourseDTO = createEmptyCourseDTO();
+  @Input() currentCategory: ExtendedCategoryDTO = createEmptyExtendedCategoryDTO();
+  @Input() selectedCourse: ExtendedCourseDTO = createEmptyExtendedCourseDTO();
   @Input() exerciseIndex: number = 0;
   @Input() currentProgress: number = 0;
 
