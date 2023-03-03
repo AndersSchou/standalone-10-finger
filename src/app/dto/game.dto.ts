@@ -38,6 +38,7 @@ export interface ScoreUpdateDTO {
   score: number;
   completedWords: number;
   chars: number;
+  errors: number;
 }
 
 /**

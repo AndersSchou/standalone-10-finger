@@ -166,6 +166,9 @@ export class SettingsService {
     if (localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR)) {
       localStorage.removeItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR);
     }
+    if (localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS)) {
+      localStorage.removeItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS);
+    }
   }
 
   /**
