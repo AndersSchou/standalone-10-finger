@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+import { LanguageHelperService } from 'src/app/services/language.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
@@ -8,11 +10,22 @@ import { AppGamesFishingComponent } from './fishing.component';
 describe('AppGamesFishingComponent', () => {
   let component: AppGamesFishingComponent;
   let fixture: ComponentFixture<AppGamesFishingComponent>;
+  let languageHelperServiceSpy: jasmine.SpyObj<LanguageHelperService>;
+  let onLanguageChangedSpy;
 
   beforeEach(async () => {
+    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>(['OnLanguageChanged']);
+    (languageHelperServiceSpy as any).OnLanguageChanged = new Observable(
+      (subscriber) => {
+        onLanguageChangedSpy = subscriber;
+      }
+    );
+
     await TestBed.configureTestingModule({
       declarations: [AppGamesFishingComponent],
-      providers: [],
+      providers: [
+        { provide: LanguageHelperService, useValue: languageHelperServiceSpy },
+      ],
       imports: [
         TranslateModule.forRoot(),
         MaterialModule,

@@ -202,6 +202,9 @@ export class SettingsService {
     if (localStorage.getItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION)) {
       localStorage.removeItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION);
     }
+    if (localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS)) {
+      localStorage.removeItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS);
+    }
   }
 
   /**

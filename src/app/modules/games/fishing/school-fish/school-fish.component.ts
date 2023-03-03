@@ -45,6 +45,8 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
   private readonly destroyed = new ReplaySubject<boolean>();
   // Default time for checking the user's interaction with the displayed fish.
   private gameFrameInterval = 500;
+  // Stores the number of errors.
+  errors = 0;
 
   /**
    * Constructor function responsible for injecting the needed services.
@@ -134,7 +136,8 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
       const dataUpdate: ScoreUpdateDTO = {
         score: this.score,
         completedWords: this.completedFishes,
-        chars: this.correctChars
+        chars: this.correctChars,
+        errors: this.errors,
       };
       this.currentScore.emit(dataUpdate);
     }
@@ -166,6 +169,20 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
       }
     }
     this.activeFish = findActiveWord;
+    if (!this.activeFish) {
+      this.errors++;
+    }
+  }
+
+  /**
+   * Update the error count.
+   *
+   * @param event Represents the event.
+   */
+  updateErrorCount(event: boolean): void {
+    if (event) {
+      this.errors++;
+    }
   }
 
   /**
@@ -286,15 +303,26 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
     }
     // TODO: pass the letter array to be excluded in the search.
     const newWord = this.getNewWord();
-    // Check that the new word doesn't start with the same letter as any of the available words.
     if (newWord) {
-      const foundWordWithSameStartingLetter = this.availableFishes.filter(
-        // Only compare to fish in the school.
-        fish => !fish.leftTheSchool
-      ).find((el: FishWithWordDTO) =>
-        el.word[0].toLowerCase() === newWord.word[0].toLowerCase());
-      if (!foundWordWithSameStartingLetter) {
-        return newWord;
+      const fishesDisplayed = this.availableFishes.filter(fish => !fish.leftTheSchool);
+      if (newWord.fishImage.name === 'chest' || newWord.fishImage.name === 'crab') {
+        // Check if there is a fish in the school with the same fish image name. Crab and chest can't be displayed multiple times
+        // while their grid space is occupied.
+        const findDisplayedFishWithSameImageName = fishesDisplayed.find((el: FishWithWordDTO) => {
+          return el.fishImage.name === newWord.fishImage.name;
+        });
+        if (!findDisplayedFishWithSameImageName) {
+          // Check if it doesn't start with the same letter as any of the available words.
+          const foundWordWithSameStartingLetter = fishesDisplayed.find((el: FishWithWordDTO) => el.word[0] === newWord.word[0]);
+          if (!foundWordWithSameStartingLetter) {
+            return newWord;
+          }
+        }
+      } else {
+        const foundWordWithSameStartingLetter = fishesDisplayed.find((el: FishWithWordDTO) => el.word[0] === newWord.word[0]);
+        if (!foundWordWithSameStartingLetter) {
+          return newWord;
+        }
       }
     }
     return this.getWordWithDifferentLetter(cnt + 1);
