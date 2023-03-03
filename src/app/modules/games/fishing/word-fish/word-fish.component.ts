@@ -57,6 +57,7 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
   private readonly destroyed = new ReplaySubject<boolean>();
   // Outputs the event when the word is completed.
   @Output() isWordCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() errorCount: EventEmitter<boolean> = new EventEmitter<boolean>();
   // Stores the stop watch (used for pausing/stopping the timer).
   watch: {
     control: Subject<string>;
@@ -119,6 +120,7 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
       this.updateCurrentPosition();
     } else {
       this.countError++;
+      this.errorCount.emit(true);
       this.markAsMistake();
       // Check for nbr of mistakes and if it's greater than fish maxErrors remove the word.
       if (this.countError > this.currentWord.fish.maxErrors) {

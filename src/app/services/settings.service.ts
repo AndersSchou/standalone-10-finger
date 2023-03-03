@@ -197,6 +197,9 @@ export class SettingsService {
     if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
       localStorage.removeItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT);
     }
+    if (localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS)) {
+      localStorage.removeItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS);
+    }
   }
 
 }

@@ -16,5 +16,6 @@
     </div>
   </div>
 </div>
-<app-modules-games-fish-instructions *ngIf="!showLoadingScreen">
+<app-modules-games-fish-instructions *ngIf="!showLoadingScreen && !showLevelScreen">
 </app-modules-games-fish-instructions>
+<app-modules-games-fish-set-level *ngIf="!showLoadingScreen && showLevelScreen"></app-modules-games-fish-set-level>
