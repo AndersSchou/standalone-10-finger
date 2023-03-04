@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DefaultExerciseLayout, DefaultExtraFontFamilies, DefaultFontFamilies, DefaultTextBgColor } from 'src/app/common/constants';
 import { TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
-import { KeyboardSettingsDTO } from 'src/app/dto/settings.dto';
+import { KeyboardSettingsDTO, TextSettingsSizeDTO } from 'src/app/dto/settings.dto';
 import { SettingsService } from 'src/app/services/settings.service';
 
 /**
@@ -28,7 +28,7 @@ export class AppSharedSettingsTextComponent {
   // Stores the selected extra font family.
   selectedExtraFontFamily: KeyboardSettingsDTO = {} as KeyboardSettingsDTO;
   // Stores the selected font size and font family options.
-  textStyle = {
+  textStyle: TextSettingsSizeDTO = {
     fontSize: '24px',
     fontFamily: 'Roboto'
   };
@@ -49,9 +49,9 @@ export class AppSharedSettingsTextComponent {
    */
   setInitialValues(): void {
     // Set the selected font size and font family based on the saved settings.
-    if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
-      // Set font size.
-      this.textStyle = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE) as string);
+    // Set font size.
+    this.textStyle = this.settingsService.getDefaultTextSize();
+    if (this.textStyle) {
       this.selectedFontSize = Number(this.textStyle['fontSize'].split(/\D/g)[0]);
       // Set font family.
       const findFamily = this.fontFamilies.find(el => el.label === this.textStyle['fontFamily']);
@@ -69,25 +69,21 @@ export class AppSharedSettingsTextComponent {
     }
 
     // Set the selected text color option based on the saved settings.
-    if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR)) {
-      const textTheme = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR) as string);
-      const findSelectedTheme = this.textColorBgOptions.find(item => item.type === textTheme);
-      if (findSelectedTheme) {
-        findSelectedTheme.selected = true;
-      } else {
-        this.textColorBgOptions[1].selected = true;
-      }
+    const textTheme = this.settingsService.getDefaultTextColor();
+    const findSelectedTheme = this.textColorBgOptions.find(item => item.type === textTheme);
+    if (findSelectedTheme) {
+      findSelectedTheme.selected = true;
+    } else {
+      this.textColorBgOptions[1].selected = true;
     }
 
     // Set the layout display.
-    if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT)) {
-      const textLayout = JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT) as string);
-      const findSelectedLayout = this.layoutTypes.find(item => item.type === textLayout);
-      if (findSelectedLayout) {
-        findSelectedLayout.selected = true;
-      } else {
-        this.layoutTypes[0].selected = true;
-      }
+    const textLayout = this.settingsService.getDefaultTextDisplayLayout();
+    const findSelectedLayout = this.layoutTypes.find(item => item.type === textLayout);
+    if (findSelectedLayout) {
+      findSelectedLayout.selected = true;
+    } else {
+      this.layoutTypes[0].selected = true;
     }
   }
 

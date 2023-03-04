@@ -34,22 +34,23 @@ export class AppSharedSettingsKeyboardComponent {
   constructor(
     private readonly settingsService: SettingsService
   ) {
-    if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR)) {
-      const findThemeOption = this.keyboardTheme.find(opt => opt.type === localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR));
-      if (findThemeOption) {
-        findThemeOption.selected = true;
-      }
-    } else {
-      this.keyboardTheme[2].selected = true;
+    this.setInitialValues();
+  }
+
+  /**
+   * Sets the initial values for the settings.
+   */
+  setInitialValues(): void {
+    // Set keyboard theme color initial value.
+    const findThemeOption = this.keyboardTheme.find(opt => opt.type === this.settingsService.getDefaultKeyboardThemeColor());
+    if (findThemeOption) {
+      findThemeOption.selected = true;
     }
 
-    if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
-      const findPrimaryLayout = this.keyboardViewMode.find(opt => opt.type === localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT));
-      if (findPrimaryLayout) {
-        findPrimaryLayout.selected = true;
-      }
-    } else {
-      this.keyboardViewMode[1].selected = true;
+    // Set keyboard layout mode initial value.
+    const findPrimaryLayout = this.keyboardViewMode.find(opt => opt.type === this.settingsService.getDefaultKeyboardPrimaryLayout());
+    if (findPrimaryLayout) {
+      findPrimaryLayout.selected = true;
     }
   }
 

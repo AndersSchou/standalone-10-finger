@@ -24,7 +24,16 @@ describe('AppTypingComponent', () => {
   let courseHelperServiceSpy: jasmine.SpyObj<CourseHelperService>;
 
   beforeEach(async () => {
-    settingsServiceSpy = jasmine.createSpyObj<SettingsService>(['viewSettingsAction']);
+    settingsServiceSpy = jasmine.createSpyObj<SettingsService>([
+      'viewSettingsAction',
+      'getDefaultTextSize',
+      'getDefaultTextColor',
+      'getDefaultTextDisplayLayout',
+      'getDefaultReadLetter',
+      'getDefaultReadText',
+      'getDefaultKeyboardThemeColor',
+      'getDefaultKeyboardPrimaryLayout',
+    ]);
     (settingsServiceSpy as any).viewSettingsAction = new Observable(
       (subscriber) => {
         onViewSettingsActionSpy = subscriber;

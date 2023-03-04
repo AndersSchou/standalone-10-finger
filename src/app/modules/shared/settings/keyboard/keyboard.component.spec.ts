@@ -15,7 +15,9 @@ describe('AppSharedSettingsKeyboardComponent', () => {
   beforeEach(async () => {
     settingsServiceSpy = jasmine.createSpyObj<SettingsService>([
       'setKeyboardThemeColor',
-      'setKeyboardPrimaryMode'
+      'setKeyboardPrimaryMode',
+      'getDefaultKeyboardThemeColor',
+      'getDefaultKeyboardPrimaryLayout',
     ]);
 
     await TestBed.configureTestingModule({

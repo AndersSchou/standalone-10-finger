@@ -11,7 +11,7 @@
       <div class="course-title" #target>{{course.name}}</div>
       <div class="lesson-counter">{{course.exercises.length}} {{ "translateExercises" | translate }}</div>
       <div class="plr-20">
-        <div class="max-h" [ngClass]="{'full-h': course.showAll}">
+        <div class="max-h">
           <div *ngFor="let exercise of course.exercises; let j=index" class="exercise-hld"
             [ngClass]="{'active': j===activeExerciseIndex && i===activeCourseIndex}">
             <div class="exercise" [ngClass]="'exercise-index-'+j">

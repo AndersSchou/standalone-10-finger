@@ -156,8 +156,8 @@ export const DefaultExtraFontFamilies: KeyboardSettingsDTO[] = [
 
 // Default text backgorund colors array.
 export const DefaultTextBgColor: KeyboardSettingsDTO[] = [
-  { type: 'color', label: 'Colored text', selected: false },
-  { type: 'no-color', label: 'No colored text', selected: false },
+  { type: 'color', label: 'ColoredText', selected: false },
+  { type: 'no-color', label: 'NoColoredText', selected: false },
 ];
 
 // Default display layout array.
@@ -168,14 +168,14 @@ export const DefaultExerciseLayout: KeyboardSettingsDTO[] = [
 
 // Default read letter options.
 export const DefaultReadLetterOptions: KeyboardSettingsDTO[] = [
-  { type: 'readLetterName', label: 'Letter name', selected: false },
-  { type: 'readLetterSound', label: 'Letter sound', selected: false },
-  { type: 'none', label: 'No sound', selected: false },
+  { type: 'readLetterName', label: 'LetterName', selected: false },
+  { type: 'readLetterSound', label: 'LetterSound', selected: false },
+  { type: 'none', label: 'NoSound', selected: false },
 ];
 
 // Default read text options.
 export const DefaultReadTextOptions: KeyboardSettingsDTO[] = [
-  { type: 'readWord', label: 'Read words', selected: false },
+  { type: 'readWord', label: 'ReadWord', selected: false },
 ];
 
 // Default theme options.

@@ -4,7 +4,7 @@
     (click)="selectReadLetterOption(option)">
     <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"
       [ngClass]="{'radio-checked': option.selected}"></mat-icon>
-    <span *ngIf="option.label">{{option.label | translate}}</span>
+    <span *ngIf="option.label">{{'translate'+option.label | translate}}</span>
   </div>
 
   <div class="divider mtb-18"></div>
@@ -13,6 +13,6 @@
     (click)="selectReadTextOption(option)">
     <mat-icon [svgIcon]="option.selected? 'checkbox_checked': 'checkbox_unchecked'" class="mr-24"
       [ngClass]="{'checkbox-checked': option.selected}"></mat-icon>
-    <span *ngIf="option.label">{{option.label | translate}}</span>
+    <span *ngIf="option.label">{{'translate'+option.label | translate}}</span>
   </div>
 </div>

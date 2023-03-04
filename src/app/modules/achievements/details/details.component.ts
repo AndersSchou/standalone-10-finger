@@ -6,7 +6,6 @@ import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import { NgxPrinterService } from 'ngx-printer';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { CategoriesDTO } from 'src/app/dto/course.dto';
 import { Router } from '@angular/router';
 
 /**
@@ -111,8 +110,8 @@ export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
           this.data.details.indexLevel, // index
           0,
           this.data.details.currentLanguage,
-          this.data.details.categoryName,
-          this.data.details.categories as CategoriesDTO[],
+          this.data.details.id,
+          this.data.details.categories,
           true);
       } else {
         // Replay the game level.
@@ -165,19 +164,19 @@ export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
         const currentCourseIndex = this.data.details.indexLevel;
         if (currentCourseIndex < this.data.details.totalLevels - 1) {
           this.courseHelperService.startExercise(currentCourseIndex + 1, 0, this.data.details.currentLanguage,
-            this.data.details.categoryName, this.data.details.categories as CategoriesDTO[], true);
+            this.data.details.id, this.data.details.categories, true, true);
         } else {
           // Go to the next category.
           const catIndex = this.data.details.categories.indexOf(this.data.details.currentCategory);
           if (catIndex < this.data.details.categories.length - 1) {
             this.data.details.currentCategory = this.data.details.categories[catIndex + 1];
-            this.courseHelperService.startExercise(0, 0, this.data.details.currentLanguage, this.data.details.categoryName,
-              this.data.details.categories, true);
+            this.courseHelperService.startExercise(0, 0, this.data.details.currentLanguage, this.data.details.id,
+              this.data.details.categories, true, true);
           } else {
             // Start from the first category.
             this.data.details.currentCategory = this.data.details.categories[0];
-            this.courseHelperService.startExercise(0, 0, this.data.details.currentLanguage, this.data.details.categoryName,
-              this.data.details.categories, true);
+            this.courseHelperService.startExercise(0, 0, this.data.details.currentLanguage, this.data.details.id,
+              this.data.details.categories, true, true);
           }
         }
       } else {

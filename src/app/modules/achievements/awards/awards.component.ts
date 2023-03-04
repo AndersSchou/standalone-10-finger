@@ -1,4 +1,3 @@
-import { CategoriesDTO } from 'src/app/dto/course.dto';
 import { Component, Input } from '@angular/core';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -40,8 +39,8 @@ export class AppAchievementsAwardsComponent {
         level.details.indexLevel,
         0,
         level.details.currentLanguage,
-        level.details.categoryName,
-        level.details.categories as CategoriesDTO[]);
+        level.details.id,
+        level.details.categories);
     } else {
       // Replay the game level.
       this.router.navigate(['/games/fish/level/', level.details.indexLevel]);
