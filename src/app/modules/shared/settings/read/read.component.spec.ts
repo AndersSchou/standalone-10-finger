@@ -14,7 +14,9 @@ describe('AppSharedSettingsReadComponent', () => {
 
   beforeEach(async () => {
     settingsServiceSpy = jasmine.createSpyObj<SettingsService>([
-      'setTextSetting'
+      'setTextSetting',
+      'getDefaultReadLetter',
+      'getDefaultReadText'
     ]);
 
     await TestBed.configureTestingModule({

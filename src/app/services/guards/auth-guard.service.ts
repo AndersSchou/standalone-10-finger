@@ -1,3 +1,4 @@
+import { LanguageHelperService } from './../language.service';
 import { AuthService } from '../auth.service';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
@@ -24,7 +25,8 @@ export class AuthGuardService implements CanActivate {
   constructor(
     private readonly cookieService: CookieService,
     private readonly router: Router,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly languageHelperService: LanguageHelperService,
   ) {
     // Localhost for Safari does not store the cookies if sameSite is present.
     if (environment.location !== this.localhostLocation) {
@@ -48,6 +50,21 @@ export class AuthGuardService implements CanActivate {
         let path = '';
         if (route.url && route.url.length > 0) {
           path = route.url[0].path;
+        }
+        if (route.queryParams['language']) {
+          // Check if the language exists in the default languages array.
+          let usedLanguage = route.queryParams['language'];
+          const findLanguage = environment.availableLanguages.find(
+            (lang) => lang === usedLanguage
+          );
+          if (!findLanguage) {
+            // If the language doesn't exist, set current language to danish.
+            usedLanguage = environment.availableLanguages[0];
+          }
+          // If language param exists, then we need to set that language as default.
+          this.languageHelperService.initLangChanged.subscribe(() => {
+            this.languageHelperService.setLanguage(usedLanguage, true);
+          });
         }
         const newQueryParam = {
           queryParams: {

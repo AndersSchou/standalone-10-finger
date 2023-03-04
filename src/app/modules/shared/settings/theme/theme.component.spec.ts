@@ -14,7 +14,8 @@ describe('AppSharedSettingsThemeComponent', () => {
 
   beforeEach(async () => {
     settingsServiceSpy = jasmine.createSpyObj<SettingsService>([
-      'setThemeSetting'
+      'setThemeSetting',
+      'getDefaultMainThemeColor',
     ]);
 
     await TestBed.configureTestingModule({
