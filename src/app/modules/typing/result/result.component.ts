@@ -2,8 +2,14 @@ import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } fro
 import { Router } from '@angular/router';
 import { NgxPrinterService } from 'ngx-printer';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
-import { CategoriesDTO, CourseDTO, CourseResponseDTO, createEmptyCategoriesDTO, createEmptyCourseDTO, StoredCourseResponseDTO } from 'src/app/dto/course.dto';
+import {
+  createEmptyCoursesDTO,
+  CoursesDTO,
+  createEmptyExtendedCourseDTO,
+  ExtendedCourseDTO,
+  ExtendedCategoryDTO,
+  createEmptyExtendedCategoryDTO
+} from 'src/app/dto/course.dto';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -21,13 +27,13 @@ import html2canvas from 'html2canvas';
 export class AppTypingResultComponent implements OnInit, OnDestroy {
   @ViewChild('resultEl') resultEl: ElementRef<HTMLElement> = {} as ElementRef;
   // Stores the data from the local storage.
-  storedData: StoredCourseResponseDTO[] = [];
+  storedData: CoursesDTO = createEmptyCoursesDTO();
   // Stores the selected course.
-  selectedCourse: CourseDTO = createEmptyCourseDTO();
+  selectedCourse: ExtendedCourseDTO = createEmptyExtendedCourseDTO();
   // Stores all categories.
-  categories: CategoriesDTO[] = [];
+  categories: ExtendedCategoryDTO[] = [];
   // Stores the current category.
-  currentCategory: CategoriesDTO = createEmptyCategoriesDTO();
+  currentCategory: ExtendedCategoryDTO = createEmptyExtendedCategoryDTO();
   // Stores the exercise index.
   exerciseIndex: number = 0;
   // Stores the current language.
@@ -96,14 +102,9 @@ export class AppTypingResultComponent implements OnInit, OnDestroy {
    * Get all categories.
    */
   getCategories(): void {
-    if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
-      this.storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
-      const findCategories = this.storedData.find((el: StoredCourseResponseDTO) => el.language === this.currentLanguage.split('-')[0]);
-      if (findCategories && findCategories.data) {
-        this.categories = findCategories.data.categories;
-        this.findLatestCat(findCategories.data);
-      }
-    }
+    this.storedData = this.courseHelperService.getCategories(this.currentLanguage);
+    this.categories = this.storedData.data;
+    this.findLatestCat(this.categories);
   }
 
   /**
@@ -111,8 +112,8 @@ export class AppTypingResultComponent implements OnInit, OnDestroy {
    *
    * @param coursesProgress Represents the course progress response.
    */
-  findLatestCat(coursesProgress: CourseResponseDTO): void {
-    const findLatestCategory = this.courseHelperService.getLatestCategory(coursesProgress);
+  findLatestCat(categories: ExtendedCategoryDTO[]): void {
+    const findLatestCategory = this.courseHelperService.getLatestCategory(categories);
     if (findLatestCategory) {
       this.currentCategory = findLatestCategory;
       const findCurrentCourse = this.courseHelperService.getLatestCourse(this.currentCategory);
@@ -160,17 +161,20 @@ export class AppTypingResultComponent implements OnInit, OnDestroy {
   nextCourse(): void {
     const currentCourseIndex = this.currentCategory.courses.indexOf(this.selectedCourse);
     if (currentCourseIndex < this.currentCategory.courses.length - 1) {
-      this.courseHelperService.startExercise(currentCourseIndex + 1, 0, this.currentLanguage, this.currentCategory.name, this.categories);
+      this.courseHelperService.startExercise(currentCourseIndex + 1, 0, this.currentLanguage,
+        this.currentCategory.id, this.categories, false, true);
     } else {
       // Go to the next category.
       const catIndex = this.categories.indexOf(this.currentCategory);
       if (catIndex < this.categories.length - 1) {
         this.currentCategory = this.categories[catIndex + 1];
-        this.courseHelperService.startExercise(0, 0, this.currentLanguage, this.currentCategory.name, this.categories);
+        this.courseHelperService.startExercise(0, 0, this.currentLanguage,
+          this.currentCategory.id, this.categories, false, true);
       } else {
         // Start from the first category.
         this.currentCategory = this.categories[0];
-        this.courseHelperService.startExercise(0, 0, this.currentLanguage, this.currentCategory.name, this.categories);
+        this.courseHelperService.startExercise(0, 0, this.currentLanguage,
+          this.currentCategory.id, this.categories, false, true);
       }
     }
   }
@@ -183,7 +187,7 @@ export class AppTypingResultComponent implements OnInit, OnDestroy {
       this.currentCategory.courses.indexOf(this.selectedCourse),
       0,
       this.currentLanguage,
-      this.currentCategory.name,
+      this.currentCategory.id,
       this.categories);
   }
 
@@ -194,6 +198,7 @@ export class AppTypingResultComponent implements OnInit, OnDestroy {
     this.selectedCourse.updatedAt = new Date();
     this.selectedCourse.exercises = this.selectedCourse.exercises.map(el => {
       const exercise = {
+        id: el.id,
         name: el.name,
         text: el.text,
         results: [],
@@ -202,13 +207,10 @@ export class AppTypingResultComponent implements OnInit, OnDestroy {
     });
 
     // Update course progress in local storage.
-    const findItem = this.storedData.find(el => el.language === this.currentLanguage.split('-')[0]);
+    const findItem = this.storedData.data.find(el => el.id === this.currentCategory.id);
     if (findItem) {
-      const findCat = findItem.data.categories.find(el => el.name === this.currentCategory.name);
-      if (findCat) {
-        findCat.updatedAt = new Date();
-        localStorage.setItem(STORAGE_KEY_TYPE.COURSES_PROGRESS, JSON.stringify(this.storedData));
-      }
+      findItem.updatedAt = new Date();
+      this.courseHelperService.updateLocalStorageData(this.storedData);
     }
     this.goBack();
   }

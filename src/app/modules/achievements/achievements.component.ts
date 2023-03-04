@@ -1,9 +1,10 @@
+import { ExtendedCourseDTO } from 'src/app/dto/course.dto';
+import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
-import { Courses } from 'src/app/courses';
 import { CompletedLevelDTO, CompletedLevelDetailsDTO } from 'src/app/dto/award-details.dto';
-import { CategoriesDTO, StoredCourseResponseDTO, CourseDTO, ResultDTO } from 'src/app/dto/course.dto';
+import { ResultDTO, ExtendedCategoryDTO, createEmptyExtendedCategoryDTO } from 'src/app/dto/course.dto';
 import { GameDTO, GameStorageDTO } from 'src/app/dto/game.dto';
 import { TranslationsDTO } from 'src/app/dto/translation.dto';
 import { FishGame } from 'src/app/games/fish';
@@ -20,16 +21,13 @@ import { SettingsService } from 'src/app/services/settings.service';
 })
 export class AppAchievementsComponent implements OnInit, OnDestroy {
   // Stores the categories array.
-  categories: CategoriesDTO[] = [];
+  categories: ExtendedCategoryDTO[] = [];
   // Stores the selected course;
-  currentCategory: CategoriesDTO = {
-    name: '',
-    courses: []
-  };
+  currentCategory: ExtendedCategoryDTO = createEmptyExtendedCategoryDTO();
   // Stores the current language.
   currentLanguage: string;
   // Stores the completed courses.
-  completedCourses: CourseDTO[] = [];
+  completedCourses: ExtendedCourseDTO[] = [];
   // Tells if it should show the settings view or not.
   viewSettings: boolean = false;
   // Stores the games.
@@ -60,10 +58,12 @@ export class AppAchievementsComponent implements OnInit, OnDestroy {
    *
    * @param settingsService Reference to SettingsService.
    * @param languageHelperService Reference to LanguageHelperService.
+   * @param courseHelperService Reference to CourseHelperService.
    */
   constructor(
     private readonly settingsService: SettingsService,
     private readonly languageHelperService: LanguageHelperService,
+    private readonly courseHelperService: CourseHelperService,
   ) {
     this.currentLanguage = this.languageHelperService.currentLangUsed;
     this.translatedObj = this.languageHelperService.translationObject;
@@ -111,39 +111,11 @@ export class AppAchievementsComponent implements OnInit, OnDestroy {
    */
   getCategories(): void {
     this.categories = [];
-    if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
-      const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
-      const findCategories = storedData.find((el: StoredCourseResponseDTO) => el.language === this.currentLanguage.split('-')[0]);
-      if (findCategories) {
-        this.categories = findCategories.data.categories;
-        this.currentCategory = this.categories[0];
-        this.filterCompletedCourses();
-      } else {
-        this.getAllCategories();
-      }
-    } else {
-      this.getAllCategories();
-    }
-  }
+    const storedData = this.courseHelperService.getCategories(this.currentLanguage);
+    this.categories = storedData.data;
 
-  /**
-   * Find all categories for the current language.
-   */
-  getAllCategories(): void {
-    if (this.currentLanguage && this.currentLanguage.length > 0) {
-      const lang = this.currentLanguage.split('-')[0];
-      if (lang in Courses) {
-        const cat = Courses[lang];
-        if (cat && cat.categories) {
-          this.categories = cat.categories.map((el: CategoriesDTO) => {
-            const elem = el;
-            elem.progress = 0;
-            return elem;
-          });
-          this.currentCategory = this.categories[0];
-        }
-      }
-    }
+    this.currentCategory = this.categories[0];
+    this.filterCompletedCourses();
   }
 
   /**
@@ -186,12 +158,13 @@ export class AppAchievementsComponent implements OnInit, OnDestroy {
     });
     this.completedLevels = this.completedCourses.map(el => {
       const levelDetails: CompletedLevelDetailsDTO = {
+        id: el.id,
         categoryName: this.currentCategory.name,
         levelName: el.name,
         currentLanguage: this.currentLanguage,
         indexLevel: this.currentCategory.courses.indexOf(el),
         totalLevels: this.currentCategory.courses.length,
-        highestResult: this.calculateMaxRes(el.results),
+        highestResult: el.results ? this.calculateMaxRes(el.results) : this.calculateMaxRes([]),
         currentCategory: this.currentCategory,
         categories: this.categories
       };
@@ -202,6 +175,7 @@ export class AppAchievementsComponent implements OnInit, OnDestroy {
       };
       return level;
     });
+
     this.categoryProgress = this.calculateProgress(this.completedCourses.length, this.currentCategory.courses.length);
     this.speed = this.calculateSpeedAndAccuracy(this.completedCourses).speed;
     this.accuracy = this.calculateSpeedAndAccuracy(this.completedCourses).accuracy;
@@ -212,7 +186,7 @@ export class AppAchievementsComponent implements OnInit, OnDestroy {
    *
    * @param category Represents the selected category.
    */
-  selectCategory(category: CategoriesDTO): void {
+  selectCategory(category: ExtendedCategoryDTO): void {
     this.currentCategory = { ...category };
     this.games.forEach(el => {
       el.selected = false;
@@ -233,7 +207,8 @@ export class AppAchievementsComponent implements OnInit, OnDestroy {
       el.selected = false;
     });
     game.selected = true;
-    const cat: CategoriesDTO = {
+    const cat: ExtendedCategoryDTO = {
+      id: 0,
       name: game.name,
       courses: [],
       selected: game.selected
@@ -251,6 +226,7 @@ export class AppAchievementsComponent implements OnInit, OnDestroy {
   mapCompletedGameLevels(): void {
     this.completedLevels = this.fishingGameLevels.map(el => {
       const levelDetails: CompletedLevelDetailsDTO = {
+        id: el.id,
         categoryName: this.games[0].name,
         levelName: el.name,
         currentLanguage: this.currentLanguage,
@@ -289,7 +265,7 @@ export class AppAchievementsComponent implements OnInit, OnDestroy {
    *
    * @returns The average speed and accuracy of the current category.
    */
-  calculateSpeedAndAccuracy(completed: CourseDTO[] | GameDTO[]): { speed: number, accuracy: number } {
+  calculateSpeedAndAccuracy(completed: ExtendedCourseDTO[] | GameDTO[]): { speed: number, accuracy: number } {
     if (completed.length > 0) {
       let speed = 0;
       let accuracy = 0;
@@ -298,7 +274,7 @@ export class AppAchievementsComponent implements OnInit, OnDestroy {
       let totalMistakes = 0;
 
       for (const res of completed) {
-        const highestResult = this.calculateMaxRes(res.results);
+        const highestResult = res.results ? this.calculateMaxRes(res.results) : this.calculateMaxRes([]);
         totalChars += highestResult.characters;
         totalTime += highestResult.time;
         totalMistakes += highestResult.mistakes;

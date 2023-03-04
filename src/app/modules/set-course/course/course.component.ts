@@ -1,6 +1,6 @@
 import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { Component, Input } from "@angular/core";
-import { CategoriesDTO, CourseDTO, CourseExerciseDTO } from "src/app/dto/course.dto";
+import { ExtendedCategoryDTO, ExtendedCourseDTO, createEmptyExtendedCategoryDTO, ExtendedCourseExerciseDTO } from "src/app/dto/course.dto";
 import { DEFAULT_DEBOUNCE_MIN_TIME } from 'src/app/common/constants';
 
 /**
@@ -14,7 +14,7 @@ import { DEFAULT_DEBOUNCE_MIN_TIME } from 'src/app/common/constants';
 export class AppSetCourseCourseComponent {
   @Input() currentLanguage: string = '';
   @Input()
-  set course(cat: CategoriesDTO) {
+  set course(cat: ExtendedCategoryDTO) {
     if (cat) {
       this.courseVal = cat;
       this.findLatestCourse(cat);
@@ -24,17 +24,14 @@ export class AppSetCourseCourseComponent {
       }, DEFAULT_DEBOUNCE_MIN_TIME);
     }
   }
-  @Input() categories: CategoriesDTO[] = [];
+  @Input() categories: ExtendedCategoryDTO[] = [];
 
   // Stores the active course index.
   activeCourseIndex = 0;
   // Stores the active exercise index.
   activeExerciseIndex = 0;
   // Stores the course.
-  courseVal: CategoriesDTO = {
-    name: '',
-    courses: []
-  };
+  courseVal: ExtendedCategoryDTO = createEmptyExtendedCategoryDTO();
 
   /**
    * Constructor function responsible for injecting the needed services.
@@ -50,12 +47,13 @@ export class AppSetCourseCourseComponent {
    *
    * @param cat Represents the selected category.
    */
-  findLatestCourse(cat: CategoriesDTO): void {
+  findLatestCourse(cat: ExtendedCategoryDTO): void {
     const findLatestCourse = this.courseHelperService.getLatestCourse(cat);
-
     let currentCourse = findLatestCourse;
-    const findIndex = cat.courses.findIndex((el: CourseDTO) => el.name === findLatestCourse.name);
-    this.activeCourseIndex = findIndex;
+    const findIndex = cat.courses.findIndex((el: ExtendedCourseDTO) => el.id === findLatestCourse.id);
+    if (findIndex !== -1) {
+      this.activeCourseIndex = findIndex;
+    }
     this.findLatestExercise(currentCourse);
   }
 
@@ -64,11 +62,12 @@ export class AppSetCourseCourseComponent {
    *
    * @param course Represents the selected course.
    */
-  findLatestExercise(course: CourseDTO): void {
+  findLatestExercise(course: ExtendedCourseDTO): void {
     const findLastExercise = this.courseHelperService.getLatestExercise(course);
-
-    const findIndex = course.exercises.findIndex((el: CourseExerciseDTO) => el.name === findLastExercise.name);
-    this.activeExerciseIndex = findIndex;
+    const findIndex = course.exercises.findIndex((el: ExtendedCourseExerciseDTO) => el.id === findLastExercise.id);
+    if (findIndex !== -1) {
+      this.activeExerciseIndex = findIndex;
+    }
     if (findLastExercise.completed) {
       if (findIndex && ((findIndex + 1) <= course.exercises.length - 1)) {
         this.activeExerciseIndex = findIndex + 1;
@@ -100,6 +99,6 @@ export class AppSetCourseCourseComponent {
    * @param exerciseIndex Represents the selected exercise index.
    */
   startExercise(courseIndex: number, exerciseIndex: number): void {
-    this.courseHelperService.startExercise(courseIndex, exerciseIndex, this.currentLanguage, this.courseVal.name, this.categories);
+    this.courseHelperService.startExercise(courseIndex, exerciseIndex, this.currentLanguage, this.courseVal.id, this.categories);
   }
 }

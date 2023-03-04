@@ -1,9 +1,7 @@
 import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
-import { Courses } from 'src/app/courses';
-import { CategoriesDTO, CourseDTO, CourseResponseDTO, StoredCourseResponseDTO } from 'src/app/dto/course.dto';
+import { ExtendedCategoryDTO, ExtendedCourseDTO, createEmptyExtendedCategoryDTO } from 'src/app/dto/course.dto';
 import { SettingsService } from 'src/app/services/settings.service';
 import { LanguageHelperService } from 'src/app/services/language.service';
 
@@ -17,18 +15,13 @@ import { LanguageHelperService } from 'src/app/services/language.service';
 })
 export class AppSetCourseComponent implements OnInit, OnDestroy {
   // Stores the categories array.
-  categories: CategoriesDTO[] = [];
+  categories: ExtendedCategoryDTO[] = [];
   // Stores the selected course;
-  currentCategory: CategoriesDTO = {
-    name: '',
-    courses: []
-  };
+  currentCategory: ExtendedCategoryDTO = createEmptyExtendedCategoryDTO();
   // Stores the current language.
   currentLanguage: string;
   // Tells if it should show the settings view or not.
   viewSettings: boolean = false;
-  // Stores the categories data.
-  storedData: StoredCourseResponseDTO[] = [];
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
@@ -80,28 +73,21 @@ export class AppSetCourseComponent implements OnInit, OnDestroy {
    */
   getCategories(): void {
     this.categories = [];
-    if (localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS)) {
-      this.storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.COURSES_PROGRESS) as string);
-      const findCategories = this.storedData.find((el: StoredCourseResponseDTO) => el.language === this.currentLanguage.split('-')[0]);
-      if (findCategories) {
-        this.categories = findCategories.data.categories.map((el: CategoriesDTO) => {
-          const elem = el;
-          const completedCourses = el.courses.filter((course: CourseDTO) => {
-            const findIncompleteExercise = course.exercises.find(ex => !ex.results || (ex.results && ex.results.length === 0));
-            if (findIncompleteExercise) {
-              return false;
-            }
-            return true;
-          });
-          elem.progress = ((100 * completedCourses.length) / el.courses.length);
-          return elem;
+    const data = this.courseHelperService.getCategories(this.currentLanguage);
+    if (data) {
+      this.categories = data.data.map((el: ExtendedCategoryDTO) => {
+        const elem = el;
+        const completedCourses = el.courses.filter((course: ExtendedCourseDTO) => {
+          const findIncompleteExercise = course.exercises.find(ex => !ex.results || (ex.results && ex.results.length === 0));
+          if (findIncompleteExercise) {
+            return false;
+          }
+          return true;
         });
-        this.findLatestCat(findCategories.data);
-      } else {
-        this.getAllCategories();
-      }
-    } else {
-      this.getAllCategories();
+        elem.progress = ((100 * completedCourses.length) / el.courses.length);
+        return elem;
+      });
+      this.findLatestCat(this.categories);
     }
   }
 
@@ -110,14 +96,14 @@ export class AppSetCourseComponent implements OnInit, OnDestroy {
    *
    * @param coursesProgress Represents the courses progress data.
    */
-  findLatestCat(coursesProgress: CourseResponseDTO): void {
-    const findLatestCategory = this.courseHelperService.getLatestCategory(coursesProgress);
+  findLatestCat(categories: ExtendedCategoryDTO[]): void {
+    const findLatestCategory = this.courseHelperService.getLatestCategory(categories);
 
     if (findLatestCategory) {
       if (!findLatestCategory.completed) {
         this.currentCategory = findLatestCategory;
       } else {
-        const findIndex = this.categories.findIndex((el: CategoriesDTO) => el.name === findLatestCategory.name);
+        const findIndex = this.categories.findIndex((el: ExtendedCategoryDTO) => el.id === findLatestCategory.id);
         if (findIndex && ((findIndex + 1) <= this.categories.length - 1)) {
           this.currentCategory = this.categories[findIndex + 1];
         } else {
@@ -130,31 +116,11 @@ export class AppSetCourseComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Get all categories for the current language.
-   */
-  getAllCategories(): void {
-    if (this.currentLanguage && this.currentLanguage.length > 0) {
-      const lang = this.currentLanguage.split('-')[0];
-      if (lang in Courses) {
-        const cat = Courses[lang];
-        if (cat && cat.categories) {
-          this.categories = cat.categories.map((el: CategoriesDTO) => {
-            const elem = el;
-            elem.progress = 0;
-            return elem;
-          });
-          this.currentCategory = this.categories[0];
-        }
-      }
-    }
-  }
-
-  /**
    * Select category.
    *
    * @param category Represents the selected category.
    */
-  selectCategory(category: CategoriesDTO): void {
+  selectCategory(category: ExtendedCategoryDTO): void {
     this.currentCategory = { ...category };
   }
 }

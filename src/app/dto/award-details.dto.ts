@@ -1,14 +1,14 @@
-import { CategoriesDTO, CourseDTO, ResultDTO } from './course.dto';
+import { ResultDTO, ExtendedCourseDTO, ExtendedCategoryDTO } from './course.dto';
 import { GameDTO } from './game.dto';
 
 /**
  * Award details DTO.
  */
 export interface AwardDetailsDTO {
-  course: CourseDTO;
+  course: ExtendedCourseDTO;
   currentLanguage: string;
-  currentCategory: CategoriesDTO;
-  categories: CategoriesDTO[];
+  currentCategory: ExtendedCategoryDTO;
+  categories: ExtendedCategoryDTO[];
   isGame?: boolean;
 }
 
@@ -25,13 +25,14 @@ export interface CompletedLevelDTO {
  * Completed level details DTO.
  */
 export interface CompletedLevelDetailsDTO {
+  id: number;
   categoryName: string;
   levelName: string;
   currentLanguage: string;
   indexLevel: number;
   totalLevels: number;
   highestResult: ResultDTO;
-  currentCategory: CategoriesDTO;
-  categories: CategoriesDTO[];
+  currentCategory: ExtendedCategoryDTO;
+  categories: ExtendedCategoryDTO[];
   gameLevels?: GameDTO[];
 }
