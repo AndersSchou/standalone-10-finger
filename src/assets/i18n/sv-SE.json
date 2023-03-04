@@ -90,5 +90,7 @@
   "translateStartTypingFromWhereLeft": "Fortsätt där du slutade.",
   "translateDefineNewLevel": "Välj en övning.",
   "translateHighScore": "Höga poäng",
-  "translateIn": "på"
+  "translateIn": "på",
+  "translateSoundOn": "Sound ON",
+  "translateSoundOff": "Sound OFF"
 }

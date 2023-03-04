@@ -18,6 +18,7 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
   @ViewChildren('fishList') fishList?: QueryList<AppGamesFishingWordFishComponent>;
   @Input() isPaused: boolean = false;
   @Input() isGameOver: boolean = false;
+  @Input() playSound: boolean = false;
   // Stores the maximum number of words/fish that can be displayed.
   maxFishInSchool = 0;
   // Stores all the initial words for the current level.

@@ -10,6 +10,8 @@ import { Observable, of, Subject } from 'rxjs';
 import { MaterialModule } from 'src/app/modules/shared/material.module';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { AppGamesFishPlayComponent } from './play.component';
+import { SpeechService } from 'src/app/services/speech.service';
+import { SettingsService } from 'src/app/services/settings.service';
 
 describe('AppGamesFishPlayComponent', () => {
   let component: AppGamesFishPlayComponent;
@@ -20,6 +22,8 @@ describe('AppGamesFishPlayComponent', () => {
   let matDialogSpy: jasmine.SpyObj<MatDialog>;
   let gridServiceSpy: jasmine.SpyObj<GridService>;
   let levelServiceSpy: jasmine.SpyObj<LevelService>;
+  let speechServiceSpy: jasmine.SpyObj<SpeechService>;
+  let settingsServiceSpy: jasmine.SpyObj<SettingsService>;
 
   beforeEach(async () => {
     languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>(['OnLanguageChanged']);
@@ -38,6 +42,8 @@ describe('AppGamesFishPlayComponent', () => {
 
     gridServiceSpy = jasmine.createSpyObj<GridService>(['initGrid']);
     levelServiceSpy = jasmine.createSpyObj<LevelService>(['generateLevel', 'getNumberOfLevels']);
+    speechServiceSpy = jasmine.createSpyObj<SpeechService>(['isPlaying', 'unload', 'playFishGameSound']);
+    settingsServiceSpy = jasmine.createSpyObj<SettingsService>(['getDefaultGameSoundOption']);
 
     await TestBed.configureTestingModule({
       declarations: [AppGamesFishPlayComponent],
@@ -48,6 +54,8 @@ describe('AppGamesFishPlayComponent', () => {
         { provide: ActivatedRoute, useValue: { queryParams: new Subject() } },
         { provide: GridService, useValue: gridServiceSpy },
         { provide: LevelService, useValue: levelServiceSpy },
+        { provide: SpeechService, useValue: speechServiceSpy },
+        { provide: SettingsService, useValue: settingsServiceSpy },
       ],
       imports: [
         TranslateModule.forRoot(),

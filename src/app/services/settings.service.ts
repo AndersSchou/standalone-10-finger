@@ -133,6 +133,7 @@ export class SettingsService {
     this.setDefaultKeyboardThemeColor();
     this.setDefaultKeyboardPrimaryLayout();
     this.setDefaultThemeColor();
+    this.setDefaultGameSoundOption();
   }
 
   /**
@@ -163,11 +164,23 @@ export class SettingsService {
     if (localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT)) {
       localStorage.removeItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT);
     }
+    if (localStorage.getItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION)) {
+      localStorage.removeItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION);
+    }
     if (localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR)) {
       localStorage.removeItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR);
     }
     if (localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS)) {
       localStorage.removeItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS);
+    }
+  }
+
+  /**
+   * Set default game sound option if it's not set.
+   */
+  setDefaultGameSoundOption(): void {
+    if (!localStorage.getItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION)) {
+      localStorage.setItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION, 'on');
     }
   }
 
@@ -183,6 +196,16 @@ export class SettingsService {
         }
       ));
     }
+  }
+
+  /**
+   * Get the default game sound option.
+   *
+   * @returns The game sound option.
+   */
+  getDefaultGameSoundOption(): string {
+    this.setDefaultGameSoundOption();
+    return localStorage.getItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION) as string;
   }
 
   /**
