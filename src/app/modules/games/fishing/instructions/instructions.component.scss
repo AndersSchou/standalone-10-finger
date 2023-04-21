@@ -118,9 +118,9 @@
 }
 
 .instruction-actions-hld .start-btn {
-  box-shadow: 12px 12px 24px rgb(247 160 0 / 20%);
-  -moz-box-shadow: 12px 12px 24px rgb(247 160 0 / 20%);
-  -webkit-box-shadow: 12px 12px 24px rgb(247 160 0 / 20%);
+  box-shadow: theme-var($--shadow);
+  -moz-box-shadow: theme-var($--shadow);
+  -webkit-box-shadow: theme-var($--shadow);
   border-radius: 12px;
   background: theme-var($--color-active);
   color: theme-var($--color-active-text);
