@@ -41,6 +41,7 @@ export const APP_ICONS = [
   'checkbox_unchecked',
   'chevron_down',
   'chevron_left',
+  'chevron_up',
   'courses',
   'crab',
   'download',

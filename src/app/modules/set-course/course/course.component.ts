@@ -101,4 +101,29 @@ export class AppSetCourseCourseComponent {
   startExercise(courseIndex: number, exerciseIndex: number): void {
     this.courseHelperService.startExercise(courseIndex, exerciseIndex, this.currentLanguage, this.courseVal.id, this.categories);
   }
+
+  /**
+   * Sets the course class.
+   *
+   * @param courseIndex Represents the selected course index.
+   * @param completed Represents the course status.
+   *
+   * @returns A string representing the course class.
+   */
+  setCourseClass(courseIndex: number, completed?: boolean): string {
+    let courseClass = 'course-holder-' + courseIndex;
+    if (completed && courseIndex !== this.activeCourseIndex) {
+      courseClass += ' completed-course';
+    }
+    return courseClass;
+  }
+
+  /**
+   * Toggle completed course details.
+   *
+   * @param course Represents the selected course.
+   */
+  toggleCompletedCourseDetails(course: ExtendedCourseDTO): void {
+    course.showDetails = !course.showDetails;
+  }
 }

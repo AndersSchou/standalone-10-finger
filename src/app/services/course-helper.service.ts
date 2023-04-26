@@ -124,6 +124,7 @@ export class CourseHelperService {
               ...course,
               exercises,
               completed: storedCourse.completed,
+              showDetails: false,
               results: storedCourse.results ? storedCourse.results : [],
               updatedAt: storedCourse.updatedAt
             };
@@ -131,6 +132,7 @@ export class CourseHelperService {
           return {
             ...course,
             completed: false,
+            showDetails: false,
             results: [],
           };
         });
@@ -221,6 +223,7 @@ export class CourseHelperService {
           id: course.id,
           name: course.name,
           exercises,
+          showDetails: false,
           completed: false,
           results: [],
         };
