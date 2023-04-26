@@ -115,10 +115,12 @@
   cursor: pointer;
 }
 
+.round-btn.colored-btn,
 .round-btn:hover {
   background: theme-var($--color-active);
 }
 
+::ng-deep .round-btn.colored-btn .mat-icon svg>path,
 ::ng-deep .round-btn:hover .mat-icon svg>path,
 ::ng-deep .round-btn:hover .mat-icon svg>rect {
   stroke: theme-var($--color-active-text);

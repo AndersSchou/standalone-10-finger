@@ -121,10 +121,12 @@
   cursor: pointer;
 }
 
+.round-btn.colored-btn,
 .round-btn:hover {
   background: theme-var($--color-active);
 }
 
+::ng-deep .round-btn.colored-btn .mat-icon svg>path,
 ::ng-deep .round-btn:hover .mat-icon svg>path,
 ::ng-deep .round-btn:hover .mat-icon.back-to-games svg>path:nth-of-type(1) {
   stroke: theme-var($--color-active-text);
