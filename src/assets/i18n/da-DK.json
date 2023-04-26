@@ -91,5 +91,7 @@
   "translateHighScore": "Højeste score",
   "translateIn": "på",
   "translateSoundOn": "Sound ON",
-  "translateSoundOff": "Sound OFF"
+  "translateSoundOff": "Sound OFF",
+  "translateShowDetails": "Show details",
+  "translateHideDetails": "Hide details"
 }

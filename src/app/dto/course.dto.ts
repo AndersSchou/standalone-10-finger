@@ -65,7 +65,7 @@ export interface CoursesDTO {
 }
 
 /**
- * Extended Ccategory DTO.
+ * Extended Category DTO.
  */
 export interface ExtendedCategoryDTO extends CommonPropDTO, ExtendedDataDTO {
   name: string;
@@ -78,6 +78,7 @@ export interface ExtendedCategoryDTO extends CommonPropDTO, ExtendedDataDTO {
 export interface ExtendedCourseDTO extends CommonPropDTO, ExtendedDataDTO {
   name: string;
   exercises: ExtendedCourseExerciseDTO[];
+  showDetails?: boolean;
 }
 
 /**
@@ -118,6 +119,7 @@ export interface StoredCategoryDataDTO extends CommonPropDTO, ExtendedDataDTO {
  */
 export interface StoredCourseDataDTO extends CommonPropDTO, ExtendedDataDTO {
   exercises: StoredCourseExerciseDataDTO[];
+  showDetails?: boolean;
 }
 
 /**
@@ -186,6 +188,7 @@ export function createEmptyExtendedCourseDTO(): ExtendedCourseDTO {
     name: '',
     exercises: [],
     completed: false,
+    showDetails: false,
     results: [],
   };
 }

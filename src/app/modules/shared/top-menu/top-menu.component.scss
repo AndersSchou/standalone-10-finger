@@ -23,17 +23,28 @@
   align-items: center;
   display: flex;
   font-size: 14px;
-  padding: 8px 16px;
+  padding: 0 16px;
   text-transform: uppercase;
   cursor: pointer;
   font-weight: 500;
   border-radius: 12px;
   margin: 0 5px;
+  height: 40px;
 }
 
 .item-hld .mat-icon {
   width: 24px;
   height: 24px;
+}
+
+.item-hld .mat-icon.typing {
+  width: 28px;
+  height: 28px;
+}
+
+.item-hld .mat-icon.game {
+  width: 26px;
+  height: 26px;
 }
 
 .item-hld.active,
