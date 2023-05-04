@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
+import { DefaultExerciseLayout } from 'src/app/common/constants';
+import { STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LAYOUT_GROUP_TYPE } from 'src/app/common/types';
 import { KeyboardSettingsDTO } from 'src/app/dto/settings.dto';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -26,6 +27,9 @@ export class AppSharedSettingsKeyboardComponent {
     { type: 'minimal', icon: 'keyboard_mode_2', selected: false },
   ];
 
+  // Stores the layout types.
+  layoutTypes: KeyboardSettingsDTO[] = DefaultExerciseLayout;
+
   /**
    * Constructor function responsible for injecting the needed services.
    *
@@ -51,6 +55,15 @@ export class AppSharedSettingsKeyboardComponent {
     const findPrimaryLayout = this.keyboardViewMode.find(opt => opt.type === this.settingsService.getDefaultKeyboardPrimaryLayout());
     if (findPrimaryLayout) {
       findPrimaryLayout.selected = true;
+    }
+
+    // Set the layout display.
+    const textLayout = this.settingsService.getDefaultTextDisplayLayout();
+    const findSelectedLayout = this.layoutTypes.find(item => item.type === textLayout);
+    if (findSelectedLayout) {
+      findSelectedLayout.selected = true;
+    } else {
+      this.layoutTypes[0].selected = true;
     }
   }
 
@@ -80,6 +93,23 @@ export class AppSharedSettingsKeyboardComponent {
     option.selected = true;
     this.settingsService.setKeyboardPrimaryMode(option.type as KEYBOARD_LAYOUT_GROUP_TYPE);
     localStorage.setItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT, option.type as KEYBOARD_LAYOUT_GROUP_TYPE);
+  }
+
+  /**
+   * Selects the layout type.
+   *
+   * @param option The selected layout type.
+   */
+  selectDisplayLayout(option: KeyboardSettingsDTO): void {
+    this.layoutTypes.forEach(item => {
+      item.selected = false;
+    });
+    option.selected = true;
+    localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify(option.type));
+    this.settingsService.setTextSetting({
+      type: TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT,
+      value: option.type
+    });
   }
 
 }

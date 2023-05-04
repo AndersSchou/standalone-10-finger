@@ -18,6 +18,7 @@ describe('AppSharedSettingsKeyboardComponent', () => {
       'setKeyboardPrimaryMode',
       'getDefaultKeyboardThemeColor',
       'getDefaultKeyboardPrimaryLayout',
+      'getDefaultTextDisplayLayout',
     ]);
 
     await TestBed.configureTestingModule({

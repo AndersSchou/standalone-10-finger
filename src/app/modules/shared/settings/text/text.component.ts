@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DefaultExerciseLayout, DefaultExtraFontFamilies, DefaultFontFamilies, DefaultTextBgColor } from 'src/app/common/constants';
+import { DefaultExtraFontFamilies, DefaultFontFamilies, DefaultTextBgColor } from 'src/app/common/constants';
 import { TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
 import { KeyboardSettingsDTO, TextSettingsSizeDTO } from 'src/app/dto/settings.dto';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -21,8 +21,6 @@ export class AppSharedSettingsTextComponent {
   otherFontFam: KeyboardSettingsDTO[] = DefaultExtraFontFamilies;
   // Stores the text color background options.
   textColorBgOptions: KeyboardSettingsDTO[] = DefaultTextBgColor;
-  // Stores the layout types.
-  layoutTypes: KeyboardSettingsDTO[] = DefaultExerciseLayout;
   // Stores the selected font size.
   selectedFontSize: number = 24;
   // Stores the selected extra font family.
@@ -75,15 +73,6 @@ export class AppSharedSettingsTextComponent {
       findSelectedTheme.selected = true;
     } else {
       this.textColorBgOptions[1].selected = true;
-    }
-
-    // Set the layout display.
-    const textLayout = this.settingsService.getDefaultTextDisplayLayout();
-    const findSelectedLayout = this.layoutTypes.find(item => item.type === textLayout);
-    if (findSelectedLayout) {
-      findSelectedLayout.selected = true;
-    } else {
-      this.layoutTypes[0].selected = true;
     }
   }
 
@@ -153,20 +142,4 @@ export class AppSharedSettingsTextComponent {
     });
   }
 
-  /**
-   * Selects the layout type.
-   *
-   * @param option The selected layout type.
-   */
-  selectDisplayLayout(option: KeyboardSettingsDTO): void {
-    this.layoutTypes.forEach(item => {
-      item.selected = false;
-    });
-    option.selected = true;
-    localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify(option.type));
-    this.settingsService.setTextSetting({
-      type: TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT,
-      value: option.type
-    });
-  }
 }

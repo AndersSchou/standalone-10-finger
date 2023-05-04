@@ -17,7 +17,6 @@ describe('AppSharedSettingsTextComponent', () => {
       'setTextSetting',
       'getDefaultTextSize',
       'getDefaultTextColor',
-      'getDefaultTextDisplayLayout'
     ]);
 
     await TestBed.configureTestingModule({
