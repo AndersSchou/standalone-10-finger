@@ -159,7 +159,6 @@ export class VKeyboardComponent {
    * @returns The shift class name.
    */
   getShiftClass(row: number, col: number): string {
-    console.log('row', row, 'col', col);
     if (((row === 1 || row === 4) && col > 7) || ((row === 2 || row === 3) && col > 6)) {
       // Right shift.
       return '4-13';
