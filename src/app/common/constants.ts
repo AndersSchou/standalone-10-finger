@@ -184,3 +184,17 @@ export const DefaultThemeOptions: KeyboardSettingsDTO[] = [
   { type: 'blue', label: '', selected: false },
   { type: 'orange', label: '', selected: false },
 ];
+
+// Default keyboard theme options.
+export const DefaultKeyboardThemeOptions: KeyboardSettingsDTO[] = [
+  { type: 'color-group', icon: 'keyboard_1', selected: false },
+  { type: 'single-color-group', icon: 'keyboard_2', selected: false },
+  { type: 'no-color', icon: 'keyboard_3', selected: false },
+];
+
+// Default keyboard view mode options.
+export const DefaultKeyboardViewModeOptions: KeyboardSettingsDTO[] = [
+  { type: 'full', icon: 'keyboard_mode_3', selected: false },
+  { type: 'partial', icon: 'keyboard_mode_1', selected: false },
+  { type: 'minimal', icon: 'keyboard_mode_2', selected: false },
+]

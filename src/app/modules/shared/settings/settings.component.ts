@@ -7,6 +7,8 @@ import { TranslationsDTO } from 'src/app/dto/translation.dto';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { WarningModalComponent } from '../modals/warning-modal/warning-modal.component';
+import { environment } from 'src/environments/environment';
+import { DefaultThemeOptions } from 'src/app/common/constants';
 
 /**
  * This component holds the logic for the settings view.
@@ -126,6 +128,8 @@ export class AppSharedSettingsComponent implements OnInit, OnDestroy {
    */
   resetAll(): void {
     this.settingsService.storageCleanup();
+    this.languageHelperService.setLanguage(environment.availableLanguages[0], true);
+    this.settingsService.setThemeSetting(DefaultThemeOptions[0].type);
     this.settingsService.setDefaultSettings();
     setTimeout(() => {
       // Reload current page.

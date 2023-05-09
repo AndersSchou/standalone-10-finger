@@ -52,6 +52,12 @@ export class AppSharedSettingsTextComponent {
     if (this.textStyle) {
       this.selectedFontSize = Number(this.textStyle['fontSize'].split(/\D/g)[0]);
       // Set font family.
+      this.fontFamilies.forEach(item => {
+        item.selected = false;
+      });
+      this.otherFontFam.forEach(item => {
+        item.selected = false;
+      });
       const findFamily = this.fontFamilies.find(el => el.label === this.textStyle['fontFamily']);
       if (findFamily) {
         findFamily.selected = true;
@@ -67,12 +73,13 @@ export class AppSharedSettingsTextComponent {
     }
 
     // Set the selected text color option based on the saved settings.
+    this.textColorBgOptions.forEach(item => {
+      item.selected = false;
+    });
     const textTheme = this.settingsService.getDefaultTextColor();
     const findSelectedTheme = this.textColorBgOptions.find(item => item.type === textTheme);
     if (findSelectedTheme) {
       findSelectedTheme.selected = true;
-    } else {
-      this.textColorBgOptions[1].selected = true;
     }
   }
 
