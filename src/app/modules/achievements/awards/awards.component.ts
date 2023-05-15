@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AppAchievementDetailsComponent } from '../details/details.component';
 import { CompletedLevelDTO } from 'src/app/dto/award-details.dto';
 import { Router } from '@angular/router';
