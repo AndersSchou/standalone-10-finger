@@ -34,8 +34,7 @@ export class UserService extends BaseService<WhoAmIResponseDTO> {
    */
   getUserInfo(): Observable<WhoAmIResponseDTO> {
     return this.get<WhoAmIResponseDTO>(
-      `${this.baseUrl}/users/whoami`,
-      false
+      `${this.baseUrl}/users/whoami`
     ).pipe(
       map((result) => {
         return result;
