@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { FishGame } from 'src/app/games/fish';
 import { createEmptyLevelDTO, GameDTO, GameStorageDTO, ScoreUpdateDTO } from 'src/app/dto/game.dto';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AppGamesFishingGameOverComponent } from '../game-over/game-over.component';
 import { FISH_GAME_SOUND_TYPE, STORAGE_KEY_TYPE } from 'src/app/common/enums';
 import { environment } from 'src/environments/environment';

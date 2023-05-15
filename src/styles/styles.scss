@@ -22,12 +22,12 @@ body .mat-icon {
   width: 450px;
 }
 
-.cdk-overlay-pane.error-class .mat-dialog-container {
+.cdk-overlay-pane.error-class .mat-mdc-dialog-container {
   padding: 24px 24px 0 24px;
 }
 
-.mat-dialog-actions,
-.mat-dialog-title {
+.mat-mdc-dialog-actions,
+.mat-mdc-dialog-title {
   margin-bottom: 0 !important;
 }
 
@@ -103,7 +103,7 @@ body .mat-icon {
 }
 
 .game-over-class,
-.achievement-class .mat-dialog-container {
+.achievement-class .mat-mdc-dialog-container {
   padding: 0;
   overflow: hidden;
 }

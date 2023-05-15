@@ -2,7 +2,7 @@
 @import "variables";
 @import "mixins";
 
-.mat-dialog-title {
+.mat-mdc-dialog-title {
   padding: 0;
 }
 
@@ -31,7 +31,7 @@
   line-height: 150%;
 }
 
-.mat-dialog-content {
+.mat-mdc-dialog-content {
   max-height: calc(98vh - 48px - 244px - 76px);
 }
 
