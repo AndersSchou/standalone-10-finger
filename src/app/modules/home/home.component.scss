@@ -91,3 +91,25 @@
   background-size: cover;
   background-image: theme-var($--video-holder);
 }
+
+.fx-flex-640 {
+  margin-right: 60px;
+  flex: 1 1 640px;
+  box-sizing: border-box;
+  max-width: 640px;
+  min-width: 640px;
+}
+
+.fx-flex-360 {
+  flex: 1 1 360px;
+  box-sizing: border-box;
+  max-width: 360px;
+  min-width: 360px;
+}
+
+.fx-flex-120 {
+  flex: 1 1 120px;
+  box-sizing: border-box;
+  max-width: 120px;
+  min-width: 120px;
+}

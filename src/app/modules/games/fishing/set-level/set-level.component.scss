@@ -160,3 +160,9 @@
 .mr-16 {
   margin-right: 16px;
 }
+
+.fx-flex-25 {
+  flex: 1 1 25%;
+  box-sizing: border-box;
+  max-width: 25%
+}

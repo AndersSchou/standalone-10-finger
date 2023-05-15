@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../shared/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { AppSetCourseCourseComponent } from './course/course.component';
@@ -10,7 +9,6 @@ import { AppSetCourseComponent } from './set-course.component';
   declarations: [AppSetCourseComponent, AppSetCourseCourseComponent],
   imports: [
     CommonModule,
-    FlexLayoutModule,
     SharedModule,
     MaterialModule,
   ],

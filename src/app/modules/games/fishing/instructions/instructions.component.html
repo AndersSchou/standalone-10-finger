@@ -3,12 +3,11 @@
     <mat-stepper linear #instructionStepper (selectionChange)="selectionChange($event)">
       <mat-step>
         <form>
-          <div class="instructions-hld" fxLayout="row" fxLayoutGap.xs="20px" fxLayoutGap.sm="20px" fxLayoutGap.md="20px"
-            fxLayoutGap="40px">
-            <div fxFlex="nogrow">
+          <div class="instructions-hld fx-layout-row">
+            <div class="fx-flex-nogrow">
               <div class="illustration-hld rule"></div>
             </div>
-            <div fxFlex class="instruction-details">
+            <div class="instruction-details fx-flex">
               <div class="instruction-title">{{ 'translateInstructions' | translate }}</div>
               <div class="instruction-description">{{ 'translateHelpFisherman' | translate }}</div>
               <div class="instruction-text">{{ 'translateTypeWordBeneath' | translate }}</div>
@@ -31,12 +30,11 @@
       </mat-step>
       <mat-step>
         <form>
-          <div class="instructions-hld" fxLayout="row" fxLayoutGap.xs="20px" fxLayoutGap.sm="20px" fxLayoutGap.md="20px"
-            fxLayoutGap="40px">
-            <div fxFlex="nogrow">
+          <div class="instructions-hld fx-layout-row">
+            <div class="fx-flex-nogrow">
               <div class="illustration-hld time"></div>
             </div>
-            <div fxFlex class="instruction-details">
+            <div class="instruction-details fx-flex">
               <div class="instruction-title">{{ 'translateInstructions' | translate }}</div>
               <div class="instruction-description">{{ 'translateTimingIsKey' | translate }}</div>
               <div class="instruction-text">

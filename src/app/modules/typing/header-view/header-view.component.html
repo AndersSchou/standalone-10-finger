@@ -1,7 +1,7 @@
 <div class="typing-header">
   <div class="page-padd">
-    <div fxLayout="row wrap" fxLayoutGap="20px" class="header-content">
-      <div class="left-header" fxFlex>
+    <div class="fx-layout-row fx-layout-row-wrap header-content">
+      <div class="left-header fx-flex">
         <div class="back-btn-hld" (click)="goBack()">
           <mat-icon svgIcon="chevron_left" class="mr-10"></mat-icon>
           Back
@@ -10,7 +10,7 @@
           {{currentCategory.name}} - {{selectedCourse.name}}
         </div>
       </div>
-      <div class="right-header" fxFlex="nogrow"
+      <div class="right-header fx-flex-nogrow"
         *ngIf="selectedCourse && selectedCourse.exercises && selectedCourse.exercises.length>0">
         <div class="course-det-hld">{{selectedCourse.exercises[0].name}} -
           {{selectedCourse.exercises[exerciseIndex].name}}</div>

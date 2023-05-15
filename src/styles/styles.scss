@@ -114,6 +114,58 @@ body .mat-icon {
   }
 }
 
+.fx-layout-row {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.fx-layout-row-wrap {
+  flex-flow: row wrap;
+}
+
+.fx-layout-center-center {
+  place-content: center;
+  align-items: center;
+}
+
+.fx-layout-start-center {
+  place-content: flex-start;
+  align-items: center;
+}
+
+.fx-layout-end-center {
+  place-content: flex-end;
+  align-items: center;
+}
+
+.fx-flex {
+  flex: 1 1 0%;
+  box-sizing: border-box;
+}
+
+.fx-flex-nogrow {
+  flex: 0 1 auto;
+  box-sizing: border-box;
+}
+
+.fx-flex-none {
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+
+/* xs: extra small */
+@media(max-width: 599px) {}
+
+/* sm: small medium */
+@media(min-width: 600px) and(max-width: 959px) {}
+
+/* md: medium */
+@media(min-width: 960px) and (max-width: 1279px) {}
+
+/* lg: large */
+@media(min-width: 1280px) and (max-width: 1919px) {}
+
 
 /* Custom scroll bar */
 ::-webkit-scrollbar {

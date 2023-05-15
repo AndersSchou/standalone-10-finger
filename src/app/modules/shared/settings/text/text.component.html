@@ -2,9 +2,9 @@
   <div class="section-title">{{ 'translateFont' | translate }}</div>
   <div class="pb-10">
     <div class="dropdown-label">{{ 'translateFontSize' | translate }}</div>
-    <div fxlayout="row" mat-button [matMenuTriggerFor]="menu" class="dropdown-btn">
-      <div fxFlex>{{selectedFontSize}}</div>
-      <div fxFlex="nogrow">
+    <div mat-button [matMenuTriggerFor]="menu" class="fx-layout-row dropdown-btn">
+      <div class="fx-flex">{{selectedFontSize}}</div>
+      <div class="fx-flex-nogrow">
         <mat-icon svgIcon="chevron_down"></mat-icon>
       </div>
     </div>
@@ -21,10 +21,10 @@
     <span *ngIf="option.type!=='other'">{{option.label}}</span>
     <span *ngIf="option.type==='other'">{{'translate'+option.label | translate}}</span>
   </div>
-  <div fxlayout="row" mat-button [matMenuTriggerFor]="menuFontFamily" class="dropdown-btn"
+  <div mat-button [matMenuTriggerFor]="menuFontFamily" class="fx-layout-row dropdown-btn"
     [ngClass]="{'disabled': !fontFamilies[fontFamilies.length-1].selected}">
-    <div fxFlex>{{selectedExtraFontFamily.label}}</div>
-    <div fxFlex="nogrow">
+    <div class="fx-flex">{{selectedExtraFontFamily.label}}</div>
+    <div class="fx-flex-nogrow">
       <mat-icon svgIcon="chevron_down"></mat-icon>
     </div>
   </div>

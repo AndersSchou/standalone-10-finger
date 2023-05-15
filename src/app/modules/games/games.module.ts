@@ -1,4 +1,3 @@
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MaterialModule } from '../shared/material.module';
@@ -29,7 +28,6 @@ import { AppGamesFishingWordFishComponent } from './fishing/word-fish/word-fish.
   ],
   imports: [
     CommonModule,
-    FlexLayoutModule,
     SharedModule,
     MaterialModule,
     BrowserModule,

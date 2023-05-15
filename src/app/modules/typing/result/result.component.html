@@ -19,8 +19,8 @@
         </div>
       </div>
       <div class="padd-tb-44 border-tb">
-        <div fxLayout="row wrap" fxLayoutGap="50px">
-          <div fxFlex="nogrow">
+        <div class="fx-layout-row fx-layout-row-wrap">
+          <div class="fx-flex-nogrow mr-50">
             <div>
               <img src="/assets/svg/winner.svg">
             </div>
@@ -32,19 +32,19 @@
                 {{ 'translateExerciseResult' | translate }}
               </div>
               <div class="pl-40">
-                <div fxLayout="row wrap" class="v-align res-hld" fxLayoutGap="40px">
-                  <div fxFlex class="flex-v-align res-txt">
+                <div class="fx-layout-row fx-layout-row-wrap v-align res-hld">
+                  <div class="fx-flex flex-v-align res-txt mr-40">
                     <mat-icon svgIcon="speed" class="mr-16 speed"></mat-icon>
                     {{ 'translateSpeed' | translate }}
                   </div>
-                  <div fxFlex>{{calculateSpeed()}} {{ 'translateKeysPerMinute' | translate }}</div>
+                  <div class="fx-flex">{{calculateSpeed()}} {{ 'translateKeysPerMinute' | translate }}</div>
                 </div>
-                <div fxLayout="row wrap" class="v-align res-hld" fxLayoutGap="40px">
-                  <div fxFlex class="flex-v-align res-txt">
+                <div class="fx-layout-row fx-layout-row-wrap v-align res-hld">
+                  <div class="fx-flex flex-v-align res-txt mr-40">
                     <mat-icon svgIcon="accuracy" class="mr-16 accuracy"></mat-icon>
                     {{ 'translateAccuracy' | translate }}
                   </div>
-                  <div fxFlex>{{calculateAccuracy()}} %</div>
+                  <div class="fx-flex">{{calculateAccuracy()}} %</div>
                 </div>
               </div>
             </div>

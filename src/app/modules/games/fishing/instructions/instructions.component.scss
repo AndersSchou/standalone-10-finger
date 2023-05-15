@@ -29,6 +29,7 @@
   width: 432px;
   height: 440px;
   background-repeat: no-repeat;
+  margin-right: 20px;
 }
 
 .illustration-hld.rule {
@@ -149,5 +150,6 @@
 @media(min-width: 1280px) {
   .instructions-hld {
     padding: 40px;
+    margin-right: 40px;
   }
 }

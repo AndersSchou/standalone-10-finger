@@ -1,5 +1,5 @@
-<div fxLayout="row wrap" *ngIf="completedLevels.length > 0; else noCourses">
-  <div fxFlex="33.3" fxFlex.xs="50" fxFlex.lg="25" *ngFor="let level of completedLevels" class="award-item">
+<div class="fx-layout-row fx-layout-row-wrap" *ngIf="completedLevels.length > 0; else noCourses">
+  <div *ngFor="let level of completedLevels" class="fx-flex award-item">
     <div>
       <mat-icon svgIcon="gold_award"></mat-icon>
     </div>
