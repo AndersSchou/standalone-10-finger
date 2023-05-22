@@ -153,6 +153,7 @@ export const DefaultExtraFontFamilies: KeyboardSettingsDTO[] = [
   { type: 'verdana', label: 'Verdana', selected: false },
   { type: 'tahoma', label: 'Tahoma', selected: false },
   { type: 'calibri', label: 'Calibri', selected: false },
+  { type: 'dyslexic', label: 'OpenDyslexic', selected: false },
 ];
 
 // Default text backgorund colors array.
