@@ -14,4 +14,16 @@
       [ngClass]="{'checkbox-checked': mode.selected}"></mat-icon>
     <mat-icon *ngIf="mode.icon" [svgIcon]="mode.icon" class="keyboard-icon"></mat-icon>
   </div>
+
+  <div class="divider mtb-18"></div>
+
+  <div *ngFor="let option of layoutTypes" class="option-hld mtb-10" (click)="selectDisplayLayout(option)">
+    <mat-icon [svgIcon]="option.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"
+      [ngClass]="{'radio-checked': option.selected}"></mat-icon>
+    <div class="layout-opt">
+      <div *ngIf="option.type==='top'">{{option.label}}</div>
+      <mat-icon svgIcon="keyboard_3" class="keyboard-icon"></mat-icon>
+      <div *ngIf="option.type==='bottom'">{{option.label}}</div>
+    </div>
+  </div>
 </div>
