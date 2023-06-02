@@ -28,7 +28,7 @@
     "@ngx-translate/http-loader": "^7.0.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
-    "ngx-cookie-service": "^14.0.1",
+    "ngx-cookie-service": "^15.0.0",
     "ngx-logger": "^5.0.11",
     "ngx-printer": "^1.2.0",
     "rxjs": "~7.5.0",
