@@ -11,6 +11,9 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: $default-text-color;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: normal;
 }
 
 body .mat-icon {
@@ -22,13 +25,25 @@ body .mat-icon {
   width: 450px;
 }
 
-.cdk-overlay-pane.error-class .mat-mdc-dialog-container {
-  padding: 24px 24px 0 24px;
-}
-
 .mat-mdc-dialog-actions,
 .mat-mdc-dialog-title {
   margin-bottom: 0 !important;
+}
+
+.mdc-dialog__title::before {
+  display: none !important;
+}
+
+.mdc-dialog__title {
+  padding: 0 !important;
+}
+
+.mdc-dialog .mdc-dialog__content {
+  padding: 0 !important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__content {
+  color: $default-text-color !important;
 }
 
 .h-100 {
@@ -125,17 +140,17 @@ body .mat-icon {
 }
 
 .fx-layout-center-center {
-  place-content: center;
+  justify-content: center !important;
   align-items: center;
 }
 
 .fx-layout-start-center {
-  place-content: flex-start;
+  justify-content: flex-start !important;
   align-items: center;
 }
 
 .fx-layout-end-center {
-  place-content: flex-end;
+  justify-content: flex-end !important;
   align-items: center;
 }
 

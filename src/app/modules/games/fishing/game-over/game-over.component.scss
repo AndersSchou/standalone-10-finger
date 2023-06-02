@@ -54,6 +54,7 @@
 
 .close-row {
   display: flex;
+  padding: 24px 24px 0 24px;
 }
 
 .icon-hld .mat-icon {
@@ -166,4 +167,8 @@
 .koi-fish {
   width: 46px;
   height: 46px;
+}
+
+.modal-actions-hld {
+  padding: 24px 0;
 }
