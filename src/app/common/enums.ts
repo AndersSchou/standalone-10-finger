@@ -15,6 +15,7 @@ export enum Color {
 // COURSES_PROGRESS is the name for the courses progress.
 // FISH_GAME_PROGRESS is the name for the fish game progress.
 // GAME_SOUND_OPTION is the name for the game sound option.
+// USER_ACCESS is the name for the user access.
 export enum STORAGE_KEY_TYPE {
   MAIN_THEME_COLOR = 'mainThemeColor',
   KEYBOARD_THEME_COLOR = 'keyboardThemeColor',
@@ -23,6 +24,7 @@ export enum STORAGE_KEY_TYPE {
   COURSES_PROGRESS = 'coursesProgress',
   FISH_GAME_PROGRESS = 'fishGameProgress',
   GAME_SOUND_OPTION = 'gameSoundOption',
+  APP_USER_ACCESS = 'appUserAccess',
 }
 
 // Text settings types.

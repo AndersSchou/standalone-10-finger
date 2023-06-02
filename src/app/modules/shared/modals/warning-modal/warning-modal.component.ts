@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { WarningDialogDataDTO } from 'src/app/dto/warning-dialog.dto';
 
 /**
  * This component is used to show the warning in a modal.
@@ -18,7 +19,7 @@ export class WarningModalComponent {
    */
   constructor(
     public dialogRef: MatDialogRef<WarningModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: WarningDialogDataDTO
   ) { }
 
   /**

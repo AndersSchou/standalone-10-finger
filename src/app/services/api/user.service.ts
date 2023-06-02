@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { map, Observable } from 'rxjs';
-import { WhoAmIResponseDTO } from 'src/app/dto/whoami.dto';
+import { catchError, map, Observable } from 'rxjs';
+import { AccessIdentifiersResponseDTO, WhoAmIResponseDTO } from 'src/app/dto/whoami.dto';
 import { BaseService } from './base.service';
+import { environment } from 'src/environments/environment';
 
 /**
  * Service responsible of working with user.
@@ -39,6 +40,23 @@ export class UserService extends BaseService<WhoAmIResponseDTO> {
     ).pipe(
       map((result) => {
         return result;
+      })
+    );
+  }
+
+  /**
+   * Checks if the user has access to the app.
+   *
+   * @returns An array as AccessIdentifiersResponseDTO.
+   */
+  checkUserAccess(): Observable<AccessIdentifiersResponseDTO[]> {
+    const body = [environment.accessIdentifier10finger];
+    return this.put(`${this.baseUrl}/accessidentifiers`, body).pipe(
+      catchError((error) => {
+        throw error;
+      }),
+      map((response: any) => {
+        return response;
       })
     );
   }

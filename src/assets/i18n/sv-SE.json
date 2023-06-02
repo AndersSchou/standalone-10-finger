@@ -94,5 +94,7 @@
   "translateSoundOn": "Sound ON",
   "translateSoundOff": "Sound OFF",
   "translateShowDetails": "Show details",
-  "translateHideDetails": "Hide details"
+  "translateHideDetails": "Hide details",
+  "translateAccessDenied": "Access denied",
+  "translateAccessDeniedDescription": "You do not have access to 10-Finger."
 }
