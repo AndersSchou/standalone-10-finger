@@ -25,7 +25,7 @@
     "@angular/platform-browser-dynamic": "^16.0.4",
     "@angular/router": "^16.0.4",
     "@ngx-translate/core": "^15.0.0",
-    "@ngx-translate/http-loader": "^7.0.0",
+    "@ngx-translate/http-loader": "^8.0.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "ngx-cookie-service": "^15.0.0",
