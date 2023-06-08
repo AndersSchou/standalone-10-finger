@@ -13,11 +13,13 @@
   </div>
 
   <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" class="modal-footer">
-    <div (click)="close()" class="action-btn default">
-      {{ "translateCancel" | translate }}
-    </div>
-    <div (click)="close(true)" class="action-btn">
-      {{ "translateYes" | translate }}
+    <div *ngIf="!data.hideActions">
+      <div (click)="close()" class="action-btn default">
+        {{ "translateCancel" | translate }}
+      </div>
+      <div (click)="close(true)" class="action-btn">
+        {{ "translateYes" | translate }}
+      </div>
     </div>
   </div>
 </div>
