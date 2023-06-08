@@ -10,8 +10,8 @@
 
   <div *ngFor="let mode of keyboardViewMode" class="option-hld" [ngClass]="{'active': mode.selected}"
     (click)="selectKeyboardMode(mode)">
-    <mat-icon [svgIcon]="mode.selected? 'checkbox_checked': 'checkbox_unchecked'" class="mr-24"
-      [ngClass]="{'checkbox-checked': mode.selected}"></mat-icon>
+    <mat-icon [svgIcon]="mode.selected? 'radio_checked': 'radio_unchecked'" class="mr-24"
+      [ngClass]="{'radio-checked': mode.selected}"></mat-icon>
     <mat-icon *ngIf="mode.icon" [svgIcon]="mode.icon" class="keyboard-icon"></mat-icon>
   </div>
 
