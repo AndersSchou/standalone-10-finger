@@ -11,6 +11,7 @@ export const environment = {
   logLevel: NgxLoggerLevel.DEBUG,
   location: 'http://localhost:4200/',
   gameTime: '01:30',
+  accessIdentifier10finger: 'product.all.ml.10finger.upgradeable',
   UrlEndpoints: {
     auth: 'https://signon-test.vitec-mv.com',
     voiceservice: 'https://voiceservice-test.vitec-mv.com',

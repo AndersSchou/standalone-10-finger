@@ -268,3 +268,19 @@
   top: 1px;
   border-radius: 4px;
 }
+
+#keyboard.color-group.kp4-1 .kr5 .kc1 .kb,
+#keyboard.color-group.kp4-13 .kr5 .kc13 .kb {
+  background-color: $white-color;
+  animation: blinkingShiftBackground 1s infinite;
+}
+
+@keyframes blinkingShiftBackground {
+  0% {
+    background-color: $key-orange-pressed;
+  }
+
+  100% {
+    background-color: $key-orange;
+  }
+}

@@ -140,6 +140,9 @@ export class SettingsService {
    * Cleans up the local storage.
    */
   storageCleanup(): void {
+    if (localStorage.getItem(STORAGE_KEY_TYPE.CURRENT_LANGUAGE)) {
+      localStorage.removeItem(STORAGE_KEY_TYPE.CURRENT_LANGUAGE);
+    }
     if (localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
       localStorage.removeItem(TEXT_SETTINGS_TYPE.TEXT_SIZE);
     }
@@ -222,7 +225,7 @@ export class SettingsService {
    */
   setDefaultTextDisplayLayout(): void {
     if (!localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT)) {
-      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify('bottom'));
+      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify('top'));
     }
   }
 

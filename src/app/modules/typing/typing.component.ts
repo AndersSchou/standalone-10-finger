@@ -140,9 +140,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.coloredText = this.settingsService.getDefaultTextColor();
     const option = this.settingsService.getDefaultTextDisplayLayout();
     if (option === 'top') {
-      this.keyboardTop = true;
-    } else {
       this.keyboardTop = false;
+    } else {
+      this.keyboardTop = true;
     }
 
     // Set read letter option.
@@ -292,9 +292,9 @@ export class AppTypingComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (textSettings.type === TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT) {
           // Set the layout display.
           if (textSettings.value === 'top') {
-            this.keyboardTop = true;
-          } else {
             this.keyboardTop = false;
+          } else {
+            this.keyboardTop = true;
           }
         } else if (textSettings.type === TEXT_SETTINGS_TYPE.READ_LETTER) {
           // Set read letter/sound option.

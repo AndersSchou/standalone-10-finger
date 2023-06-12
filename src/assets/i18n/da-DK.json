@@ -29,7 +29,6 @@
   "translateLogoutDetails": "Du er ved at logge ud. Er du sikker på du vil logge ud?",
   "translateFont": "Skrifttype",
   "translateFontSize": "Skriftstørrelse",
-  "translateLayout": "Layout",
   "translateOther": "Other",
   "translateColoredText": "Farvet tekst",
   "translateNoColoredText": "Ingen farvet tekst",
@@ -93,5 +92,7 @@
   "translateSoundOn": "Sound ON",
   "translateSoundOff": "Sound OFF",
   "translateShowDetails": "Show details",
-  "translateHideDetails": "Hide details"
+  "translateHideDetails": "Hide details",
+  "translateAccessDenied": "Access denied",
+  "translateAccessDeniedDescription": "You do not have access to 10-Finger."
 }

@@ -160,10 +160,10 @@ export class VKeyboardComponent {
    */
   getShiftClass(row: number, col: number): string {
     if (((row === 1 || row === 4) && col > 7) || ((row === 2 || row === 3) && col > 6)) {
-      // Right shift.
+      // Left shift.
       return '4-1';
     } else {
-      // Left shift.
+      // Right shift.
       return '4-13';
     }
   }

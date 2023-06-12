@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthGuardService } from './auth-guard.service';
 import { Observable } from 'rxjs';
+import { UserService } from '../api/user.service';
 
 describe('AuthService', () => {
   let service: AuthGuardService;
@@ -13,6 +14,8 @@ describe('AuthService', () => {
   let authServiceSpy: jasmine.SpyObj<AuthService>;
   let languageHelperServiceSpy: jasmine.SpyObj<LanguageHelperService>;
   let initLangChangedSpy: jasmine.SpyObj<Observable<any>>;
+  let userServiceSpy: jasmine.SpyObj<UserService>;
+  let onCheckUserAccessSpy;
 
   beforeEach(() => {
     cookieServiceSpy = jasmine.createSpyObj<CookieService>(['get', 'set']);
@@ -33,6 +36,15 @@ describe('AuthService', () => {
     initLangChangedSpy.pipe.and.returnValue(initLangChangedSpy);
     languageHelperServiceSpy.initLangChanged = initLangChangedSpy;
 
+    userServiceSpy = jasmine.createSpyObj<UserService>([
+      'checkUserAccess',
+    ]);
+    (userServiceSpy as any).getUserInfo = new Observable(
+      (subscriber) => {
+        onCheckUserAccessSpy = subscriber;
+      }
+    );
+
     TestBed.configureTestingModule({
       providers: [
         AuthGuardService,
@@ -40,6 +52,7 @@ describe('AuthService', () => {
         { provide: Router, useValue: routerSpy },
         { provide: AuthService, useValue: authServiceSpy },
         { provide: LanguageHelperService, useValue: languageHelperServiceSpy },
+        { provide: UserService, useValue: userServiceSpy },
       ],
     });
     service = TestBed.inject(AuthGuardService);

@@ -30,6 +30,9 @@ export class AppSharedSettingsThemeComponent {
    * Sets the initial values for the settings.
    */
   setInitialValues(): void {
+    this.themes.forEach(el => {
+      el.selected = false;
+    });
     const mainThemeOption = this.settingsService.getDefaultMainThemeColor();
     const findTheme = this.themes.find(el => el.type === mainThemeOption);
     if (findTheme) {

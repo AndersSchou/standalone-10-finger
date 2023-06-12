@@ -35,11 +35,9 @@ export class AppSharedSettingsLanguageComponent {
     });
 
     this.currentLanguage = this.languageHelperService.currentLangUsed;
-    const findCurrentLanguage = this.availableLanguages.find(el => el.label === this.languageHelperService.currentLangUsed);
+    const findCurrentLanguage = this.availableLanguages.find(el => el.label === this.currentLanguage);
     if (findCurrentLanguage) {
       findCurrentLanguage.selected = true;
-    } else {
-      this.availableLanguages[0].selected = true;
     }
   }
 

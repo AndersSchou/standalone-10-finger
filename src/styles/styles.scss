@@ -2,6 +2,11 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "../assets/app-colors";
 
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("../assets/fonts/OpenDyslexic/OpenDyslexic-Regular.otf") format("truetype");
+}
+
 html,
 body {
   height: 100%;

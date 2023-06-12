@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { STORAGE_KEY_TYPE } from '../common/enums';
 
 /**
  * This service is used to handle login and logout logic.
@@ -57,12 +58,13 @@ export class AuthService {
    */
   logout(): void {
     const sessiondID = this.cookieService.get('mvf_session_id');
+    localStorage.removeItem(STORAGE_KEY_TYPE.APP_USER_ACCESS);
     if (sessiondID) {
-      window.location.href =
-        environment.UrlEndpoints.auth + '/logout.php?SessionID=' + sessiondID + '&return_to=' + environment.location;
-
       // Clean up cookies.
       this.cookieService.delete('mvf_session_id');
+
+      window.location.href =
+        environment.UrlEndpoints.auth + '/logout.php?SessionID=' + sessiondID + '&return_to=' + environment.location;
     }
   }
 }
