@@ -1,4 +1,3 @@
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MaterialModule } from '../shared/material.module';
@@ -9,7 +8,6 @@ import { AppHomeComponent } from './home.component';
   declarations: [AppHomeComponent],
   imports: [
     CommonModule,
-    FlexLayoutModule,
     SharedModule,
     MaterialModule
   ],

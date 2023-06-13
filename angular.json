@@ -19,7 +19,9 @@
           "options": {
             "allowedCommonJsDependencies": [
               "core-js",
-              "raf"
+              "raf",
+              "rgbcolor",
+              "html2canvas"
             ],
             "outputPath": "dist/10-finger",
             "index": "src/index.html",
@@ -181,5 +183,13 @@
     "schematicCollections": [
       "@angular-eslint/schematics"
     ]
+  },
+  "schematics": {
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    }
   }
 }

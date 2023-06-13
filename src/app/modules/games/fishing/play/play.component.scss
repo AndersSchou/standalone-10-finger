@@ -278,6 +278,7 @@
 
 .timer-holder {
   display: flex;
+  place-content: center;
 }
 
 .timer-hld {
@@ -296,6 +297,7 @@
 
 .timer-hld.no-bg {
   background: transparent;
+  color: $default-text-color;
 }
 
 /* START GRID */

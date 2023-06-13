@@ -16,6 +16,9 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: $default-text-color;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: normal;
 }
 
 body .mat-icon {
@@ -27,13 +30,25 @@ body .mat-icon {
   width: 450px;
 }
 
-.cdk-overlay-pane.error-class .mat-dialog-container {
-  padding: 24px 24px 0 24px;
+.mat-mdc-dialog-actions,
+.mat-mdc-dialog-title {
+  margin-bottom: 0 !important;
 }
 
-.mat-dialog-actions,
-.mat-dialog-title {
-  margin-bottom: 0 !important;
+.mdc-dialog__title::before {
+  display: none !important;
+}
+
+.mdc-dialog__title {
+  padding: 0 !important;
+}
+
+.mdc-dialog .mdc-dialog__content {
+  padding: 0 !important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__content {
+  color: $default-text-color !important;
 }
 
 .h-100 {
@@ -108,7 +123,7 @@ body .mat-icon {
 }
 
 .game-over-class,
-.achievement-class .mat-dialog-container {
+.achievement-class .mat-mdc-dialog-container {
   padding: 0;
   overflow: hidden;
 }
@@ -118,6 +133,58 @@ body .mat-icon {
     padding: 0 26px;
   }
 }
+
+.fx-layout-row {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.fx-layout-row-wrap {
+  flex-flow: row wrap;
+}
+
+.fx-layout-center-center {
+  justify-content: center !important;
+  align-items: center;
+}
+
+.fx-layout-start-center {
+  justify-content: flex-start !important;
+  align-items: center;
+}
+
+.fx-layout-end-center {
+  justify-content: flex-end !important;
+  align-items: center;
+}
+
+.fx-flex {
+  flex: 1 1 0%;
+  box-sizing: border-box;
+}
+
+.fx-flex-nogrow {
+  flex: 0 1 auto;
+  box-sizing: border-box;
+}
+
+.fx-flex-none {
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+
+/* xs: extra small */
+@media(max-width: 599px) {}
+
+/* sm: small medium */
+@media(min-width: 600px) and (max-width: 959px) {}
+
+/* md: medium */
+@media(min-width: 960px) and (max-width: 1279px) {}
+
+/* lg: large */
+@media(min-width: 1280px) and (max-width: 1919px) {}
 
 
 /* Custom scroll bar */

@@ -1,4 +1,3 @@
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MaterialModule } from '../shared/material.module';
@@ -11,7 +10,6 @@ import { AppAchievementDetailsComponent } from './details/details.component';
   declarations: [AppAchievementsComponent, AppAchievementsAwardsComponent, AppAchievementDetailsComponent],
   imports: [
     CommonModule,
-    FlexLayoutModule,
     SharedModule,
     MaterialModule,
   ],

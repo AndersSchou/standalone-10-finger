@@ -2,8 +2,8 @@
 <app-shared-settings *ngIf="viewSettings"></app-shared-settings>
 <div class="course main-content-hld page-padd ptb-34">
   <div>
-    <div fxLayout="row wrap" fxLayoutGap="50px" *ngIf="categories.length > 0">
-      <div fxFlex="300px">
+    <div *ngIf="categories.length > 0" class="fx-layout-row fx-layout-row-wrap">
+      <div class="fx-flex-300">
         <div>
           <div *ngFor="let category of categories; let i=index" class="cat-hld"
             [ngClass]="{'active': category.name === currentCategory.name}" (click)="selectCategory(category)">
@@ -17,7 +17,7 @@
         </div>
         <div class="divider"></div>
       </div>
-      <div fxFlex class="overflow-auto">
+      <div class="fx-flex overflow-auto">
         <app-modules-set-course-course [currentLanguage]="currentLanguage" [categories]="categories"
           [course]="currentCategory">
         </app-modules-set-course-course>

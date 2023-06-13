@@ -10,8 +10,8 @@
       <div>{{'translateSettings' | translate }}</div>
       <mat-icon svgIcon="icon_close" class="ml-auto" (click)="close()"></mat-icon>
     </div>
-    <div class="settings-content-hld" fxLayout="row" fxLayoutGap="24px">
-      <div fxFlex="168px">
+    <div class="settings-content-hld fx-layout-row">
+      <div class="fx-flex-168 mr-24">
         <div class="setting-hld" *ngFor="let option of settingsOptions" [ngClass]="{'active': option.selected}"
           (click)="selectOption(option)">
           <mat-icon *ngIf="option.icon" [svgIcon]="option.icon"></mat-icon>
@@ -22,7 +22,7 @@
           <div class="setting-txt">{{'translateResetAll' | translate}}</div>
         </div>
       </div>
-      <div fxFlex class="bd-l">
+      <div class="fx-flex bd-l">
         <ng-container [ngSwitch]="selectedOption.type">
           <app-shared-settings-keyboard *ngSwitchCase="'keyboard'"></app-shared-settings-keyboard>
           <app-shared-settings-text *ngSwitchCase="'text'"></app-shared-settings-text>

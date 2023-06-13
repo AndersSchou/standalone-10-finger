@@ -8,8 +8,8 @@
         <div class="levels-hld-description">{{ 'translateMakeLevelChoice' | translate }}</div>
       </div>
       <div class="scroll-hld">
-        <div fxLayout="row wrap" class="plr-30">
-          <div *ngFor="let level of levels;let i=index" fxFlex="25%">
+        <div class="fx-layout-row fx-layout-row-wrap plr-30">
+          <div *ngFor="let level of levels;let i=index" class="fx-flex-25">
             <div class="level-hld" [ngClass]="{'active': level.selected, 'available': level.completed}"
               (click)="selectLevel(level)">
               <div>

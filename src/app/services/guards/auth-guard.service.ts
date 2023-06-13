@@ -2,7 +2,7 @@ import { LanguageHelperService } from './../language.service';
 import { AuthService } from '../auth.service';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { UserService } from '../api/user.service';
 import { Observable, map, mergeMap, of } from 'rxjs';
@@ -12,7 +12,7 @@ import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
  * AuthGuardService is used to handle user authentification.
  */
 @Injectable()
-export class AuthGuardService implements CanActivate {
+export class AuthGuardService  {
   // Stores the location of the localhost.
   localhostLocation = 'http://localhost:4200/';
   // Stores cookies options.

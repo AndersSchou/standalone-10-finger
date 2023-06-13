@@ -2,8 +2,8 @@
 <app-shared-settings *ngIf="viewSettings"></app-shared-settings>
 <div class="course main-content-hld page-padd ptb-34">
   <div *ngIf="categories && categories.length > 0; else noCategories">
-    <div fxLayout="row wrap">
-      <div fxFlex="320px" class="left-col">
+    <div class="fx-layout-row">
+      <div class="fx-flex-320 left-col">
         <div>
           <div>
             <div class="section-title">
@@ -11,19 +11,19 @@
               {{ 'translateOverallResults' | translate }}
             </div>
             <div class="pl-40 pb-24">
-              <div fxLayout="row wrap" class="v-align res-hld" fxLayoutGap="40px">
-                <div fxFlex class="flex-v-align res-txt">
+              <div class="fx-layout-row fx-layout-row-wrap v-align res-hld">
+                <div class="fx-flex flex-v-align res-txt mr-40">
                   <mat-icon svgIcon="speed" class="mr-16 speed"></mat-icon>
                   {{ 'translateSpeed' | translate }}
                 </div>
-                <div fxFlex>{{speed}} {{ 'translateKeysPerMinute' | translate }}</div>
+                <div class="fx-flex">{{speed}} {{ 'translateKeysPerMinute' | translate }}</div>
               </div>
-              <div fxLayout="row wrap" class="v-align res-hld" fxLayoutGap="40px">
-                <div fxFlex class="flex-v-align res-txt">
+              <div class="fx-layout-row fx-layout-row-wrap v-align res-hld">
+                <div class="fx-flex flex-v-align res-txt mr-40">
                   <mat-icon svgIcon="accuracy" class="mr-16 accuracy"></mat-icon>
                   {{ 'translateAccuracy' | translate }}
                 </div>
-                <div fxFlex>{{accuracy}} %</div>
+                <div class="fx-flex">{{accuracy}} %</div>
               </div>
               <div class="category-progress">
                 <div class="progress" [ngStyle]="{'width': categoryProgress + '%'}"></div>
@@ -64,7 +64,7 @@
           </div>
         </div>
       </div>
-      <div fxFlex class="overflow-auto">
+      <div class="fx-flex overflow-auto">
         <app-modules-achievements-awards [completedLevels]="completedLevels">
         </app-modules-achievements-awards>
       </div>

@@ -1,7 +1,7 @@
 # 10-finger
 ## Setup and run
 
-First thing you will have to do is install node 16.13.2 and npm 8.1.2. Depending on your choices and operating system the process might be diferent for you, but you mainly have 2 options:
+First thing you will have to do is install node 16.14.2 and npm 8.5.0. Depending on your choices and operating system the process might be diferent for you, but you mainly have 2 options:
 
 - install from the official source https://nodejs.org/en/download/
 - use nvm to manage the node instalation
@@ -14,15 +14,15 @@ If you have osx/linux with bash, you can just run this command that downloads th
 `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash`
 
 After you have nvm installed you need to install the proper node version:
-`nvm install 16.13.2`
+`nvm install 16.14.2`
 
 In order to select what version you want to use (if you have the default one set to another version) run
-`nvm use 16.13.2`
+`nvm use 16.14.2`
 
 Also a good ideea is to add an alias to the version for this project and just use the alias (so you don't have to remember the exact version)
-`nvm alias 10-finger 16.13.2`
+`nvm alias 10-finger 16.14.2`
 
-Now you can use `nvm use 10-finger` instead of `nvm use 16.13.2`
+Now you can use `nvm use 10-finger` instead of `nvm use 16.14.2`
 
 **Notice**: You need to run the `nvm use` comand each time you open a new terminal/console (or you can add it to your startup script if it applies).
 
@@ -57,9 +57,9 @@ We have 4 environments: localhost, dev, test and production.
 
 Localhost is simply local testing.
 
-Developers environment which can be used for testing is https://10-finger-dev.com/ . Anything merged into develop branch will automatically be pushed here.
+Developers environment which can be used for testing is https://10finger-dev.intowords.com/. Anything merged into develop branch will automatically be pushed here.
 
-The test environment is primarily used for demonstrations and testing. It should not be used by developers unless first inquiring to do so. In order to build for https://10-finger-test.com/ a tag should be applied and pushed on any branch.
+The test environment is primarily used for demonstrations and testing. It should not be used by developers unless first inquiring to do so. In order to build for https://10finger-test.intowords.com/ a tag should be applied and pushed on any branch.
 
 Production environment is for production and updating it is done manually through azure.
 

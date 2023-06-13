@@ -1,6 +1,5 @@
 import { AppSharedSettingsLogoutComponent } from './settings/logout/logout.component';
 import { RouterModule } from '@angular/router';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -35,7 +34,6 @@ import { AppSharedSettingsThemeComponent } from './settings/theme/theme.componen
   imports: [
     FormsModule,
     CommonModule,
-    FlexLayoutModule,
     MaterialModule,
     DragDropModule,
     RouterModule,

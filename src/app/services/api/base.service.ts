@@ -49,38 +49,17 @@ export class BaseService<T> {
    * @param isJson Marks if the response is a json or not. Defaults to true.
    * @param isPdfResponse Marks if the response is a pdf resource or not. Defaults to false.
    */
-  protected get<R>(url: string): Observable<R>;
-  protected get<S>(url: string, isJson: boolean): Observable<S>;
-  protected get(
-    url: string,
-    isJson: boolean,
-    isPdfResponse: boolean
-  ): Observable<{ body: ArrayBuffer }>;
-  protected get<S>(url: string, isJson: boolean, isPdfResponse: boolean, lang: string): Observable<S>;
-  protected get(
-    url: string,
-    isJson = true,
-    isPdfResponse = false,
-    lang = ''
-  ): Observable<T | { body: ArrayBuffer }> {
+  protected get<R>(url: string): Observable<R> {
     const timestamp = Math.round(new Date().getTime() / 1000).toString();
     const headers = Object.assign(this.generateHTTPHeader(timestamp), {
-      Accepts: 'application/json' + (isPdfResponse ? ', application/pdf' : ''),
-      language: lang
+      Accepts: 'application/json'
     });
     return this.httpService
-      .get<T>(url, {
-        headers,
-        observe: isPdfResponse ? ('response' as 'body') : 'body',
-        responseType: isPdfResponse ? ('arraybuffer' as 'json') : 'json',
-      })
+      .get<R>(url, { headers })
       .pipe(
         map(
-          (res: T | { body: T }): T => {
-            if (isJson && 'body' in res) {
-              return res.body;
-            }
-            return res as T;
+          (res: R): R => {
+            return res as R;
           }
         )
       );

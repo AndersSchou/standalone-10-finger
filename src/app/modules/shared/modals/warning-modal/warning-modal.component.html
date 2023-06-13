@@ -1,6 +1,6 @@
 <div class="dialog-hld">
   <div mat-dialog-title class="mat-dialog-title">
-    <div class="title" fxLayout="row" fxLayoutAlign="start center">
+    <div class="title fx-layout-row fx-layout-start-center">
       <div class="icon-hld">
         <mat-icon svgIcon="info" class="app-icon-hover"></mat-icon>
       </div>
@@ -12,8 +12,8 @@
     <div>{{ data.description | translate }}</div>
   </div>
 
-  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" class="modal-footer">
-    <div *ngIf="!data.hideActions">
+  <div mat-dialog-actions class="modal-footer">
+    <div *ngIf="!data.hideActions" class="fx-layout-row fx-layout-end-center">
       <div (click)="close()" class="action-btn default">
         {{ "translateCancel" | translate }}
       </div>

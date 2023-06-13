@@ -149,3 +149,14 @@
   width: 34px;
   height: 23px;
 }
+
+.fx-flex-320 {
+  flex: 1 1 320px;
+  box-sizing: border-box;
+  max-width: 320px;
+  min-width: 320px;
+}
+
+.mr-40 {
+  margin-right: 40px;
+}
