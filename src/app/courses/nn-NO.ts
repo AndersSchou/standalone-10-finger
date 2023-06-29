@@ -97,7 +97,7 @@ export const nb = {
             {
               "id": 18,
               "name": "Skriv ord 4",
-              "text": "føll"
+              "text": "sjal"
             },
             {
               "id": 19,
@@ -273,7 +273,7 @@ export const nb = {
             {
               "id": 23,
               "name": "Skriv ord 9",
-              "text": "skjell"
+              "text": "skjel"
             },
             {
               "id": 24,
@@ -323,7 +323,7 @@ export const nb = {
             {
               "id": 33,
               "name": "Ofte brukte ord 4",
-              "text": "fra"
+              "text": "far"
             },
             {
               "id": 34,
@@ -338,7 +338,7 @@ export const nb = {
             {
               "id": 36,
               "name": "Ofte brukte ord 7",
-              "text": "jeg"
+              "text": "eg"
             },
             {
               "id": 37,
@@ -347,53 +347,53 @@ export const nb = {
             },
             {
               "id": 38,
-              "name": "Skriv setninger 1",
+              "name": "Skriv setningar 1",
               "text": "asle ser flaska"
             },
             {
               "id": 39,
-              "name": "Skriv setninger 2",
+              "name": "Skriv setningar 2",
               "text": "farfar har sag"
             },
             {
               "id": 40,
-              "name": "Skriv setninger 3",
+              "name": "Skriv setningar 3",
               "text": "dag har saks"
             },
             {
               "id": 41,
-              "name": "Skriv setninger 4",
+              "name": "Skriv setningar 4",
               "text": "asle har lekser"
             },
             {
               "id": 42,
-              "name": "Skriv setninger 5",
+              "name": "Skriv setningar 5",
               "text": "farfar har jakke"
             },
             {
               "id": 43,
-              "name": "Skriv setninger 6",
+              "name": "Skriv setningar 6",
               "text": "kjell ser kake"
             },
             {
               "id": 44,
-              "name": "Skriv setninger 7",
+              "name": "Skriv setningar 7",
               "text": "asle har reker"
             },
             {
               "id": 45,
-              "name": "Skriv setninger 8",
-              "text": "farfar har skaller"
+              "name": "Skriv setningar 8",
+              "text": "farfar har skallar"
             },
             {
               "id": 46,
-              "name": "Skriv setninger 9",
-              "text": "selg fela sa jeg"
+              "name": "Skriv setningar 9",
+              "text": "sel fela sa eg"
             },
             {
               "id": 47,
-              "name": "Skriv setninger 10",
-              "text": "jeg har sele fra farfar"
+              "name": "Skriv setningar 10",
+              "text": "eg har sele sa farfar"
             }
           ]
         },
@@ -528,52 +528,52 @@ export const nb = {
             },
             {
               "id": 26,
-              "name": "Skriv setninger 1",
-              "text": "ali fikk kjeks"
+              "name": "Skriv setningar 1",
+              "text": "ali fekk kjeks"
             },
             {
               "id": 27,
-              "name": "Skriv setninger 2",
+              "name": "Skriv setningar 2",
               "text": "lisa har lekser"
             },
             {
               "id": 28,
-              "name": "Skriv setninger 3",
-              "text": "lisa sier hei"
+              "name": "Skriv setningar 3",
+              "text": "lisa seier hei"
             },
             {
               "id": 29,
-              "name": "Skriv setninger 4",
-              "text": "ulf fikk fisk"
+              "name": "Skriv setningar 4",
+              "text": "ulf fekk fisk"
             },
             {
               "id": 30,
-              "name": "Skriv setninger 5",
+              "name": "Skriv setningar 5",
               "text": "siri har lus"
             },
             {
               "id": 31,
-              "name": "Skriv setninger 6",
+              "name": "Skriv setningar 6",
               "text": "lisa ler"
             },
             {
               "id": 32,
-              "name": "Skriv setninger 7",
-              "text": "ulf fikk ei lue"
+              "name": "Skriv setningar 7",
+              "text": "ulf fekk ei lue"
             },
             {
               "id": 33,
-              "name": "Skriv setninger 8",
+              "name": "Skriv setningar 8",
               "text": "dag ser reker"
             },
             {
               "id": 34,
-              "name": "Skriv setninger 9",
+              "name": "Skriv setningar 9",
               "text": "lisa har kake"
             },
             {
               "id": 35,
-              "name": "Skriv setninger 10",
+              "name": "Skriv setningar 10",
               "text": "siri skal ha gaffel"
             }
           ]
@@ -690,7 +690,7 @@ export const nb = {
             {
               "id": 22,
               "name": "Skriv ord 10",
-              "text": "skole"
+              "text": "skule"
             },
             {
               "id": 23,
@@ -704,52 +704,52 @@ export const nb = {
             },
             {
               "id": 25,
-              "name": "Skriv setninger 1",
-              "text": "jeg ser frosker"
+              "name": "Skriv setningar 1",
+              "text": "eg ser froskar"
             },
             {
               "id": 26,
-              "name": "Skriv setninger 2",
-              "text": "se sola i dag"
+              "name": "Skriv setningar 2",
+              "text": "eg ser sola i dag"
             },
             {
               "id": 27,
-              "name": "Skriv setninger 3",
+              "name": "Skriv setningar 3",
               "text": "ulf har gule sko"
             },
             {
               "id": 28,
-              "name": "Skriv setninger 4",
-              "text": "se gul rose"
+              "name": "Skriv setningar 4",
+              "text": "eg ser gul rose"
             },
             {
               "id": 29,
-              "name": "Skriv setninger 5",
+              "name": "Skriv setningar 5",
               "text": "her er siris sokk"
             },
             {
               "id": 30,
-              "name": "Skriv setninger 6",
-              "text": "lisa ser skole"
+              "name": "Skriv setningar 6",
+              "text": "lisa ser skule"
             },
             {
               "id": 31,
-              "name": "Skriv setninger 7",
-              "text": "ulf ser fugler i flokk"
+              "name": "Skriv setningar 7",
+              "text": "ulf ser fuglar i flokk"
             },
             {
               "id": 32,
-              "name": "Skriv setninger 8",
+              "name": "Skriv setningar 8",
               "text": "ulf ser siri og oss"
             },
             {
               "id": 33,
-              "name": "Skriv setninger 9",
+              "name": "Skriv setningar 9",
               "text": "sola er god"
             },
             {
               "id": 34,
-              "name": "Skriv setninger 10",
+              "name": "Skriv setningar 10",
               "text": "du har sko og sokk"
             }
           ]
@@ -836,7 +836,7 @@ export const nb = {
             {
               "id": 16,
               "name": "Skriv ord 4",
-              "text": "datter"
+              "text": "dotter"
             },
             {
               "id": 17,
@@ -895,62 +895,62 @@ export const nb = {
             },
             {
               "id": 28,
-              "name": "Skriv setninger 1",
-              "text": "jeg ser et tog"
+              "name": "Skriv setningar 1",
+              "text": "eg ser eit tog"
             },
             {
               "id": 29,
-              "name": "Skriv setninger 2",
+              "name": "Skriv setningar 2",
               "text": "treet har rot"
             },
             {
               "id": 30,
-              "name": "Skriv setninger 3",
-              "text": "ulf fikk stor fisk"
+              "name": "Skriv setningar 3",
+              "text": "ulf fekk stor fisk"
             },
             {
               "id": 31,
-              "name": "Skriv setninger 4",
+              "name": "Skriv setningar 4",
               "text": "lisa ser to geiter"
             },
             {
               "id": 32,
-              "name": "Skriv setninger 5",
+              "name": "Skriv setningar 5",
               "text": "turid rir hest"
             },
             {
               "id": 33,
-              "name": "Skriv setninger 6",
-              "text": "farfar fisket ål"
+              "name": "Skriv setningar 6",
+              "text": "farfar fiska ål"
             },
             {
               "id": 34,
-              "name": "Skriv setninger 7",
+              "name": "Skriv setningar 7",
               "text": "torsk er fisk"
             },
             {
               "id": 35,
-              "name": "Skriv setninger 8",
-              "text": "lisa er ikke to år"
+              "name": "Skriv setningar 8",
+              "text": "lisa er ikkje to år"
             },
             {
               "id": 36,
-              "name": "Skriv setninger 9",
+              "name": "Skriv setningar 9",
               "text": "du skulle ha åre"
             },
             {
               "id": 37,
-              "name": "Skriv setninger 10",
+              "name": "Skriv setningar 10",
               "text": "farfar har også stokk"
             },
             {
               "id": 38,
-              "name": "Skriv setninger 11",
+              "name": "Skriv setningar 11",
               "text": "ole får fri i dag"
             },
             {
               "id": 39,
-              "name": "Skriv setninger 12",
+              "name": "Skriv setningar 12",
               "text": "far har gitar"
             }
           ]
@@ -1002,7 +1002,7 @@ export const nb = {
             {
               "id": 9,
               "name": "Trening 9",
-              "text": "huske"
+              "text": "hugse"
             },
             {
               "id": 10,
@@ -1012,12 +1012,12 @@ export const nb = {
             {
               "id": 11,
               "name": "Trening 11",
-              "text": "fra"
+              "text": "far"
             },
             {
               "id": 12,
               "name": "Trening 12",
-              "text": "hils"
+              "text": "jils"
             },
             {
               "id": 13,
@@ -1076,58 +1076,58 @@ export const nb = {
             },
             {
               "id": 24,
-              "name": "Skriv setninger 1",
-              "text": "dette er ikke et slott"
+              "name": "Skriv setningar 1",
+              "text": "dette er ikkje eit slott"
             },
             {
               "id": 25,
-              "name": "Skriv setninger 2",
-              "text": "det er et hus"
+              "name": "Skriv setningar 2",
+              "text": "det er eit hus"
             },
             {
               "id": 26,
-              "name": "Skriv setninger 3",
-              "text": "sist fikk du kake hos farfar"
+              "name": "Skriv setningar 3",
+              "text": "sist fekk du kake hos farfar"
             },
             {
               "id": 27,
-              "name": "Skriv setninger 4",
-              "text": "jeg har god tid"
+              "name": "Skriv setningar 4",
+              "text": "eg har god tid"
             },
             {
               "id": 28,
-              "name": "Skriv setninger 5",
-              "text": "ola er stor gutt"
+              "name": "Skriv setningar 5",
+              "text": "ola er stor gut"
             },
             {
               "id": 29,
-              "name": "Skriv setninger 6",
-              "text": "lisa har et flagg"
+              "name": "Skriv setningar 6",
+              "text": "lisa har eit flagg"
             },
             {
               "id": 30,
-              "name": "Skriv setninger 7",
-              "text": "der ute er det katter"
+              "name": "Skriv setningar 7",
+              "text": "der ute er det kattar"
             },
             {
               "id": 31,
-              "name": "Skriv setninger 8",
+              "name": "Skriv setningar 8",
               "text": "ola får roser"
             },
             {
               "id": 32,
-              "name": "Skriv setninger 9",
-              "text": "far må ro etter frokost"
+              "name": "Skriv setningar 9",
+              "text": "far må ro etter frukost"
             },
             {
               "id": 33,
-              "name": "Skriv setninger 10",
-              "text": "skoledagen er slutt for i dag"
+              "name": "Skriv setningar 10",
+              "text": "skuledagen er slutt for i dag"
             },
             {
               "id": 34,
-              "name": "Skriv setninger 11",
-              "text": "dag går til ola for å leke"
+              "name": "Skriv setningar 11",
+              "text": "dag går til ola for å leike"
             }
           ]
         },
@@ -1208,7 +1208,7 @@ export const nb = {
             {
               "id": 15,
               "name": "Skriv ord 1",
-              "text": "vann"
+              "text": "vatn"
             },
             {
               "id": 16,
@@ -1248,7 +1248,7 @@ export const nb = {
             {
               "id": 23,
               "name": "Skriv ord 9",
-              "text": "votter"
+              "text": "vottar"
             },
             {
               "id": 24,
@@ -1267,68 +1267,68 @@ export const nb = {
             },
             {
               "id": 27,
-              "name": "Skriv setninger 1",
+              "name": "Skriv setningar 1",
               "text": "dette dekket er vått"
             },
             {
               "id": 28,
-              "name": "Skriv setninger 2",
-              "text": "hva sier du til lisa"
+              "name": "Skriv setningar 2",
+              "text": "kva seier du til lisa"
             },
             {
               "id": 29,
-              "name": "Skriv setninger 3",
-              "text": "det er ola sine votter"
+              "name": "Skriv setningar 3",
+              "text": "det er ola sine vottar"
             },
             {
               "id": 30,
-              "name": "Skriv setninger 4",
-              "text": "den koster ti kroner"
+              "name": "Skriv setningar 4",
+              "text": "den kostar ti kroner"
             },
             {
               "id": 31,
-              "name": "Skriv setninger 5",
+              "name": "Skriv setningar 5",
               "text": "hunden er våt"
             },
             {
               "id": 32,
-              "name": "Skriv setninger 6",
-              "text": "hvordan har du det"
+              "name": "Skriv setningar 6",
+              "text": "korleis har du det"
             },
             {
               "id": 33,
-              "name": "Skriv setninger 7",
-              "text": "dette er en god is"
+              "name": "Skriv setningar 7",
+              "text": "dette er ein god is"
             },
             {
               "id": 34,
-              "name": "Skriv setninger 8",
-              "text": "vi kan gå inn til siri sa lisa til ola"
+              "name": "Skriv setningar 8",
+              "text": "me kan gå inn til siri sa lisa til ola"
             },
             {
               "id": 35,
-              "name": "Skriv setninger 9",
+              "name": "Skriv setningar 9",
               "text": "far har to årer når han ror"
             },
             {
               "id": 36,
-              "name": "Skriv setninger 10",
-              "text": "den første lille grisen"
+              "name": "Skriv setningar 10",
+              "text": "den første vesle grisen"
             },
             {
               "id": 37,
-              "name": "Skriv setninger 11",
-              "text": "fikk lov å gå i isen"
+              "name": "Skriv setningar 11",
+              "text": "fekk lov å gå i isen"
             },
             {
               "id": 38,
-              "name": "Skriv setninger 12",
-              "text": "den andre lille grisen"
+              "name": "Skriv setningar 12",
+              "text": "den andre vesle grisen"
             },
             {
               "id": 39,
-              "name": "Skriv setninger 13",
-              "text": "fikk lese i avisen"
+              "name": "Skriv setningar 13",
+              "text": "fekk lese i avisa"
             }
           ]
         },
@@ -1374,7 +1374,7 @@ export const nb = {
             {
               "id": 8,
               "name": "Trening 8",
-              "text": "vær"
+              "text": "ver"
             },
             {
               "id": 9,
@@ -1394,7 +1394,7 @@ export const nb = {
             {
               "id": 12,
               "name": "Trening 12",
-              "text": "ble"
+              "text": "blei"
             },
             {
               "id": 13,
@@ -1469,77 +1469,77 @@ export const nb = {
             {
               "id": 27,
               "name": "Skriv ord 11",
-              "text": "melk"
+              "text": "mark"
             },
             {
               "id": 28,
-              "name": "Skriv setninger 1",
+              "name": "Skriv setningar 1",
               "text": "dette er min bil"
             },
             {
               "id": 29,
-              "name": "Skriv setninger 2",
-              "text": "bær smaker godt"
+              "name": "Skriv setningar 2",
+              "text": "bær smakar godt"
             },
             {
               "id": 30,
-              "name": "Skriv setninger 3",
-              "text": "jeg må få brus og mat"
+              "name": "Skriv setningar 3",
+              "text": "eg må få brus og mat"
             },
             {
               "id": 31,
-              "name": "Skriv setninger 4",
-              "text": "sauen sier bæ"
+              "name": "Skriv setningar 4",
+              "text": "sauen seier bæ"
             },
             {
               "id": 32,
-              "name": "Skriv setninger 5",
+              "name": "Skriv setningar 5",
               "text": "pål blir med mamma i butikken"
             },
             {
               "id": 33,
-              "name": "Skriv setninger 6",
-              "text": "mia ser en maur som bærer en barnål"
+              "name": "Skriv setningar 6",
+              "text": "mia ser ein maur som ber ei barnål"
             },
             {
               "id": 34,
-              "name": "Skriv setninger 7",
-              "text": "mons fikk jordbær av mamma"
+              "name": "Skriv setningar 7",
+              "text": "mons fekk jordbær av mamma"
             },
             {
               "id": 35,
-              "name": "Skriv setninger 8",
-              "text": "denne kamelen ble både varm og tørst"
+              "name": "Skriv setningar 8",
+              "text": "denne kamelen blei både varm og tørst"
             },
             {
               "id": 36,
-              "name": "Skriv setninger 9",
-              "text": "balder vil være med å kjøre bil og båt"
+              "name": "Skriv setningar 9",
+              "text": "balder vil vere med til bilen og båten"
             },
             {
               "id": 37,
-              "name": "Skriv setninger 10",
-              "text": "bli med å se de store bølgene"
+              "name": "Skriv setningar 10",
+              "text": "bli med og sjå dei store bølgene"
             },
             {
               "id": 38,
-              "name": "Skriv setninger 11",
-              "text": "du må være forsiktig så ikke krabben blir veldig sinna"
+              "name": "Skriv setningar 11",
+              "text": "du må vere forsiktig så ikkje krabben blir veldig sinna"
             },
             {
               "id": 39,
-              "name": "Skriv setninger 12",
-              "text": "jordbær er røde og søte og de smaker godt med fløte på"
+              "name": "Skriv setningar 12",
+              "text": "jordbær er raude og søte og dei smakar godt med sukker på"
             },
             {
               "id": 40,
-              "name": "Skriv setninger 13",
-              "text": "blomster små gule blå titter fram fra marken nå vinker til anna lill fordi hun er så snill"
+              "name": "Skriv setningar 13",
+              "text": "blomster små gule blå tittar fram frå marka no vinkar til anna lill fordi ho er så snill"
             },
             {
               "id": 41,
-              "name": "Skriv setninger 14",
-              "text": "først kom et lass med lisser et lass med lakrislisser og lakrismus og røde brus og sjokoladenisser"
+              "name": "Skriv setningar 14",
+              "text": "først kom eit lass med lisser eit lass med lakrislisser og lakrismus og raude brus og sjokoladenissar"
             }
           ]
         },
@@ -1640,7 +1640,7 @@ export const nb = {
             {
               "id": 19,
               "name": "Skriv ord 4",
-              "text": "kulekjøring"
+              "text": "kulekøyring"
             },
             {
               "id": 20,
@@ -1689,63 +1689,63 @@ export const nb = {
             },
             {
               "id": 29,
-              "name": "Skriv setninger 1",
-              "text": "carl spiller cup"
+              "name": "Skriv setningar 1",
+              "text": "carl speler cup"
             },
             {
               "id": 30,
-              "name": "Skriv setninger 2",
-              "text": "cecilie spiller xylofon"
+              "name": "Skriv setningar 2",
+              "text": "cecilie speler xylofon"
             },
             {
               "id": 31,
-              "name": "Skriv setninger 3",
+              "name": "Skriv setningar 3",
               "text": "i dag er det cup i volleyball"
             },
             {
               "id": 32,
-              "name": "Skriv setninger 4",
+              "name": "Skriv setningar 4",
               "text": "pappa vil ha fyrstikker"
             },
             {
               "id": 33,
-              "name": "Skriv setninger 5",
-              "text": "det er hyggelig i løypa"
+              "name": "Skriv setningar 5",
+              "text": "det er hyggeleg i løypa"
             },
             {
               "id": 34,
-              "name": "Skriv setninger 6",
+              "name": "Skriv setningar 6",
               "text": "lisa skal sy"
             },
             {
               "id": 35,
-              "name": "Skriv setninger 7",
-              "text": "et fly flyr over en by"
+              "name": "Skriv setningar 7",
+              "text": "eit fly flyr over ein by"
             },
             {
               "id": 36,
-              "name": "Skriv setninger 8",
+              "name": "Skriv setningar 8",
               "text": "dag har lommelykt og xylofon"
             },
             {
               "id": 37,
-              "name": "Skriv setninger 9",
-              "text": "jeg hører en høy lyd sier petter"
+              "name": "Skriv setningar 9",
+              "text": "eg høyrer ein høg lyd seier petter"
             },
             {
               "id": 38,
-              "name": "Skriv setninger 10",
-              "text": "hei og husk og hipp og hopp se her husker tipp og topp ingen er på samme sted topp går opp når tipp går ned"
+              "name": "Skriv setningar 10",
+              "text": "hei og husk og hipp og hopp sjå her huskar tipp og topp ingen er på same stad topp går opp når tipp går ned"
             },
             {
               "id": 39,
-              "name": "Skriv setninger 11",
-              "text": "gyrre myrre my fant en paraply hun slo paraplyen opp så den løftet hennes kropp høyt i vilden sky"
+              "name": "Skriv setningar 11",
+              "text": "gyrre myrre my fann ein paraply ho slo paraplyen opp så han løfta kroppen hennar høgt i vilden sky"
             },
             {
               "id": 40,
-              "name": "Skriv setninger 12",
-              "text": "gyrre myrre maks fant en liten saks som hun klippet jorden med først i to og så i tre gyrre myrre maks"
+              "name": "Skriv setningar 12",
+              "text": "gyrre myrre maks fann ei lita saks som ho klipte jorda med først i to og så i tre gyrre myrre maks"
             }
           ]
         },
@@ -1845,58 +1845,58 @@ export const nb = {
             },
             {
               "id": 19,
-              "name": "Skriv setninger 1",
+              "name": "Skriv setningar 1",
               "text": "Programmet er på web."
             },
             {
               "id": 20,
-              "name": "Skriv setninger 2",
-              "text": "Internett heter world wide web."
+              "name": "Skriv setningar 2",
+              "text": "Internett heiter world wide web."
             },
             {
               "id": 21,
-              "name": "Skriv setninger 3",
+              "name": "Skriv setningar 3",
               "text": "Walter er åtti år."
             },
             {
               "id": 22,
-              "name": "Skriv setninger 4",
+              "name": "Skriv setningar 4",
               "text": "Werner liker quiz."
             },
             {
               "id": 23,
-              "name": "Skriv setninger 5",
-              "text": "Quiz er spennende."
+              "name": "Skriv setningar 5",
+              "text": "Quiz er spennande."
             },
             {
               "id": 24,
-              "name": "Skriv setninger 6",
+              "name": "Skriv setningar 6",
               "text": "Det er selleri i Waldorfsalat."
             },
             {
               "id": 25,
-              "name": "Skriv setninger 7",
+              "name": "Skriv setningar 7",
               "text": "Jonas og Espen liker å gå på ski."
             },
             {
               "id": 26,
-              "name": "Skriv setninger 8",
+              "name": "Skriv setningar 8",
               "text": "Aina og Dina liker å blogge."
             },
             {
               "id": 27,
-              "name": "Skriv setninger 9",
-              "text": "Oskar har en hund som heter Dino."
+              "name": "Skriv setningar 9",
+              "text": "Oskar har ein hund som heiter Dino."
             },
             {
               "id": 28,
-              "name": "Skriv setninger 10",
-              "text": "Tre rare katter har vi fått. Den ene heter Knoll. Så må den andre hete Tott. Den tredje har vi ganske flott gitt navnet Tordenskjold."
+              "name": "Skriv setningar 10",
+              "text": "Tre rare kattar har me fått. Den eine heiter Knoll. Så må den andre heite Tott. Den tredje har me ganske flott gitt namnet Tordenskjold."
             },
             {
               "id": 29,
-              "name": "Skriv setninger 11",
-              "text": "Erten og Furten de satt på en haug. Og Furten hun ønsket at Erten var dau."
+              "name": "Skriv setningar 11",
+              "text": "Erten og Furten dei sat på ein haug. Og Furten ho ønskte at Erten var død."
             }
           ]
         },
@@ -1952,71 +1952,71 @@ export const nb = {
             {
               "id": 10,
               "name": "Skriv ord 4",
-              "text": "Hvor?"
+              "text": "Kor?"
             },
             {
               "id": 11,
               "name": "Skriv ord 5",
-              "text": "Hvordan?"
+              "text": "Korleis?"
             },
             {
               "id": 12,
               "name": "Skriv ord 6",
-              "text": "Hva?"
+              "text": "Kva?"
             },
             {
               "id": 13,
-              "name": "Skriv setninger 1",
-              "text": "Ola og Malin gikk på kafe."
+              "name": "Skriv setningar 1",
+              "text": "Ola og Malin gjekk på kafe."
             },
             {
               "id": 14,
-              "name": "Skriv setninger 2",
-              "text": "Der møtte de Even, Siri, Per og Lisa."
+              "name": "Skriv setningar 2",
+              "text": "Der møtte dei Even, Siri, Per og Lisa."
             },
             {
               "id": 15,
-              "name": "Skriv setninger 3",
+              "name": "Skriv setningar 3",
               "text": "Kom hit! ropte Even."
             },
             {
               "id": 16,
-              "name": "Skriv setninger 4",
+              "name": "Skriv setningar 4",
               "text": "Det er plass her!"
             },
             {
               "id": 17,
-              "name": "Skriv setninger 5",
-              "text": "Hvor lenge har dere sittet her?"
+              "name": "Skriv setningar 5",
+              "text": "Kor lenge har de sete her?"
             },
             {
               "id": 18,
-              "name": "Skriv setninger 6",
-              "text": "Har dere sett Jonas, Mia og Ali?"
+              "name": "Skriv setningar 6",
+              "text": "Har de sett Jonas, Mia og Ali?"
             },
             {
               "id": 19,
-              "name": "Skriv setninger 7",
-              "text": "Se der!"
+              "name": "Skriv setningar 7",
+              "text": "Sjå der!"
             },
             {
               "id": 20,
-              "name": "Skriv setninger 8",
-              "text": "Inn døra kommer Mia, Jonas og Ali."
+              "name": "Skriv setningar 8",
+              "text": "Inn døra kjem Mia, Jonas og Ali."
             },
             {
               "id": 21,
-              "name": "Skriv setninger 9",
-              "text": "Hvor kommer dere fra? spurte Even."
+              "name": "Skriv setningar 9",
+              "text": "Kvar kjem de frå? spurde Even."
             },
             {
               "id": 22,
-              "name": "Skriv setninger 10",
-              "text": "Fett asså! Vi har sett den flotte filmen. Den handlet om krokodiller, haier, tigre og elefanter. Har dere sett filmen Krokko?"
+              "name": "Skriv setningar 10",
+              "text": "Fett asså! Me har sett den flotte filmen. Han handla om krokodillar, haiar, tigrar og elefantar. Har de sett filmen Krokko?"
             },
             {
               "id": 23,
-              "name": "Skriv setninger 11",
+              "name": "Skriv setningar 11",
               "text": ""
             }
           ]
@@ -2034,47 +2034,47 @@ export const nb = {
             {
               "id": 1,
               "name": "Trening 1",
-              "text": "Det var en sen kveld og den gamle kongen var klar til å gå i seng."
+              "text": "Det var ein sein kveld og den gamle kongen var klar til å gå i seng."
             },
             {
               "id": 2,
               "name": "Trening 2",
-              "text": "Kongen ropte på tjeneren sin. Vekk meg klokka fem i morgen tidlig. Jeg har tenkt meg på revejakt så jeg må tidlig opp. Javel Hans Høyhet. Jeg skal vekke kongen i morgen tidlig klokka fem. Sov godt, svarte tjeneren."
+              "text": "Kongen ropte på tenaren sin. Vekk meg klokka fem i morgon tidleg. Eg har tenkt meg på revejakt så eg må tidleg opp. Javel Høgvørde Konge. Eg skal vekke kongen i morgon tidleg klokka fem. Sov godt, svarte tenaren."
             },
             {
               "id": 3,
               "name": "Trening 3",
-              "text": "Nå hadde tjeneren et problem. Han var en riktig syvsover, og derfor hadde han problemer med å stå opp tidlig om morgenen."
+              "text": "No hadde tenaren eit problem. Han var ein riktig sjusovar, og difor hadde han problem med å stå opp tidleg om morgonen."
             },
             {
               "id": 4,
               "name": "Trening 4",
-              "text": "Da fikk tjeneren en god ide! Han ropte på stallgutten. Den gamle kongen vil på revejakt i morgen tidlig. Jeg har lovet å vekke han klokka fem. Derfor vil jeg ha deg til å vekke meg klokka fire. Stallgutten var redd for tjeneren og svarte han. Javel herre, jeg skal vekke deg klokka fire."
+              "text": "Då fekk tenaren ein god ide! Han ropte på stallguten. Den gamle kongen vil på revejakt i morgon tidleg. Eg har lovd å vekke han klokka fem. Difor vil eg ha deg til å vekke meg klokka fire. Stallguten var redd for tenaren og svarte han. Javel herre, eg skal vekke deg klokka fire."
             },
             {
               "id": 5,
               "name": "Trening 5",
-              "text": "Nå gikk stallgutten med et problem hengende over hodet. Han elsket å sove. Han hadde alltid hatt tungt for å komme tidlig opp av senga."
+              "text": "No gjekk stallguten med eit problem hengande over hovudet. Han elska å sove. Han hadde alltid hatt tungt for å komme tidleg opp av senga."
             },
             {
               "id": 6,
               "name": "Trening 6",
-              "text": "Da stallgutten kom tilbake til stallen, så han hunden som holdt på å jage en katt. Kom hit! sa stallgutten til hunden."
+              "text": "Då stallgutten kom tilbake til stallen, såg han hunden som heldt på å jage ein katt. Kom hit! sa stallguten til hunden."
             },
             {
               "id": 7,
               "name": "Trening 7",
-              "text": "Hør her! I morgen tidlig skal den gamle kongen på revejakt. Han ønsker å bli vekket av tjeneren klokka fem. Så jeg er nødt til å vekke tjeneren klokka fire."
+              "text": "Høyr her! I morgon tidleg skal den gamle kongen på revejakt. Han ønsker å bli vekt av tenaren klokka fem. Så eg er nøydd til å vekke tenaren klokka fire."
             },
             {
               "id": 8,
               "name": "Trening 8",
-              "text": "Du vet at jeg er et sovetryne, så du blir nødt til å vekke meg klokka tre! Stallgutten ga hunden en godbit, slik at hunden ikke kunne gjøre noe annet enn å godta det."
+              "text": "Du veit at eg er eit sovetryne, så du blir nøydd til å vekke meg klokka tre! Stallguten gav hunden ein godbit, slik at hunden ikkje kunne gjere noko anna enn å godta det."
             },
             {
               "id": 9,
               "name": "Trening 9",
-              "text": "Hunden følte sig litt presset av oppgaven da den gikk over slottsgården til hundehuset sitt. Plutselig så den hønsegården og tenkte for seg selv. Hanen galer alltid tidlig om morgenen. Jeg vil be han om å vekke meg, for jeg sover alltid som en stein om natta."
+              "text": "Hunden følte seg litt pressa av oppgåva då han gjekk over slottsgarden til hundehuset sitt. Plutseleg såg han hønsegarden og tenkte for seg sjølv. Hanen gjel alltid tidleg om morgonen. Eg vil be han om å vekke meg, for eg søv alltid som ein stein om natta."
             }
           ]
         },
@@ -2085,123 +2085,123 @@ export const nb = {
             {
               "id": 1,
               "name": "Trening 1",
-              "text": "Da sa hunden til hanen. Hør her! Du må hjelpe meg! I morgen tidlig skal den gamle kongen på revejakt. Tjeneren skal vekke kongen klokka fem og stallgutten skal vekke tjeneren klokka fire. Så derfor er jeg nødt til å vekke stallgutten klokka tre. Vil du gjøre meg en tjeneste og vekke meg klokka to?"
+              "text": "Då sa hunden til hanen. Høyr her! Du må hjelpe meg! I morgon tidleg skal den gamle kongen på revejakt. Tenaren skal vekke kongen klokka fem og stallguten skal vekke tenaren klokka fire. Så difor er eg nøydd til å vekke stallguten klokka tre. Vil du gjere meg ei teneste og vekke meg klokka to?"
             },
             {
               "id": 2,
               "name": "Trening 2",
-              "text": "Du har kommet helt riktige, sa hanen. Du vet, jeg står opp tidlig så selvfølgelig kan jeg vekke deg klokka to!"
+              "text": "Du har komme heilt riktig, sa hanen. Du veit, eg står opp tidleg så sjølvsagt kan eg vekke deg klokka to!"
             },
             {
               "id": 3,
               "name": "Trening 3",
-              "text": "Nå gikk sola ned i det landet hvor kongen levde, og dagen ble til natt."
+              "text": "No gjekk sola ned i det landet der kongen levde, og dagen blei til natt."
             },
             {
               "id": 4,
               "name": "Trening 4",
-              "text": "Rundt omkring slottet kunne man høre folk og dyr sove og snorke. Alle tjenestefolkene sov tungt. Hestene og kuene sov tungt. Og selv noen av de vaktene som skulle beskytte kongen, var falt i søvn. Bare fire steder rundt om på slottet kunne man se lys."
+              "text": "Rundt omkring slottet kunne ein høyre folk og dyr sove og snorke. Alle tenestefolka sov tungt. Hestane og kyrne sov tungt. Og sjølv nokon av dei vaktene som skulle beskytte kongen, var falle i søvn. Berre fire stader rundt om på slottet kunne ein sjå lys."
             },
             {
               "id": 5,
               "name": "Trening 5",
-              "text": "I det store soveværelset lå kongen og spekulerte på om tjeneren kom til å huske å vekke han klokka fem."
+              "text": "I det store soverommet låg kongen og spekulerte på om tenaren kom til å hugse å vekke han klokka fem."
             },
             {
               "id": 6,
               "name": "Trening 6",
-              "text": "I det lille soveværelset lå tjeneren og var nervøs fordi han ikke var sikker på om stallgutten ville vekke han klokka fire."
+              "text": "I det vesle soverommet låg tenaren og var nervøs fordi han ikkje var sikker på om stallguten ville vekke han klokka fire."
             },
             {
               "id": 7,
               "name": "Trening 7",
-              "text": "I stallen var stallgutten fortsatt våken. Han var redd for å falle i søvn, for kanskje ville hunden glemme å vekke han klokka fire."
+              "text": "I stallen var stallgutten framleis vaken. Han var redd for å falle i søvn, for kanskje ville hunden gløyme å vekke han klokka fire."
             },
             {
               "id": 8,
               "name": "Trening 8",
-              "text": "Rett utenfor stallen vandret hunden rastløst rundt og spekulerte på om hanen ville stå så tidlig opp som den hadde sagt, og om den ville huske å gale klokka to."
+              "text": "Rett utanfor stallen vandra hunden rastlaust rundt og spekulerte på om hanen ville stå så tidleg opp som han hadde sagt, og om han ville hugse å gale klokka to."
             },
             {
               "id": 9,
               "name": "Trening 9",
-              "text": "Og i hønsegården var hanen våken. Ingen skulle vekke han, så han var nødt til å være oppe hele natten. Ellers ville han ikke være i stand til å gale klokka to."
+              "text": "Og i hønsegarden var hanen vaken. Ingen skulle vekke han, så han var nøydd til å vere oppe heile natta. Elles ville han ikkje vere i stand til å gale klokka to."
             },
             {
               "id": 10,
               "name": "Trening 10",
-              "text": "Så midt på natta lurte kongen, tjeneren, stallgutten, hunden og hanen på om det egentlig var en god ide å stole på andre. Moralen er, Det er lurt å ta ansvar selv."
+              "text": "Så midt på natta lurte kongen, tenaren, stallguten, hunden og hanen på om det eigentleg var ein god ide å stole på andre. Moralen er, Det er lurt å ta ansvar sjølv."
             }
           ]
         },
         {
           "id": 3,
-          "name": "Prinsen og prinsessen",
+          "name": "Prinsen og prinsessa",
           "exercises": [
             {
               "id": 1,
               "name": "Trening 1",
-              "text": "Historien om prinsen og prinsessen"
+              "text": "Historia om prinsen og prinsessa"
             },
             {
               "id": 2,
               "name": "Trening 2",
-              "text": "Nå vil Kåre og Karen gå til heksa for å frigjøre padden som de tror er en prins, de vet det er farlig men vil gjøre alt for å redde padden fra heksa."
+              "text": "No vil Kåre og Karen gå til heksa for å frigjere padda som dei trur er ein prins, dei veit det er farleg men vil gjere alt for å redde padda frå heksa."
             },
             {
               "id": 3,
               "name": "Trening 3",
-              "text": "Heksa gjør seg klar til å fange Kåre og Karen i det store buret hennes."
+              "text": "Heksa gjer seg klar til å fange Kåre og Karen i det store buret hennar."
             },
             {
               "id": 4,
               "name": "Trening 4",
-              "text": "Hun har fått vite av kråka at Kåre og Karen er på vei hjem til henne."
+              "text": "Ho har fått vite av kråka at Kåre og Karen er på veg heim til ho."
             },
             {
               "id": 5,
               "name": "Trening 5",
-              "text": "Rett før Kåre og Karen når heksens hus, splittes de og Kåre går inn gjennom bakdøren og Karen lar seg fange. Nå er Karen i buret."
+              "text": "Rett før Kåre og Karen når heksa sitt hus, blir dei splitta og Kåre går inn gjennom bakdøra og Karen lèt seg fange. No er Karen i buret."
             },
             {
               "id": 6,
               "name": "Trening 6",
-              "text": "Heksa skjønner ikke hvor Kåre er, så hun går ut for å lete etter ham."
+              "text": "Heksa skjønner ikkje kvar Kåre er, så ho går ut for å leite etter han."
             },
             {
               "id": 7,
               "name": "Trening 7",
-              "text": "Så går Kåre og slipper Karen løs.Karen løper bort til buret med padden."
+              "text": "Så går Kåre og slepp Karen laus. Karen spring bort til buret med padda."
             },
             {
               "id": 8,
               "name": "Trening 8",
-              "text": "Hun åpner døren og padden hopper ut.Karen kysser padden på munnen"
+              "text": "Ho opnar døra og padda hoppar ut. Karen kysser padda på munnen"
             },
             {
               "id": 9,
               "name": "Trening 9",
-              "text": "og Padden Poof blir til en kjekk prins."
+              "text": "og Padda Poof blir til ein kjekk prins."
             },
             {
               "id": 10,
               "name": "Trening 10",
-              "text": "Prinsen sier at han heter Peter Peter kysser Karen igjen."
+              "text": "Prinsen seier at han heiter Peter Peter kysser Karen igjen."
             },
             {
               "id": 11,
               "name": "Trening 11",
-              "text": "Kåre og Karen og Peter drar hjem til slottet, det er en lang tur."
+              "text": "Kåre og Karen og Peter drar heim til slottet, det er ein lang tur."
             },
             {
               "id": 12,
               "name": "Trening 12",
-              "text": "Når de kommer hjem er kong Hans og dronning Rose glade, de gir Karen tillatelse til å gifte seg med Peter."
+              "text": "Når dei kjem heim er kong Hans og dronning Rose glade, dei gir Karen løyve til å gifte seg med Peter."
             },
             {
               "id": 13,
               "name": "Trening 13",
-              "text": "Hans og Rose skal holde stor fest for Karen og Peter, det kommer mange gjester og de skal alle feste i ni dager."
+              "text": "Hans og Rose skal halde stor fest for Karen og Peter, det kjem mange gjester og dei skal alle feste i ni dagar."
             }
           ]
         }
