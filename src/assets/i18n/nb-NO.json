@@ -3,7 +3,7 @@
   "translateClientSideNetworkError": "Det oppstod en feil på klientsiden eller nettverket.",
   "translateCheckInternetConnection": "Sjekk internettforbindelsen din og last inn siden på nytt.",
   "translateGotIt": "Forstått",
-  "translateWelcome10Fingers": "Velkommen til 10 finger",
+  "translateWelcome10Fingers": "Velkommen til 10 Finger",
   "translateStartTyping": "Start",
   "translateTyping": "Trene",
   "translateSetCourse": "Velg øvelse",
@@ -38,7 +38,6 @@
   "translateLetterSound": "Les bokstavlyd",
   "translateNoSound": "Ingen lyd",
   "translateReadWord": "Les ord",
-  "translateReadSentences": "Les setninger",
   "translateCancel": "Avbryt",
   "translateYes": "Ja",
   "translateAreYouSure": "Er du sikker?",
@@ -94,6 +93,7 @@
   "translateSoundOff": "Sound OFF",
   "translateShowDetails": "Show details",
   "translateHideDetails": "Hide details",
-  "translateAccessDenied": "Access denied",
-  "translateAccessDeniedDescription": "You do not have access to 10-Finger."
+  "translateReadSentences": "Les setninger",
+  "translateAccessDenied": "Du har ikke tilgang til 10 Finger.",
+  "translateAccessDeniedDescription": "Tilgang nektet"
 }
