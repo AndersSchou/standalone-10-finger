@@ -1,5 +1,5 @@
 // Most commonly used 500 words in Norwegian.
-export const nb = [
+export const nn = [
   'i',
   'å',
   'få',
