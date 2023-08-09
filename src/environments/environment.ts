@@ -7,7 +7,7 @@ export const environment = {
   debugDraw: true,
   throwErrors: true,
   production: false,
-  availableLanguages: ['da-DK', 'nb-NO', 'sv-SE'],
+  availableLanguages: ['da-DK', 'nb-NO', 'nn-NO', 'sv-SE'],
   logLevel: NgxLoggerLevel.DEBUG,
   location: 'http://localhost:4200/',
   gameTime: '01:30',

@@ -1,5 +1,5 @@
-// Default nb-NO courses.
-export const nb = {
+// Default nn-NO courses.
+export const nn = {
   "categories": [
     {
       "id": 1,
