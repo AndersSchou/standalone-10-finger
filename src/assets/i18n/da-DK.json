@@ -17,8 +17,7 @@
   "translateShowLess": "Vis mindre",
   "translateExercises": "øvelser",
   "da-DK": "Dansk",
-  "nb-NO": "Norsk (NB)",
-  "nn-NO": "Norsk (Nynorsk)",
+  "nb-NO": "Norsk (Bokmål)",
   "sv-SE": "Svensk",
   "translateKeyboard": "Tastatur",
   "translateText": "Tekst",
@@ -96,5 +95,6 @@
   "translateHideDetails": "Hide details",
   "translateReadSentences": "Læs sætning",
   "translateAccessDenied": "Du har ikke adgang til 10 Finger.",
-  "translateAccessDeniedDescription": "Adgang nægtet"
+  "translateAccessDeniedDescription": "Adgang nægtet",
+  "nn-NO": "Norsk (Nynorsk)"
 }

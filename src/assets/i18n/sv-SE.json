@@ -17,8 +17,7 @@
   "translateShowLess": "Visa mindre",
   "translateExercises": "övningar",
   "da-DK": "Danska",
-  "nb-NO": "Norska (NB)",
-  "nn-NO": "Norska (Nynorsk)",
+  "nb-NO": "Norska (Bokmål)",
   "sv-SE": "Svenska",
   "translateKeyboard": "Tangentbord",
   "translateText": "Text",
@@ -96,5 +95,6 @@
   "translateHideDetails": "Hide details",
   "translateReadSentences": "Läs meningar",
   "translateAccessDenied": "Du har inte tillgång till 10 Finger.",
-  "translateAccessDeniedDescription": "Tillträde nekas"
+  "translateAccessDeniedDescription": "Tillträde nekas",
+  "nn-NO": "Norska (Nynorsk)"
 }
