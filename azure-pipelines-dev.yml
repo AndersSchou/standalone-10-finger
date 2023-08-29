@@ -9,7 +9,9 @@ trigger:
       - develop
 pr: none
 pool:
-  name: svasvmcbuild02
+  name: MvOnPremDK
+  demands:
+  - Agent.OS -equals Linux
 variables:
   disable.coverage.autogenerate: 'true'
 
