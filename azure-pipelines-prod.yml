@@ -6,7 +6,9 @@
 trigger: none
 pr: none
 pool:
-  name: svasvmcbuild02
+  name: MvOnPremDK
+  demands:
+  - Agent.OS -equals Linux
 
 steps:
 - task: NodeTool@0
