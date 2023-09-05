@@ -1,7 +1,9 @@
 <div class="header page-padd">
   <div class="fx-layout-row h-100">
     <div class="fx-flex-none app-icon-hld" [routerLink]="['']">
-      <div class="logo-icon mr-10"></div>
+      <div class="logo-icon mr-10"
+        [ngClass]="{'no': currentLanguage==='nb-NO' || currentLanguage==='nn-NO', 'sv':currentLanguage==='sv-SE' }">
+      </div>
     </div>
     <div class="fx-flex menu-hld">
       <div class="item-hld" [routerLink]="['/type']" [queryParams]="{resume:'Course'}" routerLinkActive="active"

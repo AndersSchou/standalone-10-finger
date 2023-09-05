@@ -3,7 +3,7 @@
   "translateClientSideNetworkError": "Der opstod en klient- eller netværksfejl.",
   "translateCheckInternetConnection": "Tjek venligst din internetforbindelse og genindlæs siden.",
   "translateGotIt": "Udført",
-  "translateWelcome10Fingers": "Velkommen til 10 Finger",
+  "translateWelcome10Fingers": "Velkommen til 10-Finger",
   "translateStartTyping": "Start",
   "translateTyping": "Træning",
   "translateSetCourse": "Vælg øvelse",
@@ -94,7 +94,7 @@
   "translateShowDetails": "Show details",
   "translateHideDetails": "Hide details",
   "translateReadSentences": "Læs sætning",
-  "translateAccessDenied": "Du har ikke adgang til 10 Finger.",
+  "translateAccessDenied": "Du har ikke adgang til 10-Finger.",
   "translateAccessDeniedDescription": "Adgang nægtet",
   "nn-NO": "Norsk (Nynorsk)"
 }

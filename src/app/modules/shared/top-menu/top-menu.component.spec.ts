@@ -7,12 +7,15 @@ import { AppSharedTopMenuComponent } from './top-menu.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SettingsService } from 'src/app/services/settings.service';
 import { Observable } from 'rxjs';
+import { LanguageHelperService } from 'src/app/services/language.service';
 
 describe('AppSharedTopMenuComponent', () => {
   let component: AppSharedTopMenuComponent;
   let fixture: ComponentFixture<AppSharedTopMenuComponent>;
   let settingsServiceSpy: jasmine.SpyObj<SettingsService>;
   let onViewSettingsActionSpy;
+  let languageHelperServiceSpy: jasmine.SpyObj<LanguageHelperService>;
+  let onLanguageChangedSpy;
 
   beforeEach(async () => {
     settingsServiceSpy = jasmine.createSpyObj<SettingsService>(['viewSettingsAction']);
@@ -22,10 +25,18 @@ describe('AppSharedTopMenuComponent', () => {
       }
     );
 
+    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>(['OnLanguageChanged']);
+    (languageHelperServiceSpy as any).OnLanguageChanged = new Observable(
+      (subscriber) => {
+        onLanguageChangedSpy = subscriber;
+      }
+    );
+
     await TestBed.configureTestingModule({
       declarations: [AppSharedTopMenuComponent],
       providers: [
         { provide: SettingsService, useValue: settingsServiceSpy },
+        { provide: LanguageHelperService, useValue: languageHelperServiceSpy },
       ],
       imports: [
         TranslateModule.forRoot(),

@@ -11,7 +11,9 @@ $--cover-space: --cover-space;
 $--cover-text: --cover-text;
 $--cover-clouds: --cover-clouds;
 $--cover-rocket: --cover-rocket;
-$--logo: --logo;
+$--logo-da: --logo-da;
+$--logo-no: --logo-no;
+$--logo-sv: --logo-sv;
 $--video-holder: --video-holder;
 
 // Default blue theme.
@@ -26,7 +28,9 @@ $theme-map-blue: (
                 $--welcome-img-woman: url('../assets/svg/astronaut_level_blue.svg'),
                   $--shadow: 12px 12px 24px rgb(16, 110, 190, 0.2),
                     $--cover-text: url('../assets/svg/cover_text.svg'),
-                      $--logo: url('../assets/svg/logo_10_finger_full.svg'),
+                      $--logo-da: url('../assets/svg/logo_blue_finger.svg'),
+                      $--logo-no: url('../assets/svg/logo_blue_fingre.svg'),
+                      $--logo-sv: url('../assets/svg/logo_blue_fingrar.svg'),
                         $--cover-clouds: url('../assets/svg/cover_clouds.svg'),
                           $--cover-space: url('../assets/svg/cover_space.svg'),
                             $--cover-rocket: url('../assets/svg/cover_rocket_alone.svg'),
@@ -45,7 +49,9 @@ $theme-map-blue: (
                                             $--welcome-img-woman: url('../assets/svg/astronaut_level_orange.svg'),
                                               $--shadow: 12px 12px 24px rgb(247 160 0 / 20%),
                                                 $--cover-text: url('../assets/svg/cover_text_orange.svg'),
-                                                  $--logo: url('../assets/svg/logo_10_finger_full_orange.svg'),
+                                                  $--logo-da: url('../assets/svg/logo_yellow_finger.svg'),
+                                                  $--logo-no: url('../assets/svg/logo_yellow_fingre.svg'),
+                                                  $--logo-sv: url('../assets/svg/logo_yellow_fingrar.svg'),
                                                     $--cover-clouds: url('../assets/svg/cover_clouds_orange.svg'),
                                                       $--cover-space: url('../assets/svg/cover_space_orange.svg'),
                                                         $--cover-rocket: url('../assets/svg/cover_rocket_alone_orange.svg'),
