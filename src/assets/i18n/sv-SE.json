@@ -3,7 +3,7 @@
   "translateClientSideNetworkError": "Ett fel på klientsidan eller nätverket uppstod.",
   "translateCheckInternetConnection": "Kontrollera din internetanslutning och ladda om sidan.",
   "translateGotIt": "Jag förstår",
-  "translateWelcome10Fingers": "Välkommen till 10 Finger",
+  "translateWelcome10Fingers": "Välkommen till 10-Fingrar",
   "translateStartTyping": "Start",
   "translateTyping": "Träna",
   "translateSetCourse": "Välj övning",
@@ -94,7 +94,7 @@
   "translateShowDetails": "Show details",
   "translateHideDetails": "Hide details",
   "translateReadSentences": "Läs meningar",
-  "translateAccessDenied": "Du har inte tillgång till 10 Finger.",
+  "translateAccessDenied": "Du har inte tillgång till 10-Fingrar.",
   "translateAccessDeniedDescription": "Tillträde nekas",
   "nn-NO": "Norska (Nynorsk)"
 }

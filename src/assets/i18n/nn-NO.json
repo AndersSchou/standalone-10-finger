@@ -3,7 +3,7 @@
   "translateClientSideNetworkError": "Det oppstod ein feil på klientsida eller nettverket.",
   "translateCheckInternetConnection": "Sjekk internettsambandet ditt og last inn sida på ny.",
   "translateGotIt": "Forstått",
-  "translateWelcome10Fingers": "Velkommen til 10 Fingrar",
+  "translateWelcome10Fingers": "Velkommen til 10-Fingre",
   "translateStartTyping": "Start",
   "translateTyping": "Trene",
   "translateSetCourse": "Vel øving",
@@ -94,7 +94,7 @@
   "translateShowDetails": "Show details",
   "translateHideDetails": "Hide details",
   "translateReadSentences": "Les setningar",
-  "translateAccessDenied": "Du har ikkje tilgang til 10 Fingrar.",
+  "translateAccessDenied": "Du har ikkje tilgang til 10-Fingre.",
   "translateAccessDeniedDescription": "Tilgang nekta",
   "nn-NO": "Norsk (Nynorsk)"
 }

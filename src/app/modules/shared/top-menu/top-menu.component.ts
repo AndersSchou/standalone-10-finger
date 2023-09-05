@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { LanguageHelperService } from 'src/app/services/language.service';
 import { SettingsService } from 'src/app/services/settings.service';
 
 /**
@@ -13,6 +14,8 @@ import { SettingsService } from 'src/app/services/settings.service';
 export class AppSharedTopMenuComponent implements OnInit, OnDestroy {
   // Tells if it should close the settings view or not.
   isActive: boolean = false;
+  // Stores the current language.
+  currentLanguage: string;
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
 
@@ -20,10 +23,14 @@ export class AppSharedTopMenuComponent implements OnInit, OnDestroy {
    * Constructor function responsible for injecting the needed services.
    *
    * @param settingsService Reference to SettingsService.
+   * @param languageHelperService Reference to LanguageHelperService.
    */
   constructor(
     private readonly settingsService: SettingsService,
-  ) { }
+    private readonly languageHelperService: LanguageHelperService,
+  ) {
+    this.currentLanguage = this.languageHelperService.currentLangUsed;
+   }
 
   /**
    * A lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
@@ -35,6 +42,13 @@ export class AppSharedTopMenuComponent implements OnInit, OnDestroy {
       .subscribe((viewSettings: boolean) => {
         this.isActive = viewSettings;
       });
+
+    // Listens for any changes regarding the current used language.
+    this.languageHelperService.OnLanguageChanged
+    .pipe(takeUntil(this.destroyed)).subscribe(() => {
+      this.currentLanguage = this.languageHelperService.currentLangUsed;
+    });
+
   }
 
   /**

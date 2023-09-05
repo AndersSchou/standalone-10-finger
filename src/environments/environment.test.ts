@@ -9,7 +9,7 @@ export const environment = {
   production: false,
   availableLanguages: ['da-DK', 'nb-NO', 'nn-NO', 'sv-SE'],
   logLevel: NgxLoggerLevel.OFF,
-  location: 'https://10finger-test.intowords.com/',
+  location: 'https://10-finger-test.intowords.com/',
   gameTime: '01:30',
   accessIdentifier10finger: 'product.all.ml.10finger.upgradeable',
   UrlEndpoints: {

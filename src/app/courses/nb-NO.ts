@@ -2017,7 +2017,7 @@ export const nb = {
             {
               "id": 23,
               "name": "Skriv setninger 11",
-              "text": ""
+              "text": "Nei, det har vi ikke."
             }
           ]
         }
