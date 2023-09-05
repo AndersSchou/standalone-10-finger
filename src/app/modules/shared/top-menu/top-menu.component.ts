@@ -43,9 +43,9 @@ export class AppSharedTopMenuComponent implements OnInit, OnDestroy {
         this.isActive = viewSettings;
       });
 
-      // Listens for any changes regarding the current used language.
+    // Listens for any changes regarding the current used language.
     this.languageHelperService.OnLanguageChanged
-    .pipe(takeUntil(this.destroyed)).subscribe((trans) => {
+    .pipe(takeUntil(this.destroyed)).subscribe(() => {
       this.currentLanguage = this.languageHelperService.currentLangUsed;
     });
 
