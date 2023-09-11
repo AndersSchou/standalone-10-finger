@@ -8,7 +8,9 @@ $--welcome-img-man: --welcome-img-man;
 $--welcome-img-woman: --welcome-img-woman;
 $--shadow: --shadow;
 $--cover-space: --cover-space;
-$--cover-text: --cover-text;
+$--cover-text-da: --cover-text-da;
+$--cover-text-no: --cover-text-no;
+$--cover-text-sv: --cover-text-sv;
 $--cover-clouds: --cover-clouds;
 $--cover-rocket: --cover-rocket;
 $--logo-da: --logo-da;
@@ -27,7 +29,9 @@ $theme-map-blue: (
               $--welcome-img-man: url('../assets/svg/astronaut_typing_blue.svg'),
                 $--welcome-img-woman: url('../assets/svg/astronaut_level_blue.svg'),
                   $--shadow: 12px 12px 24px rgb(16, 110, 190, 0.2),
-                    $--cover-text: url('../assets/svg/cover_text.svg'),
+                    $--cover-text-da: url('../assets/svg/cover_text_blue_finger.svg'),
+                    $--cover-text-no: url('../assets/svg/cover_text_blue_fingre.svg'),
+                    $--cover-text-sv: url('../assets/svg/cover_text_blue_fingra.svg'),
                       $--logo-da: url('../assets/svg/logo_blue_finger.svg'),
                       $--logo-no: url('../assets/svg/logo_blue_fingre.svg'),
                       $--logo-sv: url('../assets/svg/logo_blue_fingrar.svg'),
@@ -48,7 +52,9 @@ $theme-map-blue: (
                                           $--welcome-img-man: url('../assets/svg/astronaut_typing_orange.svg'),
                                             $--welcome-img-woman: url('../assets/svg/astronaut_level_orange.svg'),
                                               $--shadow: 12px 12px 24px rgb(247 160 0 / 20%),
-                                                $--cover-text: url('../assets/svg/cover_text_orange.svg'),
+                                                $--cover-text-da: url('../assets/svg/cover_text_orange_finger.svg'),
+                                                $--cover-text-no: url('../assets/svg/cover_text_orange_fingre.svg'),
+                                                $--cover-text-sv: url('../assets/svg/cover_text_orange_fingra.svg'),
                                                   $--logo-da: url('../assets/svg/logo_yellow_finger.svg'),
                                                   $--logo-no: url('../assets/svg/logo_yellow_fingre.svg'),
                                                   $--logo-sv: url('../assets/svg/logo_yellow_fingrar.svg'),

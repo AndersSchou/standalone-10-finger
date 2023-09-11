@@ -21,11 +21,17 @@
 }
 
 .logo-hld {
-  background-image: theme-var($--cover-text);
+  background-image: theme-var($--cover-text-da);
   height: 100%;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+}
+.logo-hld.no {
+  background-image: theme-var($--cover-text-no);
+}
+.logo-hld.sv {
+  background-image: theme-var($--cover-text-sv);
 }
 
 .footer-hld {
