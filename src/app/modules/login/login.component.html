@@ -1,6 +1,6 @@
 <div class="login-hld" (click)="login()">
   <div class="logo-container">
-    <div class="logo-hld"></div>
+    <div class="logo-hld" [ngClass]="{'no': currentLanguage==='nb-NO' || currentLanguage==='nn-NO', 'sv':currentLanguage==='sv-SE' }"></div>
   </div>
   <div class="footer-hld">
     <div class="footer-bg">
