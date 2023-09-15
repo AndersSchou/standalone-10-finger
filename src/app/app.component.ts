@@ -47,7 +47,6 @@ export class AppComponent implements OnInit, OnDestroy {
    * A lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
    */
   ngOnInit(): void {
-    console.log('ngOnInit');
     this.checkWindowSize();
     this.getAllSvgs();
 
