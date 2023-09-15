@@ -97,8 +97,8 @@
   "translateAccessDenied": "Du har ikkje tilgang til 10-Fingre.",
   "translateAccessDeniedDescription": "Tilgang nekta",
   "nn-NO": "Norsk (Nynorsk)",
-  "translateOk": "OK",
-  "translateWindowSmallWarningTitle": "Your screen resolution is too small.",
-  "translateWindowSmallWarningDescription": "Please use a bigger screen or, zoom out in your browser.",
-  "translateBack": "Back"
+  "translateOk": "Ok",
+  "translateWindowSmallWarningTitle": "Skjermoppløysinga di er for lita.",
+  "translateWindowSmallWarningDescription": "Vennligst bruk ein større skjerm eller zoom ut i nettlesaren din.",
+  "translateBack": "Tilbake"
 }
