@@ -203,3 +203,9 @@
 .hands-bg.right {
   background-image: url('../../../assets/svg/hand_right.svg');
 }
+
+@media (max-height: 799px) {
+  .exercise-hld {
+    max-height: calc(100vh - 540px);
+  }
+}

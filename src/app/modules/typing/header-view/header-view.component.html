@@ -4,7 +4,7 @@
       <div class="left-header fx-flex">
         <div class="back-btn-hld" (click)="goBack()">
           <mat-icon svgIcon="chevron_left" class="mr-10"></mat-icon>
-          Back
+          {{ 'translateBack' | translate }}
         </div>
         <div class="course-title">
           {{currentCategory.name}} - {{selectedCourse.name}}

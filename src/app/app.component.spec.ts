@@ -7,6 +7,7 @@ import { AuthService } from './services/auth.service';
 import { CustomIconService } from './services/custom-icon.service';
 import { LanguageHelperService } from './services/language.service';
 import { SettingsService } from './services/settings.service';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('AppComponent', () => {
   let languageHelperServiceSpy: jasmine.SpyObj<LanguageHelperService>;
@@ -16,6 +17,7 @@ describe('AppComponent', () => {
   let settingsServiceSpy: jasmine.SpyObj<SettingsService>;
   let authServiceSpy: jasmine.SpyObj<AuthService>;
   let onLoggedInActionSpy;
+  let matDialogSpy: jasmine.SpyObj<MatDialog>;
 
   beforeEach(async () => {
     languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>([
@@ -49,6 +51,8 @@ describe('AppComponent', () => {
       }
     );
 
+    matDialogSpy = jasmine.createSpyObj<MatDialog>(['open']);
+
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule
@@ -59,6 +63,7 @@ describe('AppComponent', () => {
         { provide: UserService, useValue: userServiceSpy },
         { provide: SettingsService, useValue: settingsServiceSpy },
         { provide: AuthService, useValue: authServiceSpy },
+        { provide: MatDialog, useValue: matDialogSpy },
       ],
       declarations: [
         AppComponent
