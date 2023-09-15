@@ -47,7 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * A lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
    */
   ngOnInit(): void {
-    this.checkWindowSize();
+    this.validateWindowSize();
     this.getAllSvgs();
 
     // Listens if the user is logged in.
@@ -117,9 +117,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Check the window size. If the window height is less than 800px, show a warning message.
+   * Validates the window size. If the window height is less than 800px, show a warning message.
    */
-  checkWindowSize(): void {
+  validateWindowSize(): void {
     if (window.innerHeight < 800) {
       this.dialog.open(WarningModalComponent, {
         panelClass: 'error-class',
