@@ -96,5 +96,9 @@
   "translateReadSentences": "Läs meningar",
   "translateAccessDenied": "Du har inte tillgång till 10-Fingrar.",
   "translateAccessDeniedDescription": "Tillträde nekas",
-  "nn-NO": "Norska (Nynorsk)"
+  "nn-NO": "Norska (Nynorsk)",
+  "translateOk": "OK",
+  "translateWindowSmallWarningTitle": "Your screen resolution is too small.",
+  "translateWindowSmallWarningDescription": "Please use a bigger screen or, zoom out in your browser.",
+  "translateBack": "Back"
 }

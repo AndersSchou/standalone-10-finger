@@ -9,6 +9,8 @@ import { LanguageHelperService } from './services/language.service';
 import { AuthService } from './services/auth.service';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { STORAGE_KEY_TYPE } from './common/enums';
+import { MatDialog } from '@angular/material/dialog';
+import { WarningModalComponent } from './modules/shared/modals/warning-modal/warning-modal.component';
 
 /** Main app component. */
 @Component({
@@ -29,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * @param settingsService Reference to SettingsService.
    * @param authService Reference to AuthService.
    * @param cookieService Reference to cookieService.
+   * @param dialog Reference to MatDialog.
    */
   constructor(
     private readonly customIconService: CustomIconService,
@@ -37,12 +40,15 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly settingsService: SettingsService,
     private readonly authService: AuthService,
     private readonly cookieService: CookieService,
+    private readonly dialog: MatDialog,
   ) { }
 
   /**
    * A lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
    */
   ngOnInit(): void {
+    console.log('ngOnInit');
+    this.checkWindowSize();
     this.getAllSvgs();
 
     // Listens if the user is logged in.
@@ -109,6 +115,23 @@ export class AppComponent implements OnInit, OnDestroy {
     target.className = '';
     target.className = theme;
     localStorage.setItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR, theme);
+  }
+
+  /**
+   * Check the window size. If the window height is less than 800px, show a warning message.
+   */
+  checkWindowSize(): void {
+    if (window.innerHeight < 800) {
+      this.dialog.open(WarningModalComponent, {
+        panelClass: 'error-class',
+        data: {
+          title: 'translateWindowSmallWarningTitle',
+          description: 'translateWindowSmallWarningDescription',
+          hideActions: true,
+          showOkButton: true,
+        }
+      });
+    }
   }
 
 }

@@ -96,5 +96,9 @@
   "translateReadSentences": "Les setninger",
   "translateAccessDenied": "Du har ikke tilgang til 10-Fingre.",
   "translateAccessDeniedDescription": "Tilgang nektet",
-  "nn-NO": "Norsk (Nynorsk)"
+  "nn-NO": "Norsk (Nynorsk)",
+  "translateOk": "OK",
+  "translateWindowSmallWarningTitle": "Your screen resolution is too small.",
+  "translateWindowSmallWarningDescription": "Please use a bigger screen or, zoom out in your browser.",
+  "translateBack": "Back"
 }
