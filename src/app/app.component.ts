@@ -120,7 +120,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * Validates the window size. If the window height is less than 800px, show a warning message.
    */
   validateWindowSize(): void {
-    if (window.innerHeight < 800) {
+    if (window.innerHeight < 720) {
       this.dialog.open(WarningModalComponent, {
         panelClass: 'error-class',
         data: {
