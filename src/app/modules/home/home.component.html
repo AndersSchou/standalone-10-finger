@@ -13,7 +13,7 @@
           <div class="fx-flex flex-display v-align lh-22">{{ 'translateStartTypingFromWhereLeft' | translate }}</div>
         </div>
         <div class="wbtn-hld">
-          <div class="welcome-btn" (click)="navigateTo('/type', true)">
+          <div class="welcome-btn" id="startTyping" (click)="navigateTo('/type', true)">
             {{ "translateStartTyping" | translate}}
             <mat-icon svgIcon="keyboard" class="ml-auto"></mat-icon>
           </div>
@@ -24,7 +24,7 @@
           <div fxFlex class="flex-display v-align lh-22">{{ 'translateDefineNewLevel' | translate }}</div>
         </div>
         <div class="wbtn-hld">
-          <div class="welcome-btn" (click)="navigateTo('/set-course')">
+          <div class="welcome-btn" id="setLevel" (click)="navigateTo('/set-course')">
             {{ "translateSetCourse" | translate}}
             <mat-icon svgIcon="courses" class="ml-auto"></mat-icon>
           </div>
