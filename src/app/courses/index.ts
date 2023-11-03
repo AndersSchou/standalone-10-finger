@@ -1,3 +1,4 @@
+import { nl } from './nl-NL';
 import { nb } from './nb-NO';
 import { nn } from './nn-NO';
 import { sv } from './sv-SE';
@@ -8,5 +9,6 @@ export const Courses: { [key: string]: any } = {
   da,
   sv,
   nb,
-  nn
+  nn,
+  nl
 };

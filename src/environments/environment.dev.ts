@@ -7,7 +7,7 @@ export const environment = {
   debugDraw: false,
   throwErrors: true,
   production: false,
-  availableLanguages: ['da-DK', 'nb-NO', 'nn-NO', 'sv-SE'],
+  availableLanguages: ['da-DK', 'nb-NO', 'nn-NO', 'sv-SE', 'nl-NL'],
   logLevel: NgxLoggerLevel.DEBUG,
   location: 'https://10-finger-dev.intowords.com/',
   gameTime: '01:30',
