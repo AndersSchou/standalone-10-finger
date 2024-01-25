@@ -113,7 +113,7 @@ export class AuthGuardService  {
     if (!this.cookieService.get('mvf_session_id')) {
       return of({});
     }
-
+    this.authService.loggedIn(true);
     return of({ access: true });
   }
 
