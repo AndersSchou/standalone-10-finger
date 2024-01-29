@@ -26,7 +26,7 @@
         <mat-icon svgIcon="achivements" class="mr-10 achivement"></mat-icon>
         {{ "translateAchivements" | translate}}
       </div>
-      <div class="item-hld" [routerLink]="['/info']" routerLinkActive="active"
+      <div *ngIf="currentLanguage !== 'sv-SE' && currentLanguage !== 'nl-NL'" class="item-hld" [routerLink]="['/info']" routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }">
         <mat-icon svgIcon="info" class="mr-10 info"></mat-icon>
         {{ "translateInformation" | translate}}

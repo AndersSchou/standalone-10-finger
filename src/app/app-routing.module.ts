@@ -11,6 +11,7 @@ import { AppSetCourseComponent } from './modules/set-course/set-course.component
 import { AppTypingResultComponent } from './modules/typing/result/result.component';
 import { AppTypingComponent } from './modules/typing/typing.component';
 import { AuthGuardService } from './services/guards/auth-guard.service';
+import { AppInfoComponent } from './modules/info/info.component';
 
 const routes: Routes = [
   {
@@ -64,7 +65,7 @@ const routes: Routes = [
   },
   {
     path: 'info',
-    component: AppHomeComponent,
+    component: AppInfoComponent,
     canActivate: [AuthGuardService],
   }
 ];

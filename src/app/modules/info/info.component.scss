@@ -1,0 +1,82 @@
+@import "app-colors";
+@import "variables";
+@import "mixins";
+
+.bg-img {
+  background-image: theme-var($--welcome-bg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.center-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.welcome-title {
+  font-weight: 900;
+  font-size: 32px;
+  color: theme-var($--color-active-secondary);
+  margin-top: 24px;
+  line-height: 32px;
+}
+
+.obtn-hld {
+  width: 180px;
+}
+
+.open-btn {
+  box-shadow: theme-var($--shadow);
+  -moz-box-shadow: theme-var($--shadow);
+  -webkit-box-shadow: theme-var($--shadow);
+  border-radius: 12px;
+  background: theme-var($--color-active);
+  color: theme-var($--color-active-text);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 20px;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.mb-32 {
+  margin-bottom: 32px;
+}
+
+.lh-22 {
+  line-height: 22px;
+}
+
+.info-illustration-bg {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: theme-var(--info-image);
+  background-position: center;
+  height: 100%;
+}
+
+.fx-flex-480 {
+  flex: 1 1 480px;
+  box-sizing: border-box;
+  max-width: 480px;
+  min-width: 480px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+.min-h-500 {
+  min-height: 500px;
+}
+
+::ng-deep .orange .open-btn .mat-icon svg > path {
+  fill: theme-var($--color-active-text);
+}

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DTDKeyboardLayout_DK } from './keyboards/danish.keyboard.dtd';
 import { DTDKeyboardLayout_SW } from './keyboards/swedish.keboard.dtd';
 import { DTDKeyboardLayout_NO } from './keyboards/norwegian.keboard.dtd';
+import { DTDKeyboardLayout_NL } from './keyboards/dutch.keyboard.dtd';
 import { dtd2conf, dtd2skm, KeyboardDefinitionDTO } from './tools/dtd2skm';
 import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE } from '../common/types';
 
@@ -54,6 +55,9 @@ export class VKeyboardComponent {
     } else if (lan === 'nn' || lan === 'nb') {
       this.keyboardDefinition = dtd2skm(DTDKeyboardLayout_NO as any);
       this.keyboardKeyDefinition = dtd2conf(DTDKeyboardLayout_NO as any);
+    } else if (lan === 'nl'){
+      this.keyboardDefinition = dtd2skm(DTDKeyboardLayout_NL as any);
+      this.keyboardKeyDefinition = dtd2conf(DTDKeyboardLayout_NL as any);
     } else {
       this.keyboardDefinition = dtd2skm(DTDKeyboardLayout_SW as any);
       this.keyboardKeyDefinition = dtd2conf(DTDKeyboardLayout_SW as any);
@@ -103,7 +107,6 @@ export class VKeyboardComponent {
     }
     this.processClass();
   }
-
 
   /**
    * Set the keyboard theme.

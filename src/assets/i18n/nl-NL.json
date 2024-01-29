@@ -85,7 +85,7 @@
   "translateFishes": "vissen",
   "translateHighestScore": "Jouw hoogste score",
   "translatePlayNextLevel": "Speel het volgende niveau",
-  "translateStartTypingFromWhereLeft": "Ga verder waar je was gebleven.",
+  "translateStartTypingFromWhereLeft": "Start de oefening.",
   "translateDefineNewLevel": "Kies een oefening.",
   "translateHighScore": "Hoogste score",
   "translateIn": "op",
@@ -101,5 +101,8 @@
   "translateWindowSmallWarningTitle": "De schermresolutie is te laag.",
   "translateWindowSmallWarningDescription": "Gebruik een groter scherm of zoom uit in de browser.",
   "translateBack": "Terug",
-  "nl-NL": "Nederlands"
+  "nl-NL": "Nederlands",
+  "translateOpenPdf": "Openen PDF",
+  "translateInfoDescription": "Op de onderstaande link vind je een handleiding waarin je kunt zien hoe 10-Finger werkt en wordt ingesteld.",
+  "translateInfoTitle": "Handleiding"
 }
