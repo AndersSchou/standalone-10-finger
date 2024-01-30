@@ -1,5 +1,5 @@
 /**
- * Key mapper for Swedish keyboard.
+ * Key mapper for Netherlands keyboard.
  * -i represents the index of the keys in the keyMap array.
  * -m represents the modifier of the key.
  */
@@ -11,15 +11,15 @@ export const keymapper = [{ i: 0, m: '' }, { i: 1, m: 'shift' }, { i: 3, m: 'alt
 export const DTDKeyboardLayout = {
   "!DOCTYPE": "keyboard SYSTEM \"http://github.com/unicode-org/cldr/raw/master/keyboards/dtd/ldmlKeyboard.dtd\"",
   "keyboard": {
-    "-locale": "sv-t-k0-windows-kbdsw",
+    "-locale": "nl-t-k0-windows-kbdne",
     "version": {
       "-platform": "10",
-      "-number": "$Revision 25120$",
+      "-number": "$Revision 26020$",
       "-self-closing": "true"
     },
     "names": {
       "name": {
-        "-value": "Swedish",
+        "-value": "Dutch",
         "-self-closing": "true"
       }
     },
@@ -33,7 +33,7 @@ export const DTDKeyboardLayout = {
         "map": [
           {
             "-iso": "E00",
-            "-to": "§",
+            "-to": "@",
             "-self-closing": "true"
           },
           {
@@ -88,12 +88,12 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "E11",
-            "-to": "+",
+            "-to": "/",
             "-self-closing": "true"
           },
           {
             "-iso": "E12",
-            "-to": "´",
+            "-to": "°",
             "-self-closing": "true"
           },
           {
@@ -153,12 +153,12 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "D11",
-            "-to": "å",
+            "-to": "¨",
             "-self-closing": "true"
           },
           {
             "-iso": "D12",
-            "-to": "¨",
+            "-to": "*",
             "-self-closing": "true"
           },
           {
@@ -208,17 +208,17 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "C10",
-            "-to": "ö",
+            "-to": "+",
             "-self-closing": "true"
           },
           {
             "-iso": "C11",
-            "-to": "ä",
+            "-to": "´",
             "-self-closing": "true"
           },
           {
             "-iso": "C12",
-            "-to": "'",
+            "-to": "<",
             "-self-closing": "true"
           },
           {
@@ -228,7 +228,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "B00",
-            "-to": "<",
+            "-to": "]",
             "-self-closing": "true"
           },
           {
@@ -293,7 +293,7 @@ export const DTDKeyboardLayout = {
         "map": [
           {
             "-iso": "E00",
-            "-to": "½",
+            "-to": "§",
             "-self-closing": "true"
           },
           {
@@ -303,7 +303,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "E02",
-            "-to": "\"",
+            "-to": "\u{22}",
             "-self-closing": "true"
           },
           {
@@ -313,7 +313,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "E04",
-            "-to": "¤",
+            "-to": "$",
             "-self-closing": "true"
           },
           {
@@ -328,7 +328,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "E07",
-            "-to": "/",
+            "-to": "_",
             "-self-closing": "true"
           },
           {
@@ -343,7 +343,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "E10",
-            "-to": "=",
+            "-to": "'",
             "-self-closing": "true"
           },
           {
@@ -353,7 +353,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "E12",
-            "-to": "`",
+            "-to": "~",
             "-self-closing": "true"
           },
           {
@@ -413,12 +413,12 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "D11",
-            "-to": "Å",
+            "-to": "^",
             "-self-closing": "true"
           },
           {
             "-iso": "D12",
-            "-to": "^",
+            "-to": "|",
             "-self-closing": "true"
           },
           {
@@ -468,17 +468,17 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "C10",
-            "-to": "Ö",
+            "-to": "±",
             "-self-closing": "true"
           },
           {
             "-iso": "C11",
-            "-to": "Ä",
+            "-to": "`",
             "-self-closing": "true"
           },
           {
             "-iso": "C12",
-            "-to": "*",
+            "-to": ">",
             "-self-closing": "true"
           },
           {
@@ -488,7 +488,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "B00",
-            "-to": ">",
+            "-to": "[",
             "-self-closing": "true"
           },
           {
@@ -538,7 +538,12 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "B10",
-            "-to": "_",
+            "-to": "=",
+            "-self-closing": "true"
+          },
+          {
+            "-iso": "A03",
+            "-to": " ",
             "-self-closing": "true"
           }
         ]
@@ -547,17 +552,12 @@ export const DTDKeyboardLayout = {
         "-modifiers": "ctrl",
         "map": [
           {
-            "-iso": "E00",
+            "-iso": "E11",
             "-to": "\\u{1C}",
             "-self-closing": "true"
           },
           {
-            "-iso": "D11",
-            "-to": "\\u{1B}",
-            "-self-closing": "true"
-          },
-          {
-            "-iso": "D12",
+            "-iso": "E12",
             "-to": "\\u{1D}",
             "-self-closing": "true"
           },
@@ -568,12 +568,17 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "B00",
-            "-to": "\\u{1C}",
+            "-to": "\\u{1B}",
             "-self-closing": "true"
           },
           {
             "-iso": "B10",
             "-to": "\\u{1F}",
+            "-self-closing": "true"
+          },
+          {
+            "-iso": "A03",
+            "-to": " ",
             "-self-closing": "true"
           }
         ]
@@ -582,42 +587,52 @@ export const DTDKeyboardLayout = {
         "-modifiers": "ctrl+alt altR",
         "map": [
           {
+            "-iso": "E00",
+            "-to": "¬",
+            "-self-closing": "true"
+          },
+          {
+            "-iso": "E01",
+            "-to": "¹",
+            "-self-closing": "true"
+          },
+          {
             "-iso": "E02",
-            "-to": "@",
+            "-to": "²",
             "-self-closing": "true"
           },
           {
             "-iso": "E03",
-            "-to": "£",
+            "-to": "³",
             "-self-closing": "true"
           },
           {
             "-iso": "E04",
-            "-to": "$",
+            "-to": "¼",
             "-self-closing": "true"
           },
           {
             "-iso": "E05",
-            "-to": "€",
+            "-to": "½",
+            "-self-closing": "true"
+          },
+          {
+            "-iso": "E06",
+            "-to": "¾",
             "-self-closing": "true"
           },
           {
             "-iso": "E07",
-            "-to": "{",
+            "-to": "£",
             "-self-closing": "true"
           },
           {
             "-iso": "E08",
-            "-to": "[",
+            "-to": "{",
             "-self-closing": "true"
           },
           {
             "-iso": "E09",
-            "-to": "]",
-            "-self-closing": "true"
-          },
-          {
-            "-iso": "E10",
             "-to": "}",
             "-self-closing": "true"
           },
@@ -627,23 +642,53 @@ export const DTDKeyboardLayout = {
             "-self-closing": "true"
           },
           {
+            "-iso": "E12",
+            "-to": "¸",
+            "-self-closing": "true"
+          },
+          {
             "-iso": "D03",
             "-to": "€",
             "-self-closing": "true"
           },
           {
-            "-iso": "D12",
-            "-to": "~",
+            "-iso": "D04",
+            "-to": "¶",
+            "-self-closing": "true"
+          },
+          {
+            "-iso": "C02",
+            "-to": "ß",
             "-self-closing": "true"
           },
           {
             "-iso": "B00",
-            "-to": "|",
+            "-to": "¦",
+            "-self-closing": "true"
+          },
+          {
+            "-iso": "B01",
+            "-to": "«",
+            "-self-closing": "true"
+          },
+          {
+            "-iso": "B02",
+            "-to": "»",
+            "-self-closing": "true"
+          },
+          {
+            "-iso": "B03",
+            "-to": "¢",
             "-self-closing": "true"
           },
           {
             "-iso": "B07",
             "-to": "µ",
+            "-self-closing": "true"
+          },
+          {
+            "-iso": "B09",
+            "-to": "·",
             "-self-closing": "true"
           }
         ]
@@ -661,7 +706,7 @@ export const DTDKeyboardLayout = {
         "map": [
           {
             "-iso": "E00",
-            "-to": "§",
+            "-to": "@",
             "-self-closing": "true"
           },
           {
@@ -716,12 +761,12 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "E11",
-            "-to": "+",
+            "-to": "/",
             "-self-closing": "true"
           },
           {
             "-iso": "E12",
-            "-to": "´",
+            "-to": "°",
             "-self-closing": "true"
           },
           {
@@ -781,12 +826,12 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "D11",
-            "-to": "Å",
+            "-to": "¨",
             "-self-closing": "true"
           },
           {
             "-iso": "D12",
-            "-to": "¨",
+            "-to": "*",
             "-self-closing": "true"
           },
           {
@@ -836,17 +881,17 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "C10",
-            "-to": "Ö",
+            "-to": "+",
             "-self-closing": "true"
           },
           {
             "-iso": "C11",
-            "-to": "Ä",
+            "-to": "´",
             "-self-closing": "true"
           },
           {
             "-iso": "C12",
-            "-to": "'",
+            "-to": "<",
             "-self-closing": "true"
           },
           {
@@ -856,7 +901,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "B00",
-            "-to": "<",
+            "-to": "]",
             "-self-closing": "true"
           },
           {
@@ -908,6 +953,11 @@ export const DTDKeyboardLayout = {
             "-iso": "B10",
             "-to": "-",
             "-self-closing": "true"
+          },
+          {
+            "-iso": "A03",
+            "-to": " ",
+            "-self-closing": "true"
           }
         ]
       },
@@ -916,7 +966,7 @@ export const DTDKeyboardLayout = {
         "map": [
           {
             "-iso": "E00",
-            "-to": "½",
+            "-to": "§",
             "-self-closing": "true"
           },
           {
@@ -926,7 +976,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "E02",
-            "-to": "\"",
+            "-to": "\\u{22}",
             "-self-closing": "true"
           },
           {
@@ -936,7 +986,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "E04",
-            "-to": "¤",
+            "-to": "$",
             "-self-closing": "true"
           },
           {
@@ -951,7 +1001,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "E07",
-            "-to": "/",
+            "-to": "_",
             "-self-closing": "true"
           },
           {
@@ -966,7 +1016,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "E10",
-            "-to": "=",
+            "-to": "'",
             "-self-closing": "true"
           },
           {
@@ -976,7 +1026,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "E12",
-            "-to": "`",
+            "-to": "~",
             "-self-closing": "true"
           },
           {
@@ -1036,12 +1086,12 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "D11",
-            "-to": "å",
+            "-to": "^",
             "-self-closing": "true"
           },
           {
             "-iso": "D12",
-            "-to": "^",
+            "-to": "|",
             "-self-closing": "true"
           },
           {
@@ -1091,17 +1141,17 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "C10",
-            "-to": "ö",
+            "-to": "±",
             "-self-closing": "true"
           },
           {
             "-iso": "C11",
-            "-to": "ä",
+            "-to": "`",
             "-self-closing": "true"
           },
           {
             "-iso": "C12",
-            "-to": "*",
+            "-to": ">",
             "-self-closing": "true"
           },
           {
@@ -1111,7 +1161,7 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "B00",
-            "-to": ">",
+            "-to": "[",
             "-self-closing": "true"
           },
           {
@@ -1161,7 +1211,12 @@ export const DTDKeyboardLayout = {
           },
           {
             "-iso": "B10",
-            "-to": "_",
+            "-to": "=",
+            "-self-closing": "true"
+          },
+          {
+            "-iso": "A03",
+            "-to": " ",
             "-self-closing": "true"
           }
         ]
@@ -1172,12 +1227,12 @@ export const DTDKeyboardLayout = {
       "vkey": [
         {
           "-iso": "E11",
-          "-vkey": "VK_OEM_PLUS",
+          "-vkey": "VK_OEM_4",
           "-self-closing": "true"
         },
         {
           "-iso": "E12",
-          "-vkey": "VK_OEM_4",
+          "-vkey": "VK_OEM_2",
           "-self-closing": "true"
         },
         {
@@ -1192,17 +1247,17 @@ export const DTDKeyboardLayout = {
         },
         {
           "-iso": "C10",
+          "-vkey": "VK_OEM_PLUS",
+          "-self-closing": "true"
+        },
+        {
+          "-iso": "C11",
           "-vkey": "VK_OEM_3",
           "-self-closing": "true"
         },
         {
           "-iso": "E00",
-          "-vkey": "VK_OEM_5",
-          "-self-closing": "true"
-        },
-        {
-          "-iso": "C12",
-          "-vkey": "VK_OEM_2",
+          "-vkey": "VK_OEM_7",
           "-self-closing": "true"
         },
         {
@@ -1215,6 +1270,66 @@ export const DTDKeyboardLayout = {
     "transforms": {
       "-type": "simple",
       "transform": [
+        {
+          "-from": "¨a",
+          "-to": "ä",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨e",
+          "-to": "ë",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨i",
+          "-to": "ï",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨o",
+          "-to": "ö",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨u",
+          "-to": "ü",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨y",
+          "-to": "ÿ",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨A",
+          "-to": "Ä",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨E",
+          "-to": "Ë",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨I",
+          "-to": "Ï",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨O",
+          "-to": "Ö",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨U",
+          "-to": "Ü",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨ ",
+          "-to": "¨",
+          "-self-closing": "true"
+        },
         {
           "-from": "´a",
           "-to": "á",
@@ -1278,176 +1393,6 @@ export const DTDKeyboardLayout = {
         {
           "-from": "´ ",
           "-to": "´",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨a",
-          "-to": "ä",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨e",
-          "-to": "ë",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨i",
-          "-to": "ï",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨o",
-          "-to": "ö",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨u",
-          "-to": "ü",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨y",
-          "-to": "ÿ",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨A",
-          "-to": "Ä",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨E",
-          "-to": "Ë",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨I",
-          "-to": "Ï",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨O",
-          "-to": "Ö",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨U",
-          "-to": "Ü",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨ ",
-          "-to": "¨",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`a",
-          "-to": "à",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`e",
-          "-to": "è",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`i",
-          "-to": "ì",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`o",
-          "-to": "ò",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`u",
-          "-to": "ù",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`A",
-          "-to": "À",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`E",
-          "-to": "È",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`I",
-          "-to": "Ì",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`O",
-          "-to": "Ò",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`U",
-          "-to": "Ù",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "` ",
-          "-to": "`",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "^a",
-          "-to": "â",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "^e",
-          "-to": "ê",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "^i",
-          "-to": "î",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "^o",
-          "-to": "ô",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "^u",
-          "-to": "û",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "^A",
-          "-to": "Â",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "^E",
-          "-to": "Ê",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "^I",
-          "-to": "Î",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "^O",
-          "-to": "Ô",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "^U",
-          "-to": "Û",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "^ ",
-          "-to": "^",
           "-self-closing": "true"
         },
         {
@@ -1486,6 +1431,191 @@ export const DTDKeyboardLayout = {
           "-self-closing": "true"
         },
         {
+          "-from": "^a",
+          "-to": "â",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "^e",
+          "-to": "ê",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "^i",
+          "-to": "î",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "^o",
+          "-to": "ô",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "^u",
+          "-to": "û",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "^A",
+          "-to": "Â",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "^E",
+          "-to": "Ê",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "^I",
+          "-to": "Î",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "^O",
+          "-to": "Ô",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "^U",
+          "-to": "Û",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "^ ",
+          "-to": "^",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`a",
+          "-to": "à",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`e",
+          "-to": "è",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`i",
+          "-to": "ì",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`o",
+          "-to": "ò",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`u",
+          "-to": "ù",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`A",
+          "-to": "À",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`E",
+          "-to": "È",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`I",
+          "-to": "Ì",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`O",
+          "-to": "Ò",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`U",
+          "-to": "Ù",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "` ",
+          "-to": "`",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¸c",
+          "-to": "ç",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¸C",
+          "-to": "Ç",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¸ ",
+          "-to": "¸",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨a",
+          "-to": "ä",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨e",
+          "-to": "ë",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨i",
+          "-to": "ï",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨o",
+          "-to": "ö",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨u",
+          "-to": "ü",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨y",
+          "-to": "ÿ",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨A",
+          "-to": "Ä",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨E",
+          "-to": "Ë",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨I",
+          "-to": "Ï",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨O",
+          "-to": "Ö",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨U",
+          "-to": "Ü",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "¨ ",
+          "-to": "¨",
+          "-self-closing": "true"
+        },
+        {
           "-from": "´a",
           "-to": "á",
           "-self-closing": "true"
@@ -1551,118 +1681,38 @@ export const DTDKeyboardLayout = {
           "-self-closing": "true"
         },
         {
-          "-from": "¨a",
-          "-to": "ä",
+          "-from": "~a",
+          "-to": "ã",
           "-self-closing": "true"
         },
         {
-          "-from": "¨e",
-          "-to": "ë",
+          "-from": "~o",
+          "-to": "õ",
           "-self-closing": "true"
         },
         {
-          "-from": "¨i",
-          "-to": "ï",
+          "-from": "~n",
+          "-to": "ñ",
           "-self-closing": "true"
         },
         {
-          "-from": "¨o",
-          "-to": "ö",
+          "-from": "~A",
+          "-to": "Ã",
           "-self-closing": "true"
         },
         {
-          "-from": "¨u",
-          "-to": "ü",
+          "-from": "~O",
+          "-to": "Õ",
           "-self-closing": "true"
         },
         {
-          "-from": "¨y",
-          "-to": "ÿ",
+          "-from": "~N",
+          "-to": "Ñ",
           "-self-closing": "true"
         },
         {
-          "-from": "¨A",
-          "-to": "Ä",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨E",
-          "-to": "Ë",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨I",
-          "-to": "Ï",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨O",
-          "-to": "Ö",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨U",
-          "-to": "Ü",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "¨ ",
-          "-to": "¨",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`a",
-          "-to": "à",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`e",
-          "-to": "è",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`i",
-          "-to": "ì",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`o",
-          "-to": "ò",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`u",
-          "-to": "ù",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`A",
-          "-to": "À",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`E",
-          "-to": "È",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`I",
-          "-to": "Ì",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`O",
-          "-to": "Ò",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "`U",
-          "-to": "Ù",
-          "-self-closing": "true"
-        },
-        {
-          "-from": "` ",
-          "-to": "`",
+          "-from": "~ ",
+          "-to": "~",
           "-self-closing": "true"
         },
         {
@@ -1719,14 +1769,69 @@ export const DTDKeyboardLayout = {
           "-from": "^ ",
           "-to": "^",
           "-self-closing": "true"
+        },
+        {
+          "-from": "`a",
+          "-to": "à",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`e",
+          "-to": "è",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`i",
+          "-to": "ì",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`o",
+          "-to": "ò",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`u",
+          "-to": "ù",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`A",
+          "-to": "À",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`E",
+          "-to": "È",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`I",
+          "-to": "Ì",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`O",
+          "-to": "Ò",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "`U",
+          "-to": "Ù",
+          "-self-closing": "true"
+        },
+        {
+          "-from": "` ",
+          "-to": "`",
+          "-self-closing": "true"
         }
       ]
     }
   },
   "#omit-xml-declaration": "yes"
-};
+}
 
 /**
- * Swedish keyboard layout.
+ * Netherlands keyboard layout.
  */
-export const DTDKeyboardLayout_SW = { keymapper, DTDKeyboardLayout };
+export const DTDKeyboardLayout_NL = { keymapper, DTDKeyboardLayout };

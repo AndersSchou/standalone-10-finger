@@ -5,7 +5,7 @@ export type KEYBOARD_COLOR_GROUP_TYPE = '' | 'color-group' | 'single-color-group
 // Keyboard layout types.
 export type KEYBOARD_LAYOUT_GROUP_TYPE = 'full' | 'partial' | 'minimal';
 // Keyboard language.
-export type KEYBOARD_LANGUAGE = 'da' | 'sv' | 'nn' | 'nb';
+export type KEYBOARD_LANGUAGE = 'da' | 'sv' | 'nn' | 'nb' | 'nl';
 
 // Text settings types.
 export type TextSettings =

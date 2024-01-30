@@ -253,6 +253,9 @@
   top: 0px;
   width: 56px;
   height: 103px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .kls-enter-double {
@@ -283,4 +286,33 @@
   100% {
     background-color: $key-orange;
   }
+}
+
+/* Space button */
+.kr6 .kc4 .kl.kl6.ts5,
+.kr6 .kc4 .kl.kl0.ts5 {
+  color: transparent;
+}
+.kr3 .kc1 .kl4 > div,
+.kr5 .kc1 .kl4 > div,
+.kr5 .kc13 .kl4 > div,
+.kr6 .kc1 .kl4 > div,
+.kr6 .kc2 .kl4 > div,
+.kr6 .kc3 .kl4 > div,
+.kr6 .kc5 .kl4 > div,
+.kr6 .kc6 .kl4 > div,
+.kr6 .kc7 .kl4 > div,
+.kr6 .kc8 .kl4 > div {
+  text-align: left;
+}
+.kr5 .kc18 .kls {
+  width: 46px;
+  text-align: center;
+}
+.kr5 .kc18 .kl4 {
+  width: 44px;
+}
+.kr5 .kc18 .kl4 > div {
+  width: 46px;
+  max-width: 46px;
 }

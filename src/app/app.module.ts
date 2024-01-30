@@ -28,6 +28,7 @@ import { CourseHelperService } from './services/course-helper.service';
 import { UserService } from './services/api/user.service';
 import { GridService } from './services/grid.service';
 import { LevelService } from './services/level.service';
+import { InfoModule } from './modules/info/info.module';
 
 
 // TranslateHttpLoader is used to load the translations automatically.
@@ -48,6 +49,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AchievementsModule,
     GamesModule,
     HomeModule,
+    InfoModule,
     SetCourseModule,
     TypingModule,
     HttpClientModule,

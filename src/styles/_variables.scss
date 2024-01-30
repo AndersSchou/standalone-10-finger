@@ -17,6 +17,7 @@ $--logo-da: --logo-da;
 $--logo-no: --logo-no;
 $--logo-sv: --logo-sv;
 $--video-holder: --video-holder;
+$--info-image: --info-image;
 
 // Default blue theme.
 $theme-map-blue: (
@@ -39,6 +40,7 @@ $theme-map-blue: (
                           $--cover-space: url('../assets/svg/cover_space.svg'),
                             $--cover-rocket: url('../assets/svg/cover_rocket_alone.svg'),
                               $--video-holder: url('../assets/svg/illustration_start_blue.svg'),
+                              $--info-image: url('../assets/svg/info_image_blue.svg'),
                               );
 
                             // Orange theme.
@@ -62,4 +64,5 @@ $theme-map-blue: (
                                                       $--cover-space: url('../assets/svg/cover_space_orange.svg'),
                                                         $--cover-rocket: url('../assets/svg/cover_rocket_alone_orange.svg'),
                                                           $--video-holder: url('../assets/svg/illustration_start_orange.svg'),
+                                                          $--info-image: url('../assets/svg/info_image_orange.svg'),
                                                           );

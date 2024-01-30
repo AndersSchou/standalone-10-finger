@@ -85,7 +85,7 @@
   "translateFishes": "fisk",
   "translateHighestScore": "Din højeste score",
   "translatePlayNextLevel": "Spil næste niveau",
-  "translateStartTypingFromWhereLeft": "Fortsæt fra hvor du stoppede.",
+  "translateStartTypingFromWhereLeft": "Start øvelse.",
   "translateDefineNewLevel": "Vælg en øvelse.",
   "translateHighScore": "Højeste score",
   "translateIn": "på",
@@ -101,5 +101,8 @@
   "translateWindowSmallWarningTitle": "Din skærmopløsning er for lille.",
   "translateWindowSmallWarningDescription": "Brug venligst en større skærm eller zoom ud i din browser.",
   "translateBack": "Tilbage",
-  "nl-NL": "Nederlandsk"
+  "nl-NL": "Nederlandsk",
+  "translateOpenPdf": "Åbn PDF",
+  "translateInfoDescription": "På nedenstående link finder du en vejledning, hvor du kan se hvordan 10-Finger fungerer og indstilles.",
+  "translateInfoTitle": "Vejledning"
 }

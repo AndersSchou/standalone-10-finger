@@ -72,6 +72,7 @@ export const APP_ICONS = [
   'level_difficulty',
   'logo_10_finger_up_full',
   'open_book',
+  'open_pdf',
   'pause',
   'play',
   'print',

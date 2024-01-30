@@ -1,0 +1,25 @@
+<app-shared-top-menu></app-shared-top-menu>
+<app-shared-settings *ngIf="viewSettings"></app-shared-settings>
+<div class="main-content-hld bg-img">
+  <div class="center-content">
+    <div class="fx-layout-row">
+      <div class="fx-flex-480 mr-20">
+        <div class="welcome-title mb-32">{{ "translateInfoTitle" | translate }}</div>
+        <div class="fx-layout-row mb-32">
+          <div class="fx-flex flex-display v-align lh-22">
+            {{ 'translateInfoDescription' | translate }}
+          </div>
+        </div>
+        <div class="obtn-hld">
+          <div class="open-btn" id="openPdf" (click)="navigateTo()">
+            {{ "translateOpenPdf" | translate}}
+            <mat-icon svgIcon="open_pdf" class="ml-auto"></mat-icon>
+          </div>
+        </div>
+      </div>
+      <div class="fx-flex-480 illustration-holder min-h-500">
+        <div class="info-illustration-bg"></div>
+      </div>
+    </div>
+  </div>
+</div>
