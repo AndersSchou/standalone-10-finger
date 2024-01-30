@@ -54,7 +54,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.loggedInAction
       .pipe(takeUntil(this.destroyed))
       .subscribe((isLogged?: boolean) => {
-        if (isLogged && (!this.cookieService.get('mvf_session_id'))) {
+        if (isLogged && window.localStorage.getItem(STORAGE_KEY_TYPE.CURRENT_LANGUAGE)===null) {
           this.setUserLanguage();
         }
       });
@@ -89,7 +89,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.userService.getUserInfo().subscribe((user: WhoAmIResponseDTO) => {
       if (user) {
         const userLang = this.userService.convertRegionToLanguageIdentifier(user.CountryRegionCode);
-        this.languageHelperService.setLanguage(userLang);
+        this.languageHelperService.setLanguage(userLang, true);
       }
     });
   }
