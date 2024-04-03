@@ -47,11 +47,11 @@
   min-width: 220px;
 }
 
-::ng-deep .welcome-btn .mat-icon svg > path {
+::ng-deep .welcome-btn .mat-icon svg>path {
   stroke: theme-var($--color-active-text);
 }
 
-::ng-deep .welcome-btn .mat-icon svg > circle {
+::ng-deep .welcome-btn .mat-icon svg>circle {
   fill: theme-var($--color-active-text);
 }
 
@@ -82,12 +82,14 @@
 .lh-22 {
   line-height: 22px;
 }
+
 .illustration-holder {
   padding: 30px;
   background-color: theme-var(--active-light-bg);
   border-radius: 12px;
   border: 1px solid theme-var(--active-bg-hover);
 }
+
 .illustration-bg {
   background-repeat: no-repeat;
   background-size: contain;
@@ -95,6 +97,7 @@
   background-position: center;
   height: 100%;
 }
+
 .fx-flex-640 {
   margin-right: 60px;
   flex: 1 1 640px;

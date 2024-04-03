@@ -68,7 +68,7 @@ export class CustomIconService {
   constructor(
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer
-  ) { }
+  ) {}
 
   /**
    * Adds custom icons to the MatIconRegistry.
@@ -111,9 +111,13 @@ export class CustomIconService {
   fetchCustomIcons(icons: string[]): void {
     for (const icon of icons) {
       this.matIconRegistry.getNamedSvgIcon(icon).subscribe();
-      this.matIconRegistry.getSvgIconFromUrl(this.domSanitizer.bypassSecurityTrustResourceUrl(
-        '../../assets/svg/' + icon + '.svg'
-      )).subscribe();
+      this.matIconRegistry
+        .getSvgIconFromUrl(
+          this.domSanitizer.bypassSecurityTrustResourceUrl(
+            '../../assets/svg/' + icon + '.svg'
+          )
+        )
+        .subscribe();
     }
   }
 }

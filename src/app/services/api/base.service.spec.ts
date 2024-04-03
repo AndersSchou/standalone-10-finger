@@ -9,7 +9,12 @@ describe('BaseService', () => {
   let cookieServiceSpy: jasmine.SpyObj<CookieService>;
 
   beforeEach(() => {
-    httpServiceSpy = jasmine.createSpyObj<HttpClient>(['get', 'post', 'put', 'delete']);
+    httpServiceSpy = jasmine.createSpyObj<HttpClient>([
+      'get',
+      'post',
+      'put',
+      'delete',
+    ]);
     cookieServiceSpy = jasmine.createSpyObj<CookieService>(['get']);
 
     TestBed.configureTestingModule({

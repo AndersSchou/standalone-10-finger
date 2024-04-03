@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { KeyboardSettingsDTO } from 'src/app/dto/settings.dto';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { environment } from 'src/environments/environment';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIcon } from '@angular/material/icon';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 /**
  * This component holds the logic for the language settings view.
@@ -9,7 +12,9 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-shared-settings-language',
   templateUrl: './language.component.html',
-  styleUrls: ['./language.component.scss']
+  styleUrls: ['./language.component.scss'],
+  standalone: true,
+  imports: [NgFor, NgClass, MatIcon, NgIf, TranslateModule],
 })
 export class AppSharedSettingsLanguageComponent {
   // Stores the available languages.
@@ -22,20 +27,20 @@ export class AppSharedSettingsLanguageComponent {
    *
    * @param languageHelperService Reference to LanguageHelperService.
    */
-  constructor(
-    private readonly languageHelperService: LanguageHelperService
-  ) {
-    this.availableLanguages = environment.availableLanguages.map(lang => {
+  constructor(private readonly languageHelperService: LanguageHelperService) {
+    this.availableLanguages = environment.availableLanguages.map((lang) => {
       const el: KeyboardSettingsDTO = {
         type: 'lang-' + lang,
         label: lang,
-        selected: false
+        selected: false,
       };
       return el;
     });
 
     this.currentLanguage = this.languageHelperService.currentLangUsed;
-    const findCurrentLanguage = this.availableLanguages.find(el => el.label === this.currentLanguage);
+    const findCurrentLanguage = this.availableLanguages.find(
+      (el) => el.label === this.currentLanguage
+    );
     if (findCurrentLanguage) {
       findCurrentLanguage.selected = true;
     }
@@ -47,7 +52,7 @@ export class AppSharedSettingsLanguageComponent {
    * @param lang Represent the new selected language.
    */
   changeLanguage(lang: KeyboardSettingsDTO) {
-    this.availableLanguages.forEach(el => {
+    this.availableLanguages.forEach((el) => {
       el.selected = false;
     });
     lang.selected = true;

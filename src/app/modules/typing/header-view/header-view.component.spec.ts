@@ -2,9 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { MaterialModule } from '../../shared/material.module';
 import { AppTypingHeaderViewComponent } from './header-view.component';
 
 describe('AppTypingHeaderViewComponent', () => {
@@ -16,15 +14,11 @@ describe('AppTypingHeaderViewComponent', () => {
     routerServiceSpy = jasmine.createSpyObj<Router>(['navigate']);
 
     await TestBed.configureTestingModule({
-      declarations: [AppTypingHeaderViewComponent],
-      providers: [
-        { provide: Router, useValue: routerServiceSpy },
-      ],
+      providers: [{ provide: Router, useValue: routerServiceSpy }],
       imports: [
         TranslateModule.forRoot(),
-        MaterialModule,
         MatIconTestingModule,
-        RouterTestingModule
+        AppTypingHeaderViewComponent,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

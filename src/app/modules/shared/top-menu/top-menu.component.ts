@@ -2,6 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { SettingsService } from 'src/app/services/settings.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIcon } from '@angular/material/icon';
+import { NgClass, NgIf } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 /**
  * This component holds the logic for the toolbar.
@@ -9,7 +13,16 @@ import { SettingsService } from 'src/app/services/settings.service';
 @Component({
   selector: 'app-shared-top-menu',
   templateUrl: './top-menu.component.html',
-  styleUrls: ['./top-menu.component.scss']
+  styleUrls: ['./top-menu.component.scss'],
+  standalone: true,
+  imports: [
+    RouterLink,
+    NgClass,
+    RouterLinkActive,
+    MatIcon,
+    NgIf,
+    TranslateModule,
+  ],
 })
 export class AppSharedTopMenuComponent implements OnInit, OnDestroy {
   // Tells if it should close the settings view or not.
@@ -27,10 +40,10 @@ export class AppSharedTopMenuComponent implements OnInit, OnDestroy {
    */
   constructor(
     private readonly settingsService: SettingsService,
-    private readonly languageHelperService: LanguageHelperService,
+    private readonly languageHelperService: LanguageHelperService
   ) {
     this.currentLanguage = this.languageHelperService.currentLangUsed;
-   }
+  }
 
   /**
    * A lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
@@ -44,11 +57,11 @@ export class AppSharedTopMenuComponent implements OnInit, OnDestroy {
       });
 
     // Listens for any changes regarding the current used language.
-    this.languageHelperService.OnLanguageChanged
-    .pipe(takeUntil(this.destroyed)).subscribe(() => {
+    this.languageHelperService.OnLanguageChanged.pipe(
+      takeUntil(this.destroyed)
+    ).subscribe(() => {
       this.currentLanguage = this.languageHelperService.currentLangUsed;
     });
-
   }
 
   /**

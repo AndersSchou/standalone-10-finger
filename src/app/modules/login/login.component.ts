@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { WarningModalComponent } from '../shared/modals/warning-modal/warning-modal.component';
 import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
 import { environment } from 'src/environments/environment';
+import { NgClass } from '@angular/common';
 
 /**
  * Login component.
@@ -11,7 +12,9 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-modules-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [NgClass],
 })
 export class AppLoginComponent implements OnInit {
   // Stores the app language.
@@ -27,10 +30,12 @@ export class AppLoginComponent implements OnInit {
    */
   constructor(
     private readonly authService: AuthService,
-    private readonly dialog: MatDialog,
+    private readonly dialog: MatDialog
   ) {
-    if(localStorage.getItem(STORAGE_KEY_TYPE.CURRENT_LANGUAGE)) {
-      this.currentLanguage = localStorage.getItem(STORAGE_KEY_TYPE.CURRENT_LANGUAGE) as string;
+    if (localStorage.getItem(STORAGE_KEY_TYPE.CURRENT_LANGUAGE)) {
+      this.currentLanguage = localStorage.getItem(
+        STORAGE_KEY_TYPE.CURRENT_LANGUAGE
+      ) as string;
     } else {
       this.currentLanguage = this.availableLanguages[0];
     }
@@ -62,7 +67,7 @@ export class AppLoginComponent implements OnInit {
         title: 'translateAccessDenied',
         description: 'translateAccessDeniedDescription',
         hideActions: true,
-      }
+      },
     });
     dialogRef.afterClosed().subscribe(() => {
       localStorage.removeItem(STORAGE_KEY_TYPE.APP_USER_ACCESS);

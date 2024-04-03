@@ -31,7 +31,7 @@ export class GridService {
     y: 0,
     ocupied: true,
     type: 'boat',
-  }
+  };
   // Stores the grid.
   private grid: GameObject[][] = [];
 
@@ -76,7 +76,11 @@ export class GridService {
    *
    * @returns An object as GameObject or null if no space was found.
    */
-  pickRandomEmptySpace(width: number, height: number, iteration = 0): GameObject | null {
+  pickRandomEmptySpace(
+    width: number,
+    height: number,
+    iteration = 0
+  ): GameObject | null {
     // Failsafe if we don't find any spaces in 100 cicles.
     if (iteration > 100) {
       return null;
@@ -85,7 +89,10 @@ export class GridService {
     const randX = Math.random();
     const randY = Math.random();
     const x = Math.floor((randX == 1 ? 0.9 : randX) * (this.maxX - width));
-    const y = Math.floor((randY == 1 ? 0.9 : randY) * (this.maxY - height - this.boat.y)) + this.boat.y;
+    const y =
+      Math.floor(
+        (randY == 1 ? 0.9 : randY) * (this.maxY - height - this.boat.y)
+      ) + this.boat.y;
     if (x + width > this.maxX || y + height > this.maxY) {
       return this.pickRandomEmptySpace(width, height, iteration);
     }
@@ -99,7 +106,6 @@ export class GridService {
     }
     // Return the found location.
     return this.grid[x][y];
-
   }
 
   /**
@@ -111,7 +117,13 @@ export class GridService {
    * @param height Represents the height of the object.
    * @param type Represents the type of the object.
    */
-  occupySpace(x: number, y: number, width: number, height: number, type: string): void {
+  occupySpace(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    type: string
+  ): void {
     for (let i = x; i < x + width; i++) {
       for (let j = y; j < y + height; j++) {
         if (!this.grid[i] || !this.grid[i][j]) {
@@ -149,7 +161,7 @@ export class GridService {
       top: 4,
       right: 6,
       bottom: 1,
-      left: 2
+      left: 2,
     };
 
     const yEnd = this.maxY - Math.floor((this.maxY * bottomPercent) / 100);

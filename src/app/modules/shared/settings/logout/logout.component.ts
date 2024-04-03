@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 /**
  * This component holds the logic for the logout view.
@@ -7,7 +8,9 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-shared-settings-logout',
   templateUrl: './logout.component.html',
-  styleUrls: ['./logout.component.scss']
+  styleUrls: ['./logout.component.scss'],
+  standalone: true,
+  imports: [TranslateModule],
 })
 export class AppSharedSettingsLogoutComponent {
   /**
@@ -15,7 +18,7 @@ export class AppSharedSettingsLogoutComponent {
    *
    * @param authService Reference to AuthService.
    */
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   /**
    * User logout.

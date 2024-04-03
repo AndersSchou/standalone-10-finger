@@ -12,7 +12,7 @@ import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
  * AuthGuardService is used to handle user authentification.
  */
 @Injectable()
-export class AuthGuardService  {
+export class AuthGuardService {
   // Stores the location of the localhost.
   localhostLocation = 'http://localhost:4200/';
   // Stores cookies options.
@@ -30,7 +30,7 @@ export class AuthGuardService  {
     private readonly router: Router,
     private readonly authService: AuthService,
     private readonly languageHelperService: LanguageHelperService,
-    private readonly userService: UserService,
+    private readonly userService: UserService
   ) {
     // Localhost for Safari does not store the cookies if sameSite is present.
     if (environment.location !== this.localhostLocation) {
@@ -47,23 +47,23 @@ export class AuthGuardService  {
    */
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     if (route) {
-      return this.checkUserAccess(route)
-        .pipe(
-          map((access) => {
-            if (access.access) {
-              // Navigate to the url that was requested before login and remove queryParams.
-              this.handleURLNavigation(route);
-              return true;
-            }
-            // Redirect to login page.
-            if (access.shouldLogOut) {
-              this.authService.logout();
-              localStorage.setItem(STORAGE_KEY_TYPE.APP_USER_ACCESS, 'false');
-            } else {
-              this.router.navigate(['/login']);
-            }
-            return false;
-          }));
+      return this.checkUserAccess(route).pipe(
+        map((access) => {
+          if (access.access) {
+            // Navigate to the url that was requested before login and remove queryParams.
+            this.handleURLNavigation(route);
+            return true;
+          }
+          // Redirect to login page.
+          if (access.shouldLogOut) {
+            this.authService.logout();
+            localStorage.setItem(STORAGE_KEY_TYPE.APP_USER_ACCESS, 'false');
+          } else {
+            this.router.navigate(['/login']);
+          }
+          return false;
+        })
+      );
     }
     return of(false);
   }
@@ -75,21 +75,30 @@ export class AuthGuardService  {
    *
    * @returns An observable of true if user has access to the app, false otherwise.
    */
-  private checkUserAccess(route: ActivatedRouteSnapshot): Observable<{ access?: boolean, shouldLogOut?: boolean }> {
-    if ((route.queryParams['authToken'] && route.queryParams['language']) || route.queryParams['SessionID']) {
-      const sessionID = route.queryParams['authToken'] ? window.atob(decodeURIComponent(route.queryParams['authToken']))
+  private checkUserAccess(
+    route: ActivatedRouteSnapshot
+  ): Observable<{ access?: boolean; shouldLogOut?: boolean }> {
+    if (
+      (route.queryParams['authToken'] && route.queryParams['language']) ||
+      route.queryParams['SessionID']
+    ) {
+      const sessionID = route.queryParams['authToken']
+        ? window.atob(decodeURIComponent(route.queryParams['authToken']))
         : route.queryParams['SessionID'];
       this.cookieService.set('mvf_session_id', sessionID, this.cookiesOption);
 
-      return this.userService.checkUserAccess()
-        .pipe(
-          mergeMap((data) => {
-            if (data.length === 0) {
-              return of({ shouldLogOut: true });
-            } else {
-              if (route.queryParams['authToken'] && route.queryParams['language']) {
-                // If language param exists, then we need to set that language as default.
-                return this.languageHelperService.initLangChanged.pipe(map(() => {
+      return this.userService.checkUserAccess().pipe(
+        mergeMap((data) => {
+          if (data.length === 0) {
+            return of({ shouldLogOut: true });
+          } else {
+            if (
+              route.queryParams['authToken'] &&
+              route.queryParams['language']
+            ) {
+              // If language param exists, then we need to set that language as default.
+              return this.languageHelperService.initLangChanged.pipe(
+                map(() => {
                   // Check if the language exists in the default languages array.
                   let usedLanguage = route.queryParams['language'];
                   const findLanguage = environment.availableLanguages.find(
@@ -102,12 +111,14 @@ export class AuthGuardService  {
                   this.languageHelperService.setLanguage(usedLanguage, true);
                   this.authService.loggedIn(true);
                   return { access: true };
-                }));
-              }
-              this.authService.loggedIn(true);
-              return of({ access: true });
+                })
+              );
             }
-          }));
+            this.authService.loggedIn(true);
+            return of({ access: true });
+          }
+        })
+      );
     }
 
     if (!this.cookieService.get('mvf_session_id')) {

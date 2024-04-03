@@ -7,7 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NgxPrinterService } from 'ngx-printer';
 import { Observable } from 'rxjs';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
-import { MaterialModule } from '../../shared/material.module';
 import { AppAchievementDetailsComponent } from './details.component';
 
 describe('AppAchievementDetailsComponent', () => {
@@ -24,7 +23,7 @@ describe('AppAchievementDetailsComponent', () => {
 
     courseHelperServiceSpy = jasmine.createSpyObj<CourseHelperService>([
       'startExercise',
-      'closeDetailsModalAction'
+      'closeDetailsModalAction',
     ]);
     (courseHelperServiceSpy as any).closeDetailsModalAction = new Observable(
       (subscriber) => {
@@ -32,12 +31,13 @@ describe('AppAchievementDetailsComponent', () => {
       }
     );
 
-    printerServiceSpy = jasmine.createSpyObj<NgxPrinterService>(['printHTMLElement']);
+    printerServiceSpy = jasmine.createSpyObj<NgxPrinterService>([
+      'printHTMLElement',
+    ]);
 
     matDialogRefSpy = jasmine.createSpyObj<MatDialogRef<any, any>>(['close']);
 
     await TestBed.configureTestingModule({
-      declarations: [AppAchievementDetailsComponent],
       providers: [
         { provide: Router, useValue: routerSpy },
         { provide: CourseHelperService, useValue: courseHelperServiceSpy },
@@ -47,8 +47,8 @@ describe('AppAchievementDetailsComponent', () => {
       ],
       imports: [
         TranslateModule.forRoot(),
-        MaterialModule,
-        MatIconTestingModule
+        MatIconTestingModule,
+        AppAchievementDetailsComponent,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

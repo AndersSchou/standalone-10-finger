@@ -13,7 +13,7 @@ describe('CourseHelperService', () => {
       providers: [
         CourseHelperService,
         { provide: Router, useValue: routerServiceSpy },
-      ]
+      ],
     });
     service = TestBed.inject(CourseHelperService);
   });

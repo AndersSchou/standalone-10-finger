@@ -44,7 +44,7 @@ export class VoiceService extends BaseService<SpeakResultDTO> {
     speechType?: string
   ): Observable<SpeakResultDTO> {
     const speakSettings = {
-      format: (this.platform.SAFARI || this.platform.WEBKIT) ? 'mp3' : 'OGG',
+      format: this.platform.SAFARI || this.platform.WEBKIT ? 'mp3' : 'OGG',
       speed: 1,
       text,
       type: speechType ? speechType : 'TTS',

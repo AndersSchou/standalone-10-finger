@@ -2,13 +2,11 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterTestingModule } from '@angular/router/testing';
 import { SettingsService } from 'src/app/services/settings.service';
 import { Observable, Subject } from 'rxjs';
 import { AppTypingComponent } from './typing.component';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { SpeechService } from 'src/app/services/speech.service';
-import { MaterialModule } from '../shared/material.module';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { ActivatedRoute } from '@angular/router';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
@@ -55,19 +53,27 @@ describe('AppTypingComponent', () => {
       }
     );
 
-    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>(['OnLanguageChanged']);
+    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>([
+      'OnLanguageChanged',
+    ]);
     (languageHelperServiceSpy as any).OnLanguageChanged = new Observable(
       (subscriber) => {
         onLanguageChangedSpy = subscriber;
       }
     );
 
-    speechServiceSpy = jasmine.createSpyObj<SpeechService>(['handleReading', 'play']);
+    speechServiceSpy = jasmine.createSpyObj<SpeechService>([
+      'handleReading',
+      'play',
+    ]);
 
-    courseHelperServiceSpy = jasmine.createSpyObj<CourseHelperService>(['getLatestCourse', 'getLatestCategory', 'getLatestExercise']);
+    courseHelperServiceSpy = jasmine.createSpyObj<CourseHelperService>([
+      'getLatestCourse',
+      'getLatestCategory',
+      'getLatestExercise',
+    ]);
 
     await TestBed.configureTestingModule({
-      declarations: [AppTypingComponent, VKeyboardComponent],
       providers: [
         { provide: SettingsService, useValue: settingsServiceSpy },
         { provide: LanguageHelperService, useValue: languageHelperServiceSpy },
@@ -77,9 +83,9 @@ describe('AppTypingComponent', () => {
       ],
       imports: [
         TranslateModule.forRoot(),
-        MaterialModule,
         MatIconTestingModule,
-        RouterTestingModule
+        AppTypingComponent,
+        VKeyboardComponent,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

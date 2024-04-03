@@ -12,7 +12,7 @@ describe('AuthInterceptor', () => {
     TestBed.configureTestingModule({
       providers: [
         AuthInterceptor,
-        { provide: AuthService, useValue: authServiceSpy }
+        { provide: AuthService, useValue: authServiceSpy },
       ],
     });
     service = TestBed.inject(AuthInterceptor);

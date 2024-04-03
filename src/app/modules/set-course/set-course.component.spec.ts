@@ -1,3 +1,4 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
@@ -6,7 +7,6 @@ import { Observable } from 'rxjs';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { SettingsService } from 'src/app/services/settings.service';
-import { MaterialModule } from '../shared/material.module';
 import { AppSetCourseComponent } from './set-course.component';
 
 describe('AppSetCourseComponent', () => {
@@ -19,16 +19,22 @@ describe('AppSetCourseComponent', () => {
   let onLanguageChangedSpy;
 
   beforeEach(async () => {
-    settingsServiceSpy = jasmine.createSpyObj<SettingsService>(['viewSettingsAction']);
+    settingsServiceSpy = jasmine.createSpyObj<SettingsService>([
+      'viewSettingsAction',
+    ]);
     (settingsServiceSpy as any).viewSettingsAction = new Observable(
       (subscriber) => {
         onViewSettingsActionSpy = subscriber;
       }
     );
 
-    courseHelperServiceSpy = jasmine.createSpyObj<CourseHelperService>(['getLatestCourse']);
+    courseHelperServiceSpy = jasmine.createSpyObj<CourseHelperService>([
+      'getLatestCourse',
+    ]);
 
-    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>(['OnLanguageChanged']);
+    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>([
+      'OnLanguageChanged',
+    ]);
     (languageHelperServiceSpy as any).OnLanguageChanged = new Observable(
       (subscriber) => {
         onLanguageChangedSpy = subscriber;
@@ -36,7 +42,6 @@ describe('AppSetCourseComponent', () => {
     );
 
     await TestBed.configureTestingModule({
-      declarations: [AppSetCourseComponent],
       providers: [
         { provide: SettingsService, useValue: settingsServiceSpy },
         { provide: CourseHelperService, useValue: courseHelperServiceSpy },
@@ -44,8 +49,9 @@ describe('AppSetCourseComponent', () => {
       ],
       imports: [
         TranslateModule.forRoot(),
-        MaterialModule,
-        MatIconTestingModule
+        MatIconTestingModule,
+        AppSetCourseComponent,
+        RouterTestingModule,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

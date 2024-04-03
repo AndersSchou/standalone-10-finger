@@ -11,7 +11,10 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SESSIONID_NOT_VALID, SESSIONID_TIMEOUT } from 'src/app/common/constants';
+import {
+  SESSIONID_NOT_VALID,
+  SESSIONID_TIMEOUT,
+} from 'src/app/common/constants';
 
 /**
  * HttpRequest interface.
@@ -37,7 +40,7 @@ export class AuthInterceptor implements HttpInterceptor {
    *
    * @param authService Reference to AuthService.
    */
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   /**
    * Intercepts the response of a http request.
@@ -54,11 +57,11 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<HttpRequestI>> {
     return next.handle(request).pipe(
       tap(
-        () => { },
+        () => {},
         (err: Error) => {
           if (err instanceof HttpErrorResponse) {
             if (err.status === 0) {
-              throw (err);
+              throw err;
             } else if (
               err.error.errorCode === SESSIONID_TIMEOUT ||
               err.error.errorCode === SESSIONID_NOT_VALID

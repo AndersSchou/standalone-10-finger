@@ -32,9 +32,7 @@ export class AuthService {
    *
    * @param cookieService Reference to CookieService.
    */
-  constructor(
-    private readonly cookieService: CookieService,
-  ) { }
+  constructor(private readonly cookieService: CookieService) {}
 
   /**
    * Calls the source of the observable and cascades the action.
@@ -64,7 +62,11 @@ export class AuthService {
       this.cookieService.delete('mvf_session_id');
 
       window.location.href =
-        environment.UrlEndpoints.auth + '/logout.php?SessionID=' + sessiondID + '&return_to=' + environment.location;
+        environment.UrlEndpoints.auth +
+        '/logout.php?SessionID=' +
+        sessiondID +
+        '&return_to=' +
+        environment.location;
     }
   }
 }

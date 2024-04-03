@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { DefaultReadLetterOptions, DefaultReadTextOptions } from 'src/app/common/constants';
+import { DefaultReadLetterOptions } from 'src/app/common/constants';
 import { TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
 import { KeyboardSettingsDTO } from 'src/app/dto/settings.dto';
 import { SettingsService } from 'src/app/services/settings.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIcon } from '@angular/material/icon';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 /**
  * This component holds the logic for the reading settings view.
@@ -10,7 +13,9 @@ import { SettingsService } from 'src/app/services/settings.service';
 @Component({
   selector: 'app-shared-settings-read',
   templateUrl: './read.component.html',
-  styleUrls: ['./read.component.scss']
+  styleUrls: ['./read.component.scss'],
+  standalone: true,
+  imports: [NgFor, NgClass, MatIcon, NgIf, TranslateModule],
 })
 export class AppSharedSettingsReadComponent {
   // Stores the default read letter options.
@@ -23,9 +28,7 @@ export class AppSharedSettingsReadComponent {
    *
    * @param settingsService Reference to SettingsService.
    */
-  constructor(
-    private readonly settingsService: SettingsService
-  ) {
+  constructor(private readonly settingsService: SettingsService) {
     this.setInitialValues();
   }
 
@@ -34,10 +37,12 @@ export class AppSharedSettingsReadComponent {
    */
   setInitialValues() {
     // Set read letter initial value.
-    this.readLetterOptions.forEach(o => o.selected = false);
+    this.readLetterOptions.forEach((o) => (o.selected = false));
     const readLetterOption = this.settingsService.getDefaultReadLetter();
     if (readLetterOption) {
-      const findLetter = this.readLetterOptions.find(el => el.type === readLetterOption.type);
+      const findLetter = this.readLetterOptions.find(
+        (el) => el.type === readLetterOption.type
+      );
       if (findLetter) {
         findLetter.selected = true;
       }
@@ -54,12 +59,15 @@ export class AppSharedSettingsReadComponent {
    * @param option Represents the selected option.
    */
   selectReadLetterOption(option: KeyboardSettingsDTO) {
-    this.readLetterOptions.forEach(o => o.selected = false);
+    this.readLetterOptions.forEach((o) => (o.selected = false));
     option.selected = true;
-    localStorage.setItem(TEXT_SETTINGS_TYPE.READ_LETTER, JSON.stringify(option));
+    localStorage.setItem(
+      TEXT_SETTINGS_TYPE.READ_LETTER,
+      JSON.stringify(option)
+    );
     this.settingsService.setTextSetting({
       type: TEXT_SETTINGS_TYPE.READ_LETTER,
-      value: option.type
+      value: option.type,
     });
   }
 
@@ -70,10 +78,13 @@ export class AppSharedSettingsReadComponent {
    */
   selectReadTextOption(option: KeyboardSettingsDTO) {
     option.selected = !option.selected;
-    localStorage.setItem(TEXT_SETTINGS_TYPE.READ_TEXT, JSON.stringify(this.readTextOptions));
+    localStorage.setItem(
+      TEXT_SETTINGS_TYPE.READ_TEXT,
+      JSON.stringify(this.readTextOptions)
+    );
     this.settingsService.setTextSetting({
       type: TEXT_SETTINGS_TYPE.READ_TEXT,
-      value: option.type
+      value: option.type,
     });
   }
 }

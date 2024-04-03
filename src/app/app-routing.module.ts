@@ -67,11 +67,11 @@ const routes: Routes = [
     path: 'info',
     component: AppInfoComponent,
     canActivate: [AuthGuardService],
-  }
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

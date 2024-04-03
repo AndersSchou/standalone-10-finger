@@ -1,9 +1,22 @@
 import { fromEvent, ReplaySubject, Subscription, takeUntil, timer } from 'rxjs';
-import { Component, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { FishGame } from 'src/app/games/fish';
-import { createEmptyLevelDTO, GameDTO, GameStorageDTO, ScoreUpdateDTO } from 'src/app/dto/game.dto';
+import {
+  createEmptyLevelDTO,
+  GameDTO,
+  GameStorageDTO,
+  ScoreUpdateDTO,
+} from 'src/app/dto/game.dto';
 import { MatDialog } from '@angular/material/dialog';
 import { AppGamesFishingGameOverComponent } from '../game-over/game-over.component';
 import { FISH_GAME_SOUND_TYPE, STORAGE_KEY_TYPE } from 'src/app/common/enums';
@@ -11,10 +24,18 @@ import { environment } from 'src/environments/environment';
 import { ResultDTO } from 'src/app/dto/course.dto';
 import { FishWithWordDTO, createFishWithWordDTO } from 'src/app/dto/fish.dto';
 import { GridService } from 'src/app/services/grid.service';
-import { Level, LevelService, FishWithWord } from 'src/app/services/level.service';
+import {
+  Level,
+  LevelService,
+  FishWithWord,
+} from 'src/app/services/level.service';
 import { AppGamesFishingSchoolFishComponent } from '../school-fish/school-fish.component';
 import { SpeechService } from 'src/app/services/speech.service';
 import { SettingsService } from 'src/app/services/settings.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatTooltip } from '@angular/material/tooltip';
+import { NgIf, NgClass } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
 
 /**
  * This component is the main component for the fishing game.
@@ -22,9 +43,20 @@ import { SettingsService } from 'src/app/services/settings.service';
 @Component({
   selector: 'app-modules-games-fish-play',
   templateUrl: './play.component.html',
-  styleUrls: ['./play.component.scss']
+  styleUrls: ['./play.component.scss'],
+  standalone: true,
+  imports: [
+    MatIcon,
+    NgIf,
+    MatTooltip,
+    NgClass,
+    AppGamesFishingSchoolFishComponent,
+    TranslateModule,
+  ],
 })
-export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AppGamesFishPlayComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @ViewChild('schoolFish') schoolFish?: AppGamesFishingSchoolFishComponent;
   @ViewChild('wordHld') wordHld?: ElementRef;
   @ViewChild('grid') grid?: ElementRef;
@@ -107,7 +139,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     private readonly dialog: MatDialog,
     protected readonly levelService: LevelService,
     private readonly speechService: SpeechService,
-    private readonly settingsService: SettingsService,
+    private readonly settingsService: SettingsService
   ) {
     this.currentLanguage = this.languageHelperService.currentLangUsed;
     const timeArray = environment.gameTime.split(':');
@@ -121,7 +153,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
 
     if (this.settingsService.getDefaultGameSoundOption() === 'on') {
       this.soundMuted = false;
-      this.soundIcon = 'sound_on'
+      this.soundIcon = 'sound_on';
     } else {
       this.soundIcon = 'sound_off';
       this.soundMuted = true;
@@ -134,11 +166,12 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
   ngOnInit(): void {
     this.initGrid();
     // Listens for any changes regarding the current used language.
-    this.languageHelperService.OnLanguageChanged
-      .pipe(takeUntil(this.destroyed)).subscribe(() => {
-        this.currentLanguage = this.languageHelperService.currentLangUsed;
-        this.getFishGameData();
-      });
+    this.languageHelperService.OnLanguageChanged.pipe(
+      takeUntil(this.destroyed)
+    ).subscribe(() => {
+      this.currentLanguage = this.languageHelperService.currentLangUsed;
+      this.getFishGameData();
+    });
 
     this.keyDownListener();
   }
@@ -181,19 +214,27 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     if (this.currentLanguage && this.currentLanguage.length > 0) {
       this.getFishGameData();
     }
-    this.speechService.playFishGameSound(FISH_GAME_SOUND_TYPE.COUNTDOWN, this.soundMuted);
-    this.countdownSubscription = timer(1000, 1000).pipe(takeUntil(this.destroyed)).subscribe(() => {
-      if (this.countdownNbr > 0) {
-        if (this.countdownNbr === 1) {
-          this.speechService.unload();
+    this.speechService.playFishGameSound(
+      FISH_GAME_SOUND_TYPE.COUNTDOWN,
+      this.soundMuted
+    );
+    this.countdownSubscription = timer(1000, 1000)
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(() => {
+        if (this.countdownNbr > 0) {
+          if (this.countdownNbr === 1) {
+            this.speechService.unload();
+          }
+          this.countdownNbr--;
+        } else {
+          this.countdownSubscription.unsubscribe();
+          this.createCounter();
+          this.speechService.playFishGameSound(
+            FISH_GAME_SOUND_TYPE.BACKGROUND,
+            this.soundMuted
+          );
         }
-        this.countdownNbr--;
-      } else {
-        this.countdownSubscription.unsubscribe();
-        this.createCounter();
-        this.speechService.playFishGameSound(FISH_GAME_SOUND_TYPE.BACKGROUND, this.soundMuted);
-      }
-    });
+      });
   }
 
   /**
@@ -201,7 +242,8 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    */
   keyDownListener(): void {
     fromEvent<KeyboardEvent>(document, 'keydown')
-      .pipe(takeUntil(this.destroyed)).subscribe((event) => {
+      .pipe(takeUntil(this.destroyed))
+      .subscribe((event) => {
         // Start counting the time only when the user pressed the first key.
         if (!this.startTimeCount) {
           this.startTime = new Date();
@@ -252,18 +294,20 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
             this.gameLevel = {
               id: this.currentLevel.levelDefinition.id,
               name: this.currentLevel.levelDefinition.name,
-              results: []
+              results: [],
             };
             this.levelGoal = this.currentLevel.levelDefinition.goal;
-            const words = this.currentLevel.extractAllLevelWords().map((el: FishWithWord) => {
-              const word: FishWithWordDTO = createFishWithWordDTO({
-                fish: el.fish.toDTO(),
-                word: el.word,
-                fishImage: el.fishImage,
-                active: false,
+            const words = this.currentLevel
+              .extractAllLevelWords()
+              .map((el: FishWithWord) => {
+                const word: FishWithWordDTO = createFishWithWordDTO({
+                  fish: el.fish.toDTO(),
+                  word: el.word,
+                  fishImage: el.fishImage,
+                  active: false,
+                });
+                return word;
               });
-              return word;
-            });
             if (this.schoolFish) {
               this.schoolFish.initSchool(words, this.currentLevel);
             }
@@ -277,18 +321,23 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    * Create the time counter.
    */
   createCounter(): void {
-    this.timerSubscription = timer(0, 1000).pipe(takeUntil(this.destroyed)).subscribe(() => {
-      if (this.timeInSec > 0) {
-        this.timeInSec--;
-        this.convertFromSecToMinAndSec();
-        if (this.timeInSec === 10) {
-          this.playCountdownSound = true;
-          this.speechService.playFishGameSound(FISH_GAME_SOUND_TYPE.TIMER, this.soundMuted);
+    this.timerSubscription = timer(0, 1000)
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(() => {
+        if (this.timeInSec > 0) {
+          this.timeInSec--;
+          this.convertFromSecToMinAndSec();
+          if (this.timeInSec === 10) {
+            this.playCountdownSound = true;
+            this.speechService.playFishGameSound(
+              FISH_GAME_SOUND_TYPE.TIMER,
+              this.soundMuted
+            );
+          }
+        } else {
+          this.gameOver(true);
         }
-      } else {
-        this.gameOver(true);
-      }
-    });
+      });
   }
 
   /**
@@ -339,7 +388,8 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
       this.timerSubscription.unsubscribe();
     }
     this.isTimeOut = true;
-    const showNextButton = (this.gameLevel.id < this.totalNbrOfLevels - 1) ? true : false;
+    const showNextButton =
+      this.gameLevel.id < this.totalNbrOfLevels - 1 ? true : false;
     this.updateLocalStorage();
     const dialogRef = this.dialog.open(AppGamesFishingGameOverComponent, {
       panelClass: 'game-over-class',
@@ -350,11 +400,11 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
         wordsCount: this.completedWords,
         language: this.currentLanguage,
         showNext: showNextButton,
-        timeOut: timeOut
-      }
+        timeOut: timeOut,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (result === 'replay') {
           this.replay(this.gameLevel.id);
@@ -369,23 +419,32 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    * Update the local storage with the result for the current level.
    */
   updateLocalStorage(): void {
-    const timeDiff = this.levelService.calculateTimeDiff(this.startTime, new Date());
+    const timeDiff = this.levelService.calculateTimeDiff(
+      this.startTime,
+      new Date()
+    );
     const levelResult: ResultDTO = {
       numberOfWords: this.completedWords,
       characters: this.charNbr,
       mistakes: this.errorCount,
       time: timeDiff,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
     this.gameLevel.updatedAt = new Date();
 
     if (localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS)) {
-      const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS) as string);
+      const storedData = JSON.parse(
+        localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS) as string
+      );
       if (storedData) {
-        const findLanguage = storedData.find((item: GameStorageDTO) => item.language === this.currentLanguage);
+        const findLanguage = storedData.find(
+          (item: GameStorageDTO) => item.language === this.currentLanguage
+        );
         if (findLanguage) {
           findLanguage.totalLevels = this.totalNbrOfLevels;
-          const findLevel = findLanguage.data.find((item: GameDTO) => item.id === this.gameLevel.id);
+          const findLevel = findLanguage.data.find(
+            (item: GameDTO) => item.id === this.gameLevel.id
+          );
           if (findLevel) {
             findLevel.results.push(levelResult);
           } else {
@@ -395,10 +454,16 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
         } else {
           storedData.push(this.gameProgressResult(levelResult));
         }
-        localStorage.setItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS, JSON.stringify(storedData));
+        localStorage.setItem(
+          STORAGE_KEY_TYPE.FISH_GAME_PROGRESS,
+          JSON.stringify(storedData)
+        );
       }
     } else {
-      localStorage.setItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS, JSON.stringify([this.gameProgressResult(levelResult)]));
+      localStorage.setItem(
+        STORAGE_KEY_TYPE.FISH_GAME_PROGRESS,
+        JSON.stringify([this.gameProgressResult(levelResult)])
+      );
     }
   }
 
@@ -414,7 +479,7 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     const gameProgress: GameStorageDTO = {
       language: this.currentLanguage,
       totalLevels: this.totalNbrOfLevels,
-      data: [this.gameLevel]
+      data: [this.gameLevel],
     };
     return gameProgress;
   }
@@ -428,7 +493,9 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
       if (this.pauseCount <= 2) {
         if (this.speechService.isPlaying()) {
           // Unload the sound if the countdown is playing (this is needed to match the time with the timer sound).
-          this.playCountdownSound ? this.speechService.unload() : this.speechService.pause();
+          this.playCountdownSound
+            ? this.speechService.unload()
+            : this.speechService.pause();
         }
         this.activeIcon = 'play';
         this.pause();
@@ -437,7 +504,12 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     } else {
       this.activeIcon = 'pause';
       this.play();
-      this.speechService.playFishGameSound(this.playCountdownSound ? FISH_GAME_SOUND_TYPE.TIMER : FISH_GAME_SOUND_TYPE.BACKGROUND, this.soundMuted);
+      this.speechService.playFishGameSound(
+        this.playCountdownSound
+          ? FISH_GAME_SOUND_TYPE.TIMER
+          : FISH_GAME_SOUND_TYPE.BACKGROUND,
+        this.soundMuted
+      );
     }
   }
 
@@ -453,9 +525,17 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
       this.soundMuted = false;
     }
     if (this.activeIcon === 'pause') {
-      this.speechService.playFishGameSound(this.playCountdownSound ? FISH_GAME_SOUND_TYPE.TIMER : FISH_GAME_SOUND_TYPE.BACKGROUND, this.soundMuted);
+      this.speechService.playFishGameSound(
+        this.playCountdownSound
+          ? FISH_GAME_SOUND_TYPE.TIMER
+          : FISH_GAME_SOUND_TYPE.BACKGROUND,
+        this.soundMuted
+      );
     }
-    localStorage.setItem(STORAGE_KEY_TYPE.GAME_SOUND_OPTION, this.soundMuted ? 'off' : 'on');
+    localStorage.setItem(
+      STORAGE_KEY_TYPE.GAME_SOUND_OPTION,
+      this.soundMuted ? 'off' : 'on'
+    );
   }
 
   /**
@@ -483,7 +563,10 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
     this.charNbr = scoreData.chars;
     this.errorCount = scoreData.errors;
 
-    if (this.currentLevel && this.score >= this.currentLevel.levelDefinition.goal) {
+    if (
+      this.currentLevel &&
+      this.score >= this.currentLevel.levelDefinition.goal
+    ) {
       this.gameOver();
     }
   }
@@ -492,7 +575,11 @@ export class AppGamesFishPlayComponent implements OnInit, AfterViewInit, OnDestr
    * Clear the DOM elements.
    */
   clearDomElements(): void {
-    if (this.wordHld && this.gameFishDivElement && this.gameFishDivElement.hasChildNodes()) {
+    if (
+      this.wordHld &&
+      this.gameFishDivElement &&
+      this.gameFishDivElement.hasChildNodes()
+    ) {
       this.wordHld.nativeElement.removeChild(this.gameFishDivElement);
     }
   }

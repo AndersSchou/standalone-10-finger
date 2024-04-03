@@ -1,8 +1,23 @@
-import { Component, ElementRef, Input, OnDestroy, ViewChild, AfterViewInit, Output, EventEmitter, ChangeDetectorRef, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+  AfterViewInit,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef,
+  OnInit,
+} from '@angular/core';
 import { Observable, ReplaySubject, Subject, takeUntil, timer } from 'rxjs';
-import { createEmptyFishWithWordDTO, FishWithWordDTO } from 'src/app/dto/fish.dto';
+import {
+  createEmptyFishWithWordDTO,
+  FishWithWordDTO,
+} from 'src/app/dto/fish.dto';
 import { AppGamesFishComponent } from '../fish/fish.component';
 import { getStopWatch } from 'src/app/common/stopwatch';
+import { NgStyle, NgClass, NgIf } from '@angular/common';
 
 /**
  * This component holds the logic for displaying the fish and word.
@@ -10,9 +25,13 @@ import { getStopWatch } from 'src/app/common/stopwatch';
 @Component({
   selector: 'app-modules-games-fishing-word-fish',
   templateUrl: './word-fish.component.html',
-  styleUrls: ['./word-fish.component.scss']
+  styleUrls: ['./word-fish.component.scss'],
+  standalone: true,
+  imports: [NgStyle, NgClass, NgIf, AppGamesFishComponent],
 })
-export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewInit, OnInit {
+export class AppGamesFishingWordFishComponent
+  implements OnDestroy, AfterViewInit, OnInit
+{
   @ViewChild('fishComp') fishComponent?: AppGamesFishComponent;
   @ViewChild('wordHld') wordHld?: ElementRef;
   @Input()
@@ -62,7 +81,8 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
   // Outputs the event when the word is completed.
-  @Output() isWordCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() isWordCompleted: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
   @Output() errorCount: EventEmitter<boolean> = new EventEmitter<boolean>();
   // Stores the stop watch (used for pausing/stopping the timer).
   watch: {
@@ -78,16 +98,21 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
       this.currentFishImage = `assets/svg/${this.currentWord.fishImage.name}.svg`;
     }
 
-    const disapearInMS = Math.floor(Math.random() * (this.defaultWaitTimeMax - this.defaultWaitTimeMin + 1)) / this.currentWord.fish.reward + this.defaultWaitTimeMin;
+    const disapearInMS =
+      Math.floor(
+        Math.random() * (this.defaultWaitTimeMax - this.defaultWaitTimeMin + 1)
+      ) /
+        this.currentWord.fish.reward +
+      this.defaultWaitTimeMin;
     // We wait a default time to give the user a chance to interact with the fish, otherwise the fish will be removed.
     // We track using a timeout (rxjs).
-    this.watch.display.pipe(takeUntil(this.destroyed)).subscribe(res => {
+    this.watch.display.pipe(takeUntil(this.destroyed)).subscribe((res) => {
       if (!this.isFishInteracted && res * 1000 > disapearInMS) {
         this.removeWordFish(true);
-        this.watch.control.next("STOP");
+        this.watch.control.next('STOP');
       }
     });
-    this.watch.control.next("START");
+    this.watch.control.next('START');
   }
 
   /**
@@ -156,8 +181,8 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
   }
 
   /**
-  * Update the letter/word index based on the current position.
-  */
+   * Update the letter/word index based on the current position.
+   */
   updateCurrentPosition(): void {
     if (this.currentWord.active) {
       if (this.currentCharIndex < this.currentWord.word.length - 1) {
@@ -177,12 +202,13 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
    * @param escaped Tells if the fish (the word was mispelled) escaped or not.
    */
   removeWordFish(escaped: boolean = false): void {
-    this.watch.control.next("STOP");
+    this.watch.control.next('STOP');
     if (this.fishComponent) {
       if (!escaped) {
         this.isCaught = true;
         this.isEscaped = false;
-        const caughtSub = this.fishComponent.caught()
+        const caughtSub = this.fishComponent
+          .caught()
           .pipe(takeUntil(this.destroyed))
           .subscribe(() => {
             this.isWordCompleted.emit(true);
@@ -191,7 +217,8 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
       } else {
         this.isEscaped = true;
         this.isCaught = false;
-        const escapeSubs = this.fishComponent.escaped()
+        const escapeSubs = this.fishComponent
+          .escaped()
           .pipe(takeUntil(this.destroyed))
           .subscribe(() => {
             this.isWordCompleted.emit(false);
@@ -212,9 +239,12 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
   currentPosition(): void {
     const htmlElems = document.getElementsByClassName('animation-hld ');
     if (htmlElems && htmlElems.length > 0) {
-      const parentElement = document.getElementsByClassName('animation-hld')[this.index];
+      const parentElement =
+        document.getElementsByClassName('animation-hld')[this.index];
       if (parentElement) {
-        const findSpanEl = parentElement.getElementsByClassName('key-fish-hld ' + this.currentCharIndex)[0];
+        const findSpanEl = parentElement.getElementsByClassName(
+          'key-fish-hld ' + this.currentCharIndex
+        )[0];
         if (findSpanEl) {
           findSpanEl.classList.add('active');
           this.currentFishActiveElement = findSpanEl;
@@ -228,7 +258,10 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
    */
   markAsCompleted(): void {
     if (this.currentWord.active) {
-      if (this.currentFishActiveElement && this.currentFishActiveElement.classList.contains('active')) {
+      if (
+        this.currentFishActiveElement &&
+        this.currentFishActiveElement.classList.contains('active')
+      ) {
         this.currentFishActiveElement.classList.remove('active');
         // Add completed class (used to change the background for the completed character) to the current character.
         this.currentFishActiveElement.classList.add('completed');
@@ -240,7 +273,10 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
    * Mark the current character as mistake and count the number of mistakes.
    */
   markAsMistake(): void {
-    if (this.currentFishActiveElement && !this.currentFishActiveElement.classList.contains('error')) {
+    if (
+      this.currentFishActiveElement &&
+      !this.currentFishActiveElement.classList.contains('error')
+    ) {
       this.currentFishActiveElement.classList.add('error');
     }
   }
@@ -249,8 +285,12 @@ export class AppGamesFishingWordFishComponent implements OnDestroy, AfterViewIni
    * Clear the DOM elements.
    */
   clearDomElements(): void {
-    if (this.wordHld && this.wordHld.nativeElement.hasChildNodes() &&
-      this.gameFishDivElement && this.gameFishDivElement.hasChildNodes()) {
+    if (
+      this.wordHld &&
+      this.wordHld.nativeElement.hasChildNodes() &&
+      this.gameFishDivElement &&
+      this.gameFishDivElement.hasChildNodes()
+    ) {
       this.wordHld.nativeElement.removeChild(this.gameFishDivElement);
     }
   }

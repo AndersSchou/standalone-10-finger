@@ -1,9 +1,19 @@
-import { KeyboardSettingsDTO, TextSettingsSizeDTO } from 'src/app/dto/settings.dto';
-import { Injectable } from "@angular/core";
-import { Observable, Subject } from "rxjs";
-import { DefaultReadLetterOptions, DefaultReadTextOptions } from "../common/constants";
-import { STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from "../common/enums";
-import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LAYOUT_GROUP_TYPE, TextSettings } from "../common/types";
+import {
+  KeyboardSettingsDTO,
+  TextSettingsSizeDTO,
+} from 'src/app/dto/settings.dto';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import {
+  DefaultReadLetterOptions,
+  DefaultReadTextOptions,
+} from '../common/constants';
+import { STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from '../common/enums';
+import {
+  KEYBOARD_COLOR_GROUP_TYPE,
+  KEYBOARD_LAYOUT_GROUP_TYPE,
+  TextSettings,
+} from '../common/types';
 
 /**
  * TextSettingsService is used to handle all the settings.
@@ -17,11 +27,13 @@ export class SettingsService {
   // The subject used to controls the service communication.
   private keyboardThemeColorSource = new Subject<KEYBOARD_COLOR_GROUP_TYPE>();
   // Observable instance of the source object.
-  private keyboardThemeColorObservable = this.keyboardThemeColorSource.asObservable();
+  private keyboardThemeColorObservable =
+    this.keyboardThemeColorSource.asObservable();
   // The subject used to controls the service communication.
   private keyboardPrimaryModeSource = new Subject<KEYBOARD_LAYOUT_GROUP_TYPE>();
   // Observable instance of the source object.
-  private keyboardPrimaryObservable = this.keyboardPrimaryModeSource.asObservable();
+  private keyboardPrimaryObservable =
+    this.keyboardPrimaryModeSource.asObservable();
   // The subject used to controls the service communication.
   private textSettingsSource = new Subject<TextSettings>();
   // Observable instance of the source object.
@@ -192,12 +204,13 @@ export class SettingsService {
    */
   setDefaultTextSize(): void {
     if (!localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE)) {
-      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_SIZE, JSON.stringify(
-        {
+      localStorage.setItem(
+        TEXT_SETTINGS_TYPE.TEXT_SIZE,
+        JSON.stringify({
           fontSize: '24px',
-          fontFamily: 'Roboto'
-        }
-      ));
+          fontFamily: 'Roboto',
+        })
+      );
     }
   }
 
@@ -216,7 +229,10 @@ export class SettingsService {
    */
   setDefaultTextColor(): void {
     if (!localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR)) {
-      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_COLOR, JSON.stringify('no-color'));
+      localStorage.setItem(
+        TEXT_SETTINGS_TYPE.TEXT_COLOR,
+        JSON.stringify('no-color')
+      );
     }
   }
 
@@ -225,7 +241,10 @@ export class SettingsService {
    */
   setDefaultTextDisplayLayout(): void {
     if (!localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT)) {
-      localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify('top'));
+      localStorage.setItem(
+        TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT,
+        JSON.stringify('top')
+      );
     }
   }
 
@@ -234,9 +253,13 @@ export class SettingsService {
    */
   setDefaultReadLetter(): void {
     if (!localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER)) {
-      const readLetter = DefaultReadLetterOptions[DefaultReadLetterOptions.length - 1];
+      const readLetter =
+        DefaultReadLetterOptions[DefaultReadLetterOptions.length - 1];
       readLetter.selected = true;
-      localStorage.setItem(TEXT_SETTINGS_TYPE.READ_LETTER, JSON.stringify(readLetter));
+      localStorage.setItem(
+        TEXT_SETTINGS_TYPE.READ_LETTER,
+        JSON.stringify(readLetter)
+      );
     }
   }
 
@@ -249,7 +272,10 @@ export class SettingsService {
       for (const opt of readText) {
         opt.selected = true;
       }
-      localStorage.setItem(TEXT_SETTINGS_TYPE.READ_TEXT, JSON.stringify(readText));
+      localStorage.setItem(
+        TEXT_SETTINGS_TYPE.READ_TEXT,
+        JSON.stringify(readText)
+      );
     }
   }
 
@@ -258,7 +284,10 @@ export class SettingsService {
    */
   setDefaultKeyboardThemeColor(): void {
     if (!localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR)) {
-      localStorage.setItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR, 'single-color-group');
+      localStorage.setItem(
+        STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR,
+        'single-color-group'
+      );
     }
   }
 
@@ -287,7 +316,9 @@ export class SettingsService {
    */
   getDefaultTextSize(): TextSettingsSizeDTO {
     this.setDefaultTextSize();
-    return JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE) as string);
+    return JSON.parse(
+      localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_SIZE) as string
+    );
   }
 
   /**
@@ -297,7 +328,9 @@ export class SettingsService {
    */
   getDefaultTextColor(): string {
     this.setDefaultTextColor();
-    return JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR) as string);
+    return JSON.parse(
+      localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_COLOR) as string
+    );
   }
 
   /**
@@ -307,7 +340,9 @@ export class SettingsService {
    */
   getDefaultTextDisplayLayout(): string {
     this.setDefaultTextDisplayLayout();
-    return JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT) as string);
+    return JSON.parse(
+      localStorage.getItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT) as string
+    );
   }
 
   /**
@@ -317,7 +352,9 @@ export class SettingsService {
    */
   getDefaultReadLetter(): KeyboardSettingsDTO {
     this.setDefaultReadLetter();
-    return JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER) as string);
+    return JSON.parse(
+      localStorage.getItem(TEXT_SETTINGS_TYPE.READ_LETTER) as string
+    );
   }
 
   /**
@@ -327,7 +364,9 @@ export class SettingsService {
    */
   getDefaultReadText(): KeyboardSettingsDTO[] {
     this.setDefaultReadText();
-    return JSON.parse(localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT) as string);
+    return JSON.parse(
+      localStorage.getItem(TEXT_SETTINGS_TYPE.READ_TEXT) as string
+    );
   }
 
   /**
@@ -337,7 +376,9 @@ export class SettingsService {
    */
   getDefaultKeyboardThemeColor(): string {
     this.setDefaultKeyboardThemeColor();
-    return localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR) as string;
+    return localStorage.getItem(
+      STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR
+    ) as string;
   }
 
   /**
@@ -347,7 +388,9 @@ export class SettingsService {
    */
   getDefaultKeyboardPrimaryLayout(): string {
     this.setDefaultKeyboardPrimaryLayout();
-    return localStorage.getItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT) as string;
+    return localStorage.getItem(
+      STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT
+    ) as string;
   }
 
   /**
@@ -359,5 +402,4 @@ export class SettingsService {
     this.setDefaultThemeColor();
     return localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR) as string;
   }
-
 }

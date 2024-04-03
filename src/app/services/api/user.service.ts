@@ -2,7 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { catchError, map, Observable } from 'rxjs';
-import { AccessIdentifiersResponseDTO, WhoAmIResponseDTO } from 'src/app/dto/whoami.dto';
+import {
+  AccessIdentifiersResponseDTO,
+  WhoAmIResponseDTO,
+} from 'src/app/dto/whoami.dto';
 import { BaseService } from './base.service';
 import { environment } from 'src/environments/environment';
 
@@ -22,7 +25,7 @@ export class UserService extends BaseService<WhoAmIResponseDTO> {
    */
   constructor(
     protected override httpService: HttpClient,
-    protected override cookieService: CookieService,
+    protected override cookieService: CookieService
   ) {
     super(httpService, cookieService);
     this.baseUrl = this.UrlEndpoints.user;
@@ -34,9 +37,7 @@ export class UserService extends BaseService<WhoAmIResponseDTO> {
    * @returns An Observable of WhoAmIResponseDTO.
    */
   getUserInfo(): Observable<WhoAmIResponseDTO> {
-    return this.get<WhoAmIResponseDTO>(
-      `${this.baseUrl}/users/whoami`
-    ).pipe(
+    return this.get<WhoAmIResponseDTO>(`${this.baseUrl}/users/whoami`).pipe(
       map((result) => {
         return result;
       })

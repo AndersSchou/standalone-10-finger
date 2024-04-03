@@ -1,9 +1,18 @@
 import { Component } from '@angular/core';
-import { DefaultExerciseLayout, DefaultKeyboardThemeOptions, DefaultKeyboardViewModeOptions } from 'src/app/common/constants';
+import {
+  DefaultExerciseLayout,
+  DefaultKeyboardThemeOptions,
+  DefaultKeyboardViewModeOptions,
+} from 'src/app/common/constants';
 import { STORAGE_KEY_TYPE, TEXT_SETTINGS_TYPE } from 'src/app/common/enums';
-import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LAYOUT_GROUP_TYPE } from 'src/app/common/types';
+import {
+  KEYBOARD_COLOR_GROUP_TYPE,
+  KEYBOARD_LAYOUT_GROUP_TYPE,
+} from 'src/app/common/types';
 import { KeyboardSettingsDTO } from 'src/app/dto/settings.dto';
 import { SettingsService } from 'src/app/services/settings.service';
+import { MatIcon } from '@angular/material/icon';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 /**
  * This component holds the logic for the keyboard settings view.
@@ -11,7 +20,9 @@ import { SettingsService } from 'src/app/services/settings.service';
 @Component({
   selector: 'app-shared-settings-keyboard',
   templateUrl: './keyboard.component.html',
-  styleUrls: ['./keyboard.component.scss']
+  styleUrls: ['./keyboard.component.scss'],
+  standalone: true,
+  imports: [NgFor, NgClass, MatIcon, NgIf],
 })
 export class AppSharedSettingsKeyboardComponent {
   // Stores the default keyboard theme options.
@@ -26,9 +37,7 @@ export class AppSharedSettingsKeyboardComponent {
    *
    * @param settingsService Reference to SettingsService.
    */
-  constructor(
-    private readonly settingsService: SettingsService
-  ) {
+  constructor(private readonly settingsService: SettingsService) {
     this.setInitialValues();
   }
 
@@ -37,29 +46,36 @@ export class AppSharedSettingsKeyboardComponent {
    */
   setInitialValues(): void {
     // Set keyboard theme color initial value.
-    this.keyboardTheme.forEach(opt => {
+    this.keyboardTheme.forEach((opt) => {
       opt.selected = false;
     });
-    const findThemeOption = this.keyboardTheme.find(opt => opt.type === this.settingsService.getDefaultKeyboardThemeColor());
+    const findThemeOption = this.keyboardTheme.find(
+      (opt) => opt.type === this.settingsService.getDefaultKeyboardThemeColor()
+    );
     if (findThemeOption) {
       findThemeOption.selected = true;
     }
 
     // Set keyboard layout mode initial value.
-    this.keyboardViewMode.forEach(opt => {
+    this.keyboardViewMode.forEach((opt) => {
       opt.selected = false;
     });
-    const findPrimaryLayout = this.keyboardViewMode.find(opt => opt.type === this.settingsService.getDefaultKeyboardPrimaryLayout());
+    const findPrimaryLayout = this.keyboardViewMode.find(
+      (opt) =>
+        opt.type === this.settingsService.getDefaultKeyboardPrimaryLayout()
+    );
     if (findPrimaryLayout) {
       findPrimaryLayout.selected = true;
     }
 
     // Set the layout display.
-    this.layoutTypes.forEach(item => {
+    this.layoutTypes.forEach((item) => {
       item.selected = false;
     });
     const textLayout = this.settingsService.getDefaultTextDisplayLayout();
-    const findSelectedLayout = this.layoutTypes.find(item => item.type === textLayout);
+    const findSelectedLayout = this.layoutTypes.find(
+      (item) => item.type === textLayout
+    );
     if (findSelectedLayout) {
       findSelectedLayout.selected = true;
     }
@@ -71,12 +87,17 @@ export class AppSharedSettingsKeyboardComponent {
    * @param option Represents the keyboard color theme.
    */
   selectThemeColor(option: KeyboardSettingsDTO): void {
-    this.keyboardTheme.forEach(opt => {
+    this.keyboardTheme.forEach((opt) => {
       opt.selected = false;
     });
     option.selected = true;
-    this.settingsService.setKeyboardThemeColor(option.type as KEYBOARD_COLOR_GROUP_TYPE);
-    localStorage.setItem(STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR, option.type as KEYBOARD_COLOR_GROUP_TYPE);
+    this.settingsService.setKeyboardThemeColor(
+      option.type as KEYBOARD_COLOR_GROUP_TYPE
+    );
+    localStorage.setItem(
+      STORAGE_KEY_TYPE.KEYBOARD_THEME_COLOR,
+      option.type as KEYBOARD_COLOR_GROUP_TYPE
+    );
   }
 
   /**
@@ -85,12 +106,17 @@ export class AppSharedSettingsKeyboardComponent {
    * @param option Represents the keyboard layout mode.
    */
   selectKeyboardMode(option: KeyboardSettingsDTO): void {
-    this.keyboardViewMode.forEach(opt => {
+    this.keyboardViewMode.forEach((opt) => {
       opt.selected = false;
     });
     option.selected = true;
-    this.settingsService.setKeyboardPrimaryMode(option.type as KEYBOARD_LAYOUT_GROUP_TYPE);
-    localStorage.setItem(STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT, option.type as KEYBOARD_LAYOUT_GROUP_TYPE);
+    this.settingsService.setKeyboardPrimaryMode(
+      option.type as KEYBOARD_LAYOUT_GROUP_TYPE
+    );
+    localStorage.setItem(
+      STORAGE_KEY_TYPE.KEYBOARD_PRIMARY_LAYOUT,
+      option.type as KEYBOARD_LAYOUT_GROUP_TYPE
+    );
   }
 
   /**
@@ -99,15 +125,17 @@ export class AppSharedSettingsKeyboardComponent {
    * @param option The selected layout type.
    */
   selectDisplayLayout(option: KeyboardSettingsDTO): void {
-    this.layoutTypes.forEach(item => {
+    this.layoutTypes.forEach((item) => {
       item.selected = false;
     });
     option.selected = true;
-    localStorage.setItem(TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT, JSON.stringify(option.type));
+    localStorage.setItem(
+      TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT,
+      JSON.stringify(option.type)
+    );
     this.settingsService.setTextSetting({
       type: TEXT_SETTINGS_TYPE.TEXT_DISPLAY_LAYOUT,
-      value: option.type
+      value: option.type,
     });
   }
-
 }

@@ -24,16 +24,14 @@ export class BaseService<T> {
   constructor(
     protected readonly httpService: HttpClient,
     protected readonly cookieService: CookieService
-  ) { }
+  ) {}
 
   /**
    * Generates the default header required by the api.
    *
    * @param timestamp The timestamp of the request.
    */
-  generateHTTPHeader(
-    timestamp: string
-  ): { [header: string]: string } {
+  generateHTTPHeader(timestamp: string): { [header: string]: string } {
     return {
       sessionid: this.cookieService.get('mvf_session_id'),
       requestdatetime: timestamp,
@@ -52,17 +50,13 @@ export class BaseService<T> {
   protected get<R>(url: string): Observable<R> {
     const timestamp = Math.round(new Date().getTime() / 1000).toString();
     const headers = Object.assign(this.generateHTTPHeader(timestamp), {
-      Accepts: 'application/json'
+      Accepts: 'application/json',
     });
-    return this.httpService
-      .get<R>(url, { headers })
-      .pipe(
-        map(
-          (res: R): R => {
-            return res as R;
-          }
-        )
-      );
+    return this.httpService.get<R>(url, { headers }).pipe(
+      map((res: R): R => {
+        return res as R;
+      })
+    );
   }
 
   /**

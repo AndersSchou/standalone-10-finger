@@ -4,7 +4,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { ReplaySubject, Subject, timer } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { STORAGE_KEY_TYPE } from '../common/enums';
-import { TranslationsDTO, TranslationsResponseDTO } from '../dto/translation.dto';
+import {
+  TranslationsDTO,
+  TranslationsResponseDTO,
+} from '../dto/translation.dto';
 
 /**
  * LanguageHelperService is used to detect any changes regarding user's language.
@@ -60,7 +63,9 @@ export class LanguageHelperService {
     this.translateService.onLangChange.subscribe((data) => {
       if (this.shouldChange) {
         this.shouldChange = false;
-        timer(DEFAULT_DEBOUNCE_MIN_TIME).subscribe(() => this.initLangSource.next(true));
+        timer(DEFAULT_DEBOUNCE_MIN_TIME).subscribe(() =>
+          this.initLangSource.next(true)
+        );
       }
       return this.getCurrentLanguageAndTranslations(data);
     });
@@ -68,20 +73,21 @@ export class LanguageHelperService {
     // Add languages to the translations array.
     this.translateService.addLangs(this.availableLanguages);
 
-    const userSavedLang = window.localStorage.getItem(STORAGE_KEY_TYPE.CURRENT_LANGUAGE);
+    const userSavedLang = window.localStorage.getItem(
+      STORAGE_KEY_TYPE.CURRENT_LANGUAGE
+    );
 
     // Checks if the user language was saved locally.
     if (userSavedLang) {
       this.setLanguage(userSavedLang);
     } else {
       /**
-     * The first language from the available languages array will be used as a fallback when a translation isn't found
-     * into the current language.
-     */
+       * The first language from the available languages array will be used as a fallback when a translation isn't found
+       * into the current language.
+       */
       this.translateService.setDefaultLang(this.availableLanguages[0]);
       this.translateService.use(this.availableLanguages[0]);
     }
-
   }
 
   /**
@@ -107,5 +113,4 @@ export class LanguageHelperService {
       window.localStorage.setItem(STORAGE_KEY_TYPE.CURRENT_LANGUAGE, language);
     }
   }
-
 }

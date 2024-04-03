@@ -4,6 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { AppAchievementDetailsComponent } from '../details/details.component';
 import { CompletedLevelDTO } from 'src/app/dto/award-details.dto';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { NgIf, NgFor } from '@angular/common';
 
 /**
  * This component is used to show the all the awards.
@@ -11,7 +15,9 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-modules-achievements-awards',
   templateUrl: './awards.component.html',
-  styleUrls: ['./awards.component.scss']
+  styleUrls: ['./awards.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, MatIcon, MatTooltip, TranslateModule],
 })
 export class AppAchievementsAwardsComponent {
   @Input() completedLevels: CompletedLevelDTO[] = [];
@@ -26,8 +32,8 @@ export class AppAchievementsAwardsComponent {
   constructor(
     private readonly courseHelperService: CourseHelperService,
     private readonly dialog: MatDialog,
-    private readonly router: Router,
-  ) { }
+    private readonly router: Router
+  ) {}
 
   /**
    * Replay the current course/game level.
@@ -40,7 +46,8 @@ export class AppAchievementsAwardsComponent {
         0,
         level.details.currentLanguage,
         level.details.id,
-        level.details.categories);
+        level.details.categories
+      );
     } else {
       // Replay the game level.
       this.router.navigate(['/games/fish/level/', level.details.indexLevel]);
@@ -56,8 +63,7 @@ export class AppAchievementsAwardsComponent {
     this.dialog.open(AppAchievementDetailsComponent, {
       panelClass: 'achievement-class',
       backdropClass: 'achievement-backdrop',
-      data: level
+      data: level,
     });
   }
-
 }

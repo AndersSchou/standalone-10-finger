@@ -116,9 +116,11 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 .header .logo-icon.no {
   background-image: theme-var($--logo-no);
 }
+
 .header .logo-icon.sv {
   background-image: theme-var($--logo-sv);
 }

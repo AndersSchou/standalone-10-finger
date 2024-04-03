@@ -1,10 +1,20 @@
 import { environment } from 'src/environments/environment';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+} from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
 import { ResultDTO } from 'src/app/dto/course.dto';
 import { GameDTO, GameResultDTO, GameStorageDTO } from 'src/app/dto/game.dto';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { NgIf, DatePipe } from '@angular/common';
 
 /**
  * This component is used to show the achievement details in a modal.
@@ -13,6 +23,17 @@ import { GameDTO, GameResultDTO, GameStorageDTO } from 'src/app/dto/game.dto';
   selector: 'app-modules-games-fishing-game-over',
   templateUrl: './game-over.component.html',
   styleUrls: ['./game-over.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatDialogTitle,
+    MatIcon,
+    MatDialogContent,
+    MatDialogActions,
+    MatTooltip,
+    DatePipe,
+    TranslateModule,
+  ],
 })
 export class AppGamesFishingGameOverComponent implements OnInit {
   // Stores the maximum result of the current level.
@@ -32,8 +53,8 @@ export class AppGamesFishingGameOverComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly dialogRef: MatDialogRef<AppGamesFishingGameOverComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: GameResultDTO,
-  ) { }
+    @Inject(MAT_DIALOG_DATA) public data: GameResultDTO
+  ) {}
 
   /**
    * Lifecycle hook that is called after data-bound properties of a directive are initialized.
@@ -41,21 +62,41 @@ export class AppGamesFishingGameOverComponent implements OnInit {
   ngOnInit(): void {
     if (this.data && this.data.language) {
       if (localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS)) {
-        const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS) as string);
+        const storedData = JSON.parse(
+          localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS) as string
+        );
         if (storedData) {
-          const findLanguage = storedData.find((item: GameStorageDTO) => item.language === this.data.language);
+          const findLanguage = storedData.find(
+            (item: GameStorageDTO) => item.language === this.data.language
+          );
           if (findLanguage) {
-            const findLevel = findLanguage.data.find((item: GameDTO) => item.id === this.data.level.id);
-            if (findLevel && findLevel.results && findLevel.results.length > 1) {
-              this.findMaxResult = findLevel.results.reduce((prev: any, current: any) => (prev.time < current.time) ? prev : current);
-              if (this.findMaxResult && this.findMaxResult.time === findLevel.results[findLevel.results.length - 1].time
-                && this.findMaxResult.numberOfWords === findLevel.results[findLevel.results.length - 1].numberOfWords) {
+            const findLevel = findLanguage.data.find(
+              (item: GameDTO) => item.id === this.data.level.id
+            );
+            if (
+              findLevel &&
+              findLevel.results &&
+              findLevel.results.length > 1
+            ) {
+              this.findMaxResult = findLevel.results.reduce(
+                (prev: any, current: any) =>
+                  prev.time < current.time ? prev : current
+              );
+              if (
+                this.findMaxResult &&
+                this.findMaxResult.time ===
+                  findLevel.results[findLevel.results.length - 1].time &&
+                this.findMaxResult.numberOfWords ===
+                  findLevel.results[findLevel.results.length - 1].numberOfWords
+              ) {
                 this.isHighScore = true;
               }
             } else {
               this.findMaxResult = undefined;
             }
-            this.time = this.calculateTime(findLevel.results[findLevel.results.length - 1].time);
+            this.time = this.calculateTime(
+              findLevel.results[findLevel.results.length - 1].time
+            );
           }
         }
       }

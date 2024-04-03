@@ -20,7 +20,8 @@ export class LevelDefinition {
     public goal: number,
     public wordsToDisplay: number,
     protected categoryPercentage: { [key: number]: number },
-    protected bonusCategory: { [key: number]: number }) { }
+    protected bonusCategory: { [key: number]: number }
+  ) {}
 
   /**
    * Get the maximum category number for current level.
@@ -29,9 +30,13 @@ export class LevelDefinition {
    */
   getLevelMaxFishCategory(): number {
     if (Object.keys(this.bonusCategory).length > 0) {
-      return Math.max(...Object.keys(this.bonusCategory).map(n => parseInt(n)));
+      return Math.max(
+        ...Object.keys(this.bonusCategory).map((n) => parseInt(n))
+      );
     } else {
-      return Math.max(...Object.keys(this.categoryPercentage).map(n => parseInt(n)));
+      return Math.max(
+        ...Object.keys(this.categoryPercentage).map((n) => parseInt(n))
+      );
     }
   }
 
@@ -43,9 +48,10 @@ export class LevelDefinition {
   getAvailableCategories(): number[] {
     let catPercentage = this.categoryPercentage;
     if (Object.keys(this.bonusCategory).length > 0) {
-      catPercentage[Number(Object.keys(this.bonusCategory))] = this.bonusCategory[Number(Object.keys(this.bonusCategory))];
+      catPercentage[Number(Object.keys(this.bonusCategory))] =
+        this.bonusCategory[Number(Object.keys(this.bonusCategory))];
     }
-    return Object.keys(catPercentage).map(n => parseInt(n));
+    return Object.keys(catPercentage).map((n) => parseInt(n));
   }
 
   /**
@@ -70,7 +76,6 @@ export class LevelDefinition {
   getLevel(): LevelDefinition {
     return this;
   }
-
 }
 
 /**
@@ -97,8 +102,8 @@ class FishDefinition {
     protected maxErrors: number,
     protected extraTime: number,
     protected reward: number,
-    protected images: FishDetailsDTO[],
-  ) { }
+    protected images: FishDetailsDTO[]
+  ) {}
 
   /**
    * Converts from class to DTO.
@@ -176,11 +181,9 @@ export class FishWithWord {
    * @param fish Represents the fish definition.
    * @param word Represents the word.
    */
-  constructor(
-    public fish: FishDefinition,
-    public word: string,
-  ) {
-    this.fishImage = fish.getImages()[Math.floor(Math.random() * fish.getImages().length)];
+  constructor(public fish: FishDefinition, public word: string) {
+    this.fishImage =
+      fish.getImages()[Math.floor(Math.random() * fish.getImages().length)];
   }
 
   /**
@@ -211,9 +214,7 @@ class FishDefinitions {
    *
    * @param fishDefinitions Represents the fish definitions.
    */
-  constructor(
-    protected fishDefinitions: FishDefinition[],
-  ) { }
+  constructor(protected fishDefinitions: FishDefinition[]) {}
 
   /**
    * Get the fish definition for the given word size.
@@ -223,7 +224,10 @@ class FishDefinitions {
    * @returns The fish definition for the given word size.
    */
   getFishLevelByWordSize(wordSize: number): FishDefinition | undefined {
-    return this.fishDefinitions.find(fish => wordSize >= fish.getWordMinSize() && wordSize <= fish.getWordMaxSize());
+    return this.fishDefinitions.find(
+      (fish) =>
+        wordSize >= fish.getWordMinSize() && wordSize <= fish.getWordMaxSize()
+    );
   }
 
   /**
@@ -234,7 +238,7 @@ class FishDefinitions {
    * @returns The fish definition for the given name.
    */
   getFishDefinition(name: string): FishDefinition | undefined {
-    return this.fishDefinitions.find(fish => fish.getName() === name);
+    return this.fishDefinitions.find((fish) => fish.getName() === name);
   }
 
   /**
@@ -263,7 +267,9 @@ class FishDefinitions {
    * @returns The maximum word size for all the fish definitions.
    */
   getMaxWordSize(): number {
-    return Math.max(...this.fishDefinitions.map(fish => fish.getWordMaxSize()));
+    return Math.max(
+      ...this.fishDefinitions.map((fish) => fish.getWordMaxSize())
+    );
   }
 
   /**
@@ -272,7 +278,9 @@ class FishDefinitions {
    * @returns The minimum word size for all the fish definitions.
    */
   getMinWordSize(): number {
-    return Math.min(...this.fishDefinitions.map(fish => fish.getWordMinSize()));
+    return Math.min(
+      ...this.fishDefinitions.map((fish) => fish.getWordMinSize())
+    );
   }
 }
 
@@ -297,19 +305,25 @@ export class Level {
   constructor(
     public levelDefinition: LevelDefinition,
     words: string[],
-    fishDefinitions: FishDefinitions,
+    fishDefinitions: FishDefinitions
   ) {
     // Parse all the available words into the word pool.
     for (const word of words) {
       const wordLength = word.length;
-      const currentWordFishDefinition = fishDefinitions.getFishLevelByWordSize(wordLength);
+      const currentWordFishDefinition =
+        fishDefinitions.getFishLevelByWordSize(wordLength);
       if (currentWordFishDefinition) {
-        if (currentWordFishDefinition.getCategoryId() <= levelDefinition.getLevelMaxFishCategory()) {
+        if (
+          currentWordFishDefinition.getCategoryId() <=
+          levelDefinition.getLevelMaxFishCategory()
+        ) {
           if (!this.wordPool[currentWordFishDefinition.getCategoryId()]) {
             this.wordPool[currentWordFishDefinition.getCategoryId()] = [];
             this.wordLevels.push(currentWordFishDefinition.getCategoryId());
           }
-          this.wordPool[currentWordFishDefinition.getCategoryId()].push(new FishWithWord(currentWordFishDefinition, word));
+          this.wordPool[currentWordFishDefinition.getCategoryId()].push(
+            new FishWithWord(currentWordFishDefinition, word)
+          );
         }
       }
     }
@@ -337,13 +351,19 @@ export class Level {
    */
   extractWordByLevel(fishCategory?: number): FishWithWord | undefined {
     if (!fishCategory) {
-      fishCategory = this.wordLevels[Math.floor(Math.random() * this.wordLevels.length)];
+      fishCategory =
+        this.wordLevels[Math.floor(Math.random() * this.wordLevels.length)];
     }
     if (this.wordPool[fishCategory]) {
       if (this.wordPool[fishCategory].length === 0) {
         // Replace the pool with the used fish.
-        if (fishCategory in this.usedWordsByFishCategory && this.usedWordsByFishCategory[fishCategory].length > 0) {
-          this.wordPool[fishCategory] = this.shuffle(this.usedWordsByFishCategory[fishCategory]);
+        if (
+          fishCategory in this.usedWordsByFishCategory &&
+          this.usedWordsByFishCategory[fishCategory].length > 0
+        ) {
+          this.wordPool[fishCategory] = this.shuffle(
+            this.usedWordsByFishCategory[fishCategory]
+          );
           this.usedWordsByFishCategory[fishCategory] = [];
         }
       }
@@ -352,7 +372,9 @@ export class Level {
         if (!(fishCategory in this.usedWordsByFishCategory)) {
           this.usedWordsByFishCategory[fishCategory] = [];
         }
-        this.usedWordsByFishCategory[fishCategory].push(new FishWithWord(selectedWord.fish, selectedWord.word));
+        this.usedWordsByFishCategory[fishCategory].push(
+          new FishWithWord(selectedWord.fish, selectedWord.word)
+        );
       }
       return selectedWord;
     }
@@ -367,7 +389,8 @@ export class Level {
   extractAllLevelWords(): FishWithWord[] {
     const words: FishWithWord[] = [];
     for (const fishCategory of this.levelDefinition.getAvailableCategories()) {
-      const wordCategoryCount = this.levelDefinition.getCategoryPercentage(fishCategory);
+      const wordCategoryCount =
+        this.levelDefinition.getCategoryPercentage(fishCategory);
       for (let i = 0; i < wordCategoryCount; i++) {
         const word = this.extractWordByLevel(fishCategory);
         if (word) {
@@ -386,18 +409,20 @@ export class Level {
    * @returns An array of words shuffled.
    */
   protected shuffle<T>(words: T[]): T[] {
-    let currentIndex = words.length, randomIndex;
+    let currentIndex = words.length,
+      randomIndex;
 
     // While there remain elements to shuffle.
     while (currentIndex != 0) {
-
       // Pick a remaining element.
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
 
       // And swap it with the current element.
       [words[currentIndex], words[randomIndex]] = [
-        words[randomIndex], words[currentIndex]];
+        words[randomIndex],
+        words[currentIndex],
+      ];
     }
 
     return words;
@@ -418,17 +443,33 @@ export class LevelService {
    * Constructor function responsible for injecting the needed services.
    */
   constructor() {
-    this.levels = LevelDefinitionsData.map(el => {
-      const level = new LevelDefinition(el.id, el.name, el.goal, el.wordsToDisplay, el.categoryPercentage as { [key: number]: number },
-        el.bonusCategory as { [key: number]: number });
+    this.levels = LevelDefinitionsData.map((el) => {
+      const level = new LevelDefinition(
+        el.id,
+        el.name,
+        el.goal,
+        el.wordsToDisplay,
+        el.categoryPercentage as { [key: number]: number },
+        el.bonusCategory as { [key: number]: number }
+      );
       return level;
     });
 
-    this.fish = new FishDefinitions(FishDefinitionsData.map(el => {
-      const fish = new FishDefinition(el.id, el.categoryName, el.wordMinSize, el.wordMaxSize, el.maxErrors, el.extraTime,
-        el.reward, el.images as FishDetailsDTO[]);
-      return fish;
-    }));
+    this.fish = new FishDefinitions(
+      FishDefinitionsData.map((el) => {
+        const fish = new FishDefinition(
+          el.id,
+          el.categoryName,
+          el.wordMinSize,
+          el.wordMaxSize,
+          el.maxErrors,
+          el.extraTime,
+          el.reward,
+          el.images as FishDetailsDTO[]
+        );
+        return fish;
+      })
+    );
   }
 
   /**
@@ -440,7 +481,11 @@ export class LevelService {
    *
    * @returns The number of words for each category.
    */
-  protected calculateWordCount(goal: number, precentage: number, reward: number): number {
+  protected calculateWordCount(
+    goal: number,
+    precentage: number,
+    reward: number
+  ): number {
     return Math.ceil((goal * precentage) / (reward * 100));
   }
 
@@ -456,7 +501,9 @@ export class LevelService {
   /**
    * Get the number of levels.
    */
-  getNumberOfLevels(): number { return this.levels.length; }
+  getNumberOfLevels(): number {
+    return this.levels.length;
+  }
 
   /**
    * Generate a level based on the provided id.
@@ -501,25 +548,27 @@ export class LevelService {
 
   // TODO: Add in a helper file.
   /**
-  * Shuffle the words in the word pool.
-  *
-  * @param arr Represents the array of words to shuffle.
-  *
-  * @returns An array of words shuffled.
-  */
+   * Shuffle the words in the word pool.
+   *
+   * @param arr Represents the array of words to shuffle.
+   *
+   * @returns An array of words shuffled.
+   */
   shuffle<T>(arr: T[]): T[] {
-    let currentIndex = arr.length, randomIndex;
+    let currentIndex = arr.length,
+      randomIndex;
 
     // While there remain elements to shuffle.
     while (currentIndex != 0) {
-
       // Pick a remaining element.
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
 
       // And swap it with the current element.
       [arr[currentIndex], arr[randomIndex]] = [
-        arr[randomIndex], arr[currentIndex]];
+        arr[randomIndex],
+        arr[currentIndex],
+      ];
     }
 
     return arr;
