@@ -4,7 +4,6 @@ import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
-import { MaterialModule } from '../../shared/material.module';
 import { AppSetCourseCourseComponent } from './course.component';
 
 describe('AppSetCourseCourseComponent', () => {
@@ -16,18 +15,19 @@ describe('AppSetCourseCourseComponent', () => {
   beforeEach(async () => {
     routerSpy = jasmine.createSpyObj<Router>(['navigate']);
 
-    courseHelperServiceSpy = jasmine.createSpyObj<CourseHelperService>(['getLatestCourse']);
+    courseHelperServiceSpy = jasmine.createSpyObj<CourseHelperService>([
+      'getLatestCourse',
+    ]);
 
     await TestBed.configureTestingModule({
-      declarations: [AppSetCourseCourseComponent],
       providers: [
         { provide: Router, useValue: routerSpy },
         { provide: CourseHelperService, useValue: courseHelperServiceSpy },
       ],
       imports: [
         TranslateModule.forRoot(),
-        MaterialModule,
-        MatIconTestingModule
+        MatIconTestingModule,
+        AppSetCourseCourseComponent,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

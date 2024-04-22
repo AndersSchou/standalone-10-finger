@@ -1,12 +1,17 @@
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Component, ViewChild } from '@angular/core';
-import { MatStepper } from '@angular/material/stepper';
+import { MatStepper, MatStep } from '@angular/material/stepper';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIcon } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-modules-games-fish-instructions',
   templateUrl: './instructions.component.html',
-  styleUrls: ['./instructions.component.scss']
+  styleUrls: ['./instructions.component.scss'],
+  standalone: true,
+  imports: [MatStepper, MatStep, FormsModule, MatIcon, TranslateModule],
 })
 export class AppGamesFishInstructionsComponent {
   @ViewChild('instructionStepper') instructionStepper?: MatStepper;
@@ -18,9 +23,7 @@ export class AppGamesFishInstructionsComponent {
    *
    * @param router Reference to Router.
    */
-  constructor(
-    private readonly router: Router,
-  ) { }
+  constructor(private readonly router: Router) {}
 
   /**
    * Go to the next step.

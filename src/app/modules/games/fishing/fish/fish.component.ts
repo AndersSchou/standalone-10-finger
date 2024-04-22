@@ -1,6 +1,21 @@
-import { trigger, state, style, transition, animate, AnimationEvent, sequence } from '@angular/animations';
-import { Component, OnInit, OnDestroy, AfterViewInit, Input } from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+  AnimationEvent,
+  sequence,
+} from '@angular/animations';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  Input,
+} from '@angular/core';
 import { ReplaySubject, Subject, takeUntil, Observable } from 'rxjs';
+import { NgIf } from '@angular/common';
 
 /**
  * Fish animation states.
@@ -30,7 +45,9 @@ function randomWiggle(wiggleAmplification: number): string {
 function animationRepeat(count = 100): any[] {
   const animationArr = [];
   for (let i = 0; i < count; i++) {
-    animationArr.push(animate('1s 0.1s ease-in-out', style({ transform: randomWiggle(10) })));
+    animationArr.push(
+      animate('1s 0.1s ease-in-out', style({ transform: randomWiggle(10) }))
+    );
   }
   return animationArr;
 }
@@ -50,11 +67,25 @@ function animationRepeat(count = 100): any[] {
       state('caught', style({ opacity: 0 })),
       state('escaped', style({ opacity: 0 })),
       transition('void <=> *', animate(100)),
-      transition('waiting <=> caught', animate('0.3s 0.1s ease-in-out', style({ transform: 'translate(0, -100px)' }))),
-      transition('waiting <=> escaped', animate('0.3s 0.1s ease-in-out', style({ transform: 'translate(200px, 20px)' }))),
+      transition(
+        'waiting <=> caught',
+        animate(
+          '0.3s 0.1s ease-in-out',
+          style({ transform: 'translate(0, -100px)' })
+        )
+      ),
+      transition(
+        'waiting <=> escaped',
+        animate(
+          '0.3s 0.1s ease-in-out',
+          style({ transform: 'translate(200px, 20px)' })
+        )
+      ),
       transition('* <=> waiting', sequence(animationRepeat())),
-    ])
+    ]),
   ],
+  standalone: true,
+  imports: [NgIf],
 })
 export class AppGamesFishComponent implements OnInit, OnDestroy, AfterViewInit {
   // The subjects used to controls the service communication.
@@ -77,17 +108,17 @@ export class AppGamesFishComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   ngOnInit(): void {
     // Listen for the animation events.
-    this.onAnimationDone
-      .pipe(takeUntil(this.destroyed))
-      .subscribe((state) => {
-        if (state === 'entering') {
-          this.fishState = 'waiting';
-        }
-      });
+    this.onAnimationDone.pipe(takeUntil(this.destroyed)).subscribe((state) => {
+      if (state === 'entering') {
+        this.fishState = 'waiting';
+      }
+    });
 
     // Listen for the animation events when the animation is finished.
-    this.onAnimationEventEndedSubject.asObservable()
-      .pipe(takeUntil(this.destroyed)).subscribe(event => {
+    this.onAnimationEventEndedSubject
+      .asObservable()
+      .pipe(takeUntil(this.destroyed))
+      .subscribe((event) => {
         const state: FishState = event.toState as FishState;
         switch (state) {
           case 'void':
@@ -140,7 +171,9 @@ export class AppGamesFishComponent implements OnInit, OnDestroy, AfterViewInit {
   addFish(image: string): Observable<FishState> {
     this.fishState = 'entering';
     this.fishImage = image;
-    return this.onAnimationDone_entering.asObservable().pipe(takeUntil(this.destroyed));
+    return this.onAnimationDone_entering
+      .asObservable()
+      .pipe(takeUntil(this.destroyed));
   }
 
   /**
@@ -150,7 +183,9 @@ export class AppGamesFishComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   escaped(): Observable<FishState> {
     this.fishState = 'escaped';
-    return this.onAnimationDone_escaped.asObservable().pipe(takeUntil(this.destroyed));
+    return this.onAnimationDone_escaped
+      .asObservable()
+      .pipe(takeUntil(this.destroyed));
   }
 
   /**
@@ -160,7 +195,9 @@ export class AppGamesFishComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   caught(): Observable<FishState> {
     this.fishState = 'caught';
-    return this.onAnimationDone_caught.asObservable().pipe(takeUntil(this.destroyed));
+    return this.onAnimationDone_caught
+      .asObservable()
+      .pipe(takeUntil(this.destroyed));
   }
 
   /**
@@ -171,5 +208,4 @@ export class AppGamesFishComponent implements OnInit, OnDestroy, AfterViewInit {
   onAnimationEventEnded(event: AnimationEvent): void {
     this.onAnimationEventEndedSubject.next(event);
   }
-
 }

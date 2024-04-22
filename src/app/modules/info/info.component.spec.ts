@@ -1,10 +1,10 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { SettingsService } from 'src/app/services/settings.service';
-import { MaterialModule } from '../shared/material.module';
 import { AppInfoComponent } from './info.component';
 import { LanguageHelperService } from 'src/app/services/language.service';
 
@@ -17,14 +17,18 @@ describe('AppInfoComponent', () => {
   let onLanguageChangedSpy;
 
   beforeEach(async () => {
-    settingsServiceSpy = jasmine.createSpyObj<SettingsService>(['viewSettingsAction']);
+    settingsServiceSpy = jasmine.createSpyObj<SettingsService>([
+      'viewSettingsAction',
+    ]);
     (settingsServiceSpy as any).viewSettingsAction = new Observable(
       (subscriber) => {
         onViewSettingsActionSpy = subscriber;
       }
     );
 
-    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>(['OnLanguageChanged']);
+    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>([
+      'OnLanguageChanged',
+    ]);
     (languageHelperServiceSpy as any).OnLanguageChanged = new Observable(
       (subscriber) => {
         onLanguageChangedSpy = subscriber;
@@ -32,15 +36,15 @@ describe('AppInfoComponent', () => {
     );
 
     await TestBed.configureTestingModule({
-      declarations: [AppInfoComponent],
       providers: [
         { provide: SettingsService, useValue: settingsServiceSpy },
         { provide: LanguageHelperService, useValue: languageHelperServiceSpy },
       ],
       imports: [
         TranslateModule.forRoot(),
-        MaterialModule,
-        MatIconTestingModule
+        MatIconTestingModule,
+        AppInfoComponent,
+        RouterTestingModule,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

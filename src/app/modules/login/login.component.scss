@@ -27,9 +27,11 @@
   background-size: contain;
   background-position: center;
 }
+
 .logo-hld.no {
   background-image: theme-var($--cover-text-no);
 }
+
 .logo-hld.sv {
   background-image: theme-var($--cover-text-sv);
 }

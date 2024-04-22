@@ -4,7 +4,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { MaterialModule } from 'src/app/modules/shared/material.module';
 import { AppGamesFishingGameOverComponent } from './game-over.component';
 
 describe('AppGamesFishingGameOverComponent', () => {
@@ -19,7 +18,6 @@ describe('AppGamesFishingGameOverComponent', () => {
     matDialogRefSpy = jasmine.createSpyObj<MatDialogRef<any, any>>(['close']);
 
     await TestBed.configureTestingModule({
-      declarations: [AppGamesFishingGameOverComponent],
       providers: [
         { provide: Router, useValue: routerSpy },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -27,8 +25,8 @@ describe('AppGamesFishingGameOverComponent', () => {
       ],
       imports: [
         TranslateModule.forRoot(),
-        MaterialModule,
-        MatIconTestingModule
+        MatIconTestingModule,
+        AppGamesFishingGameOverComponent,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

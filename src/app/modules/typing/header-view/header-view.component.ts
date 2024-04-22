@@ -4,8 +4,12 @@ import {
   createEmptyExtendedCategoryDTO,
   createEmptyExtendedCourseDTO,
   ExtendedCategoryDTO,
-  ExtendedCourseDTO
+  ExtendedCourseDTO,
 } from 'src/app/dto/course.dto';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatTooltip } from '@angular/material/tooltip';
+import { NgIf, NgStyle, DecimalPipe } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
 
 /**
  * This component holds the logic for displaying common header for type and result pages.
@@ -13,10 +17,13 @@ import {
 @Component({
   selector: 'app-modules-typing-header-view',
   templateUrl: './header-view.component.html',
-  styleUrls: ['./header-view.component.scss']
+  styleUrls: ['./header-view.component.scss'],
+  standalone: true,
+  imports: [MatIcon, NgIf, MatTooltip, NgStyle, DecimalPipe, TranslateModule],
 })
 export class AppTypingHeaderViewComponent {
-  @Input() currentCategory: ExtendedCategoryDTO = createEmptyExtendedCategoryDTO();
+  @Input() currentCategory: ExtendedCategoryDTO =
+    createEmptyExtendedCategoryDTO();
   @Input() selectedCourse: ExtendedCourseDTO = createEmptyExtendedCourseDTO();
   @Input() exerciseIndex: number = 0;
   @Input() currentProgress: number = 0;
@@ -28,9 +35,7 @@ export class AppTypingHeaderViewComponent {
    *
    * @param router Reference to Router.
    */
-  constructor(
-    private readonly router: Router,
-  ) { }
+  constructor(private readonly router: Router) {}
 
   /**
    * Reset course method.

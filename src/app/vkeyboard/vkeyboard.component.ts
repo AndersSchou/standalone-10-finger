@@ -4,8 +4,11 @@ import { DTDKeyboardLayout_SW } from './keyboards/swedish.keboard.dtd';
 import { DTDKeyboardLayout_NO } from './keyboards/norwegian.keboard.dtd';
 import { DTDKeyboardLayout_NL } from './keyboards/dutch.keyboard.dtd';
 import { dtd2conf, dtd2skm, KeyboardDefinitionDTO } from './tools/dtd2skm';
-import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYPE } from '../common/types';
-
+import {
+  KEYBOARD_COLOR_GROUP_TYPE,
+  KEYBOARD_LANGUAGE,
+  KEYBOARD_LAYOUT_GROUP_TYPE,
+} from '../common/types';
 
 /**
  * This component holds the logic for the virtual keyboard.
@@ -13,7 +16,8 @@ import { KEYBOARD_COLOR_GROUP_TYPE, KEYBOARD_LANGUAGE, KEYBOARD_LAYOUT_GROUP_TYP
 @Component({
   selector: 'app-vkeyboard',
   templateUrl: './vkeyboard.component.html',
-  styleUrls: ['./vkeyboard.component.scss']
+  styleUrls: ['./vkeyboard.component.scss'],
+  standalone: true,
 })
 export class VKeyboardComponent {
   // Stores the css class for the keyboard.
@@ -55,7 +59,7 @@ export class VKeyboardComponent {
     } else if (lan === 'nn' || lan === 'nb') {
       this.keyboardDefinition = dtd2skm(DTDKeyboardLayout_NO as any);
       this.keyboardKeyDefinition = dtd2conf(DTDKeyboardLayout_NO as any);
-    } else if (lan === 'nl'){
+    } else if (lan === 'nl') {
       this.keyboardDefinition = dtd2skm(DTDKeyboardLayout_NL as any);
       this.keyboardKeyDefinition = dtd2conf(DTDKeyboardLayout_NL as any);
     } else {
@@ -150,7 +154,11 @@ export class VKeyboardComponent {
    * set the css class for the keyboard.
    */
   private processClass(): void {
-    this.class = [this.theme, this.mode, ...this.keysPressed.map(el => `kp${el}`)].join(' ');
+    this.class = [
+      this.theme,
+      this.mode,
+      ...this.keysPressed.map((el) => `kp${el}`),
+    ].join(' ');
   }
 
   /**
@@ -162,7 +170,10 @@ export class VKeyboardComponent {
    * @returns The shift class name.
    */
   getShiftClass(row: number, col: number): string {
-    if (((row === 1 || row === 4) && col > 7) || ((row === 2 || row === 3) && col > 6)) {
+    if (
+      ((row === 1 || row === 4) && col > 7) ||
+      ((row === 2 || row === 3) && col > 6)
+    ) {
       // Left shift.
       return '4-1';
     } else {
@@ -170,5 +181,4 @@ export class VKeyboardComponent {
       return '4-13';
     }
   }
-
 }

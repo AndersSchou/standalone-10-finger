@@ -1,7 +1,16 @@
 import { CourseHelperService } from 'src/app/services/course-helper.service';
-import { Component, Input } from "@angular/core";
-import { ExtendedCategoryDTO, ExtendedCourseDTO, createEmptyExtendedCategoryDTO, ExtendedCourseExerciseDTO } from "src/app/dto/course.dto";
+import { Component, Input } from '@angular/core';
+import {
+  ExtendedCategoryDTO,
+  ExtendedCourseDTO,
+  createEmptyExtendedCategoryDTO,
+  ExtendedCourseExerciseDTO,
+} from 'src/app/dto/course.dto';
 import { DEFAULT_DEBOUNCE_MIN_TIME } from 'src/app/common/constants';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { NgStyle, NgFor, NgClass, NgIf, DecimalPipe } from '@angular/common';
 
 /**
  * This component holds the logic for displaying course exercises.
@@ -9,7 +18,18 @@ import { DEFAULT_DEBOUNCE_MIN_TIME } from 'src/app/common/constants';
 @Component({
   selector: 'app-modules-set-course-course',
   templateUrl: './course.component.html',
-  styleUrls: ['./course.component.scss']
+  styleUrls: ['./course.component.scss'],
+  standalone: true,
+  imports: [
+    NgStyle,
+    NgFor,
+    NgClass,
+    NgIf,
+    MatIcon,
+    MatTooltip,
+    DecimalPipe,
+    TranslateModule,
+  ],
 })
 export class AppSetCourseCourseComponent {
   @Input() currentLanguage: string = '';
@@ -38,9 +58,7 @@ export class AppSetCourseCourseComponent {
    *
    * @param courseHelperService Reference to CourseHelperService.
    */
-  constructor(
-    private readonly courseHelperService: CourseHelperService,
-  ) { }
+  constructor(private readonly courseHelperService: CourseHelperService) {}
 
   /**
    * Find the latest course.
@@ -50,7 +68,9 @@ export class AppSetCourseCourseComponent {
   findLatestCourse(cat: ExtendedCategoryDTO): void {
     const findLatestCourse = this.courseHelperService.getLatestCourse(cat);
     let currentCourse = findLatestCourse;
-    const findIndex = cat.courses.findIndex((el: ExtendedCourseDTO) => el.id === findLatestCourse.id);
+    const findIndex = cat.courses.findIndex(
+      (el: ExtendedCourseDTO) => el.id === findLatestCourse.id
+    );
     if (findIndex !== -1) {
       this.activeCourseIndex = findIndex;
     }
@@ -64,12 +84,14 @@ export class AppSetCourseCourseComponent {
    */
   findLatestExercise(course: ExtendedCourseDTO): void {
     const findLastExercise = this.courseHelperService.getLatestExercise(course);
-    const findIndex = course.exercises.findIndex((el: ExtendedCourseExerciseDTO) => el.id === findLastExercise.id);
+    const findIndex = course.exercises.findIndex(
+      (el: ExtendedCourseExerciseDTO) => el.id === findLastExercise.id
+    );
     if (findIndex !== -1) {
       this.activeExerciseIndex = findIndex;
     }
     if (findLastExercise.completed) {
-      if (findIndex && ((findIndex + 1) <= course.exercises.length - 1)) {
+      if (findIndex && findIndex + 1 <= course.exercises.length - 1) {
         this.activeExerciseIndex = findIndex + 1;
       } else {
         if (!course.completed) {
@@ -83,9 +105,13 @@ export class AppSetCourseCourseComponent {
    * Scrolls to the last active exercise.
    */
   scrollToExercise(): void {
-    const findCourseElem = document.getElementsByClassName('course-holder-' + this.activeCourseIndex);
+    const findCourseElem = document.getElementsByClassName(
+      'course-holder-' + this.activeCourseIndex
+    );
     if (findCourseElem && findCourseElem.length > 0) {
-      const findExerciseElem = findCourseElem[0].getElementsByClassName('exercise-index-' + this.activeExerciseIndex)[0];
+      const findExerciseElem = findCourseElem[0].getElementsByClassName(
+        'exercise-index-' + this.activeExerciseIndex
+      )[0];
       if (findExerciseElem) {
         findExerciseElem.scrollIntoView({ behavior: 'smooth' });
       }
@@ -99,7 +125,13 @@ export class AppSetCourseCourseComponent {
    * @param exerciseIndex Represents the selected exercise index.
    */
   startExercise(courseIndex: number, exerciseIndex: number): void {
-    this.courseHelperService.startExercise(courseIndex, exerciseIndex, this.currentLanguage, this.courseVal.id, this.categories);
+    this.courseHelperService.startExercise(
+      courseIndex,
+      exerciseIndex,
+      this.currentLanguage,
+      this.courseVal.id,
+      this.categories
+    );
   }
 
   /**

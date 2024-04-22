@@ -2,7 +2,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, Injectable, NgZone } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import { environment } from 'src/environments/environment';
-import { SESSIONID_NOT_VALID, SESSIONID_TIMEOUT, SPEAK_NOT_VALID } from '../common/constants';
+import {
+  SESSIONID_NOT_VALID,
+  SESSIONID_TIMEOUT,
+  SPEAK_NOT_VALID,
+} from '../common/constants';
 import { ErrorModalService } from './error-modal.service';
 
 /**
@@ -24,7 +28,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     public readonly modalService: ErrorModalService,
     private readonly ngZone: NgZone,
     private readonly logger: NGXLogger
-  ) { }
+  ) {}
 
   /**
    * Calls the openModal method to open the modal and show the error.

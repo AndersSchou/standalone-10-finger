@@ -9,6 +9,16 @@ import { SettingsService } from 'src/app/services/settings.service';
 import { WarningModalComponent } from '../modals/warning-modal/warning-modal.component';
 import { environment } from 'src/environments/environment';
 import { DefaultThemeOptions } from 'src/app/common/constants';
+import { TranslateModule } from '@ngx-translate/core';
+import { AppSharedSettingsLogoutComponent } from './logout/logout.component';
+import { AppSharedSettingsThemeComponent } from './theme/theme.component';
+import { AppSharedSettingsReadComponent } from './read/read.component';
+import { AppSharedSettingsLanguageComponent } from './language/language.component';
+import { AppSharedSettingsTextComponent } from './text/text.component';
+import { AppSharedSettingsKeyboardComponent } from './keyboard/keyboard.component';
+import { NgFor, NgClass, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 
 /**
  * This component holds the logic for the settings view.
@@ -16,7 +26,25 @@ import { DefaultThemeOptions } from 'src/app/common/constants';
 @Component({
   selector: 'app-shared-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  styleUrls: ['./settings.component.scss'],
+  standalone: true,
+  imports: [
+    CdkDrag,
+    CdkDragHandle,
+    MatIcon,
+    NgFor,
+    NgClass,
+    NgIf,
+    NgSwitch,
+    NgSwitchCase,
+    AppSharedSettingsKeyboardComponent,
+    AppSharedSettingsTextComponent,
+    AppSharedSettingsLanguageComponent,
+    AppSharedSettingsReadComponent,
+    AppSharedSettingsThemeComponent,
+    AppSharedSettingsLogoutComponent,
+    TranslateModule,
+  ],
 })
 export class AppSharedSettingsComponent implements OnInit, OnDestroy {
   // Stores the selected option.
@@ -26,7 +54,12 @@ export class AppSharedSettingsComponent implements OnInit, OnDestroy {
     { type: 'keyboard', icon: 'keyboard', label: 'Keyboard', selected: true },
     { type: 'text', icon: 'icon_text', label: 'Text', selected: false },
     { type: 'read', icon: 'icon_read', label: 'Read', selected: false },
-    { type: 'language', icon: 'icon_language', label: 'Language', selected: false },
+    {
+      type: 'language',
+      icon: 'icon_language',
+      label: 'Language',
+      selected: false,
+    },
     { type: 'theme', icon: 'settings', label: 'Theme', selected: false },
     { type: 'logout', icon: 'icon_logout', label: 'Logout', selected: false },
   ];
@@ -49,7 +82,7 @@ export class AppSharedSettingsComponent implements OnInit, OnDestroy {
     private readonly settingsService: SettingsService,
     private readonly languageHelperService: LanguageHelperService,
     private readonly dialog: MatDialog,
-    private readonly router: Router,
+    private readonly router: Router
   ) {
     this.translatedObj = this.languageHelperService.translationObject;
     this.currentLanguage = this.languageHelperService.currentLangUsed;
@@ -86,7 +119,7 @@ export class AppSharedSettingsComponent implements OnInit, OnDestroy {
     if (!option) {
       this.reset();
     } else {
-      this.settingsOptions.forEach(opt => {
+      this.settingsOptions.forEach((opt) => {
         opt.selected = false;
       });
       option.selected = true;
@@ -102,8 +135,8 @@ export class AppSharedSettingsComponent implements OnInit, OnDestroy {
       panelClass: 'error-class',
       data: {
         title: this.translatedObj['translateAreYouSure'],
-        description: this.translatedObj['translateResetWarningDescription']
-      }
+        description: this.translatedObj['translateResetWarningDescription'],
+      },
     });
     dialogRef.afterClosed().subscribe((res: boolean) => {
       if (res) {
@@ -111,8 +144,8 @@ export class AppSharedSettingsComponent implements OnInit, OnDestroy {
           panelClass: 'error-class',
           data: {
             title: this.translatedObj['translateAreYouReallySure'],
-            description: this.translatedObj['translateResetWarningDescription']
-          }
+            description: this.translatedObj['translateResetWarningDescription'],
+          },
         });
         secDialogRef.afterClosed().subscribe((res: boolean) => {
           if (res) {
@@ -128,7 +161,10 @@ export class AppSharedSettingsComponent implements OnInit, OnDestroy {
    */
   resetAll(): void {
     this.settingsService.storageCleanup();
-    this.languageHelperService.setLanguage(environment.availableLanguages[0], true);
+    this.languageHelperService.setLanguage(
+      environment.availableLanguages[0],
+      true
+    );
     this.settingsService.setThemeSetting(DefaultThemeOptions[0].type);
     this.settingsService.setDefaultSettings();
     setTimeout(() => {

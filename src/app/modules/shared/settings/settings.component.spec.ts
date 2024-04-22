@@ -1,9 +1,7 @@
-import { MaterialModule } from './../material.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AppSharedSettingsComponent } from './settings.component';
 import { SettingsService } from 'src/app/services/settings.service';
 import { LanguageHelperService } from 'src/app/services/language.service';
@@ -19,9 +17,17 @@ describe('AppSharedSettingsComponent', () => {
   beforeEach(async () => {
     settingsServiceSpy = jasmine.createSpyObj<SettingsService>([
       'toggleSettings',
+      'getDefaultKeyboardThemeColor',
+      'getDefaultKeyboardPrimaryLayout',
+      'storageCleanup',
+      'setThemeSetting',
+      'setDefaultSettings',
+      'getDefaultTextDisplayLayout',
     ]);
 
-    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>(['OnLanguageChanged']);
+    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>([
+      'OnLanguageChanged',
+    ]);
     (languageHelperServiceSpy as any).OnLanguageChanged = new Observable(
       (subscriber) => {
         onLanguageChangedSpy = subscriber;
@@ -29,16 +35,14 @@ describe('AppSharedSettingsComponent', () => {
     );
 
     await TestBed.configureTestingModule({
-      declarations: [AppSharedSettingsComponent],
       providers: [
         { provide: SettingsService, useValue: settingsServiceSpy },
         { provide: LanguageHelperService, useValue: languageHelperServiceSpy },
       ],
       imports: [
         TranslateModule.forRoot(),
-        MaterialModule,
         MatIconTestingModule,
-        RouterTestingModule
+        AppSharedSettingsComponent,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

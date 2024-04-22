@@ -1,5 +1,18 @@
-import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+} from '@angular/material/dialog';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { CompletedLevelDTO } from 'src/app/dto/award-details.dto';
 import * as jspdf from 'jspdf';
@@ -7,6 +20,10 @@ import html2canvas from 'html2canvas';
 import { NgxPrinterService } from 'ngx-printer';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatTooltip } from '@angular/material/tooltip';
+import { NgIf, DatePipe } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
 
 /**
  * This component is used to show the achievement details in a modal.
@@ -15,6 +32,17 @@ import { Router } from '@angular/router';
   selector: 'app-modules-achievements-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
+  standalone: true,
+  imports: [
+    MatDialogTitle,
+    MatIcon,
+    NgIf,
+    MatDialogContent,
+    MatDialogActions,
+    MatTooltip,
+    DatePipe,
+    TranslateModule,
+  ],
 })
 export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('detailsEl') detailsEl: ElementRef<HTMLElement> = {} as ElementRef;
@@ -38,7 +66,7 @@ export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
     private readonly printerService: NgxPrinterService,
     private readonly dialogRef: MatDialogRef<AppAchievementDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: CompletedLevelDTO
-  ) { }
+  ) {}
 
   /**
    * Lifecycle hook that is called after data-bound properties of a directive are initialized.
@@ -79,7 +107,9 @@ export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
   calculateSpeed(): number {
     if (this.data && this.data.details) {
       const highestResult = this.data.details.highestResult;
-      return Math.round((highestResult.characters * 60000) / highestResult.time);
+      return Math.round(
+        (highestResult.characters * 60000) / highestResult.time
+      );
     } else {
       return 0;
     }
@@ -93,7 +123,10 @@ export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
   calculateAccuracy(): number {
     if (this.data && this.data.details) {
       const highestResult = this.data.details.highestResult;
-      return Math.round((highestResult.characters - highestResult.mistakes) * 100 / highestResult.characters);
+      return Math.round(
+        ((highestResult.characters - highestResult.mistakes) * 100) /
+          highestResult.characters
+      );
     } else {
       return 0;
     }
@@ -112,10 +145,14 @@ export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
           this.data.details.currentLanguage,
           this.data.details.id,
           this.data.details.categories,
-          true);
+          true
+        );
       } else {
         // Replay the game level.
-        this.router.navigate(['/games/fish/level/', this.data.details.indexLevel]);
+        this.router.navigate([
+          '/games/fish/level/',
+          this.data.details.indexLevel,
+        ]);
         this.close();
       }
     }
@@ -127,9 +164,9 @@ export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
   downloadAsPDF(): void {
     if (this.detailsEl) {
       const data = this.detailsEl.nativeElement;
-      html2canvas(data).then(canvas => {
+      html2canvas(data).then((canvas) => {
         const imgWidth = 208;
-        const imgHeight = canvas.height * imgWidth / canvas.width;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
         const contentDataURL = canvas.toDataURL('image/png');
         const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
         pdf.addImage(contentDataURL, 'PNG', 0, 0, imgWidth, imgHeight);
@@ -155,35 +192,64 @@ export class AppAchievementDetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-  * Go to the next course.
-  */
+   * Go to the next course.
+   */
   nextLevel(): void {
     if (this.data) {
       // Start next course.
       if (!this.data.isGame) {
         const currentCourseIndex = this.data.details.indexLevel;
         if (currentCourseIndex < this.data.details.totalLevels - 1) {
-          this.courseHelperService.startExercise(currentCourseIndex + 1, 0, this.data.details.currentLanguage,
-            this.data.details.id, this.data.details.categories, true, true);
+          this.courseHelperService.startExercise(
+            currentCourseIndex + 1,
+            0,
+            this.data.details.currentLanguage,
+            this.data.details.id,
+            this.data.details.categories,
+            true,
+            true
+          );
         } else {
           // Go to the next category.
-          const catIndex = this.data.details.categories.indexOf(this.data.details.currentCategory);
+          const catIndex = this.data.details.categories.indexOf(
+            this.data.details.currentCategory
+          );
           if (catIndex < this.data.details.categories.length - 1) {
-            this.data.details.currentCategory = this.data.details.categories[catIndex + 1];
-            this.courseHelperService.startExercise(0, 0, this.data.details.currentLanguage, this.data.details.id,
-              this.data.details.categories, true, true);
+            this.data.details.currentCategory =
+              this.data.details.categories[catIndex + 1];
+            this.courseHelperService.startExercise(
+              0,
+              0,
+              this.data.details.currentLanguage,
+              this.data.details.id,
+              this.data.details.categories,
+              true,
+              true
+            );
           } else {
             // Start from the first category.
             this.data.details.currentCategory = this.data.details.categories[0];
-            this.courseHelperService.startExercise(0, 0, this.data.details.currentLanguage, this.data.details.id,
-              this.data.details.categories, true, true);
+            this.courseHelperService.startExercise(
+              0,
+              0,
+              this.data.details.currentLanguage,
+              this.data.details.id,
+              this.data.details.categories,
+              true,
+              true
+            );
           }
         }
       } else {
         // Start next game level.
         if (this.data.details.gameLevels) {
-          if (this.data.details.gameLevels.length < this.data.details.totalLevels) {
-            this.router.navigate(['/games/fish/level/', this.data.details.indexLevel + 1]);
+          if (
+            this.data.details.gameLevels.length < this.data.details.totalLevels
+          ) {
+            this.router.navigate([
+              '/games/fish/level/',
+              this.data.details.indexLevel + 1,
+            ]);
           } else {
             this.router.navigate(['/games/fish/level/', 0]);
           }

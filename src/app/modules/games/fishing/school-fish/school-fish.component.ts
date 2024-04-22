@@ -1,10 +1,23 @@
-import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { createFishWithWordDTO, FishWithWordDTO } from 'src/app/dto/fish.dto';
 import { AppGamesFishingWordFishComponent } from '../word-fish/word-fish.component';
-import { Level, FishWithWord, LevelService } from 'src/app/services/level.service';
+import {
+  Level,
+  FishWithWord,
+  LevelService,
+} from 'src/app/services/level.service';
 import { ReplaySubject, takeUntil, timer } from 'rxjs';
 import { GridService } from 'src/app/services/grid.service';
 import { ScoreUpdateDTO } from 'src/app/dto/game.dto';
+import { NgIf, NgFor } from '@angular/common';
 
 /**
  * Component responsible for displaying the school of fish.
@@ -12,10 +25,13 @@ import { ScoreUpdateDTO } from 'src/app/dto/game.dto';
 @Component({
   selector: 'app-modules-games-fishing-school-fish',
   templateUrl: './school-fish.component.html',
-  styleUrls: ['./school-fish.component.scss']
+  styleUrls: ['./school-fish.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, AppGamesFishingWordFishComponent],
 })
 export class AppGamesFishingSchoolFishComponent implements OnInit {
-  @ViewChildren('fishList') fishList?: QueryList<AppGamesFishingWordFishComponent>;
+  @ViewChildren('fishList')
+  fishList?: QueryList<AppGamesFishingWordFishComponent>;
   @Input() isPaused: boolean = false;
   @Input() isGameOver: boolean = false;
   @Input() playSound: boolean = false;
@@ -40,7 +56,8 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
   // Stores the number of correct typed characters.
   correctChars = 0;
   // Outputs the event when the word is completed.
-  @Output() currentScore: EventEmitter<ScoreUpdateDTO> = new EventEmitter<ScoreUpdateDTO>();
+  @Output() currentScore: EventEmitter<ScoreUpdateDTO> =
+    new EventEmitter<ScoreUpdateDTO>();
   // Stores the subscribers until they're destroyed.
   private readonly destroyed = new ReplaySubject<boolean>();
   // Default time for checking the user's interaction with the displayed fish.
@@ -56,8 +73,8 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
    */
   constructor(
     private readonly gridService: GridService,
-    private readonly levelService: LevelService,
-  ) { }
+    private readonly levelService: LevelService
+  ) {}
 
   /**
    * A lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
@@ -65,10 +82,12 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
   ngOnInit(): void {
     // We create a gameFrameInterval interval to check if we need to increment the fish count.
     // Used to check if the user didn't interact with each displayed fish.
-    timer(0, this.gameFrameInterval).pipe(takeUntil(this.destroyed)).subscribe(() => {
-      this.removeFishes();
-      this.renderNextFish();
-    });
+    timer(0, this.gameFrameInterval)
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(() => {
+        this.removeFishes();
+        this.renderNextFish();
+      });
   }
 
   /**
@@ -77,7 +96,13 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
    * @param currentWord Represents the current word.
    */
   unoccupySpace(currentWord: FishWithWordDTO): void {
-    this.gridService.occupySpace(currentWord._x, currentWord._y, currentWord._w, currentWord._h, 'empty');
+    this.gridService.occupySpace(
+      currentWord._x,
+      currentWord._y,
+      currentWord._w,
+      currentWord._h,
+      'empty'
+    );
   }
 
   /**
@@ -90,16 +115,33 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
     let maxWidth = this.getMaxWidthFishWord(currentWord) + 1;
     // Add additional height for word to give the fish space to wiggle.
     let maxHeight = currentWord.fishImage.height + 2;
-    if (currentWord.fishImage.name === 'crab' || currentWord.fishImage.name === 'chest') {
+    if (
+      currentWord.fishImage.name === 'crab' ||
+      currentWord.fishImage.name === 'chest'
+    ) {
       if (currentWord.fishImage.xPos && currentWord.fishImage.yPos) {
-        this.gridService.occupySpace(currentWord.fishImage.xPos, currentWord.fishImage.yPos, maxWidth, maxHeight + 2, 'fish');
-        currentWord.left = currentWord.fishImage.xPos * this.gridService.gridSize + 'px';
-        currentWord.top = currentWord.fishImage.yPos * this.gridService.gridSize + 'px';
+        this.gridService.occupySpace(
+          currentWord.fishImage.xPos,
+          currentWord.fishImage.yPos,
+          maxWidth,
+          maxHeight + 2,
+          'fish'
+        );
+        currentWord.left =
+          currentWord.fishImage.xPos * this.gridService.gridSize + 'px';
+        currentWord.top =
+          currentWord.fishImage.yPos * this.gridService.gridSize + 'px';
       }
     } else {
       let space = this.gridService.pickRandomEmptySpace(maxWidth, maxHeight);
       if (space) {
-        this.gridService.occupySpace(space.x, space.y, maxWidth, maxHeight, 'fish');
+        this.gridService.occupySpace(
+          space.x,
+          space.y,
+          maxWidth,
+          maxHeight,
+          'fish'
+        );
         currentWord.left = space.x * this.gridService.gridSize + 'px';
         currentWord.top = space.y * this.gridService.gridSize + 'px';
         currentWord._x = space.x;
@@ -118,7 +160,10 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
    * @returns The maximum width.
    */
   getMaxWidthFishWord(wordFishToDisplay: FishWithWordDTO): number {
-    return Math.max(wordFishToDisplay.fishImage.width, wordFishToDisplay.word.length);
+    return Math.max(
+      wordFishToDisplay.fishImage.width,
+      wordFishToDisplay.word.length
+    );
   }
 
   /**
@@ -127,7 +172,9 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
    * @param completed Tells if the word was completed or not.
    */
   completedWord(completed: boolean): void {
-    this.availableFishes = this.availableFishes.filter((el) => !el.leftTheSchool);
+    this.availableFishes = this.availableFishes.filter(
+      (el) => !el.leftTheSchool
+    );
 
     if (completed && this.activeFish) {
       this.completedFishes++;
@@ -153,16 +200,23 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
       this.activeFish = undefined;
       return;
     }
-    if (this.activeFish && this.activeFish.active && this.activeFish.available) {
+    if (
+      this.activeFish &&
+      this.activeFish.active &&
+      this.activeFish.available
+    ) {
       return;
     }
 
     // Set curently active fish.
-    let findActiveWord = this.availableFishes.find((el) => el.active && el.available);
+    let findActiveWord = this.availableFishes.find(
+      (el) => el.active && el.available
+    );
     if (!findActiveWord) {
       // If there is no active word then find the first word that starts with the same letter as the input key.
       findActiveWord = this.availableFishes.find((el: FishWithWordDTO) =>
-        el.word.toLowerCase().startsWith(key));
+        el.word.toLowerCase().startsWith(key)
+      );
       if (findActiveWord) {
         // If there is a word that starts with the same letter as the input key then set that word as active.
         findActiveWord.active = true;
@@ -195,7 +249,9 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
     this.setActiveFish(key);
     if (this.fishList) {
       if (this.activeFish) {
-        const activeFishComponent = this.fishList.get(this.availableFishes.indexOf(this.activeFish));
+        const activeFishComponent = this.fishList.get(
+          this.availableFishes.indexOf(this.activeFish)
+        );
         if (activeFishComponent) {
           activeFishComponent.keyDown(key);
           if (!activeFishComponent.currentWord.available) {
@@ -233,7 +289,12 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
    *
    * @returns The number of fishes to show.
    */
-  calculateMaxFishInSchool(percentValueDone: number, min: number, max: number, percentValueMax: number): number {
+  calculateMaxFishInSchool(
+    percentValueDone: number,
+    min: number,
+    max: number,
+    percentValueMax: number
+  ): number {
     const percentage = percentValueDone / percentValueMax;
     const maxFish = Math.ceil((max - min) * percentage + min);
     return maxFish < min ? min : maxFish > max ? max : maxFish;
@@ -247,18 +308,29 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
       return;
     }
     if (this.allAvailableFishes.length <= 0 && this.currentLevel) {
-      this.allAvailableFishes = this.currentLevel.extractAllLevelWords().map((el: FishWithWord) => {
-        const word: FishWithWordDTO = createFishWithWordDTO({
-          fish: el.fish.toDTO(),
-          word: el.word,
-          fishImage: el.fishImage,
-          active: false,
+      this.allAvailableFishes = this.currentLevel
+        .extractAllLevelWords()
+        .map((el: FishWithWord) => {
+          const word: FishWithWordDTO = createFishWithWordDTO({
+            fish: el.fish.toDTO(),
+            word: el.word,
+            fishImage: el.fishImage,
+            active: false,
+          });
+          return word;
         });
-        return word;
-      });
     }
-    this.fishCountToShow = this.calculateMaxFishInSchool(this.score, 1, this.maxFishInSchool, this.goal);
-    for (let i = this.availableFishes.filter(f => !f.leftTheSchool).length; i < this.fishCountToShow; i++) {
+    this.fishCountToShow = this.calculateMaxFishInSchool(
+      this.score,
+      1,
+      this.maxFishInSchool,
+      this.goal
+    );
+    for (
+      let i = this.availableFishes.filter((f) => !f.leftTheSchool).length;
+      i < this.fishCountToShow;
+      i++
+    ) {
       this.addFishToAvailableFishes();
     }
   }
@@ -271,10 +343,14 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
   getNewWord(): FishWithWordDTO | undefined {
     if (this.currentLevel) {
       // Try and get a new word for each available word level. If this fail reuse a random used word.
-      const levelWordShuffled = this.levelService.shuffle([...this.currentLevel.wordLevels]);
+      const levelWordShuffled = this.levelService.shuffle([
+        ...this.currentLevel.wordLevels,
+      ]);
       for (let i = 0; i < levelWordShuffled.length; i++) {
         // TODO: pass the letter array to be excluded in the search and all the levels it should search for.
-        const newWord = this.currentLevel.extractWordByLevel(levelWordShuffled[i]);
+        const newWord = this.currentLevel.extractWordByLevel(
+          levelWordShuffled[i]
+        );
         if (newWord) {
           const word: FishWithWordDTO = createFishWithWordDTO({
             fish: newWord.fish.toDTO(),
@@ -304,22 +380,33 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
     // TODO: pass the letter array to be excluded in the search.
     const newWord = this.getNewWord();
     if (newWord) {
-      const fishesDisplayed = this.availableFishes.filter(fish => !fish.leftTheSchool);
-      if (newWord.fishImage.name === 'chest' || newWord.fishImage.name === 'crab') {
+      const fishesDisplayed = this.availableFishes.filter(
+        (fish) => !fish.leftTheSchool
+      );
+      if (
+        newWord.fishImage.name === 'chest' ||
+        newWord.fishImage.name === 'crab'
+      ) {
         // Check if there is a fish in the school with the same fish image name. Crab and chest can't be displayed multiple times
         // while their grid space is occupied.
-        const findDisplayedFishWithSameImageName = fishesDisplayed.find((el: FishWithWordDTO) => {
-          return el.fishImage.name === newWord.fishImage.name;
-        });
+        const findDisplayedFishWithSameImageName = fishesDisplayed.find(
+          (el: FishWithWordDTO) => {
+            return el.fishImage.name === newWord.fishImage.name;
+          }
+        );
         if (!findDisplayedFishWithSameImageName) {
           // Check if it doesn't start with the same letter as any of the available words.
-          const foundWordWithSameStartingLetter = fishesDisplayed.find((el: FishWithWordDTO) => el.word[0] === newWord.word[0]);
+          const foundWordWithSameStartingLetter = fishesDisplayed.find(
+            (el: FishWithWordDTO) => el.word[0] === newWord.word[0]
+          );
           if (!foundWordWithSameStartingLetter) {
             return newWord;
           }
         }
       } else {
-        const foundWordWithSameStartingLetter = fishesDisplayed.find((el: FishWithWordDTO) => el.word[0] === newWord.word[0]);
+        const foundWordWithSameStartingLetter = fishesDisplayed.find(
+          (el: FishWithWordDTO) => el.word[0] === newWord.word[0]
+        );
         if (!foundWordWithSameStartingLetter) {
           return newWord;
         }
@@ -361,5 +448,4 @@ export class AppGamesFishingSchoolFishComponent implements OnInit {
       }
     }
   }
-
 }

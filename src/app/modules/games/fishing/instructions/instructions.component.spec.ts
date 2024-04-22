@@ -4,7 +4,6 @@ import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { MaterialModule } from 'src/app/modules/shared/material.module';
 import { AppGamesFishInstructionsComponent } from './instructions.component';
 
 describe('AppGamesFishInstructionsComponent', () => {
@@ -16,15 +15,12 @@ describe('AppGamesFishInstructionsComponent', () => {
     routerSpy = jasmine.createSpyObj<Router>(['navigate']);
 
     await TestBed.configureTestingModule({
-      declarations: [AppGamesFishInstructionsComponent],
-      providers: [
-        { provide: Router, useValue: routerSpy },
-      ],
+      providers: [{ provide: Router, useValue: routerSpy }],
       imports: [
         TranslateModule.forRoot(),
-        MaterialModule,
         MatIconTestingModule,
         BrowserAnimationsModule,
+        AppGamesFishInstructionsComponent,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

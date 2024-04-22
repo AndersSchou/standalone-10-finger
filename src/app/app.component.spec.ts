@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs';
 import { AppComponent } from './app.component';
 import { UserService } from './services/api/user.service';
@@ -26,37 +25,27 @@ describe('AppComponent', () => {
 
     customIconServiceSpy = jasmine.createSpyObj<CustomIconService>([
       'addCustomIcons',
-      'fetchCustomIcons'
+      'fetchCustomIcons',
     ]);
 
-    userServiceSpy = jasmine.createSpyObj<UserService>([
-      'getUserInfo',
-    ]);
-    (userServiceSpy as any).getUserInfo = new Observable(
-      (subscriber) => {
-        onGetUserInfoActionSpy = subscriber;
-      }
-    );
+    userServiceSpy = jasmine.createSpyObj<UserService>(['getUserInfo']);
+    (userServiceSpy as any).getUserInfo = new Observable((subscriber) => {
+      onGetUserInfoActionSpy = subscriber;
+    });
 
     settingsServiceSpy = jasmine.createSpyObj<SettingsService>([
       'setDefaultSettings',
     ]);
 
-    authServiceSpy = jasmine.createSpyObj<AuthService>([
-      'loggedInAction',
-    ]);
-    (authServiceSpy as any).loggedInAction = new Observable(
-      (subscriber) => {
-        onLoggedInActionSpy = subscriber;
-      }
-    );
+    authServiceSpy = jasmine.createSpyObj<AuthService>(['loggedInAction']);
+    (authServiceSpy as any).loggedInAction = new Observable((subscriber) => {
+      onLoggedInActionSpy = subscriber;
+    });
 
     matDialogSpy = jasmine.createSpyObj<MatDialog>(['open']);
 
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
+      imports: [AppComponent],
       providers: [
         { provide: LanguageHelperService, useValue: languageHelperServiceSpy },
         { provide: CustomIconService, useValue: customIconServiceSpy },
@@ -64,9 +53,6 @@ describe('AppComponent', () => {
         { provide: SettingsService, useValue: settingsServiceSpy },
         { provide: AuthService, useValue: authServiceSpy },
         { provide: MatDialog, useValue: matDialogSpy },
-      ],
-      declarations: [
-        AppComponent
       ],
     }).compileComponents();
   });

@@ -1,11 +1,14 @@
 import { GameStorageDTO } from 'src/app/dto/game.dto';
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { ReplaySubject, takeUntil } from "rxjs";
-import { STORAGE_KEY_TYPE } from "src/app/common/enums";
-import { createEmptyFishLevelDTO, FishLevelDTO } from "src/app/dto/fish.dto";
-import { LevelDefinitionsData } from "src/app/games/fish/level-definition";
-import { LanguageHelperService } from "src/app/services/language.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ReplaySubject, takeUntil } from 'rxjs';
+import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
+import { createEmptyFishLevelDTO, FishLevelDTO } from 'src/app/dto/fish.dto';
+import { LevelDefinitionsData } from 'src/app/games/fish/level-definition';
+import { LanguageHelperService } from 'src/app/services/language.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIcon } from '@angular/material/icon';
+import { NgIf, NgFor, NgClass } from '@angular/common';
 
 /**
  * This component holds the set level screen for the fish game.
@@ -13,7 +16,9 @@ import { LanguageHelperService } from "src/app/services/language.service";
 @Component({
   selector: 'app-modules-games-fish-set-level',
   templateUrl: './set-level.component.html',
-  styleUrls: ['./set-level.component.scss']
+  styleUrls: ['./set-level.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, NgClass, MatIcon, TranslateModule],
 })
 export class AppGamesFishSetLevelComponent implements OnInit, OnDestroy {
   // Stores all the levels for the fishing game.
@@ -33,7 +38,7 @@ export class AppGamesFishSetLevelComponent implements OnInit, OnDestroy {
    */
   constructor(
     private readonly router: Router,
-    private readonly languageHelperService: LanguageHelperService,
+    private readonly languageHelperService: LanguageHelperService
   ) {
     this.currentLanguage = this.languageHelperService.currentLangUsed;
   }
@@ -47,11 +52,12 @@ export class AppGamesFishSetLevelComponent implements OnInit, OnDestroy {
     }
 
     // Listens for any changes regarding the current used language.
-    this.languageHelperService.OnLanguageChanged
-      .pipe(takeUntil(this.destroyed)).subscribe(() => {
-        this.currentLanguage = this.languageHelperService.currentLangUsed;
-        this.getFishGameData();
-      });
+    this.languageHelperService.OnLanguageChanged.pipe(
+      takeUntil(this.destroyed)
+    ).subscribe(() => {
+      this.currentLanguage = this.languageHelperService.currentLangUsed;
+      this.getFishGameData();
+    });
   }
 
   /**
@@ -65,7 +71,7 @@ export class AppGamesFishSetLevelComponent implements OnInit, OnDestroy {
    * Get the levels for the fish game.
    */
   getFishGameData(): void {
-    this.levels = LevelDefinitionsData.map((el => {
+    this.levels = LevelDefinitionsData.map((el) => {
       return {
         id: el.id,
         name: el.name,
@@ -73,7 +79,7 @@ export class AppGamesFishSetLevelComponent implements OnInit, OnDestroy {
         selected: false,
         completed: false,
       };
-    }));
+    });
     this.checkForCompletedLevels();
   }
 
@@ -83,12 +89,18 @@ export class AppGamesFishSetLevelComponent implements OnInit, OnDestroy {
   checkForCompletedLevels(): void {
     if (this.currentLanguage) {
       if (localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS)) {
-        const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS) as string);
+        const storedData = JSON.parse(
+          localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS) as string
+        );
         if (storedData) {
-          const findLanguage = storedData.find((item: GameStorageDTO) => item.language === this.currentLanguage);
+          const findLanguage = storedData.find(
+            (item: GameStorageDTO) => item.language === this.currentLanguage
+          );
           if (findLanguage) {
             this.levels.forEach((el: FishLevelDTO, index: number) => {
-              const findLevel = findLanguage.data.find((item: FishLevelDTO) => item.id === el.id);
+              const findLevel = findLanguage.data.find(
+                (item: FishLevelDTO) => item.id === el.id
+              );
               if (findLevel) {
                 el.completed = true;
                 if (index < this.levels.length - 1) {

@@ -16,7 +16,7 @@ describe('LanguageHelperService', () => {
       'setDefaultLang',
       'use',
       'currentLang',
-      'onLangChange'
+      'onLangChange',
     ]);
 
     onLanguageChangedSpy = jasmine.createSpyObj<Observable<any>>(['subscribe']);

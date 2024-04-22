@@ -11,12 +11,15 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 import { STORAGE_KEY_TYPE } from './common/enums';
 import { MatDialog } from '@angular/material/dialog';
 import { WarningModalComponent } from './modules/shared/modals/warning-modal/warning-modal.component';
+import { RouterOutlet } from '@angular/router';
 
 /** Main app component. */
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [RouterOutlet],
 })
 export class AppComponent implements OnInit, OnDestroy {
   // Stores the subscribers until they're destroyed.
@@ -40,8 +43,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly settingsService: SettingsService,
     private readonly authService: AuthService,
     private readonly cookieService: CookieService,
-    private readonly dialog: MatDialog,
-  ) { }
+    private readonly dialog: MatDialog
+  ) {}
 
   /**
    * A lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
@@ -54,7 +57,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.loggedInAction
       .pipe(takeUntil(this.destroyed))
       .subscribe((isLogged?: boolean) => {
-        if (isLogged && window.localStorage.getItem(STORAGE_KEY_TYPE.CURRENT_LANGUAGE)===null) {
+        if (
+          isLogged &&
+          window.localStorage.getItem(STORAGE_KEY_TYPE.CURRENT_LANGUAGE) ===
+            null
+        ) {
           this.setUserLanguage();
         }
       });
@@ -62,13 +69,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // Listens for theme changes.
     this.settingsService.themeSettingsAction
-      .pipe(takeUntil(this.destroyed)).subscribe((theme: string) => {
+      .pipe(takeUntil(this.destroyed))
+      .subscribe((theme: string) => {
         this.changeTheme(theme);
       });
 
     // Set the theme if it's already stored in the local storage.
     if (localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR)) {
-      const mainThemeOption = localStorage.getItem(STORAGE_KEY_TYPE.MAIN_THEME_COLOR);
+      const mainThemeOption = localStorage.getItem(
+        STORAGE_KEY_TYPE.MAIN_THEME_COLOR
+      );
       if (mainThemeOption) {
         this.changeTheme(mainThemeOption);
       }
@@ -88,7 +98,9 @@ export class AppComponent implements OnInit, OnDestroy {
   setUserLanguage(): void {
     this.userService.getUserInfo().subscribe((user: WhoAmIResponseDTO) => {
       if (user) {
-        const userLang = this.userService.convertRegionToLanguageIdentifier(user.CountryRegionCode);
+        const userLang = this.userService.convertRegionToLanguageIdentifier(
+          user.CountryRegionCode
+        );
         this.languageHelperService.setLanguage(userLang, true);
       }
     });
@@ -128,9 +140,8 @@ export class AppComponent implements OnInit, OnDestroy {
           description: 'translateWindowSmallWarningDescription',
           hideActions: true,
           showOkButton: true,
-        }
+        },
       });
     }
   }
-
 }

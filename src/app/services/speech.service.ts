@@ -28,7 +28,7 @@ export class SpeechService {
   private speechAudioElement: AudioElement = new AudioElement();
 
   // Hold speak result of selected text.
-  private speakResult: SpeakResultDTO = {} as SpeakResultDTO;;
+  private speakResult: SpeakResultDTO = {} as SpeakResultDTO;
   // The subject used to send signal on speech termination.
   private speechEnded = new Subject<boolean>();
   // Observable instance of the source object.
@@ -39,9 +39,7 @@ export class SpeechService {
    *
    * @param voiceService Is an instance of VoiceService.
    */
-  constructor(
-    private readonly voiceService: VoiceService,
-  ) {
+  constructor(private readonly voiceService: VoiceService) {
     // Unload speech when completed.
     this.speechAudioElement.addEventListener('ended', () => {
       this.unload();
@@ -65,26 +63,22 @@ export class SpeechService {
    * @param voiceID Represents the voice id for the speak service.
    * @param speechType Represents the speech type.
    */
-  play(
-    speechText: string,
-    voiceID: string,
-    speechType?: string
-  ): void {
+  play(speechText: string, voiceID: string, speechType?: string): void {
     // If speech text does not exist.
     if (!speechText) {
       return;
     }
 
-    this.voiceService.speak(speechText, voiceID, speechType).subscribe(
-      (speakResult) => {
+    this.voiceService
+      .speak(speechText, voiceID, speechType)
+      .subscribe((speakResult) => {
         if (speakResult.soundLink) {
           this.speakResult = speakResult;
           this.speechAudioElement.src = speakResult.soundLink;
           this.speechAudioElement.load();
-          this.speechAudioElement.play().catch(() => { });
+          this.speechAudioElement.play().catch(() => {});
         }
-      }
-    );
+      });
   }
 
   /**
@@ -114,7 +108,10 @@ export class SpeechService {
   playFishGameSound(type: FISH_GAME_SOUND_TYPE, isMuted = false): void {
     // Resume the audio if it is paused.
     if (this.speechAudioElement.src) {
-      const oldSrc = this.speechAudioElement.src.split('/')[this.speechAudioElement.src.split('/').length - 1];
+      const oldSrc =
+        this.speechAudioElement.src.split('/')[
+          this.speechAudioElement.src.split('/').length - 1
+        ];
       // If the type is TIMER and the loaded src is for the coundtdown sound, then unload the coundtodwn sound and add the src for timer.
       if (type === FISH_GAME_SOUND_TYPE.TIMER && oldSrc === 'background.wav') {
         this.unload();
@@ -177,11 +174,12 @@ export class SpeechService {
     txtToRead: string,
     language: string,
     isLastChar: boolean,
-    charMatch: boolean): void {
+    charMatch: boolean
+  ): void {
     const voiceID = this.getVoiceID(language);
-    switch (this.getReadingType(
-      character, readOptions,
-      txtToRead, isLastChar)) {
+    switch (
+      this.getReadingType(character, readOptions, txtToRead, isLastChar)
+    ) {
       case READING_IDENTIFIER.READ_WORD:
         this.readWord(readOptions, txtToRead, voiceID, isLastChar, charMatch);
         break;
@@ -200,7 +198,11 @@ export class SpeechService {
    * @param readOptions Represents the read options.
    * @param voiceID Represents the voice id for the speak service.
    */
-  readCharacterOrSound(character: string, readOptions: ReadOptionsDTO, voiceID: string): void {
+  readCharacterOrSound(
+    character: string,
+    readOptions: ReadOptionsDTO,
+    voiceID: string
+  ): void {
     // Read letter name + sound only if the character is a letter.
     if (character.match(REGEX_FOR_LETTERS_WITH_DIACRITICS)) {
       if (readOptions.readLetterName) {
@@ -220,10 +222,18 @@ export class SpeechService {
    * @param isLastChar Tells if the character is the last character of the text.
    * @param charMatch Tells if the character is a match of the text (used to disable read word when the chars do not match).
    */
-  readWord(readOptions: ReadOptionsDTO, text: string, voiceID: string, isLastChar: boolean, charMatch: boolean): void {
+  readWord(
+    readOptions: ReadOptionsDTO,
+    text: string,
+    voiceID: string,
+    isLastChar: boolean,
+    charMatch: boolean
+  ): void {
     if (readOptions.readWord && charMatch) {
       const wordToRead = text.split(' ');
-      const txt = isLastChar ? wordToRead[wordToRead.length - 1] : wordToRead[wordToRead.length - 2];
+      const txt = isLastChar
+        ? wordToRead[wordToRead.length - 1]
+        : wordToRead[wordToRead.length - 2];
       this.play(txt, voiceID);
     }
   }
@@ -242,10 +252,12 @@ export class SpeechService {
     character: string,
     readOptions: ReadOptionsDTO,
     txtToRead: string,
-    isLastChar: boolean): string {
-
+    isLastChar: boolean
+  ): string {
     // If the character contains the whiteSpace then it will add this at the end of the word to verify that user press whiteSpace or not.
-    if (character === ' ') { txtToRead += character; }
+    if (character === ' ') {
+      txtToRead += character;
+    }
 
     // Cleanup the object.
     const { readWord, readLetterName, readLetterSound } = readOptions;
@@ -254,7 +266,8 @@ export class SpeechService {
     if (readWord && this.isReadWordPatternMatch(txtToRead)) {
       if (
         character.match(WORD_READ_REGEX) ||
-        character.match(WHITE_SPACE_REGEX) || isLastChar
+        character.match(WHITE_SPACE_REGEX) ||
+        isLastChar
       ) {
         return READING_IDENTIFIER.READ_WORD;
       } else {
@@ -276,11 +289,9 @@ export class SpeechService {
    * @returns True if second last character of the string is not end with specified condition otherwise return false.
    */
   private isReadWordPatternMatch(text: string): boolean {
-    return (
-      text.length > 1 && (text[text.length - 2].match(/^[.,+<>?!]+$/i))
-        ? false
-        : true
-    );
+    return text.length > 1 && text[text.length - 2].match(/^[.,+<>?!]+$/i)
+      ? false
+      : true;
   }
 
   /**

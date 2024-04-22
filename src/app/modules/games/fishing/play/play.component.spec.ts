@@ -7,7 +7,6 @@ import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of, Subject } from 'rxjs';
-import { MaterialModule } from 'src/app/modules/shared/material.module';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { AppGamesFishPlayComponent } from './play.component';
 import { SpeechService } from 'src/app/services/speech.service';
@@ -26,7 +25,9 @@ describe('AppGamesFishPlayComponent', () => {
   let settingsServiceSpy: jasmine.SpyObj<SettingsService>;
 
   beforeEach(async () => {
-    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>(['OnLanguageChanged']);
+    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>([
+      'OnLanguageChanged',
+    ]);
     (languageHelperServiceSpy as any).OnLanguageChanged = new Observable(
       (subscriber) => {
         onLanguageChangedSpy = subscriber;
@@ -41,12 +42,20 @@ describe('AppGamesFishPlayComponent', () => {
     } as any);
 
     gridServiceSpy = jasmine.createSpyObj<GridService>(['initGrid']);
-    levelServiceSpy = jasmine.createSpyObj<LevelService>(['generateLevel', 'getNumberOfLevels']);
-    speechServiceSpy = jasmine.createSpyObj<SpeechService>(['isPlaying', 'unload', 'playFishGameSound']);
-    settingsServiceSpy = jasmine.createSpyObj<SettingsService>(['getDefaultGameSoundOption']);
+    levelServiceSpy = jasmine.createSpyObj<LevelService>([
+      'generateLevel',
+      'getNumberOfLevels',
+    ]);
+    speechServiceSpy = jasmine.createSpyObj<SpeechService>([
+      'isPlaying',
+      'unload',
+      'playFishGameSound',
+    ]);
+    settingsServiceSpy = jasmine.createSpyObj<SettingsService>([
+      'getDefaultGameSoundOption',
+    ]);
 
     await TestBed.configureTestingModule({
-      declarations: [AppGamesFishPlayComponent],
       providers: [
         { provide: LanguageHelperService, useValue: languageHelperServiceSpy },
         { provide: Router, useValue: routerSpy },
@@ -59,8 +68,8 @@ describe('AppGamesFishPlayComponent', () => {
       ],
       imports: [
         TranslateModule.forRoot(),
-        MaterialModule,
-        MatIconTestingModule
+        MatIconTestingModule,
+        AppGamesFishPlayComponent,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

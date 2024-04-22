@@ -13,7 +13,7 @@ export class ErrorModalService {
    *
    * @param dialog Is an instance of MatDialog.
    */
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) {}
 
   /**
    * Opens the error modal.
@@ -25,7 +25,7 @@ export class ErrorModalService {
   openModal(message: HttpErrorResponse): MatDialogRef<ErrorModalComponent> {
     return this.dialog.open(ErrorModalComponent, {
       panelClass: 'error-class',
-      data: message
+      data: message,
     });
   }
 }

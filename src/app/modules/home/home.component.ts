@@ -2,6 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReplaySubject, takeUntil } from 'rxjs';
 import { SettingsService } from 'src/app/services/settings.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIcon } from '@angular/material/icon';
+import { AppSharedSettingsComponent } from '../shared/settings/settings.component';
+import { NgIf } from '@angular/common';
+import { AppSharedTopMenuComponent } from '../shared/top-menu/top-menu.component';
 
 /**
  * This component holds the logic for home page.
@@ -9,7 +14,15 @@ import { SettingsService } from 'src/app/services/settings.service';
 @Component({
   selector: 'app-modules-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  standalone: true,
+  imports: [
+    AppSharedTopMenuComponent,
+    NgIf,
+    AppSharedSettingsComponent,
+    MatIcon,
+    TranslateModule,
+  ],
 })
 export class AppHomeComponent implements OnInit, OnDestroy {
   // Tells if it should show the settings view or not.
@@ -25,8 +38,8 @@ export class AppHomeComponent implements OnInit, OnDestroy {
    */
   constructor(
     private readonly router: Router,
-    private readonly settingsService: SettingsService,
-  ) { }
+    private readonly settingsService: SettingsService
+  ) {}
 
   /**
    * A lifecycle hook that is called after Angular has initialized all data-bound properties of a directive.
@@ -35,7 +48,9 @@ export class AppHomeComponent implements OnInit, OnDestroy {
     // Listens for any changes regarding the settings view (show/hide).
     this.settingsService.viewSettingsAction
       .pipe(takeUntil(this.destroyed))
-      .subscribe((viewSettings: boolean) => { this.viewSettings = viewSettings; });
+      .subscribe((viewSettings: boolean) => {
+        this.viewSettings = viewSettings;
+      });
   }
 
   /**

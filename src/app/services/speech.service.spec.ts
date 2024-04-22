@@ -7,14 +7,12 @@ describe('SpeechService', () => {
   let voiceServiceSpy: jasmine.SpyObj<VoiceService>;
 
   beforeEach(() => {
-    voiceServiceSpy = jasmine.createSpyObj<VoiceService>([
-      'speak',
-    ]);
+    voiceServiceSpy = jasmine.createSpyObj<VoiceService>(['speak']);
     TestBed.configureTestingModule({
       providers: [
         SpeechService,
         { provide: VoiceService, useValue: voiceServiceSpy },
-      ]
+      ],
     });
     service = TestBed.inject(SpeechService);
   });

@@ -4,6 +4,7 @@ import { NgxLoggerLevel } from 'ngx-logger';
 
 export const environment = {
   name: 'test',
+  version: require('../../package.json').version,
   debugDraw: true,
   throwErrors: true,
   production: false,

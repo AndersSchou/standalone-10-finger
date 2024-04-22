@@ -18,12 +18,16 @@ describe('WarningModalComponent', () => {
     matDialogRefSpy = jasmine.createSpyObj<MatDialogRef<any, any>>(['close']);
 
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatIconTestingModule, TranslateModule.forRoot()],
+      imports: [
+        MatDialogModule,
+        MatIconTestingModule,
+        TranslateModule.forRoot(),
+        WarningModalComponent,
+      ],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
       ],
-      declarations: [WarningModalComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });

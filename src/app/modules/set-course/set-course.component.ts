@@ -1,9 +1,19 @@
 import { CourseHelperService } from 'src/app/services/course-helper.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReplaySubject, takeUntil } from 'rxjs';
-import { ExtendedCategoryDTO, ExtendedCourseDTO, createEmptyExtendedCategoryDTO } from 'src/app/dto/course.dto';
+import {
+  ExtendedCategoryDTO,
+  ExtendedCourseDTO,
+  createEmptyExtendedCategoryDTO,
+} from 'src/app/dto/course.dto';
 import { SettingsService } from 'src/app/services/settings.service';
 import { LanguageHelperService } from 'src/app/services/language.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { AppSetCourseCourseComponent } from './course/course.component';
+import { MatIcon } from '@angular/material/icon';
+import { AppSharedSettingsComponent } from '../shared/settings/settings.component';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { AppSharedTopMenuComponent } from '../shared/top-menu/top-menu.component';
 
 /**
  * This component holds the logic for set course page.
@@ -11,7 +21,18 @@ import { LanguageHelperService } from 'src/app/services/language.service';
 @Component({
   selector: 'app-modules-set-course',
   templateUrl: './set-course.component.html',
-  styleUrls: ['./set-course.component.scss']
+  styleUrls: ['./set-course.component.scss'],
+  standalone: true,
+  imports: [
+    AppSharedTopMenuComponent,
+    NgIf,
+    AppSharedSettingsComponent,
+    NgFor,
+    NgClass,
+    MatIcon,
+    AppSetCourseCourseComponent,
+    TranslateModule,
+  ],
 })
 export class AppSetCourseComponent implements OnInit, OnDestroy {
   // Stores the categories array.
@@ -35,7 +56,7 @@ export class AppSetCourseComponent implements OnInit, OnDestroy {
   constructor(
     private readonly settingsService: SettingsService,
     private readonly courseHelperService: CourseHelperService,
-    private readonly languageHelperService: LanguageHelperService,
+    private readonly languageHelperService: LanguageHelperService
   ) {
     this.currentLanguage = this.languageHelperService.currentLangUsed;
   }
@@ -49,16 +70,19 @@ export class AppSetCourseComponent implements OnInit, OnDestroy {
     }
 
     // Listens for any changes regarding the current used language.
-    this.languageHelperService.OnLanguageChanged
-      .pipe(takeUntil(this.destroyed)).subscribe(() => {
-        this.currentLanguage = this.languageHelperService.currentLangUsed;
-        this.getCategories();
-      });
+    this.languageHelperService.OnLanguageChanged.pipe(
+      takeUntil(this.destroyed)
+    ).subscribe(() => {
+      this.currentLanguage = this.languageHelperService.currentLangUsed;
+      this.getCategories();
+    });
 
     // Listens for any changes regarding the settings view (show/hide).
     this.settingsService.viewSettingsAction
       .pipe(takeUntil(this.destroyed))
-      .subscribe((viewSettings: boolean) => { this.viewSettings = viewSettings; });
+      .subscribe((viewSettings: boolean) => {
+        this.viewSettings = viewSettings;
+      });
   }
 
   /**
@@ -77,14 +101,18 @@ export class AppSetCourseComponent implements OnInit, OnDestroy {
     if (data) {
       this.categories = data.data.map((el: ExtendedCategoryDTO) => {
         const elem = el;
-        const completedCourses = el.courses.filter((course: ExtendedCourseDTO) => {
-          const findIncompleteExercise = course.exercises.find(ex => !ex.results || (ex.results && ex.results.length === 0));
-          if (findIncompleteExercise) {
-            return false;
+        const completedCourses = el.courses.filter(
+          (course: ExtendedCourseDTO) => {
+            const findIncompleteExercise = course.exercises.find(
+              (ex) => !ex.results || (ex.results && ex.results.length === 0)
+            );
+            if (findIncompleteExercise) {
+              return false;
+            }
+            return true;
           }
-          return true;
-        });
-        elem.progress = ((100 * completedCourses.length) / el.courses.length);
+        );
+        elem.progress = (100 * completedCourses.length) / el.courses.length;
         return elem;
       });
       this.findLatestCat(this.categories);
@@ -97,14 +125,17 @@ export class AppSetCourseComponent implements OnInit, OnDestroy {
    * @param coursesProgress Represents the courses progress data.
    */
   findLatestCat(categories: ExtendedCategoryDTO[]): void {
-    const findLatestCategory = this.courseHelperService.getLatestCategory(categories);
+    const findLatestCategory =
+      this.courseHelperService.getLatestCategory(categories);
 
     if (findLatestCategory) {
       if (!findLatestCategory.completed) {
         this.currentCategory = findLatestCategory;
       } else {
-        const findIndex = this.categories.findIndex((el: ExtendedCategoryDTO) => el.id === findLatestCategory.id);
-        if (findIndex && ((findIndex + 1) <= this.categories.length - 1)) {
+        const findIndex = this.categories.findIndex(
+          (el: ExtendedCategoryDTO) => el.id === findLatestCategory.id
+        );
+        if (findIndex && findIndex + 1 <= this.categories.length - 1) {
           this.currentCategory = this.categories[findIndex + 1];
         } else {
           this.currentCategory = this.categories[0];

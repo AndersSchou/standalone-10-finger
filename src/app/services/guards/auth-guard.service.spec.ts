@@ -28,22 +28,19 @@ describe('AuthService', () => {
 
     languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>([
       'initLangChanged',
-      'setLanguage'
+      'setLanguage',
     ]);
     initLangChangedSpy = jasmine.createSpyObj<Observable<any>>([
-      'subscribe', 'pipe'
+      'subscribe',
+      'pipe',
     ]);
     initLangChangedSpy.pipe.and.returnValue(initLangChangedSpy);
     languageHelperServiceSpy.initLangChanged = initLangChangedSpy;
 
-    userServiceSpy = jasmine.createSpyObj<UserService>([
-      'checkUserAccess',
-    ]);
-    (userServiceSpy as any).getUserInfo = new Observable(
-      (subscriber) => {
-        onCheckUserAccessSpy = subscriber;
-      }
-    );
+    userServiceSpy = jasmine.createSpyObj<UserService>(['checkUserAccess']);
+    (userServiceSpy as any).getUserInfo = new Observable((subscriber) => {
+      onCheckUserAccessSpy = subscriber;
+    });
 
     TestBed.configureTestingModule({
       providers: [

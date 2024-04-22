@@ -4,6 +4,10 @@ import { GameStorageDTO } from 'src/app/dto/game.dto';
 import { STORAGE_KEY_TYPE } from 'src/app/common/enums';
 import { LanguageHelperService } from 'src/app/services/language.service';
 import { Component, OnInit } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { AppGamesFishSetLevelComponent } from './set-level/set-level.component';
+import { AppGamesFishInstructionsComponent } from './instructions/instructions.component';
+import { NgIf } from '@angular/common';
 
 /**
  * This component is used to hold the loading screen for the fish game.
@@ -11,7 +15,14 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-modules-games-fishing',
   templateUrl: './fishing.component.html',
-  styleUrls: ['./fishing.component.scss']
+  styleUrls: ['./fishing.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    AppGamesFishInstructionsComponent,
+    AppGamesFishSetLevelComponent,
+    TranslateModule,
+  ],
 })
 export class AppGamesFishingComponent implements OnInit {
   // Tells if it should show the loading screen or not.
@@ -28,9 +39,7 @@ export class AppGamesFishingComponent implements OnInit {
    *
    * @param languageHelperService Reference to LanguageHelperService.
    */
-  constructor(
-    private readonly languageHelperService: LanguageHelperService,
-  ) {
+  constructor(private readonly languageHelperService: LanguageHelperService) {
     this.currentLanguage = this.languageHelperService.currentLangUsed;
   }
 
@@ -46,11 +55,12 @@ export class AppGamesFishingComponent implements OnInit {
     }, 3000);
 
     // Listens for any changes regarding the current used language.
-    this.languageHelperService.OnLanguageChanged
-      .pipe(takeUntil(this.destroyed)).subscribe(() => {
-        this.currentLanguage = this.languageHelperService.currentLangUsed;
-        this.checkForCompletedLevels();
-      });
+    this.languageHelperService.OnLanguageChanged.pipe(
+      takeUntil(this.destroyed)
+    ).subscribe(() => {
+      this.currentLanguage = this.languageHelperService.currentLangUsed;
+      this.checkForCompletedLevels();
+    });
   }
 
   /**
@@ -59,9 +69,13 @@ export class AppGamesFishingComponent implements OnInit {
   checkForCompletedLevels(): void {
     if (this.currentLanguage && this.currentLanguage.length > 0) {
       if (localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS)) {
-        const storedData = JSON.parse(localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS) as string);
+        const storedData = JSON.parse(
+          localStorage.getItem(STORAGE_KEY_TYPE.FISH_GAME_PROGRESS) as string
+        );
         if (storedData) {
-          const findLanguage = storedData.find((item: GameStorageDTO) => item.language === this.currentLanguage);
+          const findLanguage = storedData.find(
+            (item: GameStorageDTO) => item.language === this.currentLanguage
+          );
           if (findLanguage) {
             this.showLevelScreen = true;
           }

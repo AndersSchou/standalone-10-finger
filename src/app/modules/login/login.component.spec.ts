@@ -23,8 +23,7 @@ describe('AppLoginComponent', () => {
         { provide: AuthService, useValue: authServiceSpy },
         { provide: MatDialog, useValue: matDialogSpy },
       ],
-      imports: [],
-      declarations: [AppLoginComponent],
+      imports: [AppLoginComponent],
       schemas: [],
     }).compileComponents();
   });

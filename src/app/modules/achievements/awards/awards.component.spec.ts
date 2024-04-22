@@ -4,7 +4,6 @@ import { MatIconTestingModule } from '@angular/material/icon/testing';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { CourseHelperService } from 'src/app/services/course-helper.service';
-import { MaterialModule } from '../../shared/material.module';
 import { AppAchievementsAwardsComponent } from './awards.component';
 
 describe('AppAchievementsAwardsComponent', () => {
@@ -14,20 +13,21 @@ describe('AppAchievementsAwardsComponent', () => {
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    courseHelperServiceSpy = jasmine.createSpyObj<CourseHelperService>(['startExercise']);
+    courseHelperServiceSpy = jasmine.createSpyObj<CourseHelperService>([
+      'startExercise',
+    ]);
 
     routerSpy = jasmine.createSpyObj<Router>(['navigate']);
 
     await TestBed.configureTestingModule({
-      declarations: [AppAchievementsAwardsComponent],
       providers: [
         { provide: CourseHelperService, useValue: courseHelperServiceSpy },
         { provide: Router, useValue: routerSpy },
       ],
       imports: [
         TranslateModule.forRoot(),
-        MaterialModule,
-        MatIconTestingModule
+        MatIconTestingModule,
+        AppAchievementsAwardsComponent,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

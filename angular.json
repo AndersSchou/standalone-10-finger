@@ -122,21 +122,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "10-finger:build:local"
+            "buildTarget": "10-finger:build:local"
           },
           "configurations": {
             "production": {
-              "browserTarget": "10-finger:build:production"
+              "buildTarget": "10-finger:build:production"
             },
             "development": {
-              "browserTarget": "10-finger:build:development"
+              "buildTarget": "10-finger:build:development"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "10-finger:build"
+            "buildTarget": "10-finger:build"
           }
         },
         "test": {

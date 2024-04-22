@@ -17,8 +17,8 @@ describe('ErrorModalService', () => {
     TestBed.configureTestingModule({
       providers: [
         ErrorModalService,
-        { provide: MatDialog, useValue: matDialogSpy }
-      ]
+        { provide: MatDialog, useValue: matDialogSpy },
+      ],
     });
     service = TestBed.inject(ErrorModalService);
   });
