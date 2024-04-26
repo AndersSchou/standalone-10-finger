@@ -37,6 +37,7 @@ export class BaseService<T> {
       requestdatetime: timestamp,
       'Content-Type': 'application/json',
       accept: 'application/json',
+      productname: '10-finger',
     };
   }
 
