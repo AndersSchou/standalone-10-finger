@@ -14,8 +14,8 @@ export const environment = {
   gameTime: '01:30',
   accessIdentifier10finger: 'product.all.ml.10finger.upgradeable',
   UrlEndpoints: {
-    auth: 'https://signon-dev.vitec-mv.com',
-    voiceservice: 'https://voiceservice-dev.vitec-mv.com',
-    user: 'https://mvidsignonapi-dev.vitec-mv.com',
+    auth: 'https://signon.dev.vitecmv.com',
+    voiceservice: 'https://voiceservice.dev.vitecmv.com',
+    user: 'https://mvidsignonapi.dev.vitecmv.com',
   }
 };
