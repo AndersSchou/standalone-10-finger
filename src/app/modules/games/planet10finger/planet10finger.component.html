@@ -1,0 +1,61 @@
+<div class="planet10finger-bg">
+  <div class="games-grid">
+    <div class="game-card" (click)="openPopup('power')">
+      <mat-icon svgIcon="games" class="game-icon"></mat-icon>
+      <span class="game-label">Strøm generations spil</span>
+    </div>
+
+    <div class="game-card" (click)="navigateToGame('headquarters')">
+      <mat-icon svgIcon="games" class="game-icon"></mat-icon>
+      <span class="game-label">Hovedkvarter</span>
+    </div>
+
+    <div class="game-card" (click)="openPopup('oxygen')">
+      <mat-icon svgIcon="games" class="game-icon"></mat-icon>
+      <span class="game-label">Oxygen spil</span>
+    </div>
+
+    <div class="game-card" (click)="openPopup('meteor')">
+      <mat-icon svgIcon="games" class="game-icon"></mat-icon>
+      <span class="game-label">Meteor spil</span>
+    </div>
+
+    <div class="game-card" (click)="openPopup('factory')">
+      <mat-icon svgIcon="games" class="game-icon"></mat-icon>
+      <span class="game-label">Fabrik spil</span>
+    </div>
+
+    <div class="game-card" (click)="openPopup('assembling')">
+      <mat-icon svgIcon="games" class="game-icon"></mat-icon>
+      <span class="game-label">Samle spil</span>
+    </div>
+  </div>
+</div>
+
+<!-- Game Popup -->
+<div class="popup-overlay" *ngIf="activePopup" (click)="closePopup()">
+  <div class="popup" (click)="$event.stopPropagation()">
+    <button class="popup-close" (click)="closePopup()">&#x2715;</button>
+
+    <app-planet10finger-power
+      *ngIf="activePopup === 'power'"
+      (gameClose)="closePopup()"
+    ></app-planet10finger-power>
+
+    <app-planet10finger-oxygen
+      *ngIf="activePopup === 'oxygen'"
+    ></app-planet10finger-oxygen>
+
+    <app-planet10finger-meteor
+      *ngIf="activePopup === 'meteor'"
+    ></app-planet10finger-meteor>
+
+    <app-planet10finger-factory
+      *ngIf="activePopup === 'factory'"
+    ></app-planet10finger-factory>
+
+    <app-planet10finger-assembling
+      *ngIf="activePopup === 'assembling'"
+    ></app-planet10finger-assembling>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+.planet10finger-bg {
+  background-image: url('/assets/png/moon_baggrund.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  padding: 48px;
+}
+
+.game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.game-icon {
+  width: 120px !important;
+  height: 120px !important;
+  font-size: 120px;
+}
+
+.game-label {
+  margin-top: 12px;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+// ── Popup shared ─────────────────────────────────────────
+
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  position: relative;
+  background: #e8eaf6;
+  color: #1a1a2e;
+  width: 50vw;
+  min-height: 50vh;
+  border-radius: 16px;
+  padding: 48px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+.popup-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #1a1a2e;
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}

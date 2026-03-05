@@ -81,6 +81,8 @@ export const APP_ICONS = [
   'reset',
   'result',
   'rocket',
+  'cover_rocket_alone',
+  'cover_space',
   'settings',
   'sound_on',
   'sound_off',
