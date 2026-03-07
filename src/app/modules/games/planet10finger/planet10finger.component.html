@@ -44,6 +44,7 @@
 
     <app-planet10finger-oxygen
       *ngIf="activePopup === 'oxygen'"
+      (gameClose)="closePopup()"
     ></app-planet10finger-oxygen>
 
     <app-planet10finger-meteor

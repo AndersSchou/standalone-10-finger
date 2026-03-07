@@ -1,2 +1,38 @@
 <h2>Oxygen spil</h2>
-<p>Indhold kommer snart...</p>
+<p class="rounds-count">
+  Gennemførte runder: {{ roundsCompleted }} / {{ totalSequences }}
+</p>
+
+<!-- Training complete overlay -->
+<div class="training-complete-overlay" *ngIf="trainingComplete">
+  <p class="training-complete-text">Training Complete!</p>
+  <button class="training-close-btn" (click)="close()">Luk</button>
+</div>
+
+<ng-container *ngIf="!trainingComplete">
+  <div class="all-sequences">
+    <div
+      class="sequence-row"
+      *ngFor="
+        let seq of trainingSets[trainingSetIndex]?.sequences;
+        let si = index
+      "
+      [class.row-done]="si < roundsCompleted"
+      [class.row-active]="si === roundsCompleted"
+      [class.row-pending]="si > roundsCompleted"
+    >
+      <span class="seq-number">{{ si + 1 }}</span>
+      <div
+        class="key-chip"
+        *ngFor="let key of seq.keys; let ki = index"
+        [class.active]="getKeyStateInRow(si, ki) === 'active'"
+        [class.done]="getKeyStateInRow(si, ki) === 'done'"
+        [class.error]="getKeyStateInRow(si, ki) === 'error'"
+      >
+        {{ key }}
+      </div>
+    </div>
+  </div>
+
+  <p class="hint" *ngIf="showError">Forkert tast! Prøv igen fra starten.</p>
+</ng-container>
