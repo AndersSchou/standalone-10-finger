@@ -1,2 +1,42 @@
-<h2>Fabrik spil</h2>
-<p>Indhold kommer snart...</p>
+<p class="rounds-count">Gennemførte sætninger: {{ score }} / {{ goal }}</p>
+
+<!-- Training complete overlay -->
+<div class="training-complete-overlay" *ngIf="gameOver">
+  <p class="training-complete-text">Fabrikken er klar!</p>
+  <button class="training-close-btn" (click)="restartGame()">Spil igen</button>
+  <button class="training-close-btn secondary" (click)="close()">Luk</button>
+</div>
+
+<ng-container *ngIf="!gameOver">
+  <div class="sentence-row">
+    <ng-container *ngFor="let word of words">
+      <!-- Space between words -->
+      <div class="word-space" *ngIf="word.length === 1 && word[0].char === ' '">
+        <div
+          class="char-chip space"
+          [class.active]="word[0].index === typed.length"
+          [class.correct]="word[0].state === 'correct'"
+        ></div>
+      </div>
+      <!-- Word group: all chars kept together -->
+      <div
+        class="word-group"
+        *ngIf="!(word.length === 1 && word[0].char === ' ')"
+      >
+        <div
+          class="char-chip"
+          *ngFor="let c of word"
+          [class.active]="c.index === typed.length"
+          [class.correct]="c.state === 'correct'"
+          [class.error]="c.state === 'error'"
+        >
+          {{ c.char }}
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <p class="hint" [style.visibility]="showError ? 'visible' : 'hidden'">
+    Forkert tegn!
+  </p>
+</ng-container>

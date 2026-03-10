@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, AfterViewInit, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
 
 interface OxygenSequence {
   keys: string[];
@@ -22,9 +23,10 @@ type KeyState = 'pending' | 'active' | 'done' | 'error';
   templateUrl: './oxygen.component.html',
   styleUrl: './oxygen.component.scss',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, VKeyboardComponent],
 })
-export class OxygenComponent implements OnDestroy {
+export class OxygenComponent implements AfterViewInit, OnDestroy {
+  @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
   @Output() gameClose = new EventEmitter<void>();
   /** 0-based index of the training set to play (0–4). */
   @Input() trainingSetIndex = 0;
@@ -40,6 +42,11 @@ export class OxygenComponent implements OnDestroy {
 
   constructor(private readonly http: HttpClient) {
     this.startGame();
+  }
+
+  ngAfterViewInit(): void {
+    this.vkeyboard?.setTheme('color-group');
+    this.vkeyboard?.setMode('partial');
   }
 
   // ── Template helpers ──────────────────────────────────────

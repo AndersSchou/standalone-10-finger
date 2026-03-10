@@ -37,26 +37,44 @@
   <div class="popup" (click)="$event.stopPropagation()">
     <button class="popup-close" (click)="closePopup()">&#x2715;</button>
 
-    <app-planet10finger-power
-      *ngIf="activePopup === 'power'"
-      (gameClose)="closePopup()"
-    ></app-planet10finger-power>
+    <!-- F+J hold gate -->
+    <div class="fj-gate" *ngIf="!gameReady">
+      <div class="fj-title">
+        <div>Hold</div>
+        <div><kbd>F</kbd> og <kbd>J</kbd></div>
+        <div>for at starte</div>
+      </div>
+      <div class="fj-bar-track">
+        <div class="fj-bar-fill" [style.width.%]="holdProgress"></div>
+      </div>
+    </div>
 
-    <app-planet10finger-oxygen
-      *ngIf="activePopup === 'oxygen'"
-      (gameClose)="closePopup()"
-    ></app-planet10finger-oxygen>
+    <!-- Game content (only rendered after hold completes) -->
+    <ng-container *ngIf="gameReady">
+      <app-planet10finger-power
+        *ngIf="activePopup === 'power'"
+        (gameClose)="closePopup()"
+      ></app-planet10finger-power>
 
-    <app-planet10finger-meteor
-      *ngIf="activePopup === 'meteor'"
-    ></app-planet10finger-meteor>
+      <app-planet10finger-oxygen
+        *ngIf="activePopup === 'oxygen'"
+        (gameClose)="closePopup()"
+      ></app-planet10finger-oxygen>
 
-    <app-planet10finger-factory
-      *ngIf="activePopup === 'factory'"
-    ></app-planet10finger-factory>
+      <app-planet10finger-meteor
+        *ngIf="activePopup === 'meteor'"
+        (gameClose)="closePopup()"
+      ></app-planet10finger-meteor>
 
-    <app-planet10finger-assembling
-      *ngIf="activePopup === 'assembling'"
-    ></app-planet10finger-assembling>
+      <app-planet10finger-factory
+        *ngIf="activePopup === 'factory'"
+        (gameClose)="closePopup()"
+      ></app-planet10finger-factory>
+
+      <app-planet10finger-assembling
+        *ngIf="activePopup === 'assembling'"
+        (gameClose)="closePopup()"
+      ></app-planet10finger-assembling>
+    </ng-container>
   </div>
 </div>

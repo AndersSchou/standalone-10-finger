@@ -1,4 +1,3 @@
-<h2>Strøm generations spil</h2>
 <p class="rounds-count">Gennemførte runder: {{ roundsCompleted }} / 5</p>
 
 <!-- Training complete overlay -->
@@ -9,7 +8,7 @@
 
 <ng-container *ngIf="!trainingComplete">
   <p class="key-instruction">
-    Hold hvert par nede i {{ holdDuration }} sekunder inden du fortsætter:
+    Hold knapperne nede i {{ holdDuration }} sekund for at fortsætte
   </p>
 
   <div class="pairs-row">
@@ -33,7 +32,21 @@
     <div class="progress-bar-fill" [style.width.%]="holdProgress"></div>
   </div>
 
-  <div class="round-success" *ngIf="roundSuccess">
+  <div
+    class="round-success"
+    [style.visibility]="roundSuccess ? 'visible' : 'hidden'"
+  >
     &#10003; Runde gennemført!
   </div>
 </ng-container>
+
+<!-- Keyboard + hands -->
+<div class="keyboard-hld">
+  <div class="hands-hld mr-10">
+    <div class="hands-bg left"></div>
+  </div>
+  <app-vkeyboard></app-vkeyboard>
+  <div class="hands-hld ml-10">
+    <div class="hands-bg right"></div>
+  </div>
+</div>

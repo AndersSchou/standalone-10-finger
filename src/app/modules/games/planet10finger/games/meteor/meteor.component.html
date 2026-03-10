@@ -1,2 +1,47 @@
-<h2>Meteor spil</h2>
-<p>Indhold kommer snart...</p>
+<div class="meteor-game">
+  <!-- HUD ─────────────────────────────────────── -->
+  <div class="hud">
+    <div class="hud-item">
+      <span class="hud-label">Tid</span>
+      <span class="hud-value timer" [class.danger]="timeLeft <= 5"
+        >{{ timeLeft }}s</span
+      >
+    </div>
+    <div class="typed-display">{{ typedWord || "…" }}</div>
+    <div class="hud-item">
+      <span class="hud-label">Point</span>
+      <span class="hud-value score">{{ score }}</span>
+    </div>
+  </div>
+
+  <!-- Game area ───────────────────────────────── -->
+  <div class="game-area" *ngIf="!gameOver">
+    <ng-container *ngFor="let meteor of meteors">
+      <div
+        class="meteor-circle"
+        [class.ltr]="meteor.direction === 'ltr'"
+        [class.rtl]="meteor.direction === 'rtl'"
+        [class.hit]="!meteor.visible"
+        [style.top.%]="meteor.top"
+        [style.animation-duration]="meteor.duration + 's'"
+        (animationend)="onMeteorAnimationEnd(meteor)"
+      >
+        <span class="meteor-word">{{ meteor.word }}</span>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Game-over screen ───────────────────────── -->
+  <div class="game-over-screen" *ngIf="gameOver">
+    <div class="go-title">Spillet er slut!</div>
+    <div class="go-score">
+      Du ødelagde <strong>{{ score }}</strong> meteor{{
+        score === 1 ? "" : "er"
+      }}!
+    </div>
+    <div class="go-actions">
+      <button class="btn-restart" (click)="restartGame()">Spil igen</button>
+      <button class="btn-close" (click)="close()">Luk</button>
+    </div>
+  </div>
+</div>

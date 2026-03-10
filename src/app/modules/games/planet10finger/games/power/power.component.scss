@@ -1,3 +1,9 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .rounds-count {
   font-size: 0.95rem;
   color: #555;
@@ -8,6 +14,7 @@
   font-size: 1rem;
   margin-bottom: 20px;
   font-weight: 600;
+  text-align: center;
 }
 
 .pairs-row {
@@ -118,3 +125,32 @@
     background-color: #2020cc;
   }
 }
+
+// ── Keyboard + hands ─────────────────────────────────────
+
+.keyboard-hld {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.hands-hld {
+  display: flex;
+  align-items: center;
+}
+
+.mr-10 { margin-right: 10px; }
+.ml-10 { margin-left:  10px; }
+
+.hands-bg {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 140px;
+  height: 222px;
+}
+
+.hands-bg.left  { background-image: url('../../../../../../assets/svg/hand_left.svg');  }
+.hands-bg.right { background-image: url('../../../../../../assets/svg/hand_right.svg'); }

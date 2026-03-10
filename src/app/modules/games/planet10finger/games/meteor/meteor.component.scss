@@ -1,0 +1,205 @@
+// ── Container ──────────────────────────────────────────────────────────────
+.meteor-game {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  background: radial-gradient(ellipse at 50% 40%, #1b1b3a 0%, #080814 100%);
+  overflow: hidden;
+  border-radius: 8px;
+  user-select: none;
+
+  // Subtle star field painted with box-shadows via pseudo-element
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 34% 62%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 28%, rgba(255, 255, 255, 0.9) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 75%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 85% 15%, rgba(255, 255, 255, 0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 22% 88%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 42%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 48% 55%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 6%  70%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 63% 90%, rgba(255, 255, 255, 0.5) 0%, transparent 100%);
+    pointer-events: none;
+  }
+}
+
+// ── HUD ────────────────────────────────────────────────────────────────────
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.hud-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.hud-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.hud-value.timer        { color: #ffd700; }
+.hud-value.timer.danger { color: #ff4444; animation: pulse 0.6s ease-in-out infinite alternate; }
+.hud-value.score        { color: #00e676; }
+
+.typed-display {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  padding: 4px 18px;
+  min-width: 100px;
+  text-align: center;
+  letter-spacing: 3px;
+}
+
+// ── Game area ──────────────────────────────────────────────────────────────
+.game-area {
+  position: absolute;
+  inset: 0;
+}
+
+// ── Meteor keyframes ───────────────────────────────────────────────────────
+@keyframes fly-ltr {
+  from { left: -120px; }
+  to   { left: 110%;   }
+}
+
+@keyframes fly-rtl {
+  from { right: -120px; }
+  to   { right: 110%;   }
+}
+
+@keyframes pulse {
+  from { opacity: 1; }
+  to   { opacity: 0.4; }
+}
+
+// ── Meteor circle ──────────────────────────────────────────────────────────
+.meteor-circle {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 36%, #c4a882, #7a4e2d 50%, #3e2010 100%);
+  box-shadow:
+    0 0 12px rgba(120, 70, 20, 0.7),
+    0 0 30px rgba(80, 40, 10, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+
+  &.ltr {
+    animation-name: fly-ltr;
+  }
+
+  &.rtl {
+    animation-name: fly-rtl;
+  }
+
+  // Burst / hit state
+  &.hit {
+    transform: scale(2.2);
+    opacity: 0;
+    transition: transform 0.35s ease-out, opacity 0.35s ease-out;
+    box-shadow: 0 0 60px rgba(255, 200, 0, 1), 0 0 100px rgba(255, 100, 0, 0.7);
+  }
+}
+
+.meteor-word {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+  word-break: break-all;
+  padding: 6px;
+  line-height: 1.2;
+}
+
+// ── Game-over screen ───────────────────────────────────────────────────────
+.game-over-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  z-index: 30;
+
+  .go-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: #ffd700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  }
+
+  .go-score {
+    font-size: 22px;
+    color: #fff;
+
+    strong {
+      color: #00e676;
+      font-size: 28px;
+    }
+  }
+
+  .go-actions {
+    display: flex;
+    gap: 16px;
+
+    button {
+      padding: 12px 28px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter 0.15s;
+
+      &:hover { filter: brightness(1.15); }
+    }
+
+    .btn-restart {
+      background: #00c853;
+      color: #fff;
+    }
+
+    .btn-close {
+      background: #e52e71;
+      color: #fff;
+    }
+  }
+}

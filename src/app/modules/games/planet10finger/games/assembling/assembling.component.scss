@@ -1,0 +1,136 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1.5rem 2rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.rounds-count {
+  font-size: 1rem;
+  color: #555;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+// ── Story display ─────────────────────────────────────────
+
+.story-display {
+  flex: 1;
+  width: 100%;
+  font-size: 1.6rem;
+  line-height: 2;
+  color: #111;
+  text-align: center;
+  word-break: break-word;
+  white-space: pre-wrap;
+  overflow-y: auto;
+
+  span {
+    transition: color 0.1s;
+
+    &.correct {
+      color: #66bb6a;
+    }
+
+    &.current {
+      color: #fff;
+      background: #1565c0;
+      border-radius: 3px;
+      padding: 0 1px;
+    }
+  }
+}
+
+// ── Typing field ──────────────────────────────────────────
+
+.typing-field {
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  height: 7rem;
+  padding: 0.8rem 1rem;
+  font-size: 1.2rem;
+  font-family: inherit;
+  background: #1e272e;
+  color: #e0e0e0;
+  border: 2px solid #546e7a;
+  border-radius: 0.6rem;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border-color: #42a5f5;
+    box-shadow: 0 0 10px #42a5f566;
+  }
+
+  &.error {
+    border-color: #ef5350;
+    box-shadow: 0 0 10px #ef535066;
+    animation: shake 0.3s ease;
+  }
+
+  &::placeholder {
+    color: #546e7a;
+  }
+}
+
+@keyframes shake {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-5px); }
+  50%  { transform: translateX(5px); }
+  75%  { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+// ── Hint ─────────────────────────────────────────────────
+
+.hint {
+  font-size: 0.9rem;
+  color: #ef9a9a;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+// ── Training complete overlay ─────────────────────────────
+
+.training-complete-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(232, 234, 246, 0.92);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 10;
+}
+
+.training-complete-text {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2e7d32;
+  text-align: center;
+}
+
+.training-close-btn {
+  padding: 14px 48px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: #3a3aff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover { background-color: #2020cc; }
+
+  &.secondary {
+    background-color: #e52e71;
+    &:hover { background-color: #b0003a; }
+  }
+}

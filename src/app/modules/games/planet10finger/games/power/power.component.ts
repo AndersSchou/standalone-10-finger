@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { Component, AfterViewInit, EventEmitter, OnDestroy, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
 
 interface PowerRound {
   pairs: string[][]; // 4 pairs of 2 keys each
@@ -16,9 +17,10 @@ interface PowerRound {
   templateUrl: './power.component.html',
   styleUrls: ['./power.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, VKeyboardComponent],
 })
-export class PowerComponent implements OnDestroy {
+export class PowerComponent implements AfterViewInit, OnDestroy {
+  @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
   /** Emitted when the user closes the training-complete screen. */
   @Output() gameClose = new EventEmitter<void>();
 
@@ -39,6 +41,11 @@ export class PowerComponent implements OnDestroy {
 
   constructor(private readonly http: HttpClient) {
     this.startPowerGame();
+  }
+
+  ngAfterViewInit(): void {
+    this.vkeyboard?.setTheme('color-group');
+    this.vkeyboard?.setMode('partial');
   }
 
   // ── Public helpers for template ───────────────────────────

@@ -1,2 +1,35 @@
-<h2>Samle spil</h2>
-<p>Indhold kommer snart...</p>
+<p class="rounds-count">Gennemførte historier: {{ score }} / {{ goal }}</p>
+
+<!-- Complete overlay -->
+<div class="training-complete-overlay" *ngIf="gameOver">
+  <p class="training-complete-text">Alle historier samlet!</p>
+  <button class="training-close-btn" (click)="restartGame()">Spil igen</button>
+  <button class="training-close-btn secondary" (click)="close()">Luk</button>
+</div>
+
+<ng-container *ngIf="!gameOver">
+  <div class="story-display">
+    <span
+      *ngFor="let c of chars"
+      [class.correct]="c.state === 'correct'"
+      [class.current]="c.state === 'current'"
+      >{{ c.char }}</span
+    >
+  </div>
+
+  <textarea
+    #typingArea
+    class="typing-field"
+    [class.error]="showError"
+    (input)="onInput($event)"
+    autocomplete="off"
+    autocorrect="off"
+    autocapitalize="off"
+    spellcheck="false"
+    placeholder="Skriv historien her..."
+  ></textarea>
+
+  <p class="hint" [style.visibility]="showError ? 'visible' : 'hidden'">
+    Forkert tegn!
+  </p>
+</ng-container>

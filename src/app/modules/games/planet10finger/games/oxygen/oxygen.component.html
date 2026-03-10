@@ -1,4 +1,3 @@
-<h2>Oxygen spil</h2>
 <p class="rounds-count">
   Gennemførte runder: {{ roundsCompleted }} / {{ totalSequences }}
 </p>
@@ -34,5 +33,18 @@
     </div>
   </div>
 
-  <p class="hint" *ngIf="showError">Forkert tast! Prøv igen fra starten.</p>
+  <p class="hint" [style.visibility]="showError ? 'visible' : 'hidden'">
+    Forkert tast! Prøv igen fra starten.
+  </p>
 </ng-container>
+
+<!-- Keyboard + hands -->
+<div class="keyboard-hld">
+  <div class="hands-hld mr-10">
+    <div class="hands-bg left"></div>
+  </div>
+  <app-vkeyboard></app-vkeyboard>
+  <div class="hands-hld ml-10">
+    <div class="hands-bg right"></div>
+  </div>
+</div>

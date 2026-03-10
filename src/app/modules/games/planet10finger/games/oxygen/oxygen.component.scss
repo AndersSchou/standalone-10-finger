@@ -4,6 +4,7 @@
   align-items: center;
   gap: 1.5rem;
   padding: 1.5rem 2rem;
+  height: 100%;
 }
 
 h2 {
@@ -14,7 +15,7 @@ h2 {
 
 .rounds-count {
   font-size: 1rem;
-  color: #b2ebf2;
+  color: #555;
   margin: 0;
 }
 
@@ -27,9 +28,15 @@ h2 {
 /* All sequences list */
 .all-sequences {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-  width: 100%;
+  grid-template-columns: auto auto;
+  gap: 0.6rem 1.2rem;
+  width: fit-content;
+  margin: 0 auto;
+
+  // Left column — align rows to the right so they sit flush against the centre
+  .sequence-row:nth-child(odd)  { justify-self: end; }
+  // Right column — align rows to the left
+  .sequence-row:nth-child(even) { justify-self: start; }
 }
 
 /* One sequence row */
@@ -155,3 +162,32 @@ h2 {
     background-color: #2020cc;
   }
 }
+
+// ── Keyboard + hands ─────────────────────────────────────
+
+.keyboard-hld {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.hands-hld {
+  display: flex;
+  align-items: center;
+}
+
+.mr-10 { margin-right: 10px; }
+.ml-10 { margin-left:  10px; }
+
+.hands-bg {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 140px;
+  height: 222px;
+}
+
+.hands-bg.left  { background-image: url('../../../../../../assets/svg/hand_left.svg');  }
+.hands-bg.right { background-image: url('../../../../../../assets/svg/hand_right.svg'); }
