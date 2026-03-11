@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, Vie
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 
+
 const GOAL = 3;
 
 /**
@@ -17,8 +18,8 @@ const GOAL = 3;
   imports: [CommonModule],
 })
 export class AssemblingComponent implements OnInit, AfterViewInit {
-  @Output() gameClose = new EventEmitter<void>();
   @ViewChild('typingArea') typingAreaRef!: ElementRef<HTMLTextAreaElement>;
+  @Output() gameClose = new EventEmitter<void>();
 
   stories: string[] = [];
   currentStory = '';

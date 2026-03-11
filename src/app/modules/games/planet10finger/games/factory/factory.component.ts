@@ -100,7 +100,9 @@ export class FactoryComponent implements OnInit, OnDestroy {
 
   private attachKeyListener(): void {
     this.detachKeyListener();
+    const readyAt = Date.now() + 400;
     this.keydownListener = (e: KeyboardEvent) => {
+      if (Date.now() < readyAt) return;
       if (this.gameOver) return;
       if (e.key === 'Backspace') {
         this.typed = this.typed.slice(0, -1);

@@ -1,0 +1,40 @@
+<div class="hq-container">
+  <nav class="tab-bar">
+    <button
+      class="tab-btn"
+      *ngFor="let tab of tabs"
+      [class.active]="activeTab === tab.id"
+      (click)="selectTab(tab.id)"
+    >
+      {{ tab.label }}
+    </button>
+    <button class="tab-btn close-btn" (click)="close()">&#x2715;</button>
+  </nav>
+
+  <div class="tab-content">
+    <div *ngIf="activeTab === 'overview'" class="placeholder">
+      <p>Informations tab — information omkring 10 finger og spillene <br /></p>
+    </div>
+    <div *ngIf="activeTab === 'stats'" class="placeholder">
+      <p>
+        Badges og achievements tab — badges for gennemførte spil, og
+        achievements for specifikke præstationer<br />
+      </p>
+    </div>
+    <div *ngIf="activeTab === 'crew'" class="placeholder">
+      <p>Statistik tab — information og hastighed, korrekthed, og svagheder</p>
+    </div>
+    <div *ngIf="activeTab === 'missions'" class="placeholder">
+      <p>
+        SHOP - til customization af planet
+        <br />
+        <br />
+        hvis Mads fandt det her, skylder du et pølsehørn. hvis ikke, ved du ikke
+        jeg skylder
+        <br />
+        <br />
+        Og hvis albert fandt det her, så siger du ikke noget :D
+      </p>
+    </div>
+  </div>
+</div>

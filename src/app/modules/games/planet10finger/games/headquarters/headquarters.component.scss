@@ -1,0 +1,96 @@
+:host {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #e8eaf6;
+  padding: 24px 28px 28px;
+  box-sizing: border-box;
+}
+
+.hq-close {
+  display: none;
+}
+
+.hq-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+// ── Tab bar ───────────────────────────────────────────────
+
+.tab-bar {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+  align-items: flex-end;
+  padding: 0 2px;
+  width: 100%;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #cfd8dc;
+  border: 2px solid #90a4ae;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+  color: #546e7a;
+  transition: background 0.15s, color 0.15s;
+  position: relative;
+  bottom: -2px;
+  text-align: center;
+
+  &:hover {
+    background: #dde3e6;
+    color: #1a1a2e;
+  }
+
+  &.active {
+    background: #fff;
+    color: #1a1a2e;
+    border-color: #90a4ae;
+    z-index: 2;
+  }
+
+  &.close-btn {
+    flex: 0 0 auto;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #b71c1c;
+
+    &:hover {
+      background: #ffcdd2;
+      color: #b71c1c;
+    }
+  }
+}
+
+// ── Tab content ───────────────────────────────────────────
+
+.tab-content {
+  flex: 1;
+  overflow-y: auto;
+  background: #fff;
+  border: 2px solid #90a4ae;
+  border-radius: 0 10px 10px 10px;
+  padding: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 1.3rem;
+  color: #888;
+}

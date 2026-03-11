@@ -100,7 +100,9 @@ export class OxygenComponent implements AfterViewInit, OnDestroy {
   // ── Key listener ──────────────────────────────────────────
 
   private attachKeyListener(): void {
+    const readyAt = Date.now() + 400;
     this.keydownListener = (e: KeyboardEvent) => {
+      if (Date.now() < readyAt) return;
       if (this.trainingComplete || this.showError) return;
 
       const pressed = e.key.toUpperCase();

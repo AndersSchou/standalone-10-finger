@@ -102,7 +102,9 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
   // ── Key listeners ─────────────────────────────────────────
 
   private attachKeyListeners(): void {
+    const readyAt = Date.now() + 400;
     this.keydownListener = (e: KeyboardEvent) => {
+      if (Date.now() < readyAt) return;
       const key = e.key.toUpperCase();
       if (this.currentKeys.includes(key) && !this.heldKeys.has(key)) {
         const next = new Set(this.heldKeys);

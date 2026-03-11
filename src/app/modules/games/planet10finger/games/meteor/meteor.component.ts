@@ -114,7 +114,9 @@ export class MeteorComponent implements OnInit, OnDestroy {
   }
 
   private attachKeyListener(): void {
+    const readyAt = Date.now() + 400;
     this.keydownListener = (e: KeyboardEvent) => {
+      if (Date.now() < readyAt) return;
       if (this.gameOver) return;
 
       if (e.key === 'Backspace') {

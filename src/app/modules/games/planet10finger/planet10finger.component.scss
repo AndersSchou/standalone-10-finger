@@ -90,9 +90,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 28px;
-  min-height: 220px;
+  height: 100%;
 }
 
 .fj-title {
@@ -134,4 +134,33 @@
   background: linear-gradient(90deg, #42a5f5, #1e88e5);
   border-radius: 7px;
   transition: width 0.1s linear;
+}
+
+// ── F+J gate keyboard ─────────────────────────────────────
+
+.fj-keyboard-hld {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-top: auto;
+  width: 100%;
+}
+
+.fj-hands-hld {
+  display: flex;
+  align-items: flex-end;
+
+  &.mr-10 { margin-right: 10px; }
+  &.ml-10 { margin-left: 10px; }
+}
+
+.fj-hands-bg {
+  width: 140px;
+  height: 222px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+
+  &.left  { background-image: url('../../../../assets/svg/hand_left.svg'); }
+  &.right { background-image: url('../../../../assets/svg/hand_right.svg'); }
 }

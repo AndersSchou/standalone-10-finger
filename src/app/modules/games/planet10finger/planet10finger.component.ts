@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
@@ -7,6 +7,8 @@ import { OxygenComponent } from './games/oxygen/oxygen.component';
 import { MeteorComponent } from './games/meteor/meteor.component';
 import { FactoryComponent } from './games/factory/factory.component';
 import { AssemblingComponent } from './games/assembling/assembling.component';
+import { HeadquartersComponent } from './games/headquarters/headquarters.component';
+import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
 
 /**
  * Hub component for the Planet 10 finger game.
@@ -25,9 +27,13 @@ import { AssemblingComponent } from './games/assembling/assembling.component';
     MeteorComponent,
     FactoryComponent,
     AssemblingComponent,
+    HeadquartersComponent,
+    VKeyboardComponent,
   ],
 })
 export class Planet10fingerComponent implements OnDestroy {
+  @ViewChild(VKeyboardComponent) fjKeyboard?: VKeyboardComponent;
+
   activePopup: string | null = null;
   /** True once the player has held F+J for 1 second. */
   gameReady = false;
@@ -47,6 +53,10 @@ export class Planet10fingerComponent implements OnDestroy {
     this.holdProgress = 0;
     this.heldKeys.clear();
     this.attachHoldListeners();
+    setTimeout(() => {
+      this.fjKeyboard?.setTheme('color-group');
+      this.fjKeyboard?.setMode('partial');
+    });
   }
 
   closePopup(): void {

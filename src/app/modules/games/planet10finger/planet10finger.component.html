@@ -5,7 +5,7 @@
       <span class="game-label">Strøm generations spil</span>
     </div>
 
-    <div class="game-card" (click)="navigateToGame('headquarters')">
+    <div class="game-card" (click)="openPopup('headquarters')">
       <mat-icon svgIcon="games" class="game-icon"></mat-icon>
       <span class="game-label">Hovedkvarter</span>
     </div>
@@ -35,10 +35,16 @@
 <!-- Game Popup -->
 <div class="popup-overlay" *ngIf="activePopup" (click)="closePopup()">
   <div class="popup" (click)="$event.stopPropagation()">
-    <button class="popup-close" (click)="closePopup()">&#x2715;</button>
+    <button
+      class="popup-close"
+      *ngIf="activePopup !== 'headquarters'"
+      (click)="closePopup()"
+    >
+      &#x2715;
+    </button>
 
-    <!-- F+J hold gate -->
-    <div class="fj-gate" *ngIf="!gameReady">
+    <!-- F+J hold gate (skipped for headquarters) -->
+    <div class="fj-gate" *ngIf="!gameReady && activePopup !== 'headquarters'">
       <div class="fj-title">
         <div>Hold</div>
         <div><kbd>F</kbd> og <kbd>J</kbd></div>
@@ -47,10 +53,24 @@
       <div class="fj-bar-track">
         <div class="fj-bar-fill" [style.width.%]="holdProgress"></div>
       </div>
+      <div class="fj-keyboard-hld">
+        <div class="fj-hands-hld mr-10">
+          <div class="fj-hands-bg left"></div>
+        </div>
+        <app-vkeyboard></app-vkeyboard>
+        <div class="fj-hands-hld ml-10">
+          <div class="fj-hands-bg right"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Game content (only rendered after hold completes) -->
-    <ng-container *ngIf="gameReady">
+    <ng-container *ngIf="gameReady || activePopup === 'headquarters'">
+      <app-planet10finger-headquarters
+        *ngIf="activePopup === 'headquarters'"
+        (gameClose)="closePopup()"
+      ></app-planet10finger-headquarters>
+
       <app-planet10finger-power
         *ngIf="activePopup === 'power'"
         (gameClose)="closePopup()"
