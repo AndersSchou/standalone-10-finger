@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-type Tab = 'overview' | 'stats' | 'crew' | 'missions';
+type Tab = 'information' | 'achievements' | 'stats' | 'shop';
 
 @Component({
   selector: 'app-planet10finger-headquarters',
@@ -13,13 +13,13 @@ type Tab = 'overview' | 'stats' | 'crew' | 'missions';
 export class HeadquartersComponent {
   @Output() gameClose = new EventEmitter<void>();
 
-  activeTab: Tab = 'overview';
+  activeTab: Tab = 'information';
 
   tabs: { id: Tab; label: string }[] = [
-    { id: 'overview',  label: 'Placeholder 1' },
-    { id: 'stats',     label: 'Placeholder 2' },
-    { id: 'crew',      label: 'Placeholder 3' },
-    { id: 'missions',  label: 'Placeholder 4' },
+    { id: 'information',  label: 'Information'  },
+    { id: 'achievements', label: 'Præstationer' },
+    { id: 'stats',        label: 'Statistik'    },
+    { id: 'shop',         label: 'Shop'         },
   ];
 
   selectTab(tab: Tab): void {
