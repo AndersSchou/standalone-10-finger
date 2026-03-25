@@ -1,3 +1,5 @@
+@use '../shared/finger-indicators';
+
 :host {
   display: flex;
   flex-direction: column;
@@ -135,4 +137,15 @@
     background-color: #e52e71;
     &:hover { background-color: #b0003a; }
   }
+}
+
+// ── Keyboard + hands ─────────────────────────────────────
+
+.keyboard-hld {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 12px;
+  flex-shrink: 0;
 }

@@ -15,7 +15,7 @@
   </div>
 
   <!-- Game area ───────────────────────────────── -->
-  <div class="game-area" *ngIf="!gameOver">
+  <div class="game-area" *ngIf="!gameOver" #gameAreaRef>
     <ng-container *ngFor="let meteor of meteors">
       <div
         class="meteor-circle"
@@ -42,6 +42,16 @@
     <div class="go-actions">
       <button class="btn-restart" (click)="restartGame()">Spil igen</button>
       <button class="btn-close" (click)="close()">Luk</button>
+    </div>
+  </div>
+  <!-- Keyboard + hands -->
+  <div class="keyboard-hld">
+    <div class="hands-hld mr-10">
+      <div class="hands-bg left"></div>
+    </div>
+    <app-vkeyboard></app-vkeyboard>
+    <div class="hands-hld ml-10">
+      <div class="hands-bg right"></div>
     </div>
   </div>
 </div>

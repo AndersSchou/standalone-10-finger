@@ -2,6 +2,11 @@ import { Component, AfterViewInit, EventEmitter, Input, OnDestroy, Output, ViewC
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
+import {
+  FingerName,
+  HandSide,
+  isFingerExpectedForKey,
+} from '../shared/finger-indicator.util';
 
 interface OxygenSequence {
   keys: string[];
@@ -12,7 +17,6 @@ interface OxygenTrainingSet {
 }
 
 type KeyState = 'pending' | 'active' | 'done' | 'error';
-
 /**
  * Oxygen Generation minigame.
  * Press 6 keys in the exact order defined by the training set.
@@ -71,6 +75,11 @@ export class OxygenComponent implements AfterViewInit, OnDestroy {
     return this.getKeyState(keyIndex);
   }
 
+  isFingerExpected(hand: HandSide, finger: FingerName): boolean {
+    const expected = this.currentSequence[this.currentStep];
+    return isFingerExpectedForKey(expected, hand, finger);
+  }
+
   close(): void {
     this.gameClose.emit();
   }
@@ -120,7 +129,7 @@ export class OxygenComponent implements AfterViewInit, OnDestroy {
             this.trainingComplete = true;
             this.detachKeyListener();
           } else {
-            setTimeout(() => this.loadSequenceForRound(this.roundsCompleted), 800);
+            this.loadSequenceForRound(this.roundsCompleted);
           }
         }
       } else if (e.key.length === 1) {

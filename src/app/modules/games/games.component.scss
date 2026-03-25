@@ -32,7 +32,15 @@
   height: 64px;
 }
 
+.games-list > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .game-hld {
+  width: 260px;
+  box-sizing: border-box;
   padding: 30px;
   border: 1px solid theme-var($--color-active);
   border-radius: 6px;
@@ -44,6 +52,7 @@
 }
 
 .game-title {
+  width: 100%;
   font-weight: 900;
   font-size: 16px;
   line-height: 140%;
@@ -51,6 +60,21 @@
   letter-spacing: 0.04em;
   color: $default-text-color;
   padding-top: 25px;
+  overflow-wrap: break-word;
+}
+
+.games-between-text {
+  margin: 6px 0 6px;
+  font-weight: 900;
+  font-size: 32px;
+  color: theme-var($--color-active-secondary);
+}
+
+.games-between-description {
+  margin: 0 0 18px;
+  font-size: 18px;
+  font-weight: 300;
+  color: inherit;
 }
 
 .mr-30 {

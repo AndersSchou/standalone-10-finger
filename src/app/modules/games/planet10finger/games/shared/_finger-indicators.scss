@@ -1,0 +1,62 @@
+.hands-hld {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 140px;
+  height: 222px;
+}
+
+.mr-10 { margin-right: 10px; }
+.ml-10 { margin-left: 10px; }
+
+.hands-bg {
+  position: relative;
+  z-index: 2;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 140px;
+  height: 222px;
+}
+
+.hands-bg.left  { background-image: url('../../../../../../assets/svg/hand_left.svg'); }
+.hands-bg.right { background-image: url('../../../../../../assets/svg/hand_right.svg'); }
+
+.finger-indicators {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.finger-indicator {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 4px solid currentColor;
+  background: transparent;
+  color: #fff;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%) scale(1);
+  transform-origin: center;
+  transition: transform 0.16s ease;
+  pointer-events: none;
+
+  &.active {
+    transform: translate(-50%, -50%) scale(2);
+  }
+}
+
+.finger-indicators.left {
+  .finger-indicator.index  { left: 112px; top: 33px; color: #ed4561; }
+  .finger-indicator.middle { left: 81px;  top: 19px; color: #0e9a0e; }
+  .finger-indicator.ring   { left: 47px;  top: 22px; color: #a314f5; }
+  .finger-indicator.pinky  { left: 22px;  top: 45px; color: #eb760f; }
+}
+
+.finger-indicators.right {
+  .finger-indicator.index  { left: 28px;  top: 33px; color: #007af5; }
+  .finger-indicator.middle { left: 59px;  top: 19px; color: #0e9a0e; }
+  .finger-indicator.ring   { left: 93px;  top: 22px; color: #a314f5; }
+  .finger-indicator.pinky  { left: 118px; top: 45px; color: #eb760f; }
+}

@@ -2,6 +2,11 @@ import { Component, AfterViewInit, EventEmitter, OnDestroy, Output, ViewChild } 
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
+import {
+  FingerName,
+  HandSide,
+  isFingerExpectedForAnyKey,
+} from '../shared/finger-indicator.util';
 
 interface PowerRound {
   pairs: string[][]; // 4 pairs of 2 keys each
@@ -31,6 +36,7 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
   holdProgress = 0;
   holdDuration = 2;
   roundsCompleted = 0;
+  totalRounds = 6;
   roundSuccess = false;
   trainingComplete = false;
 
@@ -38,6 +44,7 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
   private holdStart: number | null = null;
   private keydownListener: ((e: KeyboardEvent) => void) | null = null;
   private keyupListener: ((e: KeyboardEvent) => void) | null = null;
+  private remainingRoundIndices: number[] = [];
 
   constructor(private readonly http: HttpClient) {
     this.startPowerGame();
@@ -55,15 +62,21 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
   }
 
   isPairDone(pairIdx: number): boolean {
-    return pairIdx < this.currentPairIndex;
+    return pairIdx < this.currentPairIndex ||
+      (this.roundSuccess && pairIdx === this.currentPairIndex);
   }
 
   isPairActive(pairIdx: number): boolean {
-    return pairIdx === this.currentPairIndex;
+    return !this.roundSuccess && pairIdx === this.currentPairIndex;
   }
 
   isKeyHeld(key: string): boolean {
     return this.heldKeys.has(key.toUpperCase());
+  }
+
+  isFingerExpected(hand: HandSide, finger: FingerName): boolean {
+    if (this.roundSuccess) return false;
+    return isFingerExpectedForAnyKey(this.currentKeys, hand, finger);
   }
 
   close(): void {
@@ -79,6 +92,11 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
       .get<{ rounds: PowerRound[] }>('assets/games/power-generation.json')
       .subscribe((data) => {
         this.powerRounds = data.rounds;
+        this.totalRounds = Math.min(6, this.powerRounds.length);
+        this.remainingRoundIndices = this.getRandomRoundOrder().slice(
+          0,
+          this.totalRounds
+        );
         this.pickNewRound();
         this.attachKeyListeners();
       });
@@ -90,9 +108,26 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
     this.holdProgress = 0;
     this.roundSuccess = false;
     this.currentPairIndex = 0;
-    const idx = Math.floor(Math.random() * this.powerRounds.length);
+
+    if (this.remainingRoundIndices.length === 0) {
+      this.trainingComplete = true;
+      this.detachKeyListeners();
+      return;
+    }
+
+    const idx = this.remainingRoundIndices.shift() ?? 0;
     this.allPairs = this.powerRounds[idx].pairs;
     this.holdDuration = this.powerRounds[idx].holdDuration;
+  }
+
+  /** Fisher-Yates shuffle for a random, non-repeating round order. */
+  private getRandomRoundOrder(): number[] {
+    const indices = this.powerRounds.map((_, idx) => idx);
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    return indices;
   }
 
   private get allKeysHeld(): boolean {
@@ -155,7 +190,7 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
         } else {
           this.roundsCompleted++;
           this.roundSuccess = true;
-          if (this.roundsCompleted >= 5) {
+          if (this.roundsCompleted >= this.totalRounds) {
             this.trainingComplete = true;
             this.detachKeyListeners();
           } else {

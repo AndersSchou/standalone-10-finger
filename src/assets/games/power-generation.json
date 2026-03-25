@@ -1,11 +1,11 @@
 {
   "rounds": [
-    { "pairs": [["F", "J"], ["D", "K"], ["S", "L"], ["A", "Æ"]], "holdDuration": 1 },
-    { "pairs": [["A", "Æ"], ["S", "L"], ["D", "K"], ["F", "J"]], "holdDuration": 1 },
-    { "pairs": [["R", "U"], ["E", "I"], ["W", "O"], ["Q", "P"]], "holdDuration": 1 },
-    { "pairs": [["Q", "P"], ["W", "O"], ["E", "I"], ["R", "U"]], "holdDuration": 1 },
-    { "pairs": [["V", "M"], ["C", ","], ["X", "."], ["Z", "-"]], "holdDuration": 1 },
-    { "pairs": [["Z", "-"], ["X", "."], ["C", ","], ["V", "M"]], "holdDuration": 1 }
+    { "pairs": [["Q", "W"], ["P", "O"], ["E", "R"], ["I", "U"]], "holdDuration": 1 },
+    { "pairs": [["U", "I"], ["R", "E"], ["O", "P"], ["W", "Q"]], "holdDuration": 1 },
+    { "pairs": [["A", "S"], ["Æ", "L"], ["D", "F"], ["K", "J"]], "holdDuration": 1 },
+    { "pairs": [["J", "K"], ["F", "D"], ["L", "Æ"], ["S", "A"]], "holdDuration": 1 },
+    { "pairs": [["Z", "X"], ["-", "."], ["C", "V"], [",", "M"]], "holdDuration": 1 },
+    { "pairs": [["M", ","], ["V", "C"], [".", "-"], ["X", "Z"]], "holdDuration": 1 }
   ]
 }
 

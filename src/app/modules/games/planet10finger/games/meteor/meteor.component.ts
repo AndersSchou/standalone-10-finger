@@ -1,17 +1,21 @@
 import {
+  AfterViewInit,
   Component,
+  ElementRef,
   EventEmitter,
   OnDestroy,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
 
 interface Meteor {
   id: number;
   word: string;
-  /** Vertical position as % from the top of the game area. */
+  /** Vertical position in px from the top of the game area. */
   top: number;
   direction: 'ltr' | 'rtl';
   /** Time in seconds to cross the full screen. */
@@ -31,9 +35,11 @@ interface Meteor {
   templateUrl: './meteor.component.html',
   styleUrl: './meteor.component.scss',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, VKeyboardComponent],
 })
-export class MeteorComponent implements OnInit, OnDestroy {
+export class MeteorComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
+  @ViewChild('gameAreaRef') gameAreaRef?: ElementRef<HTMLElement>;
   @Output() gameClose = new EventEmitter<void>();
 
   meteors: Meteor[] = [];
@@ -49,7 +55,15 @@ export class MeteorComponent implements OnInit, OnDestroy {
   private timerIntervalRef: ReturnType<typeof setInterval> | null = null;
   private keydownListener: ((e: KeyboardEvent) => void) | null = null;
 
+  private readonly meteorSizePx = 115;
+  private readonly edgePaddingPx = 14;
+
   constructor(private readonly http: HttpClient) {}
+
+  ngAfterViewInit(): void {
+    this.vkeyboard?.setTheme('color-group');
+    this.vkeyboard?.setMode('partial');
+  }
 
   ngOnInit(): void {
     this.http
@@ -106,11 +120,25 @@ export class MeteorComponent implements OnInit, OnDestroy {
     if (this.gameOver || this.words.length === 0) return;
 
     const word = this.words[Math.floor(Math.random() * this.words.length)];
-    const top = 10 + Math.random() * 72; // 10 % – 82 %
+    const top = this.getRandomSafeTop();
     const direction: 'ltr' | 'rtl' = Math.random() > 0.5 ? 'ltr' : 'rtl';
     const duration = 5; // seconds to cross the full screen
 
     this.meteors.push({ id: this.nextId++, word, top, direction, duration, visible: true });
+  }
+
+  /** Pick a top position where the full meteor remains visible and away from HUD/keyboard areas. */
+  private getRandomSafeTop(): number {
+    const areaHeight = this.gameAreaRef?.nativeElement.clientHeight ?? 320;
+    const minTop = this.edgePaddingPx;
+    const upperHalfHeight = areaHeight / 2;
+    const maxTop = upperHalfHeight - this.meteorSizePx - this.edgePaddingPx;
+
+    if (maxTop <= minTop) {
+      return minTop;
+    }
+
+    return minTop + Math.random() * (maxTop - minTop);
   }
 
   private attachKeyListener(): void {

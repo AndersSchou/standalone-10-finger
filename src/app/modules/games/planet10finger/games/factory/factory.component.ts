@@ -1,6 +1,12 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
+import {
+  FingerName,
+  HandSide,
+  isFingerExpectedForKey,
+} from '../shared/finger-indicator.util';
 
 const GOAL = 5;
 
@@ -14,9 +20,10 @@ const GOAL = 5;
   templateUrl: './factory.component.html',
   styleUrl: './factory.component.scss',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, VKeyboardComponent],
 })
-export class FactoryComponent implements OnInit, OnDestroy {
+export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
   @Output() gameClose = new EventEmitter<void>();
 
   sentences: string[] = [];
@@ -58,6 +65,11 @@ export class FactoryComponent implements OnInit, OnDestroy {
 
   constructor(private readonly http: HttpClient) {}
 
+  ngAfterViewInit(): void {
+    this.vkeyboard?.setTheme('color-group');
+    this.vkeyboard?.setMode('partial');
+  }
+
   ngOnInit(): void {
     this.http
       .get<{ sentences: string[] }>('assets/games/factory-sentences.json')
@@ -80,6 +92,11 @@ export class FactoryComponent implements OnInit, OnDestroy {
 
   close(): void {
     this.gameClose.emit();
+  }
+
+  isFingerExpected(hand: HandSide, finger: FingerName): boolean {
+    const expected = this.currentSentence[this.typed.length];
+    return isFingerExpectedForKey(expected, hand, finger);
   }
 
   // ── Helpers ──────────────────────────────────────────────

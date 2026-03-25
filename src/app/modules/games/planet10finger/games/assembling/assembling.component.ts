@@ -1,6 +1,12 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
+import {
+  FingerName,
+  HandSide,
+  isFingerExpectedForKey,
+} from '../shared/finger-indicator.util';
 
 
 const GOAL = 3;
@@ -15,10 +21,11 @@ const GOAL = 3;
   templateUrl: './assembling.component.html',
   styleUrl: './assembling.component.scss',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, VKeyboardComponent],
 })
 export class AssemblingComponent implements OnInit, AfterViewInit {
   @ViewChild('typingArea') typingAreaRef!: ElementRef<HTMLTextAreaElement>;
+  @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
   @Output() gameClose = new EventEmitter<void>();
 
   stories: string[] = [];
@@ -52,6 +59,8 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.vkeyboard?.setTheme('color-group');
+    this.vkeyboard?.setMode('partial');
     this.focusField();
   }
 
@@ -106,6 +115,11 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
     this.gameClose.emit();
   }
 
+  isFingerExpected(hand: HandSide, finger: FingerName): boolean {
+    const expected = this.currentStory[this.typed.length];
+    return isFingerExpectedForKey(expected, hand, finger);
+  }
+
   private nextStory(): void {
     this.typed = '';
     this.showError = false;
@@ -126,4 +140,5 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
   private focusField(): void {
     this.typingAreaRef?.nativeElement.focus();
   }
+
 }

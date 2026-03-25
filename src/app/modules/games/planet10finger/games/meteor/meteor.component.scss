@@ -10,10 +10,12 @@
   position: relative;
   flex: 1;
   min-height: 0;
+  padding-bottom: 250px;
   background: radial-gradient(ellipse at 50% 40%, #1b1b3a 0%, #080814 100%);
   overflow: hidden;
   border-radius: 8px;
   user-select: none;
+  box-sizing: border-box;
 
   // Subtle star field painted with box-shadows via pseudo-element
   &::before {
@@ -90,7 +92,7 @@
 // ── Game area ──────────────────────────────────────────────────────────────
 .game-area {
   position: absolute;
-  inset: 0;
+  inset: 68px 0 250px;
 }
 
 // ── Meteor keyframes ───────────────────────────────────────────────────────
@@ -214,3 +216,37 @@
     }
   }
 }
+
+// ── Keyboard + hands ─────────────────────────────────────
+
+.keyboard-hld {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  flex-shrink: 0;
+}
+
+.hands-hld {
+  display: flex;
+  align-items: center;
+}
+
+.mr-10 { margin-right: 10px; }
+.ml-10 { margin-left:  10px; }
+
+.hands-bg {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 140px;
+  height: 222px;
+}
+
+.hands-bg.left  { background-image: url('../../../../../../assets/svg/hand_left.svg');  }
+.hands-bg.right { background-image: url('../../../../../../assets/svg/hand_right.svg'); }
