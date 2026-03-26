@@ -94,3 +94,46 @@
   font-size: 1.3rem;
   color: #888;
 }
+
+.info-content {
+  h3 {
+    margin: 0 0 16px;
+    color: #1a1a2e;
+    font-size: 1.4rem;
+  }
+}
+
+.starting-position-image {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  margin: 12px auto 20px;
+}
+
+.game-info-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.game-info-item {
+  min-width: 0;
+  border: 1px solid #cfd8dc;
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: #f8fafc;
+}
+
+.game-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+}
+
+.game-desc {
+  font-size: 0.95rem;
+  color: #455a64;
+  line-height: 1.35;
+}

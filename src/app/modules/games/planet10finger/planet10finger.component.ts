@@ -1,5 +1,6 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { PowerComponent } from './games/power/power.component';
@@ -21,6 +22,7 @@ import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     MatIcon,
     PowerComponent,
     OxygenComponent,
@@ -31,7 +33,7 @@ import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
     VKeyboardComponent,
   ],
 })
-export class Planet10fingerComponent implements OnDestroy {
+export class Planet10fingerComponent implements OnInit, OnDestroy {
   @ViewChild(VKeyboardComponent) fjKeyboard?: VKeyboardComponent;
 
   activePopup: string | null = null;
@@ -39,7 +41,19 @@ export class Planet10fingerComponent implements OnDestroy {
   gameReady = false;
   /** Hold progress 0–100 for the progress bar. */
   holdProgress = 0;
+  /** Show welcome popup on first visit. */
+  showWelcome = false;
+  /** Planet name input during welcome. */
+  planetNameInput = '';
+  /** Stored planet name to display on main screen. */
+  planetName = '';
+  /** Show game intro popup. */
+  showGameIntro = false;
+  /** Whether "do not show again" is checked for current game intro. */
+  doNotShowAgainChecked = false;
 
+  private readonly WELCOME_KEY = 'planet10finger_welcome_seen';
+  private readonly PLANET_NAME_KEY = 'planet10finger_name';
   private heldKeys = new Set<string>();
   private holdInterval: ReturnType<typeof setInterval> | null = null;
   private keydownListener: ((e: KeyboardEvent) => void) | null = null;
@@ -47,11 +61,55 @@ export class Planet10fingerComponent implements OnDestroy {
 
   constructor(private readonly router: Router) {}
 
-  openPopup(game: string): void {
-    this.activePopup = game;
-    this.gameReady = false;
-    this.holdProgress = 0;
-    this.heldKeys.clear();
+  ngOnInit(): void {
+    const hasSeenWelcome = localStorage.getItem(this.WELCOME_KEY);
+    const storedPlanetName = localStorage.getItem(this.PLANET_NAME_KEY);
+    if (storedPlanetName) {
+      this.planetName = storedPlanetName;
+    }
+    if (!hasSeenWelcome) {
+      this.showWelcome = true;
+    }
+  }
+
+  dismissWelcome(): void {
+    if (this.planetNameInput.trim()) {
+      localStorage.setItem(this.WELCOME_KEY, 'true');
+      localStorage.setItem(this.PLANET_NAME_KEY, this.planetNameInput.trim());
+      this.planetName = this.planetNameInput.trim();
+      this.showWelcome = false;
+    }
+  }
+
+  reopenWelcome(): void {
+    this.planetNameInput = this.planetName;
+    this.showWelcome = true;
+  }
+
+  getGameIntroText(): string {
+    switch (this.activePopup) {
+      case 'power':
+        return 'I dette spil skal du holde de viste knapper nede med de viste fingre for at generere strøm til din månebase';
+      case 'oxygen':
+        return 'I dette spil skal du trykke på de vidste knapper med de viste fingre, i den rigtige rækkefølge for at generere ilt til din månebase!';
+      case 'meteor':
+        return 'I dette spil skal du skrive ordet inde i meteoerne for at skyde dem i stykker og få point';
+      case 'factory':
+        return 'I dette spil skal du skrive ord med 10 finger metoden. tag dig tid og brug den rigtige metode';
+      case 'assembling':
+        return 'I dette spil skal du skrive korte tekster med 10 finger metoden. Fokuser på at skrive korrekt frem for hurtigt';
+      default:
+        return '';
+    }
+  }
+
+  continueFromIntro(): void {
+    if (this.doNotShowAgainChecked && this.activePopup) {
+      const key = `game_intro_${this.activePopup}_hidden`;
+      localStorage.setItem(key, 'true');
+    }
+    this.showGameIntro = false;
+    this.doNotShowAgainChecked = false;
     this.attachHoldListeners();
     setTimeout(() => {
       this.fjKeyboard?.setTheme('color-group');
@@ -59,10 +117,46 @@ export class Planet10fingerComponent implements OnDestroy {
     });
   }
 
+  reopenGameIntro(): void {
+    if (!this.activePopup) return;
+    
+    // Remove the "do not show again" flag so popup appears next time game is opened
+    const introHiddenKey = `game_intro_${this.activePopup}_hidden`;
+    localStorage.removeItem(introHiddenKey);
+    
+    // Show the popup immediately
+    this.showGameIntro = true;
+    this.doNotShowAgainChecked = false;
+  }
+
+  openPopup(game: string): void {
+    this.activePopup = game;
+    this.gameReady = false;
+    this.holdProgress = 0;
+    this.heldKeys.clear();
+    this.doNotShowAgainChecked = false;
+    
+    // Check if intro for this game has been hidden
+    const introHiddenKey = `game_intro_${game}_hidden`;
+    const isIntroHidden = localStorage.getItem(introHiddenKey) === 'true';
+    
+    if (!isIntroHidden && game !== 'headquarters') {
+      this.showGameIntro = true;
+    } else {
+      this.attachHoldListeners();
+      setTimeout(() => {
+        this.fjKeyboard?.setTheme('color-group');
+        this.fjKeyboard?.setMode('partial');
+      });
+    }
+  }
+
   closePopup(): void {
     this.activePopup = null;
     this.gameReady = false;
     this.holdProgress = 0;
+    this.showGameIntro = false;
+    this.doNotShowAgainChecked = false;
     this.removeHoldListeners();
   }
 

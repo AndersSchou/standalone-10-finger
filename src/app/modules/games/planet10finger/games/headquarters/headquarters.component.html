@@ -12,8 +12,50 @@
   </nav>
 
   <div class="tab-content">
-    <div *ngIf="activeTab === 'information'" class="placeholder">
-      <p>Informations tab — information omkring 10 finger og spillene <br /></p>
+    <div *ngIf="activeTab === 'information'" class="info-content">
+      <h3>Udgangs stilling for 10 Finger systemet!</h3>
+      <p>
+        sæt din venstre pegefinger på F og din højre pegefinger på J, og lad
+        resten af fingrene hvile naturligt på tastaturet.
+      </p>
+
+      <img
+        class="starting-position-image"
+        src="assets/png/startingposition.png"
+        alt="Udgangsstilling for 10-finger systemet"
+      />
+
+      <h3>Spiloversigt</h3>
+      <div class="game-info-list">
+        <div class="game-info-item">
+          <div class="game-name">Strøm</div>
+          <div class="game-desc">
+            Hold knappe par inde i den rigtige rækkefølge for at lave strøm.
+          </div>
+        </div>
+        <div class="game-info-item">
+          <div class="game-name">Ilt</div>
+          <div class="game-desc">
+            Tryk knapper i den rigtige rækkefølge for at lave Ilt.
+          </div>
+        </div>
+        <div class="game-info-item">
+          <div class="game-name">Meteor forsvar</div>
+          <div class="game-desc">
+            Skriv ord hurtigt for at ramme meteorerne.
+          </div>
+        </div>
+        <div class="game-info-item">
+          <div class="game-name">Fabrikken</div>
+          <div class="game-desc">
+            Skriv ord rigtigt for at lave rum materiale.
+          </div>
+        </div>
+        <div class="game-info-item">
+          <div class="game-name">Samle Hangaren</div>
+          <div class="game-desc">Skriv korte historier for at bygge ting.</div>
+        </div>
+      </div>
     </div>
     <div *ngIf="activeTab === 'achievements'" class="placeholder">
       <p>

@@ -1,4 +1,56 @@
+<!-- Welcome Popup (first visit) -->
+<div class="welcome-overlay" *ngIf="showWelcome">
+  <div class="welcome-popup">
+    <div class="welcome-header">
+      <h1>Velkommen til Planet 10 Finger!</h1>
+    </div>
+    <div class="welcome-body">
+      <img
+        src="assets/png/wavingAstronaut.png"
+        alt="Waving Astronaut"
+        class="astronaut-image"
+      />
+      <div class="text-input-container">
+        <div class="speech-bubble">
+          <p>Hej! Velkommen til 10-finger galaksen.</p>
+          <p>
+            Her lærer du at skrive på et tastatur på den rigtige måde samtidig
+            med at du kan bygge din by. <br />
+          </p>
+          <p>før vi starter, hvad vil du have din planet til at hedde?</p>
+        </div>
+        <input
+          type="text"
+          class="planet-input"
+          [(ngModel)]="planetNameInput"
+          placeholder="Indtast planetens navn"
+          (keyup.enter)="dismissWelcome()"
+        />
+      </div>
+    </div>
+    <div class="welcome-footer">
+      <button
+        class="welcome-btn"
+        [disabled]="!planetNameInput.trim()"
+        (click)="dismissWelcome()"
+      >
+        Lad os starte
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="planet10finger-bg">
+  <div class="planet-header" *ngIf="planetName">
+    <h2>Planet {{ planetName }}</h2>
+  </div>
+  <button
+    class="welcome-again-btn"
+    (click)="reopenWelcome()"
+    title="Genbegynde velkomstskærm"
+  >
+    &#x2815;
+  </button>
   <div class="games-grid">
     <div class="game-card" (click)="openPopup('power')">
       <mat-icon svgIcon="games" class="game-icon"></mat-icon>
@@ -6,7 +58,12 @@
     </div>
 
     <div class="game-card" (click)="openPopup('headquarters')">
-      <img src="assets/svg/info.svg" class="game-icon" alt="Hovedkvarter" style="width:80px;height:80px;" />
+      <img
+        src="assets/svg/info.svg"
+        class="game-icon"
+        alt="Hovedkvarter"
+        style="width: 80px; height: 80px"
+      />
       <span class="game-label">Hovedkvarter</span>
     </div>
 
@@ -43,8 +100,37 @@
       &#x2715;
     </button>
 
+    <button
+      class="popup-info-btn"
+      *ngIf="activePopup && activePopup !== 'headquarters'"
+      (click)="reopenGameIntro()"
+      title="Vis spillevejledning"
+    >
+      <img src="assets/svg/info.svg" alt="Info" />
+    </button>
+
+    <!-- Game intro popup (appears before F+J gate) -->
+    <div class="game-intro-popup" *ngIf="showGameIntro">
+      <div class="game-intro-content">
+        <h2>Sådan spiller du</h2>
+        <p>{{ getGameIntroText() }}</p>
+        <div class="game-intro-footer">
+          <label class="intro-checkbox">
+            <input type="checkbox" [(ngModel)]="doNotShowAgainChecked" />
+            <span>Vis ikke igen</span>
+          </label>
+          <button class="intro-continue-btn" (click)="continueFromIntro()">
+            Fortsæt
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- F+J hold gate (skipped for headquarters) -->
-    <div class="fj-gate" *ngIf="!gameReady && activePopup !== 'headquarters'">
+    <div
+      class="fj-gate"
+      *ngIf="!gameReady && activePopup !== 'headquarters' && !showGameIntro"
+    >
       <div class="fj-title">
         <div>Hold</div>
         <div><kbd>F</kbd> og <kbd>J</kbd></div>
