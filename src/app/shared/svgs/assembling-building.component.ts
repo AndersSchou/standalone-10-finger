@@ -104,7 +104,7 @@ type ShapeVariant = 'basic' | 'modern' | 'advanced';
 })
 export class AssemblingBuildingComponent {
   @Input() variant: ShapeVariant = 'basic';
-  @Input() primaryColor = '#9632C8';
-  @Input() secondaryColor = '#D8BFD8';
-  @Input() accentColor = '#FF69B4';
+  @Input() primaryColor = '#808080';
+  @Input() secondaryColor = '#A9A9A9';
+  @Input() accentColor = '#555555';
 }

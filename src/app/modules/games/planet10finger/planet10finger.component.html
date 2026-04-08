@@ -42,16 +42,28 @@
 
 <div class="planet10finger-bg">
   <div class="planet-header" *ngIf="planetName">
-    <h2 (click)="startEditPlanetName()" title="Klik for at ændre planetnavnet">
+    <h2
+      (click)="startEditPlanetName()"
+      title="Klik for at ændre planetnavnet"
+      [style.color]="planetNameColor"
+    >
       Planet {{ planetName }}
-      <button class="planet-edit-btn" (click)="startEditPlanetName()" title="Rediger planetnavnet">
+      <button
+        class="planet-edit-btn"
+        (click)="startEditPlanetName()"
+        title="Rediger planetnavnet"
+      >
         ✎
       </button>
     </h2>
   </div>
 
   <!-- Quick edit planet name dialog -->
-  <div class="planet-edit-overlay" *ngIf="editingPlanetName" (click)="cancelEditPlanetName()">
+  <div
+    class="planet-edit-overlay"
+    *ngIf="editingPlanetName"
+    (click)="cancelEditPlanetName()"
+  >
     <div class="planet-edit-dialog" (click)="$event.stopPropagation()">
       <h3>Rediger planetnavnet</h3>
       <p class="planet-edit-cost">Pris: 🪙 10 mønter</p>
@@ -68,14 +80,16 @@
         {{ planetNameEditError }}
       </div>
       <div class="planet-edit-buttons">
-        <button 
-          class="planet-edit-save" 
+        <button
+          class="planet-edit-save"
           (click)="savePlanetName()"
           [disabled]="coins < 10"
         >
           Gem for 10 🪙
         </button>
-        <button class="planet-edit-cancel" (click)="cancelEditPlanetName()">Annuller</button>
+        <button class="planet-edit-cancel" (click)="cancelEditPlanetName()">
+          Annuller
+        </button>
       </div>
     </div>
   </div>
@@ -97,8 +111,12 @@
       <div class="game-icon">
         <app-power-building
           [variant]="buildingCustomization.power?.shapeVariant || 'basic'"
-          [primaryColor]="buildingCustomization.power?.primaryColor || '#FF6B6B'"
-          [secondaryColor]="buildingCustomization.power?.secondaryColor || '#FFE66D'"
+          [primaryColor]="
+            buildingCustomization.power?.primaryColor || '#FF6B6B'
+          "
+          [secondaryColor]="
+            buildingCustomization.power?.secondaryColor || '#FFE66D'
+          "
           [accentColor]="buildingCustomization.power?.accentColor || '#FF8C42'"
         ></app-power-building>
       </div>
@@ -107,12 +125,10 @@
 
     <!-- Headquarters -->
     <div class="game-card" (click)="openPopup('headquarters')">
-      <img
-        src="assets/svg/info.svg"
+      <app-headquarters-building
         class="game-icon"
-        alt="Hovedkvarter"
-        style="width: 80px; height: 80px"
-      />
+        [variant]="'basic'"
+      ></app-headquarters-building>
       <span class="game-label">Hovedkvarter</span>
     </div>
 
@@ -121,8 +137,12 @@
       <div class="game-icon">
         <app-oxygen-building
           [variant]="buildingCustomization.oxygen?.shapeVariant || 'basic'"
-          [primaryColor]="buildingCustomization.oxygen?.primaryColor || '#4ECDC4'"
-          [secondaryColor]="buildingCustomization.oxygen?.secondaryColor || '#A8E6CF'"
+          [primaryColor]="
+            buildingCustomization.oxygen?.primaryColor || '#4ECDC4'
+          "
+          [secondaryColor]="
+            buildingCustomization.oxygen?.secondaryColor || '#A8E6CF'
+          "
           [accentColor]="buildingCustomization.oxygen?.accentColor || '#0064FF'"
         ></app-oxygen-building>
       </div>
@@ -134,8 +154,12 @@
       <div class="game-icon">
         <app-meteor-building
           [variant]="buildingCustomization.meteor?.shapeVariant || 'basic'"
-          [primaryColor]="buildingCustomization.meteor?.primaryColor || '#FF8C00'"
-          [secondaryColor]="buildingCustomization.meteor?.secondaryColor || '#FFD700'"
+          [primaryColor]="
+            buildingCustomization.meteor?.primaryColor || '#FF8C00'
+          "
+          [secondaryColor]="
+            buildingCustomization.meteor?.secondaryColor || '#FFD700'
+          "
           [accentColor]="buildingCustomization.meteor?.accentColor || '#FF4500'"
         ></app-meteor-building>
       </div>
@@ -147,9 +171,15 @@
       <div class="game-icon">
         <app-factory-building
           [variant]="buildingCustomization.factory?.shapeVariant || 'basic'"
-          [primaryColor]="buildingCustomization.factory?.primaryColor || '#44AF69'"
-          [secondaryColor]="buildingCustomization.factory?.secondaryColor || '#90EE90'"
-          [accentColor]="buildingCustomization.factory?.accentColor || '#228B22'"
+          [primaryColor]="
+            buildingCustomization.factory?.primaryColor || '#44AF69'
+          "
+          [secondaryColor]="
+            buildingCustomization.factory?.secondaryColor || '#90EE90'
+          "
+          [accentColor]="
+            buildingCustomization.factory?.accentColor || '#228B22'
+          "
         ></app-factory-building>
       </div>
       <span class="game-label">Fabrik</span>
@@ -160,9 +190,15 @@
       <div class="game-icon">
         <app-assembling-building
           [variant]="buildingCustomization.assembling?.shapeVariant || 'basic'"
-          [primaryColor]="buildingCustomization.assembling?.primaryColor || '#9632C8'"
-          [secondaryColor]="buildingCustomization.assembling?.secondaryColor || '#D8BFD8'"
-          [accentColor]="buildingCustomization.assembling?.accentColor || '#FF69B4'"
+          [primaryColor]="
+            buildingCustomization.assembling?.primaryColor || '#9632C8'
+          "
+          [secondaryColor]="
+            buildingCustomization.assembling?.secondaryColor || '#D8BFD8'
+          "
+          [accentColor]="
+            buildingCustomization.assembling?.accentColor || '#FF69B4'
+          "
         ></app-assembling-building>
       </div>
       <span class="game-label">Samling</span>
@@ -235,7 +271,11 @@
     <ng-container *ngIf="gameReady || activePopup === 'headquarters'">
       <app-planet10finger-headquarters
         *ngIf="activePopup === 'headquarters'"
+        [coins]="coins"
+        [planetName]="planetName"
         (gameClose)="closePopup()"
+        (coinsChanged)="onHQCoinsChanged($event)"
+        (planetNameChanged)="onHQPlanetNameChanged($event)"
       ></app-planet10finger-headquarters>
 
       <app-planet10finger-power
@@ -266,5 +306,65 @@
         (gameClose)="closePopupWithCoin()"
       ></app-planet10finger-assembling>
     </ng-container>
+    <!-- Cheat Code Button (Bottom Right) -->
+    <button
+      class="cheat-button"
+      (click)="openCheatDialog()"
+      title="Åbn cheat-koder"
+    >
+      <span>⚙️</span>
+    </button>
+
+    <!-- Cheat Code Modal Dialog -->
+    <div
+      class="cheat-overlay"
+      *ngIf="showCheatDialog"
+      (click)="closeCheatDialog()"
+    >
+      <div class="cheat-dialog" (click)="$event.stopPropagation()">
+        <div class="cheat-dialog-header">
+          <h3>Cheat Koder</h3>
+          <button class="cheat-close-btn" (click)="closeCheatDialog()">
+            ×
+          </button>
+        </div>
+        <div class="cheat-dialog-body">
+          <p class="cheat-instructions">Indtast en cheat-kode:</p>
+          <input
+            type="text"
+            class="cheat-input"
+            [(ngModel)]="cheatCodeInput"
+            placeholder="f.eks. money100 eller reset"
+            (keyup.enter)="executeCheatCode()"
+          />
+          <button class="cheat-submit-btn" (click)="executeCheatCode()">
+            Udføre
+          </button>
+          <div
+            class="cheat-message"
+            [ngClass]="{
+              'message-success': cheatMessageType === 'success',
+              'message-error': cheatMessageType === 'error',
+            }"
+            *ngIf="cheatMessage"
+          >
+            {{ cheatMessage }}
+          </div>
+          <div class="cheat-help">
+            <p><strong>Tilgængelige koder:</strong></p>
+            <ul>
+              <li><code>coins100</code> - Tilføj 100 mønter</li>
+              <li>
+                <code>resetgame</code> - Nulstil alt (som første gang du logger
+                ind)
+              </li>
+              <li>
+                <code>resetshop</code> - Nulstil butik-køb (farve-låsninger)
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

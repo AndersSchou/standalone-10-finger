@@ -18,12 +18,15 @@ export interface CustomizationState {
   assembling: GameBuildingCustomization;
 }
 
+export const COLOR_COST = 10; // Cost in coins per color
+
 export const COLOR_SCHEMES: Record<string, {
   label: string;
   primary: string;
   secondary: string;
   accent: string;
 }> = {
+  grey: { label: 'Grå', primary: '#808080', secondary: '#A9A9A9', accent: '#555555' },
   red: { label: 'Rød', primary: '#FF6B6B', secondary: '#FFE66D', accent: '#FF8C42' },
   blue: { label: 'Blå', primary: '#4ECDC4', secondary: '#A8E6CF', accent: '#0064FF' },
   green: { label: 'Grøn', primary: '#44AF69', secondary: '#90EE90', accent: '#228B22' },
@@ -41,13 +44,14 @@ const SHAPE_VARIANTS: ShapeVariant[] = ['basic', 'modern', 'advanced'];
 })
 export class BuildingCustomizationService {
   private readonly CUSTOMIZATION_KEY = 'planet10finger_building_customization';
+  private readonly PURCHASED_COLORS_KEY = 'planet10finger_building_purchased_colors';
 
   private defaultState: CustomizationState = {
-    power: this.createBuildingCustomization('red', 'basic'),
-    oxygen: this.createBuildingCustomization('blue', 'basic'),
-    meteor: this.createBuildingCustomization('orange', 'basic'),
-    factory: this.createBuildingCustomization('green', 'basic'),
-    assembling: this.createBuildingCustomization('purple', 'basic'),
+    power: this.createBuildingCustomization('grey', 'basic'),
+    oxygen: this.createBuildingCustomization('grey', 'basic'),
+    meteor: this.createBuildingCustomization('grey', 'basic'),
+    factory: this.createBuildingCustomization('grey', 'basic'),
+    assembling: this.createBuildingCustomization('grey', 'basic'),
   };
 
   constructor() {}
@@ -102,6 +106,42 @@ export class BuildingCustomizationService {
    */
   getShapeVariants() {
     return SHAPE_VARIANTS;
+  }
+
+  /**
+   * Get list of purchased color schemes.
+   */
+  getPurchasedColors(): string[] {
+    const saved = localStorage.getItem(this.PURCHASED_COLORS_KEY);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return ['grey']; // Grey is always free
+      }
+    }
+    return ['grey']; // Grey is always free
+  }
+
+  /**
+   * Check if a color has been purchased.
+   */
+  isColorPurchased(colorId: string): boolean {
+    if (colorId === 'grey') return true; // Grey is always free
+    return this.getPurchasedColors().includes(colorId);
+  }
+
+  /**
+   * Purchase a color (deduct coins and unlock color).
+   */
+  purchaseColor(colorId: string): void {
+    if (colorId !== 'grey') {
+      const purchased = this.getPurchasedColors();
+      if (!purchased.includes(colorId)) {
+        purchased.push(colorId);
+        localStorage.setItem(this.PURCHASED_COLORS_KEY, JSON.stringify(purchased));
+      }
+    }
   }
 
   /**

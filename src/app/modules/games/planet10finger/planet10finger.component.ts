@@ -10,11 +10,13 @@ import { AssemblingComponent } from './games/assembling/assembling.component';
 import { HeadquartersComponent } from './games/headquarters/headquarters.component';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
 import { BuildingCustomizationService } from './services/building-customization.service';
+import { PlanetNameCustomizationService } from './services/planet-name-customization.service';
 import { PowerBuildingComponent } from 'src/app/shared/svgs/power-building.component';
 import { OxygenBuildingComponent } from 'src/app/shared/svgs/oxygen-building.component';
 import { MeteorBuildingComponent } from 'src/app/shared/svgs/meteor-building.component';
 import { FactoryBuildingComponent } from 'src/app/shared/svgs/factory-building.component';
 import { AssemblingBuildingComponent } from 'src/app/shared/svgs/assembling-building.component';
+import { HeadquartersBuildingComponent } from 'src/app/shared/svgs/headquarters-building.component';
 
 /**
  * Hub component for the Planet 10 finger game.
@@ -40,6 +42,7 @@ import { AssemblingBuildingComponent } from 'src/app/shared/svgs/assembling-buil
     MeteorBuildingComponent,
     FactoryBuildingComponent,
     AssemblingBuildingComponent,
+    HeadquartersBuildingComponent,
   ],
 })
 export class Planet10fingerComponent implements OnInit, OnDestroy {
@@ -72,6 +75,16 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   planetNameEditError = '';
   /** Building customization state */
   buildingCustomization: any = {};
+  /** Show cheat code dialog. */
+  showCheatDialog = false;
+  /** Cheat code input. */
+  cheatCodeInput = '';
+  /** Cheat code message. */
+  cheatMessage = '';
+  /** Cheat message type (success or error). */
+  cheatMessageType: 'success' | 'error' = 'success';
+  /** Planet name color */
+  planetNameColor = '#FFFFFF';
 
   private readonly WELCOME_KEY = 'planet10finger_welcome_seen';
   private readonly PLANET_NAME_KEY = 'planet10finger_name';
@@ -83,7 +96,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly router: Router,
-    private readonly buildingCustomizationService: BuildingCustomizationService
+    private readonly buildingCustomizationService: BuildingCustomizationService,
+    private readonly planetNameCustomizationService: PlanetNameCustomizationService
   ) {}
 
   ngOnInit(): void {
@@ -103,6 +117,10 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
 
     // Load building customizations
     this.buildingCustomization = this.buildingCustomizationService.getCustomizationState();
+
+    // Load planet name color customization
+    const planetNameCustomization = this.planetNameCustomizationService.getCustomization();
+    this.planetNameColor = planetNameCustomization.color;
   }
 
   dismissWelcome(): void {
@@ -228,8 +246,10 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     this.doNotShowAgainChecked = false;
     this.coinsEarned = 0;
     this.removeHoldListeners();
-    // Refresh building customizations when closing headquarters
+    // Refresh building customizations and planet name color when closing headquarters
     this.buildingCustomization = this.buildingCustomizationService.getCustomizationState();
+    const planetNameCustomization = this.planetNameCustomizationService.getCustomization();
+    this.planetNameColor = planetNameCustomization.color;
   }
 
   closePopupWithCoin(): void {
@@ -239,6 +259,16 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
       localStorage.setItem(this.COINS_KEY, this.coins.toString());
     }
     this.closePopup();
+  }
+
+  onHQCoinsChanged(newCoins: number): void {
+    this.coins = newCoins;
+    localStorage.setItem(this.COINS_KEY, newCoins.toString());
+  }
+
+  onHQPlanetNameChanged(newName: string): void {
+    this.planetName = newName;
+    localStorage.setItem(this.PLANET_NAME_KEY, newName);
   }
 
   navigateToGame(game: string): void {
@@ -286,5 +316,79 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
 
   private clearHoldInterval(): void {
     if (this.holdInterval) { clearInterval(this.holdInterval); this.holdInterval = null; }
+  }
+
+  openCheatDialog(): void {
+    this.showCheatDialog = true;
+    this.cheatCodeInput = '';
+    this.cheatMessage = '';
+  }
+
+  closeCheatDialog(): void {
+    this.showCheatDialog = false;
+    this.cheatCodeInput = '';
+    this.cheatMessage = '';
+  }
+
+  executeCheatCode(): void {
+    const code = this.cheatCodeInput.toLowerCase().trim();
+    
+    if (!code) {
+      this.cheatMessage = 'Please enter a cheat code';
+      this.cheatMessageType = 'error';
+      return;
+    }
+
+    // Add 100 coins
+    if (code === 'coins100') {
+      this.coins += 100;
+      localStorage.setItem(this.COINS_KEY, this.coins.toString());
+      this.cheatMessage = `✓ Added 100 coins! Total: ${this.coins}`;
+      this.cheatMessageType = 'success';
+      this.cheatCodeInput = '';
+      return;
+    }
+
+    // Reset game
+    if (code === 'resetgame') {
+      const confirm = window.confirm('Are you sure? This will reset ALL Planet 10 Finger progress and show the welcome screen like a fresh start.');
+      if (confirm) {
+        // Only clear planet10finger-specific data
+        localStorage.removeItem(this.COINS_KEY);
+        localStorage.removeItem('planet10finger_achievements');
+        localStorage.removeItem('planet10finger_stats');
+        localStorage.removeItem('planet10finger_building_customization');
+        localStorage.removeItem('planet10finger_planet_name');
+        localStorage.removeItem('planet10finger_planet_name_color');
+        this.coins = 0;
+        this.planetName = '';
+        this.planetNameColor = '#FFFFFF';
+        this.showWelcome = true;
+        this.cheatMessage = '✓ Game reset! Welcome screen will reappear.';
+        this.cheatMessageType = 'success';
+        this.cheatCodeInput = '';
+        return;
+      }
+    }
+
+    // Reset shop
+    if (code === 'resetshop') {
+      const confirm = window.confirm('Are you sure? This will reset all shop purchases (color unlocks).');
+      if (confirm) {
+        // Clear purchased colors
+        localStorage.removeItem('planet10finger_purchased_colors');
+        // Reset planet name color back to white
+        localStorage.removeItem('planet10finger_planet_name_color');
+        this.planetNameColor = '#FFFFFF';
+        this.cheatMessage = '✓ Shop reset! All color unlocks have been cleared.';
+        this.cheatMessageType = 'success';
+        this.cheatCodeInput = '';
+        return;
+      }
+    }
+
+    // Unknown cheat
+    this.cheatMessage = '✗ Unknown cheat code';
+    this.cheatMessageType = 'error';
   }
 }

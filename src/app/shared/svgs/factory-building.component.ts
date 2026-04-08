@@ -111,7 +111,7 @@ type ShapeVariant = 'basic' | 'modern' | 'advanced';
 })
 export class FactoryBuildingComponent {
   @Input() variant: ShapeVariant = 'basic';
-  @Input() primaryColor = '#44AF69';
-  @Input() secondaryColor = '#90EE90';
-  @Input() accentColor = '#228B22';
+  @Input() primaryColor = '#808080';
+  @Input() secondaryColor = '#A9A9A9';
+  @Input() accentColor = '#555555';
 }

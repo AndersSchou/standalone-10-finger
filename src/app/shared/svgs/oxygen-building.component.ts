@@ -113,7 +113,7 @@ type ShapeVariant = 'basic' | 'modern' | 'advanced';
 })
 export class OxygenBuildingComponent {
   @Input() variant: ShapeVariant = 'basic';
-  @Input() primaryColor = '#4ECDC4';
-  @Input() secondaryColor = '#A8E6CF';
-  @Input() accentColor = '#0064FF';
+  @Input() primaryColor = '#808080';
+  @Input() secondaryColor = '#A9A9A9';
+  @Input() accentColor = '#555555';
 }

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BuildingCustomizationService, CustomizationState, ShapeVariant } from '../services/building-customization.service';
+import { BuildingCustomizationService, CustomizationState, ShapeVariant, COLOR_COST } from '../services/building-customization.service';
 import { PowerBuildingComponent } from 'src/app/shared/svgs/power-building.component';
 import { OxygenBuildingComponent } from 'src/app/shared/svgs/oxygen-building.component';
 import { MeteorBuildingComponent } from 'src/app/shared/svgs/meteor-building.component';
@@ -35,42 +35,42 @@ interface GameInfo {
       <div class="buildings-grid">
         <div class="building-card" *ngFor="let game of games">
           <!-- Building preview -->
-          <div class="building-preview">
+          <div class="building-preview" [class.preview-mode]="!!selectedColorId[game.id]">
             <ng-container [ngSwitch]="game.id">
               <app-power-building
                 *ngSwitchCase="'power'"
                 [variant]="customization[game.id].shapeVariant"
-                [primaryColor]="customization[game.id].primaryColor"
-                [secondaryColor]="customization[game.id].secondaryColor"
-                [accentColor]="customization[game.id].accentColor"
+                [primaryColor]="getPreviewPrimaryColor(game.id)"
+                [secondaryColor]="getPreviewSecondaryColor(game.id)"
+                [accentColor]="getPreviewAccentColor(game.id)"
               ></app-power-building>
               <app-oxygen-building
                 *ngSwitchCase="'oxygen'"
                 [variant]="customization[game.id].shapeVariant"
-                [primaryColor]="customization[game.id].primaryColor"
-                [secondaryColor]="customization[game.id].secondaryColor"
-                [accentColor]="customization[game.id].accentColor"
+                [primaryColor]="getPreviewPrimaryColor(game.id)"
+                [secondaryColor]="getPreviewSecondaryColor(game.id)"
+                [accentColor]="getPreviewAccentColor(game.id)"
               ></app-oxygen-building>
               <app-meteor-building
                 *ngSwitchCase="'meteor'"
                 [variant]="customization[game.id].shapeVariant"
-                [primaryColor]="customization[game.id].primaryColor"
-                [secondaryColor]="customization[game.id].secondaryColor"
-                [accentColor]="customization[game.id].accentColor"
+                [primaryColor]="getPreviewPrimaryColor(game.id)"
+                [secondaryColor]="getPreviewSecondaryColor(game.id)"
+                [accentColor]="getPreviewAccentColor(game.id)"
               ></app-meteor-building>
               <app-factory-building
                 *ngSwitchCase="'factory'"
                 [variant]="customization[game.id].shapeVariant"
-                [primaryColor]="customization[game.id].primaryColor"
-                [secondaryColor]="customization[game.id].secondaryColor"
-                [accentColor]="customization[game.id].accentColor"
+                [primaryColor]="getPreviewPrimaryColor(game.id)"
+                [secondaryColor]="getPreviewSecondaryColor(game.id)"
+                [accentColor]="getPreviewAccentColor(game.id)"
               ></app-factory-building>
               <app-assembling-building
                 *ngSwitchCase="'assembling'"
                 [variant]="customization[game.id].shapeVariant"
-                [primaryColor]="customization[game.id].primaryColor"
-                [secondaryColor]="customization[game.id].secondaryColor"
-                [accentColor]="customization[game.id].accentColor"
+                [primaryColor]="getPreviewPrimaryColor(game.id)"
+                [secondaryColor]="getPreviewSecondaryColor(game.id)"
+                [accentColor]="getPreviewAccentColor(game.id)"
               ></app-assembling-building>
             </ng-container>
           </div>
@@ -85,16 +85,27 @@ interface GameInfo {
               <button
                 *ngFor="let color of colorSchemes"
                 [class.selected]="customization[game.id].colorScheme === color.id"
+                [class.locked]="!isColorPurchased(color.id)"
                 [style.--color]="color.primary"
-                (click)="updateColor(game.id, color.id)"
-                [title]="color.label"
+                (click)="selectColor(game.id, color.id)"
+                [title]="isColorPurchased(color.id) ? color.label : color.label + ' - 🪙 ' + colorCost + ' mønter'"
                 class="color-btn"
               >
                 <span class="color-swatch"></span>
                 <span class="color-name">{{ color.label }}</span>
+                <span class="lock-icon" *ngIf="!isColorPurchased(color.id)">🔒</span>
               </button>
             </div>
           </div>
+
+          <!-- Purchase button for locked colors -->
+          <button
+            *ngIf="selectedColorId[game.id] && !isColorPurchased(selectedColorId[game.id]) && customization[game.id].colorScheme !== selectedColorId[game.id]"
+            class="buy-button"
+            (click)="buyBuildingColor(game.id, selectedColorId[game.id])"
+          >
+            Køb farve - 🪙 {{ colorCost }} mønter
+          </button>
 
           <!-- Shape variant selector -->
           <div class="shape-selector">
@@ -170,6 +181,13 @@ interface GameInfo {
       background: #f5f5f5;
       border-radius: 8px;
       border: 1px solid #eee;
+      transition: all 0.3s ease;
+    }
+
+    .building-preview.preview-mode {
+      border: 2px solid #667eea;
+      background: #f0f0ff;
+      box-shadow: 0 0 12px rgba(102, 126, 234, 0.2);
     }
 
     h4 {
@@ -209,16 +227,26 @@ interface GameInfo {
       cursor: pointer;
       font-size: 0.8rem;
       transition: all 0.2s ease;
+      position: relative;
 
-      &:hover {
+      &:hover:not(.locked) {
         border-color: #667eea;
         background: #f0f0f0;
+      }
+
+      &:hover.locked {
+        border-color: #ddd;
+        opacity: 0.7;
       }
 
       &.selected {
         border-color: #667eea;
         background: #e8eaf6;
         font-weight: 600;
+      }
+
+      &.locked {
+        opacity: 0.6;
       }
     }
 
@@ -233,6 +261,33 @@ interface GameInfo {
     .color-name {
       flex: 1;
       text-align: left;
+    }
+
+    .lock-icon {
+      font-size: 0.9rem;
+    }
+
+    .buy-button {
+      width: 100%;
+      padding: 8px 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: -8px;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
     }
 
     .shape-options {
@@ -293,6 +348,11 @@ export class BuildingsCustomizerComponent implements OnInit {
 
   colorSchemes: any[] = [];
   shapeVariants: ShapeVariant[] = [];
+  selectedColorId: Record<GameId, string> = { power: '', oxygen: '', meteor: '', factory: '', assembling: '' };
+  colorCost = COLOR_COST;
+
+  @Input() coins: number = 0;
+  @Output() coinsChanged = new EventEmitter<number>();
 
   constructor(private buildingCustomization: BuildingCustomizationService) {}
 
@@ -302,10 +362,74 @@ export class BuildingsCustomizerComponent implements OnInit {
     this.customization = this.buildingCustomization.getCustomizationState();
   }
 
+  selectColor(gameId: GameId, colorScheme: string): void {
+    // If clicking on same color or grey (always free) or already purchased, apply immediately
+    if (this.customization[gameId].colorScheme === colorScheme || colorScheme === 'grey' || this.isColorPurchased(colorScheme)) {
+      this.updateColor(gameId, colorScheme);
+      this.selectedColorId[gameId] = '';
+    } else {
+      // Set for preview and show buy button
+      this.selectedColorId[gameId] = colorScheme;
+    }
+  }
+
   updateColor(gameId: GameId, colorScheme: string): void {
     const current = this.customization[gameId];
     this.buildingCustomization.updateBuildingCustomization(gameId, colorScheme, current.shapeVariant);
     this.customization = this.buildingCustomization.getCustomizationState();
+    this.selectedColorId[gameId] = '';
+  }
+
+  isColorPurchased(colorId: string): boolean {
+    return this.buildingCustomization.isColorPurchased(colorId);
+  }
+
+  getPreviewPrimaryColor(gameId: GameId): string {
+    const selectedId = this.selectedColorId[gameId];
+    if (selectedId) {
+      const color = this.colorSchemes.find(c => c.id === selectedId);
+      if (color) return color.primary;
+    }
+    return this.customization[gameId].primaryColor;
+  }
+
+  getPreviewSecondaryColor(gameId: GameId): string {
+    const selectedId = this.selectedColorId[gameId];
+    if (selectedId) {
+      const color = this.colorSchemes.find(c => c.id === selectedId);
+      if (color) return color.secondary;
+    }
+    return this.customization[gameId].secondaryColor;
+  }
+
+  getPreviewAccentColor(gameId: GameId): string {
+    const selectedId = this.selectedColorId[gameId];
+    if (selectedId) {
+      const color = this.colorSchemes.find(c => c.id === selectedId);
+      if (color) return color.accent;
+    }
+    return this.customization[gameId].accentColor;
+  }
+
+  buyBuildingColor(gameId: GameId, colorId: string): void {
+    if (!colorId) return;
+
+    const colorScheme = this.colorSchemes.find(c => c.id === colorId);
+    if (!colorScheme) return;
+
+    // Check if user has enough coins
+    if (this.coins < COLOR_COST) {
+      return;
+    }
+
+    // Purchase the color
+    this.buildingCustomization.purchaseColor(colorId);
+    this.coins -= COLOR_COST;
+    this.coinsChanged.emit(this.coins);
+
+    // Update building color to the purchased one
+    this.updateColor(gameId, colorId);
+    this.selectedColorId[gameId] = '';
   }
 
   updateShape(gameId: GameId, variant: ShapeVariant): void {

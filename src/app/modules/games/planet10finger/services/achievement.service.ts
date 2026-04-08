@@ -23,7 +23,7 @@ export class AchievementService {
       description: 'Gennemfør strømgenerationsspillet',
       category: 'power',
       unlocked: false,
-      icon: '⚡',
+      icon: '',
     },
     {
       id: 'power_perfect',
@@ -31,7 +31,7 @@ export class AchievementService {
       description: 'Gennemfør strømgenerationsspillet uden forkerte tastetryk',
       category: 'power',
       unlocked: false,
-      icon: '✨',
+      icon: '',
     },
     // Oxygen game
     {
@@ -40,7 +40,7 @@ export class AchievementService {
       description: 'Gennemfør oxygenspillet',
       category: 'oxygen',
       unlocked: false,
-      icon: '💨',
+      icon: '',
     },
     {
       id: 'oxygen_perfect',
@@ -48,7 +48,7 @@ export class AchievementService {
       description: 'Gennemfør oxygenspillet uden forkerte tastetryk',
       category: 'oxygen',
       unlocked: false,
-      icon: '🎯',
+      icon: '',
     },
     // Meteor game
     {
@@ -57,7 +57,7 @@ export class AchievementService {
       description: 'Gennemfør meteorspillet',
       category: 'meteor',
       unlocked: false,
-      icon: '☄️',
+      icon: '',
     },
     {
       id: 'meteor_5points',
@@ -65,7 +65,7 @@ export class AchievementService {
       description: 'Tjener 5 point i meteorspillet',
       category: 'meteor',
       unlocked: false,
-      icon: '🎖️',
+      icon: '',
     },
     {
       id: 'meteor_fast_word',
@@ -73,7 +73,7 @@ export class AchievementService {
       description: 'Skriv et ord inden for 3 sekunder i meteorspillet',
       category: 'meteor',
       unlocked: false,
-      icon: '⚡',
+      icon: '',
     },
     // Factory game
     {
@@ -82,7 +82,7 @@ export class AchievementService {
       description: 'Gennemfør fabriksspillet',
       category: 'factory',
       unlocked: false,
-      icon: '🏭',
+      icon: '',
     },
     {
       id: 'factory_wpm',
@@ -90,7 +90,7 @@ export class AchievementService {
       description: 'Skriv over 20 ord per minut i fabriksspillet',
       category: 'factory',
       unlocked: false,
-      icon: '⌨️',
+      icon: '',
     },
     {
       id: 'factory_perfect',
@@ -98,7 +98,7 @@ export class AchievementService {
       description: 'Gennemfør fabriksspillet uden stavefejl',
       category: 'factory',
       unlocked: false,
-      icon: '✅',
+      icon: '',
     },
     // Assembling game
     {
@@ -107,7 +107,7 @@ export class AchievementService {
       description: 'Gennemfør samlespillet',
       category: 'assembling',
       unlocked: false,
-      icon: '🔧',
+      icon: '',
     },
     {
       id: 'assembling_wpm',
@@ -115,7 +115,7 @@ export class AchievementService {
       description: 'Skriv over 20 ord per minut i samlespillet',
       category: 'assembling',
       unlocked: false,
-      icon: '⌨️',
+      icon: '',
     },
     {
       id: 'assembling_perfect',
@@ -123,7 +123,7 @@ export class AchievementService {
       description: 'Gennemfør samlespillet uden stavefejl',
       category: 'assembling',
       unlocked: false,
-      icon: '✅',
+      icon: '',
     },
   ];
 

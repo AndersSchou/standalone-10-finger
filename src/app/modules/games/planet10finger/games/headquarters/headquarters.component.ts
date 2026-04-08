@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AchievementsDisplayComponent } from '../../components/achievements-display.component';
 import { StatsDisplayComponent } from '../../components/stats-display.component';
 import { BuildingsCustomizerComponent } from '../../components/buildings-customizer.component';
+import { PlanetNameCustomizerComponent } from '../../components/planet-name-customizer.component';
 
 type Tab = 'information' | 'achievements' | 'stats' | 'shop';
 
@@ -11,10 +12,14 @@ type Tab = 'information' | 'achievements' | 'stats' | 'shop';
   templateUrl: './headquarters.component.html',
   styleUrl: './headquarters.component.scss',
   standalone: true,
-  imports: [CommonModule, AchievementsDisplayComponent, StatsDisplayComponent, BuildingsCustomizerComponent],
+  imports: [CommonModule, AchievementsDisplayComponent, StatsDisplayComponent, BuildingsCustomizerComponent, PlanetNameCustomizerComponent],
 })
 export class HeadquartersComponent {
+  @Input() coins: number = 0;
+  @Input() planetName: string = 'Planet';
   @Output() gameClose = new EventEmitter<void>();
+  @Output() coinsChanged = new EventEmitter<number>();
+  @Output() planetNameChanged = new EventEmitter<string>();
 
   activeTab: Tab = 'information';
 
@@ -31,5 +36,15 @@ export class HeadquartersComponent {
 
   close(): void {
     this.gameClose.emit();
+  }
+
+  onCoinsChanged(newCoins: number): void {
+    this.coins = newCoins;
+    this.coinsChanged.emit(newCoins);
+  }
+
+  onPlanetNameChanged(newName: string): void {
+    this.planetName = newName;
+    this.planetNameChanged.emit(newName);
   }
 }

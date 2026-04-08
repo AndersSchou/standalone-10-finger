@@ -65,7 +65,16 @@
     </div>
     <div *ngIf="activeTab === 'shop'" class="shop-tab">
       <h3>Butik - Tilpas din planet</h3>
-      <app-buildings-customizer></app-buildings-customizer>
+      <app-planet-name-customizer
+        [coins]="coins"
+        [planetName]="planetName"
+        (coinsChanged)="onCoinsChanged($event)"
+        (planetNameChanged)="onPlanetNameChanged($event)"
+      ></app-planet-name-customizer>
+      <app-buildings-customizer
+        [coins]="coins"
+        (coinsChanged)="onCoinsChanged($event)"
+      ></app-buildings-customizer>
     </div>
   </div>
 </div>

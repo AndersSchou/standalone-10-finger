@@ -113,7 +113,7 @@ type ShapeVariant = 'basic' | 'modern' | 'advanced';
 })
 export class PowerBuildingComponent {
   @Input() variant: ShapeVariant = 'basic';
-  @Input() primaryColor = '#FF6B6B';
-  @Input() secondaryColor = '#FFE66D';
-  @Input() accentColor = '#FF8C42';
+  @Input() primaryColor = '#808080';
+  @Input() secondaryColor = '#A9A9A9';
+  @Input() accentColor = '#555555';
 }

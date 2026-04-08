@@ -30,7 +30,7 @@ export class AchievementService {
         description: 'Complete all Power Generation rounds',
         category: 'power',
         unlocked: false,
-        icon: '⚡',
+        icon: '',
       },
       {
         id: 'power_perfect',
@@ -38,7 +38,7 @@ export class AchievementService {
         description: 'Complete Power Generation without any mistakes',
         category: 'power',
         unlocked: false,
-        icon: '✨',
+        icon: '',
       },
       // Oxygen Achievements (2)
       {
@@ -47,7 +47,7 @@ export class AchievementService {
         description: 'Complete all Oxygen Sequence rounds',
         category: 'oxygen',
         unlocked: false,
-        icon: '🫁',
+        icon: '',
       },
       {
         id: 'oxygen_perfect',
@@ -55,7 +55,7 @@ export class AchievementService {
         description: 'Complete Oxygen Sequence without any mistakes',
         category: 'oxygen',
         unlocked: false,
-        icon: '✨',
+        icon: '',
       },
       // Meteor Achievements (3)
       {
@@ -64,7 +64,7 @@ export class AchievementService {
         description: 'Complete Meteor Word game',
         category: 'meteor',
         unlocked: false,
-        icon: '🌠',
+        icon: '',
       },
       {
         id: 'meteor_5points',
@@ -72,7 +72,7 @@ export class AchievementService {
         description: 'Score 5 points in Meteor Word game',
         category: 'meteor',
         unlocked: false,
-        icon: '🎯',
+        icon: '',
       },
       {
         id: 'meteor_fast_word',
@@ -80,7 +80,7 @@ export class AchievementService {
         description: 'Type a word within 3 seconds in Meteor',
         category: 'meteor',
         unlocked: false,
-        icon: '⚡',
+        icon: '',
       },
       // Factory Achievements (3)
       {
@@ -89,7 +89,7 @@ export class AchievementService {
         description: 'Complete Factory Sentence game',
         category: 'factory',
         unlocked: false,
-        icon: '🏭',
+        icon: '',
       },
       {
         id: 'factory_wpm',
@@ -97,7 +97,7 @@ export class AchievementService {
         description: 'Type over 20 WPM in Factory game',
         category: 'factory',
         unlocked: false,
-        icon: '⚡',
+        icon: '',
       },
       {
         id: 'factory_perfect',
@@ -105,7 +105,7 @@ export class AchievementService {
         description: 'Complete Factory game without any typos',
         category: 'factory',
         unlocked: false,
-        icon: '✨',
+        icon: '',
       },
       // Assembling Achievements (3)
       {
@@ -114,7 +114,7 @@ export class AchievementService {
         description: 'Complete Assembling Stories game',
         category: 'assembling',
         unlocked: false,
-        icon: '📖',
+        icon: '',
       },
       {
         id: 'assembling_wpm',
@@ -122,7 +122,7 @@ export class AchievementService {
         description: 'Type over 20 WPM in Assembling game',
         category: 'assembling',
         unlocked: false,
-        icon: '⚡',
+        icon: '',
       },
       {
         id: 'assembling_perfect',
@@ -130,7 +130,7 @@ export class AchievementService {
         description: 'Complete Assembling game without any typos',
         category: 'assembling',
         unlocked: false,
-        icon: '✨',
+        icon: '',
       },
     ];
   }

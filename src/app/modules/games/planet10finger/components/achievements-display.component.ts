@@ -17,6 +17,9 @@ export class AchievementsDisplayComponent implements OnInit {
   assemblingAchievements: Achievement[] = [];
   miscAchievements: Achievement[] = [];
 
+  hoveredAchievementId: string | null = null;
+  private hoverTimeout: any;
+
   constructor(private readonly achievementService: AchievementService) {}
 
   ngOnInit(): void {
@@ -26,5 +29,16 @@ export class AchievementsDisplayComponent implements OnInit {
     this.factoryAchievements = this.achievementService.getAchievementsByCategory('factory');
     this.assemblingAchievements = this.achievementService.getAchievementsByCategory('assembling');
     this.miscAchievements = this.achievementService.getAchievementsByCategory('misc');
+  }
+
+  onAchievementMouseEnter(id: string): void {
+    this.hoverTimeout = setTimeout(() => {
+      this.hoveredAchievementId = id;
+    }, 1000);
+  }
+
+  onAchievementMouseLeave(): void {
+    clearTimeout(this.hoverTimeout);
+    this.hoveredAchievementId = null;
   }
 }

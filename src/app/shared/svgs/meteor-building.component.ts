@@ -95,7 +95,7 @@ type ShapeVariant = 'basic' | 'modern' | 'advanced';
 })
 export class MeteorBuildingComponent {
   @Input() variant: ShapeVariant = 'basic';
-  @Input() primaryColor = '#FF8C00';
-  @Input() secondaryColor = '#FFD700';
-  @Input() accentColor = '#FF4500';
+  @Input() primaryColor = '#808080';
+  @Input() secondaryColor = '#A9A9A9';
+  @Input() accentColor = '#555555';
 }
