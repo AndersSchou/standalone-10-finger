@@ -42,7 +42,47 @@
 
 <div class="planet10finger-bg">
   <div class="planet-header" *ngIf="planetName">
-    <h2>Planet {{ planetName }}</h2>
+    <h2 (click)="startEditPlanetName()" title="Klik for at ændre planetnavnet">
+      Planet {{ planetName }}
+      <button class="planet-edit-btn" (click)="startEditPlanetName()" title="Rediger planetnavnet">
+        ✎
+      </button>
+    </h2>
+  </div>
+
+  <!-- Quick edit planet name dialog -->
+  <div class="planet-edit-overlay" *ngIf="editingPlanetName" (click)="cancelEditPlanetName()">
+    <div class="planet-edit-dialog" (click)="$event.stopPropagation()">
+      <h3>Rediger planetnavnet</h3>
+      <p class="planet-edit-cost">Pris: 🪙 10 mønter</p>
+      <input
+        type="text"
+        class="planet-name-input"
+        [(ngModel)]="editingPlanetInput"
+        placeholder="Indtast nyt planetnavn"
+        (keyup.enter)="savePlanetName()"
+        (keyup.escape)="cancelEditPlanetName()"
+        autofocus
+      />
+      <div class="planet-edit-error" *ngIf="planetNameEditError">
+        {{ planetNameEditError }}
+      </div>
+      <div class="planet-edit-buttons">
+        <button 
+          class="planet-edit-save" 
+          (click)="savePlanetName()"
+          [disabled]="coins < 10"
+        >
+          Gem for 10 🪙
+        </button>
+        <button class="planet-edit-cancel" (click)="cancelEditPlanetName()">Annuller</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="coin-display">
+    <span class="coin-icon">🪙</span>
+    <span class="coin-count">{{ coins }}</span>
   </div>
   <button
     class="welcome-again-btn"
@@ -52,11 +92,20 @@
     &#x2815;
   </button>
   <div class="games-grid">
+    <!-- Power Game -->
     <div class="game-card" (click)="openPopup('power')">
-      <mat-icon svgIcon="games" class="game-icon"></mat-icon>
-      <span class="game-label">Strøm generations spil</span>
+      <div class="game-icon">
+        <app-power-building
+          [variant]="buildingCustomization.power?.shapeVariant || 'basic'"
+          [primaryColor]="buildingCustomization.power?.primaryColor || '#FF6B6B'"
+          [secondaryColor]="buildingCustomization.power?.secondaryColor || '#FFE66D'"
+          [accentColor]="buildingCustomization.power?.accentColor || '#FF8C42'"
+        ></app-power-building>
+      </div>
+      <span class="game-label">Strøm</span>
     </div>
 
+    <!-- Headquarters -->
     <div class="game-card" (click)="openPopup('headquarters')">
       <img
         src="assets/svg/info.svg"
@@ -67,24 +116,56 @@
       <span class="game-label">Hovedkvarter</span>
     </div>
 
+    <!-- Oxygen Game -->
     <div class="game-card" (click)="openPopup('oxygen')">
-      <mat-icon svgIcon="games" class="game-icon"></mat-icon>
-      <span class="game-label">Oxygen spil</span>
+      <div class="game-icon">
+        <app-oxygen-building
+          [variant]="buildingCustomization.oxygen?.shapeVariant || 'basic'"
+          [primaryColor]="buildingCustomization.oxygen?.primaryColor || '#4ECDC4'"
+          [secondaryColor]="buildingCustomization.oxygen?.secondaryColor || '#A8E6CF'"
+          [accentColor]="buildingCustomization.oxygen?.accentColor || '#0064FF'"
+        ></app-oxygen-building>
+      </div>
+      <span class="game-label">Ilt</span>
     </div>
 
+    <!-- Meteor Game -->
     <div class="game-card" (click)="openPopup('meteor')">
-      <mat-icon svgIcon="games" class="game-icon"></mat-icon>
-      <span class="game-label">Meteor spil</span>
+      <div class="game-icon">
+        <app-meteor-building
+          [variant]="buildingCustomization.meteor?.shapeVariant || 'basic'"
+          [primaryColor]="buildingCustomization.meteor?.primaryColor || '#FF8C00'"
+          [secondaryColor]="buildingCustomization.meteor?.secondaryColor || '#FFD700'"
+          [accentColor]="buildingCustomization.meteor?.accentColor || '#FF4500'"
+        ></app-meteor-building>
+      </div>
+      <span class="game-label">Meteor</span>
     </div>
 
+    <!-- Factory Game -->
     <div class="game-card" (click)="openPopup('factory')">
-      <mat-icon svgIcon="games" class="game-icon"></mat-icon>
-      <span class="game-label">Fabrik spil</span>
+      <div class="game-icon">
+        <app-factory-building
+          [variant]="buildingCustomization.factory?.shapeVariant || 'basic'"
+          [primaryColor]="buildingCustomization.factory?.primaryColor || '#44AF69'"
+          [secondaryColor]="buildingCustomization.factory?.secondaryColor || '#90EE90'"
+          [accentColor]="buildingCustomization.factory?.accentColor || '#228B22'"
+        ></app-factory-building>
+      </div>
+      <span class="game-label">Fabrik</span>
     </div>
 
+    <!-- Assembling Game -->
     <div class="game-card" (click)="openPopup('assembling')">
-      <mat-icon svgIcon="games" class="game-icon"></mat-icon>
-      <span class="game-label">Samle spil</span>
+      <div class="game-icon">
+        <app-assembling-building
+          [variant]="buildingCustomization.assembling?.shapeVariant || 'basic'"
+          [primaryColor]="buildingCustomization.assembling?.primaryColor || '#9632C8'"
+          [secondaryColor]="buildingCustomization.assembling?.secondaryColor || '#D8BFD8'"
+          [accentColor]="buildingCustomization.assembling?.accentColor || '#FF69B4'"
+        ></app-assembling-building>
+      </div>
+      <span class="game-label">Samling</span>
     </div>
   </div>
 </div>
@@ -169,17 +250,20 @@
 
       <app-planet10finger-meteor
         *ngIf="activePopup === 'meteor'"
-        (gameClose)="closePopup()"
+        [coinsEarned]="coinsEarned"
+        (gameClose)="closePopupWithCoin()"
       ></app-planet10finger-meteor>
 
       <app-planet10finger-factory
         *ngIf="activePopup === 'factory'"
-        (gameClose)="closePopup()"
+        [coinsEarned]="coinsEarned"
+        (gameClose)="closePopupWithCoin()"
       ></app-planet10finger-factory>
 
       <app-planet10finger-assembling
         *ngIf="activePopup === 'assembling'"
-        (gameClose)="closePopup()"
+        [coinsEarned]="coinsEarned"
+        (gameClose)="closePopupWithCoin()"
       ></app-planet10finger-assembling>
     </ng-container>
   </div>

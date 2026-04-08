@@ -39,6 +39,10 @@
         score === 1 ? "" : "er"
       }}!
     </div>
+    <div class="go-coins" *ngIf="coinsEarned > 0">
+      <span class="coin-emoji">🪙</span>
+      +{{ coinsEarned }} {{ coinsEarned === 1 ? "coin" : "coins" }}
+    </div>
     <div class="go-actions">
       <button class="btn-restart" (click)="restartGame()">Spil igen</button>
       <button class="btn-close" (click)="close()">Luk</button>

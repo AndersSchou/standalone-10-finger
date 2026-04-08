@@ -2,6 +2,8 @@ import { Component, AfterViewInit, EventEmitter, Input, OnDestroy, Output, ViewC
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
+import { AchievementService } from '../../services/achievement.service';
+import { StatsService } from '../../services/stats.service';
 import {
   FingerName,
   HandSide,
@@ -31,6 +33,7 @@ type KeyState = 'pending' | 'active' | 'done' | 'error';
 })
 export class OxygenComponent implements AfterViewInit, OnDestroy {
   @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
+  @Input() coinsEarned = 0;
   @Output() gameClose = new EventEmitter<void>();
   /** 0-based index of the training set to play (0–4). */
   @Input() trainingSetIndex = 0;
@@ -41,10 +44,15 @@ export class OxygenComponent implements AfterViewInit, OnDestroy {
   roundsCompleted = 0;
   trainingComplete = false;
   showError = false;
+  wrongPressCount = 0;
 
   private keydownListener: ((e: KeyboardEvent) => void) | null = null;
 
-  constructor(private readonly http: HttpClient) {
+  constructor(
+    private readonly http: HttpClient,
+    private readonly achievementService: AchievementService,
+    private readonly statsService: StatsService
+  ) {
     this.startGame();
   }
 
@@ -89,6 +97,7 @@ export class OxygenComponent implements AfterViewInit, OnDestroy {
   private startGame(): void {
     this.roundsCompleted = 0;
     this.trainingComplete = false;
+    this.wrongPressCount = 0;
     this.http
       .get<{ trainingSets: OxygenTrainingSet[] }>('assets/games/oxygen-sequences.json')
       .subscribe((data) => {
@@ -128,6 +137,13 @@ export class OxygenComponent implements AfterViewInit, OnDestroy {
           if (this.roundsCompleted >= totalSequences) {
             this.trainingComplete = true;
             this.detachKeyListener();
+            // Record game completion
+            this.statsService.recordGameCompletion('oxygen');
+            // Unlock achievements
+            this.achievementService.unlockAchievement('oxygen_complete');
+            if (this.wrongPressCount === 0) {
+              this.achievementService.unlockAchievement('oxygen_perfect');
+            }
           } else {
             this.loadSequenceForRound(this.roundsCompleted);
           }

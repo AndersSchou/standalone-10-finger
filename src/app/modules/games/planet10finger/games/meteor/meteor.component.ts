@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -11,6 +12,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
+import { AchievementService } from '../../services/achievement.service';
+import { StatsService } from '../../services/stats.service';
 
 interface Meteor {
   id: number;
@@ -22,6 +25,8 @@ interface Meteor {
   duration: number;
   /** Set to false when the player hits it — triggers the burst animation. */
   visible: boolean;
+  /** Timestamp when meteor was spawned. */
+  spawnTime: number;
 }
 
 /**
@@ -40,6 +45,7 @@ interface Meteor {
 export class MeteorComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
   @ViewChild('gameAreaRef') gameAreaRef?: ElementRef<HTMLElement>;
+  @Input() coinsEarned = 0;
   @Output() gameClose = new EventEmitter<void>();
 
   meteors: Meteor[] = [];
@@ -54,11 +60,17 @@ export class MeteorComponent implements OnInit, AfterViewInit, OnDestroy {
   private spawnIntervalRef: ReturnType<typeof setInterval> | null = null;
   private timerIntervalRef: ReturnType<typeof setInterval> | null = null;
   private keydownListener: ((e: KeyboardEvent) => void) | null = null;
+  private wordSpawnTime = 0;
+  private fastWordUnlocked = false;
 
   private readonly meteorSizePx = 115;
   private readonly edgePaddingPx = 14;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly achievementService: AchievementService,
+    private readonly statsService: StatsService
+  ) {}
 
   ngAfterViewInit(): void {
     this.vkeyboard?.setTheme('color-group');
@@ -124,7 +136,15 @@ export class MeteorComponent implements OnInit, AfterViewInit, OnDestroy {
     const direction: 'ltr' | 'rtl' = Math.random() > 0.5 ? 'ltr' : 'rtl';
     const duration = 5; // seconds to cross the full screen
 
-    this.meteors.push({ id: this.nextId++, word, top, direction, duration, visible: true });
+    this.meteors.push({
+      id: this.nextId++,
+      word,
+      top,
+      direction,
+      duration,
+      visible: true,
+      spawnTime: Date.now(),
+    });
   }
 
   /** Pick a top position where the full meteor remains visible and away from HUD/keyboard areas. */
@@ -164,6 +184,19 @@ export class MeteorComponent implements OnInit, AfterViewInit, OnDestroy {
       if (hit) {
         hit.visible = false;
         this.score++;
+        
+        // Check for fast word achievement (typed within 3 seconds of spawn)
+        const timeSinceSpawn = (Date.now() - hit.spawnTime) / 1000;
+        if (timeSinceSpawn <= 3 && !this.fastWordUnlocked) {
+          this.achievementService.unlockAchievement('meteor_fast_word');
+          this.fastWordUnlocked = true;
+        }
+
+        // Check for 5 points achievement
+        if (this.score >= 5) {
+          this.achievementService.unlockAchievement('meteor_5points');
+        }
+
         this.typedWord = '';
         // Remove from array after the burst animation (0.4 s)
         setTimeout(() => {
@@ -187,6 +220,9 @@ export class MeteorComponent implements OnInit, AfterViewInit, OnDestroy {
   private endGame(): void {
     this.gameOver = true;
     this.clearIntervals();
+    // Record game completion with score
+    this.statsService.recordGameCompletion('meteor', { score: this.score });
+    this.achievementService.unlockAchievement('meteor_complete');
     if (this.keydownListener) {
       document.removeEventListener('keydown', this.keydownListener);
       this.keydownListener = null;

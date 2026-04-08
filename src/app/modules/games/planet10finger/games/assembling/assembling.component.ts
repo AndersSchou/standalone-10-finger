@@ -1,7 +1,9 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
+import { AchievementService } from '../../services/achievement.service';
+import { StatsService } from '../../services/stats.service';
 import {
   FingerName,
   HandSide,
@@ -26,6 +28,7 @@ const GOAL = 3;
 export class AssemblingComponent implements OnInit, AfterViewInit {
   @ViewChild('typingArea') typingAreaRef!: ElementRef<HTMLTextAreaElement>;
   @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
+  @Input() coinsEarned = 0;
   @Output() gameClose = new EventEmitter<void>();
 
   stories: string[] = [];
@@ -35,6 +38,9 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
   goal = GOAL;
   gameOver = false;
   showError = false;
+  typoCount = 0;
+  gameStartTime = 0;
+  totalWordsTyped = 0;
 
   /** Each character with its current display state. */
   get chars(): { char: string; state: 'pending' | 'correct' | 'current' }[] {
@@ -47,9 +53,16 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
 
   private usedIndices = new Set<number>();
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly achievementService: AchievementService,
+    private readonly statsService: StatsService
+  ) {}
 
   ngOnInit(): void {
+    this.gameStartTime = Date.now();
+    this.typoCount = 0;
+    this.totalWordsTyped = 0;
     this.http
       .get<{ stories: string[] }>('assets/games/assembling-stories.json')
       .subscribe((data) => {
@@ -80,6 +93,7 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
 
     if (newChar !== expected) {
       // Reject the wrong character — reset textarea to last good state
+      this.typoCount++;
       textarea.value = this.typed;
       this.showError = true;
       setTimeout(() => { this.showError = false; }, 400);
@@ -90,8 +104,29 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
 
     if (this.typed === this.currentStory) {
       this.score++;
+      // Count words in completed story
+      this.totalWordsTyped += this.currentStory.split(/\s+/).filter(w => w.length > 0).length;
       if (this.score >= this.goal) {
         this.gameOver = true;
+        // Calculate WPM and accuracy
+        const elapsedSeconds = (Date.now() - this.gameStartTime) / 1000;
+        const wpm = (this.totalWordsTyped / elapsedSeconds) * 60;
+        const correctTyped = this.totalWordsTyped - this.typoCount;
+        // Record game completion
+        this.statsService.recordGameCompletion('assembling', { 
+          score: this.score,
+          wpm,
+          correctTyped,
+          totalTyped: this.totalWordsTyped
+        });
+        // Unlock achievements
+        this.achievementService.unlockAchievement('assembling_complete');
+        if (wpm > 20) {
+          this.achievementService.unlockAchievement('assembling_wpm');
+        }
+        if (this.typoCount === 0) {
+          this.achievementService.unlockAchievement('assembling_perfect');
+        }
       } else {
         setTimeout(() => {
           this.nextStory();
@@ -106,6 +141,9 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
     this.typed = '';
     this.gameOver = false;
     this.showError = false;
+    this.typoCount = 0;
+    this.totalWordsTyped = 0;
+    this.gameStartTime = Date.now();
     this.usedIndices.clear();
     this.nextStory();
     setTimeout(() => this.focusField());

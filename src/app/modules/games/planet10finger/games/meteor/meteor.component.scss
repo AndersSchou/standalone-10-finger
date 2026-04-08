@@ -189,6 +189,20 @@
     }
   }
 
+  .go-coins {
+    font-size: 20px;
+    color: #ffd700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+
+    .coin-emoji {
+      font-size: 28px;
+    }
+  }
+
   .go-actions {
     display: flex;
     gap: 16px;

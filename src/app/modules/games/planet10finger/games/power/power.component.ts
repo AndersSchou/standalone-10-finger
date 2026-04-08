@@ -1,7 +1,9 @@
-import { Component, AfterViewInit, EventEmitter, OnDestroy, Output, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
+import { AchievementService } from '../../services/achievement.service';
+import { StatsService } from '../../services/stats.service';
 import {
   FingerName,
   HandSide,
@@ -26,6 +28,7 @@ interface PowerRound {
 })
 export class PowerComponent implements AfterViewInit, OnDestroy {
   @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
+  @Input() coinsEarned = 0;
   /** Emitted when the user closes the training-complete screen. */
   @Output() gameClose = new EventEmitter<void>();
 
@@ -39,14 +42,21 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
   totalRounds = 6;
   roundSuccess = false;
   trainingComplete = false;
+  wrongPressCount = 0;
+  isCountingWrong = true;
 
   private holdInterval: ReturnType<typeof setInterval> | null = null;
   private holdStart: number | null = null;
+  private cooldownTimer: ReturnType<typeof setTimeout> | null = null;
   private keydownListener: ((e: KeyboardEvent) => void) | null = null;
   private keyupListener: ((e: KeyboardEvent) => void) | null = null;
   private remainingRoundIndices: number[] = [];
 
-  constructor(private readonly http: HttpClient) {
+  constructor(
+    private readonly http: HttpClient,
+    private readonly achievementService: AchievementService,
+    private readonly statsService: StatsService
+  ) {
     this.startPowerGame();
   }
 
@@ -88,6 +98,7 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
   private startPowerGame(): void {
     this.roundsCompleted = 0;
     this.trainingComplete = false;
+    this.wrongPressCount = 0;
     this.http
       .get<{ rounds: PowerRound[] }>('assets/games/power-generation.json')
       .subscribe((data) => {
@@ -104,10 +115,12 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
 
   private pickNewRound(): void {
     this.clearHoldTimer();
+    this.clearCooldownTimer();
     this.heldKeys = new Set();
     this.holdProgress = 0;
     this.roundSuccess = false;
     this.currentPairIndex = 0;
+    this.isCountingWrong = true;
 
     if (this.remainingRoundIndices.length === 0) {
       this.trainingComplete = true;
@@ -148,6 +161,11 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
         if (this.allKeysHeld) {
           this.startHoldTimer();
         }
+      } else if (!this.currentKeys.includes(key) && this.currentKeys.length > 0) {
+        // Wrong key pressed (only count if not in cooldown period)
+        if (this.isCountingWrong) {
+          this.wrongPressCount++;
+        }
       }
     };
     this.keyupListener = (e: KeyboardEvent) => {
@@ -185,6 +203,8 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
         this.clearHoldTimer();
         this.heldKeys = new Set();
         this.holdProgress = 0;
+        // Start cooldown period where wrong presses don't count
+        this.startCooldownPeriod();
         if (this.currentPairIndex < this.allPairs.length - 1) {
           this.currentPairIndex++;
         } else {
@@ -193,6 +213,13 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
           if (this.roundsCompleted >= this.totalRounds) {
             this.trainingComplete = true;
             this.detachKeyListeners();
+            // Record game completion
+            this.statsService.recordGameCompletion('power');
+            // Unlock achievements
+            this.achievementService.unlockAchievement('power_complete');
+            if (this.wrongPressCount === 0) {
+              this.achievementService.unlockAchievement('power_perfect');
+            }
           } else {
             setTimeout(() => this.pickNewRound(), 900);
           }
@@ -209,8 +236,27 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
     this.holdStart = null;
   }
 
+  private startCooldownPeriod(): void {
+    this.isCountingWrong = false;
+    if (this.cooldownTimer) {
+      clearTimeout(this.cooldownTimer);
+    }
+    this.cooldownTimer = setTimeout(() => {
+      this.isCountingWrong = true;
+      this.cooldownTimer = null;
+    }, 1000); // 1 second cooldown
+  }
+
+  private clearCooldownTimer(): void {
+    if (this.cooldownTimer) {
+      clearTimeout(this.cooldownTimer);
+      this.cooldownTimer = null;
+    }
+  }
+
   ngOnDestroy(): void {
     this.clearHoldTimer();
+    this.clearCooldownTimer();
     this.detachKeyListeners();
   }
 }

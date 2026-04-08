@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AchievementsDisplayComponent } from '../../components/achievements-display.component';
+import { StatsDisplayComponent } from '../../components/stats-display.component';
+import { BuildingsCustomizerComponent } from '../../components/buildings-customizer.component';
 
 type Tab = 'information' | 'achievements' | 'stats' | 'shop';
 
@@ -8,7 +11,7 @@ type Tab = 'information' | 'achievements' | 'stats' | 'shop';
   templateUrl: './headquarters.component.html',
   styleUrl: './headquarters.component.scss',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AchievementsDisplayComponent, StatsDisplayComponent, BuildingsCustomizerComponent],
 })
 export class HeadquartersComponent {
   @Output() gameClose = new EventEmitter<void>();

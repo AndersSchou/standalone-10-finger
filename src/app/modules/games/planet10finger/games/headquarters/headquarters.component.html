@@ -57,17 +57,15 @@
         </div>
       </div>
     </div>
-    <div *ngIf="activeTab === 'achievements'" class="placeholder">
-      <p>
-        Badges og achievements tab — badges for gennemførte spil, og
-        achievements for specifikke præstationer<br />
-      </p>
+    <div *ngIf="activeTab === 'achievements'" class="achievements-tab">
+      <app-achievements-display></app-achievements-display>
     </div>
-    <div *ngIf="activeTab === 'stats'" class="placeholder">
-      <p>Statistik tab — information og hastighed, korrekthed, og svagheder</p>
+    <div *ngIf="activeTab === 'stats'" class="stats-tab">
+      <app-stats-display></app-stats-display>
     </div>
-    <div *ngIf="activeTab === 'shop'" class="placeholder">
-      <p>SHOP - til customization af planet</p>
+    <div *ngIf="activeTab === 'shop'" class="shop-tab">
+      <h3>Butik - Tilpas din planet</h3>
+      <app-buildings-customizer></app-buildings-customizer>
     </div>
   </div>
 </div>

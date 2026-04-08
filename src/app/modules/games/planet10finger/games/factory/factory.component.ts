@@ -1,7 +1,9 @@
-import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
+import { AchievementService } from '../../services/achievement.service';
+import { StatsService } from '../../services/stats.service';
 import {
   FingerName,
   HandSide,
@@ -24,6 +26,7 @@ const GOAL = 5;
 })
 export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
+  @Input() coinsEarned = 0;
   @Output() gameClose = new EventEmitter<void>();
 
   sentences: string[] = [];
@@ -33,6 +36,9 @@ export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
   goal = GOAL;
   gameOver = false;
   showError = false;
+  typoCount = 0;
+  gameStartTime = 0;
+  totalWordsTyped = 0;
   /** Per-character state for the current sentence. */
   get chars(): { char: string; state: 'pending' | 'correct' | 'error' }[] {
     return this.currentSentence.split('').map((char, i) => {
@@ -63,7 +69,11 @@ export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
   private usedIndices = new Set<number>();
   private keydownListener: ((e: KeyboardEvent) => void) | null = null;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly achievementService: AchievementService,
+    private readonly statsService: StatsService
+  ) {}
 
   ngAfterViewInit(): void {
     this.vkeyboard?.setTheme('color-group');
@@ -71,6 +81,9 @@ export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.gameStartTime = Date.now();
+    this.typoCount = 0;
+    this.totalWordsTyped = 0;
     this.http
       .get<{ sentences: string[] }>('assets/games/factory-sentences.json')
       .subscribe((data) => {
@@ -85,6 +98,9 @@ export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
     this.typed = '';
     this.gameOver = false;
     this.showError = false;
+    this.typoCount = 0;
+    this.totalWordsTyped = 0;
+    this.gameStartTime = Date.now();
     this.usedIndices.clear();
     this.nextSentence();
     this.attachKeyListener();
@@ -130,6 +146,7 @@ export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
       const expected = this.currentSentence[this.typed.length];
       if (e.key !== expected) {
         // Wrong key — flash red without appending
+        this.typoCount++;
         this.showError = true;
         setTimeout(() => { this.showError = false; }, 400);
         return;
@@ -139,9 +156,30 @@ export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (this.typed === this.currentSentence) {
         this.score++;
+        // Count words in completed sentence
+        this.totalWordsTyped += this.currentSentence.split(/\s+/).filter(w => w.length > 0).length;
         if (this.score >= this.goal) {
           this.gameOver = true;
           this.detachKeyListener();
+          // Calculate WPM and accuracy
+          const elapsedSeconds = (Date.now() - this.gameStartTime) / 1000;
+          const wpm = (this.totalWordsTyped / elapsedSeconds) * 60;
+          const correctTyped = this.totalWordsTyped * this.goal - this.typoCount;
+          // Record game completion
+          this.statsService.recordGameCompletion('factory', { 
+            score: this.score,
+            wpm,
+            correctTyped,
+            totalTyped: this.totalWordsTyped * this.goal
+          });
+          // Unlock achievements
+          this.achievementService.unlockAchievement('factory_complete');
+          if (wpm > 20) {
+            this.achievementService.unlockAchievement('factory_wpm');
+          }
+          if (this.typoCount === 0) {
+            this.achievementService.unlockAchievement('factory_perfect');
+          }
         } else {
           setTimeout(() => this.nextSentence(), 400);
         }

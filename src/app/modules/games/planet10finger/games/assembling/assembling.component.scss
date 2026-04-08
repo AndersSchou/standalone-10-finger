@@ -118,6 +118,26 @@
   text-align: center;
 }
 
+.coins-earned {
+  font-size: 1.4rem;
+  color: #ffd700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+
+  .coin-emoji {
+    font-size: 28px;
+  }
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
 .training-close-btn {
   padding: 14px 48px;
   font-size: 1.1rem;
