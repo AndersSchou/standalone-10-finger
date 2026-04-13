@@ -467,6 +467,95 @@
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
+// Guided Mode Styling
+.guidance-message {
+  margin-bottom: 32px;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  animation: slideInDown 0.4s ease;
+
+  p {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Locked game card styling
+.game-card {
+  position: relative;
+
+  &.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    .game-icon {
+      filter: grayscale(70%);
+    }
+
+    &:hover {
+      transform: scale(1);
+    }
+  }
+
+  &.next-in-guide {
+    .game-card {
+      animation: pulse 2s infinite;
+    }
+  }
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  animation: badgeBounce 0.6s ease;
+}
+
+@keyframes badgeBounce {
+  0% {
+    transform: scale(0);
+  }
+  70% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 20px rgba(102, 126, 234, 0);
+  }
+}
+
 // ── Popup shared ─────────────────────────────────────────
 
 .popup-overlay {
@@ -618,6 +707,157 @@
 
   &:active {
     transform: translateY(0);
+  }
+}
+
+// ── Difficulty Selector ────────────────────────────────────
+
+.difficulty-selector-popup {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  z-index: 100;
+}
+
+.difficulty-content {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 550px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  h2 {
+    margin: 0 0 32px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #667eea;
+  }
+}
+
+.difficulty-selector-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.difficulty-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.difficulty-selector {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.difficulty-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 32px;
+  min-width: 140px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  font-size: 1.1rem;
+
+  &:hover {
+    border-color: #667eea;
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
+.difficulty-level {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.difficulty-btn.difficulty-1 {
+  border-color: #4caf50;
+
+  .difficulty-level {
+    color: #4caf50;
+  }
+
+  &:hover {
+    border-color: #4caf50;
+    background: rgba(76, 175, 80, 0.05);
+  }
+
+  &.selected {
+    background: #4caf50;
+    border-color: #4caf50;
+
+    .difficulty-level {
+      color: white;
+    }
+  }
+}
+
+.difficulty-btn.difficulty-2 {
+  border-color: #ff9800;
+
+  .difficulty-level {
+    color: #ff9800;
+  }
+
+  &:hover {
+    border-color: #ff9800;
+    background: rgba(255, 152, 0, 0.05);
+  }
+
+  &.selected {
+    background: #ff9800;
+    border-color: #ff9800;
+
+    .difficulty-level {
+      color: white;
+    }
+  }
+}
+
+.difficulty-btn.difficulty-3 {
+  border-color: #f44336;
+
+  .difficulty-level {
+    color: #f44336;
+  }
+
+  &:hover {
+    border-color: #f44336;
+    background: rgba(244, 67, 54, 0.05);
+  }
+
+  &.selected {
+    background: #f44336;
+    border-color: #f44336;
+
+    .difficulty-level {
+      color: white;
+    }
   }
 }
 

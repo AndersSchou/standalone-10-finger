@@ -46,6 +46,7 @@ export class MeteorComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
   @ViewChild('gameAreaRef') gameAreaRef?: ElementRef<HTMLElement>;
   @Input() coinsEarned = 0;
+  @Input() difficulty: 1 | 2 | 3 = 2;
   @Output() gameClose = new EventEmitter<void>();
 
   meteors: Meteor[] = [];
@@ -107,7 +108,8 @@ export class MeteorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private startGame(): void {
     this.score = 0;
-    this.timeLeft = 15;
+    // Set time based on difficulty: 1=20s, 2=15s, 3=10s
+    this.timeLeft = this.difficulty === 1 ? 20 : this.difficulty === 3 ? 10 : 15;
     this.gameOver = false;
     this.typedWord = '';
     this.meteors = [];
@@ -188,13 +190,13 @@ export class MeteorComponent implements OnInit, AfterViewInit, OnDestroy {
         // Check for fast word achievement (typed within 3 seconds of spawn)
         const timeSinceSpawn = (Date.now() - hit.spawnTime) / 1000;
         if (timeSinceSpawn <= 3 && !this.fastWordUnlocked) {
-          this.achievementService.unlockAchievement('meteor_fast_word');
+          this.achievementService.unlockAchievement(`meteor_lvl${this.difficulty}_fast_word`);
           this.fastWordUnlocked = true;
         }
 
         // Check for 5 points achievement
         if (this.score >= 5) {
-          this.achievementService.unlockAchievement('meteor_5points');
+          this.achievementService.unlockAchievement(`meteor_lvl${this.difficulty}_5points`);
         }
 
         this.typedWord = '';
@@ -221,8 +223,8 @@ export class MeteorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.gameOver = true;
     this.clearIntervals();
     // Record game completion with score
-    this.statsService.recordGameCompletion('meteor', { score: this.score });
-    this.achievementService.unlockAchievement('meteor_complete');
+    this.statsService.recordGameCompletion('meteor', { score: this.score, difficulty: this.difficulty });
+    this.achievementService.unlockAchievement(`meteor_lvl${this.difficulty}_complete`);
     if (this.keydownListener) {
       document.removeEventListener('keydown', this.keydownListener);
       this.keydownListener = null;

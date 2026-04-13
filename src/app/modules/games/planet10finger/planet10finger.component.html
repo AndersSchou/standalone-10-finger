@@ -43,18 +43,12 @@
 <div class="planet10finger-bg">
   <div class="planet-header" *ngIf="planetName">
     <h2
-      (click)="startEditPlanetName()"
+      (click)="!inGameIntro && startEditPlanetName()"
       title="Klik for at ændre planetnavnet"
       [style.color]="planetNameColor"
+      [class.disabled]="inGameIntro"
     >
       Planet {{ planetName }}
-      <button
-        class="planet-edit-btn"
-        (click)="startEditPlanetName()"
-        title="Rediger planetnavnet"
-      >
-        ✎
-      </button>
     </h2>
   </div>
 
@@ -98,16 +92,20 @@
     <span class="coin-icon">🪙</span>
     <span class="coin-count">{{ coins }}</span>
   </div>
-  <button
-    class="welcome-again-btn"
-    (click)="reopenWelcome()"
-    title="Genbegynde velkomstskærm"
-  >
-    &#x2815;
-  </button>
+
+  <!-- Guidance Message for New Players -->
+  <div class="guidance-message" *ngIf="isGuidedMode && guidanceMessage">
+    <p>{{ guidanceMessage }}</p>
+  </div>
+
   <div class="games-grid">
     <!-- Power Game -->
-    <div class="game-card" (click)="openPopup('power')">
+    <div
+      class="game-card"
+      [class.locked]="isGameLockedInGuide('power')"
+      [class.next-in-guide]="nextGameInGuide === 'power'"
+      (click)="openPopup('power')"
+    >
       <div class="game-icon">
         <app-power-building
           [variant]="buildingCustomization.power?.shapeVariant || 'basic'"
@@ -121,19 +119,33 @@
         ></app-power-building>
       </div>
       <span class="game-label">Strøm</span>
+      <span class="badge" *ngIf="nextGameInGuide === 'power'">NÆSTE</span>
     </div>
 
     <!-- Headquarters -->
-    <div class="game-card" (click)="openPopup('headquarters')">
+    <div
+      class="game-card"
+      [class.locked]="isGameLockedInGuide('headquarters')"
+      [class.next-in-guide]="nextGameInGuide === 'headquarters'"
+      (click)="openPopup('headquarters')"
+    >
       <app-headquarters-building
         class="game-icon"
         [variant]="'basic'"
       ></app-headquarters-building>
       <span class="game-label">Hovedkvarter</span>
+      <span class="badge" *ngIf="nextGameInGuide === 'headquarters'"
+        >NÆSTE</span
+      >
     </div>
 
     <!-- Oxygen Game -->
-    <div class="game-card" (click)="openPopup('oxygen')">
+    <div
+      class="game-card"
+      [class.locked]="isGameLockedInGuide('oxygen')"
+      [class.next-in-guide]="nextGameInGuide === 'oxygen'"
+      (click)="openPopup('oxygen')"
+    >
       <div class="game-icon">
         <app-oxygen-building
           [variant]="buildingCustomization.oxygen?.shapeVariant || 'basic'"
@@ -147,10 +159,16 @@
         ></app-oxygen-building>
       </div>
       <span class="game-label">Ilt</span>
+      <span class="badge" *ngIf="nextGameInGuide === 'oxygen'">NÆSTE</span>
     </div>
 
     <!-- Meteor Game -->
-    <div class="game-card" (click)="openPopup('meteor')">
+    <div
+      class="game-card"
+      [class.locked]="isGameLockedInGuide('meteor')"
+      [class.next-in-guide]="nextGameInGuide === 'meteor'"
+      (click)="openPopup('meteor')"
+    >
       <div class="game-icon">
         <app-meteor-building
           [variant]="buildingCustomization.meteor?.shapeVariant || 'basic'"
@@ -164,10 +182,16 @@
         ></app-meteor-building>
       </div>
       <span class="game-label">Meteor</span>
+      <span class="badge" *ngIf="nextGameInGuide === 'meteor'">NÆSTE</span>
     </div>
 
     <!-- Factory Game -->
-    <div class="game-card" (click)="openPopup('factory')">
+    <div
+      class="game-card"
+      [class.locked]="isGameLockedInGuide('factory')"
+      [class.next-in-guide]="nextGameInGuide === 'factory'"
+      (click)="openPopup('factory')"
+    >
       <div class="game-icon">
         <app-factory-building
           [variant]="buildingCustomization.factory?.shapeVariant || 'basic'"
@@ -183,10 +207,16 @@
         ></app-factory-building>
       </div>
       <span class="game-label">Fabrik</span>
+      <span class="badge" *ngIf="nextGameInGuide === 'factory'">NÆSTE</span>
     </div>
 
     <!-- Assembling Game -->
-    <div class="game-card" (click)="openPopup('assembling')">
+    <div
+      class="game-card"
+      [class.locked]="isGameLockedInGuide('assembling')"
+      [class.next-in-guide]="nextGameInGuide === 'assembling'"
+      (click)="openPopup('assembling')"
+    >
       <div class="game-icon">
         <app-assembling-building
           [variant]="buildingCustomization.assembling?.shapeVariant || 'basic'"
@@ -202,6 +232,7 @@
         ></app-assembling-building>
       </div>
       <span class="game-label">Samling</span>
+      <span class="badge" *ngIf="nextGameInGuide === 'assembling'">NÆSTE</span>
     </div>
   </div>
 </div>
@@ -248,14 +279,46 @@
       class="fj-gate"
       *ngIf="!gameReady && activePopup !== 'headquarters' && !showGameIntro"
     >
-      <div class="fj-title">
-        <div>Hold</div>
-        <div><kbd>F</kbd> og <kbd>J</kbd></div>
-        <div>for at starte</div>
+      <!-- Difficulty Selector at top of F+J gate -->
+      <div class="difficulty-selector-container">
+        <h3 class="difficulty-title">Vælg sværhedsgrad</h3>
+        <div class="difficulty-selector">
+          <button
+            class="difficulty-btn difficulty-1"
+            [class.selected]="gameDifficulty === 1"
+            (click)="selectDifficulty(1)"
+          >
+            <div class="difficulty-level">Level 1</div>
+          </button>
+          <button
+            class="difficulty-btn difficulty-2"
+            [class.selected]="gameDifficulty === 2"
+            (click)="selectDifficulty(2)"
+          >
+            <div class="difficulty-level">Level 2</div>
+          </button>
+          <button
+            class="difficulty-btn difficulty-3"
+            [class.selected]="gameDifficulty === 3"
+            (click)="selectDifficulty(3)"
+          >
+            <div class="difficulty-level">Level 3</div>
+          </button>
+        </div>
       </div>
-      <div class="fj-bar-track">
-        <div class="fj-bar-fill" [style.width.%]="holdProgress"></div>
+
+      <!-- F+J Progress -->
+      <div class="fj-progress">
+        <div class="fj-title">
+          <div>Hold</div>
+          <div><kbd>F</kbd> og <kbd>J</kbd></div>
+          <div>for at starte</div>
+        </div>
+        <div class="fj-bar-track">
+          <div class="fj-bar-fill" [style.width.%]="holdProgress"></div>
+        </div>
       </div>
+
       <div class="fj-keyboard-hld">
         <div class="fj-hands-hld mr-10">
           <div class="fj-hands-bg left"></div>
@@ -280,29 +343,35 @@
 
       <app-planet10finger-power
         *ngIf="activePopup === 'power'"
-        (gameClose)="closePopup()"
+        [difficulty]="gameDifficulty"
+        (gameClose)="closePopupWithCoin()"
       ></app-planet10finger-power>
 
       <app-planet10finger-oxygen
         *ngIf="activePopup === 'oxygen'"
-        (gameClose)="closePopup()"
+        [difficulty]="gameDifficulty"
+        [trainingSetIndex]="gameDifficulty - 1"
+        (gameClose)="closePopupWithCoin()"
       ></app-planet10finger-oxygen>
 
       <app-planet10finger-meteor
         *ngIf="activePopup === 'meteor'"
         [coinsEarned]="coinsEarned"
+        [difficulty]="gameDifficulty"
         (gameClose)="closePopupWithCoin()"
       ></app-planet10finger-meteor>
 
       <app-planet10finger-factory
         *ngIf="activePopup === 'factory'"
         [coinsEarned]="coinsEarned"
+        [difficulty]="gameDifficulty"
         (gameClose)="closePopupWithCoin()"
       ></app-planet10finger-factory>
 
       <app-planet10finger-assembling
         *ngIf="activePopup === 'assembling'"
         [coinsEarned]="coinsEarned"
+        [difficulty]="gameDifficulty"
         (gameClose)="closePopupWithCoin()"
       ></app-planet10finger-assembling>
     </ng-container>

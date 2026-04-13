@@ -29,13 +29,14 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
   @ViewChild('typingArea') typingAreaRef!: ElementRef<HTMLTextAreaElement>;
   @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
   @Input() coinsEarned = 0;
+  @Input() difficulty: 1 | 2 | 3 = 2;
   @Output() gameClose = new EventEmitter<void>();
 
   stories: string[] = [];
   currentStory = '';
   typed = '';
   score = 0;
-  goal = GOAL;
+  goal: number;
   gameOver = false;
   showError = false;
   typoCount = 0;
@@ -57,7 +58,10 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
     private readonly http: HttpClient,
     private readonly achievementService: AchievementService,
     private readonly statsService: StatsService
-  ) {}
+  ) {
+    // Set goal based on difficulty: 1=2 stories, 2=3 (default), 3=4 stories
+    this.goal = this.difficulty === 1 ? 2 : this.difficulty === 3 ? 4 : 3;
+  }
 
   ngOnInit(): void {
     this.gameStartTime = Date.now();
@@ -117,15 +121,18 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
           score: this.score,
           wpm,
           correctTyped,
-          totalTyped: this.totalWordsTyped
+          totalTyped: this.totalWordsTyped,
+          elapsedSeconds,
+          isPerfect: this.typoCount === 0,
+          difficulty: this.difficulty
         });
         // Unlock achievements
-        this.achievementService.unlockAchievement('assembling_complete');
+        this.achievementService.unlockAchievement(`assembling_lvl${this.difficulty}_complete`);
         if (wpm > 20) {
-          this.achievementService.unlockAchievement('assembling_wpm');
+          this.achievementService.unlockAchievement(`assembling_lvl${this.difficulty}_wpm`);
         }
         if (this.typoCount === 0) {
-          this.achievementService.unlockAchievement('assembling_perfect');
+          this.achievementService.unlockAchievement(`assembling_lvl${this.difficulty}_perfect`);
         }
       } else {
         setTimeout(() => {

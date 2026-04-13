@@ -61,6 +61,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   planetName = '';
   /** Show game intro popup. */
   showGameIntro = false;
+  /** Whether currently viewing game intro (prevents planet name editing). */
+  inGameIntro = false;
   /** Whether "do not show again" is checked for current game intro. */
   doNotShowAgainChecked = false;
   /** Coin count. */
@@ -85,6 +87,18 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   cheatMessageType: 'success' | 'error' = 'success';
   /** Planet name color */
   planetNameColor = '#FFFFFF';
+  /** Show difficulty selector dialog. */
+  showDifficultySelector = false;
+  /** Current game difficulty (1-3) */
+  gameDifficulty: 1 | 2 | 3 = 1;
+
+  // Guided mode for first-time players
+  private readonly GUIDED_MODE_KEY = 'planet10finger_guided_completed_games';
+  private readonly guidedGameOrder: string[] = ['oxygen', 'power', 'factory', 'assembling', 'meteor'];
+  completedGames: Set<string> = new Set();
+  isGuidedMode = false;
+  nextGameInGuide: string | null = null;
+  guidanceMessage = '';
 
   private readonly WELCOME_KEY = 'planet10finger_welcome_seen';
   private readonly PLANET_NAME_KEY = 'planet10finger_name';
@@ -113,7 +127,12 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     }
     if (!hasSeenWelcome) {
       this.showWelcome = true;
+      this.isGuidedMode = true; // New users start in guided mode
     }
+
+    // Load guided mode status and completed games
+    this.loadGuidedModeStatus();
+    this.updateNextGameInGuide();
 
     // Load building customizations
     this.buildingCustomization = this.buildingCustomizationService.getCustomizationState();
@@ -121,6 +140,68 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     // Load planet name color customization
     const planetNameCustomization = this.planetNameCustomizationService.getCustomization();
     this.planetNameColor = planetNameCustomization.color;
+  }
+
+  private loadGuidedModeStatus(): void {
+    const completedGamesStr = localStorage.getItem(this.GUIDED_MODE_KEY);
+    if (completedGamesStr) {
+      try {
+        const completed = JSON.parse(completedGamesStr);
+        this.completedGames = new Set(completed);
+        // Still in guided mode if not all games are completed
+        this.isGuidedMode = this.completedGames.size < this.guidedGameOrder.length;
+      } catch {
+        this.completedGames = new Set();
+        this.isGuidedMode = true;
+      }
+    } else if (localStorage.getItem(this.WELCOME_KEY)) {
+      // User has seen welcome but no completed games record - they're in guided mode
+      this.isGuidedMode = true;
+    }
+  }
+
+  private updateNextGameInGuide(): void {
+    for (const game of this.guidedGameOrder) {
+      if (!this.completedGames.has(game)) {
+        this.nextGameInGuide = game;
+        this.updateGuidanceMessage();
+        return;
+      }
+    }
+    // All games completed
+    this.isGuidedMode = false;
+    this.nextGameInGuide = null;
+    this.guidanceMessage = '';
+  }
+
+  private updateGuidanceMessage(): void {
+    if (!this.isGuidedMode || !this.nextGameInGuide) {
+      this.guidanceMessage = '';
+      return;
+    }
+
+    const gameIndex = this.guidedGameOrder.indexOf(this.nextGameInGuide) + 1;
+    const gameNames: Record<string, string> = {
+      oxygen: 'Ilt',
+      power: 'Strøm',
+      factory: 'Fabrik',
+      assembling: 'Samling',
+      meteor: 'Meteor',
+    };
+    const gameName = gameNames[this.nextGameInGuide] || this.nextGameInGuide;
+    this.guidanceMessage = `Sekvens ${gameIndex}/${this.guidedGameOrder.length}: Spil ${gameName}`;
+  }
+
+  isGameNextInGuide(game: string): boolean {
+    return this.isGuidedMode && this.nextGameInGuide === game;
+  }
+
+  isGameLockedInGuide(game: string): boolean {
+    // Headquarters is always unlocked
+    if (game === 'headquarters') {
+      return false;
+    }
+    return this.isGuidedMode && this.nextGameInGuide !== game && !this.completedGames.has(game);
   }
 
   dismissWelcome(): void {
@@ -193,6 +274,7 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
       localStorage.setItem(key, 'true');
     }
     this.showGameIntro = false;
+    this.inGameIntro = false;
     this.doNotShowAgainChecked = false;
     this.attachHoldListeners();
     setTimeout(() => {
@@ -208,26 +290,33 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     const introHiddenKey = `game_intro_${this.activePopup}_hidden`;
     localStorage.removeItem(introHiddenKey);
     
-    // Show the popup immediately
+    // Show the popup immediately and disable planet name editing
     this.showGameIntro = true;
+    this.inGameIntro = true;
     this.doNotShowAgainChecked = false;
   }
 
   openPopup(game: string): void {
+    // Check if in guided mode and game is not the next one
+    if (this.isGameLockedInGuide(game)) {
+      return; // Don't open locked games
+    }
+
     this.activePopup = game;
     this.gameReady = false;
     this.holdProgress = 0;
     this.heldKeys.clear();
     this.doNotShowAgainChecked = false;
+    this.gameDifficulty = 1; // Reset to default
     
     // Set coins to be earned (1 for meteor, factory, assembling; 0 for others)
     this.coinsEarned = ['meteor', 'factory', 'assembling'].includes(game) ? 1 : 0;
     
     // Check if intro for this game has been hidden
-    const introHiddenKey = `game_intro_${game}_hidden`;
+    const introHiddenKey = `game_intro_${this.activePopup}_hidden`;
     const isIntroHidden = localStorage.getItem(introHiddenKey) === 'true';
     
-    if (!isIntroHidden && game !== 'headquarters') {
+    if (!isIntroHidden && this.activePopup !== 'headquarters') {
       this.showGameIntro = true;
     } else {
       this.attachHoldListeners();
@@ -238,13 +327,25 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     }
   }
 
+  selectDifficulty(difficulty: 1 | 2 | 3): void {
+    this.gameDifficulty = difficulty;
+    this.attachHoldListeners();
+    setTimeout(() => {
+      this.fjKeyboard?.setTheme('color-group');
+      this.fjKeyboard?.setMode('partial');
+    });
+  }
+
   closePopup(): void {
     this.activePopup = null;
     this.gameReady = false;
     this.holdProgress = 0;
     this.showGameIntro = false;
+    this.inGameIntro = false;
+    this.showDifficultySelector = false;
     this.doNotShowAgainChecked = false;
     this.coinsEarned = 0;
+    this.gameDifficulty = 1;
     this.removeHoldListeners();
     // Refresh building customizations and planet name color when closing headquarters
     this.buildingCustomization = this.buildingCustomizationService.getCustomizationState();
@@ -253,11 +354,20 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   }
 
   closePopupWithCoin(): void {
+    const gameToClose = this.activePopup;
     // Award a coin for meteor, factory, and assembling games
-    if (['meteor', 'factory', 'assembling'].includes(this.activePopup || '')) {
+    if (['meteor', 'factory', 'assembling'].includes(gameToClose || '')) {
       this.coins += 1;
       localStorage.setItem(this.COINS_KEY, this.coins.toString());
     }
+    
+    // Track game completion in guided mode
+    if (gameToClose && this.isGuidedMode) {
+      this.completedGames.add(gameToClose);
+      localStorage.setItem(this.GUIDED_MODE_KEY, JSON.stringify(Array.from(this.completedGames)));
+      this.updateNextGameInGuide();
+    }
+    
     this.closePopup();
   }
 
@@ -353,20 +463,43 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     if (code === 'resetgame') {
       const confirm = window.confirm('Are you sure? This will reset ALL Planet 10 Finger progress and show the welcome screen like a fresh start.');
       if (confirm) {
-        // Only clear planet10finger-specific data
+        // Clear all planet10finger-specific data
         localStorage.removeItem(this.COINS_KEY);
         localStorage.removeItem('planet10finger_achievements');
         localStorage.removeItem('planet10finger_stats');
         localStorage.removeItem('planet10finger_building_customization');
         localStorage.removeItem('planet10finger_planet_name');
         localStorage.removeItem('planet10finger_planet_name_color');
+        localStorage.removeItem(this.WELCOME_KEY);
+        localStorage.removeItem(this.GUIDED_MODE_KEY);
+        
+        // Clear all game intro hidden flags
+        const games = ['power', 'oxygen', 'meteor', 'factory', 'assembling'];
+        games.forEach(game => {
+          localStorage.removeItem(`game_intro_${game}_hidden`);
+        });
+        
+        // Reset component state to first-time state
         this.coins = 0;
         this.planetName = '';
         this.planetNameColor = '#FFFFFF';
         this.showWelcome = true;
+        this.completedGames.clear();
+        this.isGuidedMode = false;
+        this.nextGameInGuide = null;
+        this.activePopup = null;
+        this.gameReady = false;
+        this.holdProgress = 0;
+        
         this.cheatMessage = '✓ Game reset! Welcome screen will reappear.';
         this.cheatMessageType = 'success';
         this.cheatCodeInput = '';
+        this.showCheatDialog = false;
+        
+        // Reload page after a short delay to fully reset state
+        setTimeout(() => {
+          location.reload();
+        }, 500);
         return;
       }
     }
@@ -385,6 +518,16 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
         this.cheatCodeInput = '';
         return;
       }
+    }
+
+    // Unlock all games
+    if (code === 'unlockall') {
+      this.completedGames = new Set(this.guidedGameOrder);
+      localStorage.setItem(this.GUIDED_MODE_KEY, JSON.stringify(Array.from(this.completedGames)));
+      this.cheatMessage = '✓ All games unlocked!';
+      this.cheatMessageType = 'success';
+      this.cheatCodeInput = '';
+      return;
     }
 
     // Unknown cheat

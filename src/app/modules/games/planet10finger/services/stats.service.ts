@@ -4,19 +4,23 @@ export interface GameStats {
   gameId: 'power' | 'oxygen' | 'meteor' | 'factory' | 'assembling';
   gameName: string;
   timesPlayed: number;
-  averageScore?: number;
-  averageWPM?: number;
-  accuracyRate?: number;
+  perfectGameCount?: number;      // Power, Oxygen, Factory, Assembling (total)
+  perfectGameCountByDifficulty?: { [key: number]: number };  // Perfect games per difficulty (1, 2, 3)
+  bestScore?: number;              // Meteor (total)
+  bestScoreByDifficulty?: { [key: number]: number };  // Best scores per difficulty (1, 2, 3)
+  bestWPM?: number;                // Factory, Assembling
+  timePlayed?: number;             // Factory, Assembling (in minutes)
 }
 
 interface StatsData {
   [gameId: string]: {
     timesPlayed: number;
-    totalScore?: number;
-    totalWPM?: number;
-    totalAttempts?: number;
-    correctTyped?: number;
-    totalTyped?: number;
+    perfectGameCount?: number;
+    perfectGameCountByDifficulty?: { [key: number]: number };
+    bestScore?: number;
+    bestScoreByDifficulty?: { [key: number]: number };
+    gameStartTime?: number;         // For calculating time played
+    bestWPMWithPerfectAccuracy?: number;
   };
 }
 
@@ -47,6 +51,9 @@ export class StatsService {
     wpm?: number;
     correctTyped?: number;
     totalTyped?: number;
+    isPerfect?: boolean;
+    elapsedSeconds?: number;
+    difficulty?: 1 | 2 | 3;
   }): void {
     if (!this.stats[gameId]) {
       this.stats[gameId] = {
@@ -56,18 +63,56 @@ export class StatsService {
 
     this.stats[gameId].timesPlayed++;
 
-    if (data?.score !== undefined) {
-      this.stats[gameId].totalScore = (this.stats[gameId].totalScore ?? 0) + data.score;
+    // Track perfect games (Power, Oxygen, Factory, Assembling)
+    if (data?.isPerfect) {
+      this.stats[gameId].perfectGameCount = (this.stats[gameId].perfectGameCount ?? 0) + 1;
+      
+      // Track perfect games by difficulty
+      if (data.difficulty) {
+        if (!this.stats[gameId].perfectGameCountByDifficulty) {
+          this.stats[gameId].perfectGameCountByDifficulty = {};
+        }
+        this.stats[gameId].perfectGameCountByDifficulty![data.difficulty] = 
+          (this.stats[gameId].perfectGameCountByDifficulty![data.difficulty] ?? 0) + 1;
+      }
+    } else if (!data?.isPerfect && (gameId === 'power' || gameId === 'oxygen' || gameId === 'factory' || gameId === 'assembling')) {
+      // Initialize to 0 if not perfect
+      if (this.stats[gameId].perfectGameCount === undefined) {
+        this.stats[gameId].perfectGameCount = 0;
+      }
     }
 
-    if (data?.wpm !== undefined) {
-      this.stats[gameId].totalWPM = (this.stats[gameId].totalWPM ?? 0) + data.wpm;
-      this.stats[gameId].totalAttempts = (this.stats[gameId].totalAttempts ?? 0) + 1;
+    // Track best meteor score
+    if (data?.score !== undefined && gameId === 'meteor') {
+      this.stats[gameId].bestScore = Math.max(this.stats[gameId].bestScore ?? 0, data.score);
+      
+      // Track best meteor score by difficulty
+      if (data.difficulty) {
+        if (!this.stats[gameId].bestScoreByDifficulty) {
+          this.stats[gameId].bestScoreByDifficulty = {};
+        }
+        this.stats[gameId].bestScoreByDifficulty![data.difficulty] = Math.max(
+          this.stats[gameId].bestScoreByDifficulty![data.difficulty] ?? 0,
+          data.score
+        );
+      }
     }
 
-    if (data?.correctTyped !== undefined && data?.totalTyped !== undefined) {
-      this.stats[gameId].correctTyped = (this.stats[gameId].correctTyped ?? 0) + data.correctTyped;
-      this.stats[gameId].totalTyped = (this.stats[gameId].totalTyped ?? 0) + data.totalTyped;
+    // Track best WPM with perfect accuracy (Factory, Assembling)
+    if (data?.wpm !== undefined && data?.correctTyped !== undefined && data?.totalTyped !== undefined) {
+      const accuracy = (data.correctTyped / data.totalTyped) * 100;
+      if (accuracy === 100) {
+        this.stats[gameId].bestWPMWithPerfectAccuracy = Math.max(
+          this.stats[gameId].bestWPMWithPerfectAccuracy ?? 0, 
+          data.wpm
+        );
+      }
+    }
+
+    // Track time played (Factory, Assembling)
+    if (data?.elapsedSeconds !== undefined) {
+      const minutes = data.elapsedSeconds / 60;
+      this.stats[gameId].gameStartTime = (this.stats[gameId].gameStartTime ?? 0) + minutes;
     }
 
     this.saveStats();
@@ -85,16 +130,24 @@ export class StatsService {
         timesPlayed: data?.timesPlayed ?? 0,
       };
 
-      if (data?.totalScore !== undefined && data?.timesPlayed > 0) {
-        stats.averageScore = data.totalScore / data.timesPlayed;
+      // Power, Oxygen, Factory, and Assembling: always show perfect game count
+      if (gameId === 'power' || gameId === 'oxygen' || gameId === 'factory' || gameId === 'assembling') {
+        stats.perfectGameCount = data?.perfectGameCount ?? 0;
+        stats.perfectGameCountByDifficulty = data?.perfectGameCountByDifficulty ?? { 1: 0, 2: 0, 3: 0 };
       }
 
-      if (data?.totalWPM !== undefined && data?.totalAttempts && data.totalAttempts > 0) {
-        stats.averageWPM = data.totalWPM / data.totalAttempts;
+      // Meteor: show best score
+      if (gameId === 'meteor') {
+        stats.bestScore = data?.bestScore ?? 0;
+        stats.bestScoreByDifficulty = data?.bestScoreByDifficulty ?? { 1: 0, 2: 0, 3: 0 };
       }
 
-      if (data?.correctTyped !== undefined && data?.totalTyped !== undefined && data.totalTyped > 0) {
-        stats.accuracyRate = (data.correctTyped / data.totalTyped) * 100;
+      // Factory and Assembling: show best WPM with perfect accuracy and time played
+      if ((gameId === 'factory' || gameId === 'assembling') && data?.bestWPMWithPerfectAccuracy) {
+        stats.bestWPM = data.bestWPMWithPerfectAccuracy;
+      }
+      if ((gameId === 'factory' || gameId === 'assembling') && data?.gameStartTime) {
+        stats.timePlayed = data.gameStartTime;
       }
 
       return stats;
@@ -112,16 +165,24 @@ export class StatsService {
       timesPlayed: data?.timesPlayed ?? 0,
     };
 
-    if (data?.totalScore !== undefined && data?.timesPlayed > 0) {
-      stats.averageScore = data.totalScore / data.timesPlayed;
+    // Power, Oxygen, Factory, and Assembling: always show perfect game count
+    if (gameId === 'power' || gameId === 'oxygen' || gameId === 'factory' || gameId === 'assembling') {
+      stats.perfectGameCount = data?.perfectGameCount ?? 0;
+      stats.perfectGameCountByDifficulty = data?.perfectGameCountByDifficulty ?? { 1: 0, 2: 0, 3: 0 };
     }
 
-    if (data?.totalWPM !== undefined && data?.totalAttempts && data.totalAttempts > 0) {
-      stats.averageWPM = data.totalWPM / data.totalAttempts;
+    // Meteor: show best score
+    if (gameId === 'meteor') {
+      stats.bestScore = data?.bestScore ?? 0;
+      stats.bestScoreByDifficulty = data?.bestScoreByDifficulty ?? { 1: 0, 2: 0, 3: 0 };
     }
 
-    if (data?.correctTyped !== undefined && data?.totalTyped !== undefined && data.totalTyped > 0) {
-      stats.accuracyRate = (data.correctTyped / data.totalTyped) * 100;
+    // Factory and Assembling: show best WPM with perfect accuracy and time played
+    if ((gameId === 'factory' || gameId === 'assembling') && data?.bestWPMWithPerfectAccuracy) {
+      stats.bestWPM = data.bestWPMWithPerfectAccuracy;
+    }
+    if ((gameId === 'factory' || gameId === 'assembling') && data?.gameStartTime) {
+      stats.timePlayed = data.gameStartTime;
     }
 
     return stats;

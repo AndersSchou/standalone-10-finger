@@ -26,19 +26,42 @@ import { StatsService, GameStats } from '../services/stats.service';
             <span class="stat-value">{{ stat.timesPlayed }} {{ stat.timesPlayed === 1 ? 'gang' : 'gange' }}</span>
           </div>
 
-          <div class="stat-line" *ngIf="stat.averageScore !== undefined">
-            <span class="stat-label">Gennemsnits point:</span>
-            <span class="stat-value">{{ stat.averageScore | number: '1.1-1' }}</span>
+          <!-- Power, Oxygen, Factory, and Assembling: show perfect game count by difficulty -->
+          <div *ngIf="shouldShowPerfectGameCount(stat.gameId)">
+            <div class="stat-line" *ngIf="stat.perfectGameCountByDifficulty">
+              <span class="stat-label">Perfekte level 1 spil:</span>
+              <span class="stat-value">{{ stat.perfectGameCountByDifficulty[1] || 0 }}</span>
+            </div>
+            <div class="stat-line" *ngIf="stat.perfectGameCountByDifficulty">
+              <span class="stat-label">Perfekte level 2 spil:</span>
+              <span class="stat-value">{{ stat.perfectGameCountByDifficulty[2] || 0 }}</span>
+            </div>
+            <div class="stat-line" *ngIf="stat.perfectGameCountByDifficulty">
+              <span class="stat-label">Perfekte level 3 spil:</span>
+              <span class="stat-value">{{ stat.perfectGameCountByDifficulty[3] || 0 }}</span>
+            </div>
           </div>
 
-          <div class="stat-line" *ngIf="stat.averageWPM !== undefined">
-            <span class="stat-label">Gennemsnits ord/min:</span>
-            <span class="stat-value">{{ stat.averageWPM | number: '1.0-0' }}</span>
+          <!-- Meteor: show best score by difficulty -->
+          <div *ngIf="stat.gameId === 'meteor'">
+            <div class="stat-line" *ngIf="stat.bestScoreByDifficulty">
+              <span class="stat-label">Bedste level 1 score:</span>
+              <span class="stat-value">{{ stat.bestScoreByDifficulty[1] || 0 }}</span>
+            </div>
+            <div class="stat-line" *ngIf="stat.bestScoreByDifficulty">
+              <span class="stat-label">Bedste level 2 score:</span>
+              <span class="stat-value">{{ stat.bestScoreByDifficulty[2] || 0 }}</span>
+            </div>
+            <div class="stat-line" *ngIf="stat.bestScoreByDifficulty">
+              <span class="stat-label">Bedste level 3 score:</span>
+              <span class="stat-value">{{ stat.bestScoreByDifficulty[3] || 0 }}</span>
+            </div>
           </div>
 
-          <div class="stat-line" *ngIf="stat.accuracyRate !== undefined">
-            <span class="stat-label">Nøjagtighed:</span>
-            <span class="stat-value">{{ stat.accuracyRate | number: '1.0-0' }}%</span>
+          <!-- Factory and Assembling: show best WPM and time played -->
+          <div class="stat-line" *ngIf="stat.bestWPM !== undefined">
+            <span class="stat-label">Bedste ord/min (100% nøjagtighed):</span>
+            <span class="stat-value">{{ stat.bestWPM | number: '1.0-0' }}</span>
           </div>
 
           <div class="stat-line no-stats" *ngIf="!hasDetailedStats(stat)">
@@ -175,9 +198,15 @@ export class StatsDisplayComponent implements OnInit {
     return this.statsService.getTotalTimesPlayed();
   }
 
+  shouldShowPerfectGameCount(gameId: string): boolean {
+    return gameId === 'power' || gameId === 'oxygen' || gameId === 'factory' || gameId === 'assembling';
+  }
+
   hasDetailedStats(stat: GameStats): boolean {
-    return stat.averageScore !== undefined || 
-           stat.averageWPM !== undefined || 
-           stat.accuracyRate !== undefined;
+    return stat.perfectGameCount !== undefined || 
+           stat.perfectGameCountByDifficulty !== undefined ||
+           stat.bestScore !== undefined || 
+           stat.bestScoreByDifficulty !== undefined ||
+           stat.bestWPM !== undefined;
   }
 }

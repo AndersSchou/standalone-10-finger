@@ -10,23 +10,14 @@
 
 <ng-container *ngIf="!trainingComplete">
   <div class="all-sequences">
-    <div
-      class="sequence-row"
-      *ngFor="
-        let seq of trainingSets[trainingSetIndex]?.sequences;
-        let si = index
-      "
-      [class.row-done]="si < roundsCompleted"
-      [class.row-active]="si === roundsCompleted"
-      [class.row-pending]="si > roundsCompleted"
-    >
-      <span class="seq-number">{{ si + 1 }}</span>
+    <div class="sequence-row row-active">
+      <span class="seq-number">{{ roundsCompleted + 1 }}</span>
       <div
         class="key-chip"
-        *ngFor="let key of seq.keys; let ki = index"
-        [class.active]="getKeyStateInRow(si, ki) === 'active'"
-        [class.done]="getKeyStateInRow(si, ki) === 'done'"
-        [class.error]="getKeyStateInRow(si, ki) === 'error'"
+        *ngFor="let key of currentSequence; let ki = index"
+        [class.active]="getKeyState(ki) === 'active'"
+        [class.done]="getKeyState(ki) === 'done'"
+        [class.error]="getKeyState(ki) === 'error'"
       >
         {{ key }}
       </div>

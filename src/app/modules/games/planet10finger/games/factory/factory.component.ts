@@ -27,13 +27,14 @@ const GOAL = 5;
 export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
   @Input() coinsEarned = 0;
+  @Input() difficulty: 1 | 2 | 3 = 2;
   @Output() gameClose = new EventEmitter<void>();
 
   sentences: string[] = [];
   currentSentence = '';
   typed = '';
   score = 0;
-  goal = GOAL;
+  goal: number;
   gameOver = false;
   showError = false;
   typoCount = 0;
@@ -73,7 +74,10 @@ export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly http: HttpClient,
     private readonly achievementService: AchievementService,
     private readonly statsService: StatsService
-  ) {}
+  ) {
+    // Set goal based on difficulty: 1=3 sentences, 2=5 (default), 3=7 sentences
+    this.goal = this.difficulty === 1 ? 3 : this.difficulty === 3 ? 7 : 5;
+  }
 
   ngAfterViewInit(): void {
     this.vkeyboard?.setTheme('color-group');
@@ -170,15 +174,18 @@ export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
             score: this.score,
             wpm,
             correctTyped,
-            totalTyped: this.totalWordsTyped * this.goal
+            totalTyped: this.totalWordsTyped * this.goal,
+            elapsedSeconds,
+            isPerfect: this.typoCount === 0,
+            difficulty: this.difficulty
           });
           // Unlock achievements
-          this.achievementService.unlockAchievement('factory_complete');
+          this.achievementService.unlockAchievement(`factory_lvl${this.difficulty}_complete`);
           if (wpm > 20) {
-            this.achievementService.unlockAchievement('factory_wpm');
+            this.achievementService.unlockAchievement(`factory_lvl${this.difficulty}_wpm`);
           }
           if (this.typoCount === 0) {
-            this.achievementService.unlockAchievement('factory_perfect');
+            this.achievementService.unlockAchievement(`factory_lvl${this.difficulty}_perfect`);
           }
         } else {
           setTimeout(() => this.nextSentence(), 400);

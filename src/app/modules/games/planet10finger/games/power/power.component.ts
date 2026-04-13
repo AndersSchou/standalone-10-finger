@@ -29,6 +29,7 @@ interface PowerRound {
 export class PowerComponent implements AfterViewInit, OnDestroy {
   @ViewChild(VKeyboardComponent) vkeyboard?: VKeyboardComponent;
   @Input() coinsEarned = 0;
+  @Input() difficulty: 1 | 2 | 3 = 2;
   /** Emitted when the user closes the training-complete screen. */
   @Output() gameClose = new EventEmitter<void>();
 
@@ -99,11 +100,16 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
     this.roundsCompleted = 0;
     this.trainingComplete = false;
     this.wrongPressCount = 0;
+    
+    // Set total rounds based on difficulty
+    // Difficulty 1: 3 rounds, Difficulty 2: 6 rounds, Difficulty 3: 9 rounds
+    this.totalRounds = this.difficulty === 1 ? 3 : this.difficulty === 3 ? 9 : 6;
+    
     this.http
       .get<{ rounds: PowerRound[] }>('assets/games/power-generation.json')
       .subscribe((data) => {
         this.powerRounds = data.rounds;
-        this.totalRounds = Math.min(6, this.powerRounds.length);
+        this.totalRounds = Math.min(this.totalRounds, this.powerRounds.length);
         this.remainingRoundIndices = this.getRandomRoundOrder().slice(
           0,
           this.totalRounds
@@ -214,11 +220,14 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
             this.trainingComplete = true;
             this.detachKeyListeners();
             // Record game completion
-            this.statsService.recordGameCompletion('power');
+            this.statsService.recordGameCompletion('power', { 
+              isPerfect: this.wrongPressCount === 0,
+              difficulty: this.difficulty
+            });
             // Unlock achievements
-            this.achievementService.unlockAchievement('power_complete');
+            this.achievementService.unlockAchievement(`power_lvl${this.difficulty}_complete`);
             if (this.wrongPressCount === 0) {
-              this.achievementService.unlockAchievement('power_perfect');
+              this.achievementService.unlockAchievement(`power_lvl${this.difficulty}_perfect`);
             }
           } else {
             setTimeout(() => this.pickNewRound(), 900);
