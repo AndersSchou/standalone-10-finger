@@ -80,8 +80,6 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   editingPlanetInput = '';
   /** Error message for planet name edit. */
   planetNameEditError = '';
-  /** Building customization state */
-  buildingCustomization: any = {};
   /** Star color */
   starColor = '#FFFFFF';
   /** Show cheat code dialog. */
@@ -123,7 +121,6 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly router: Router,
-    private readonly buildingCustomizationService: BuildingCustomizationService,
     private readonly backgroundCustomizationService: BackgroundCustomizationService,
     private readonly planetNameCustomizationService: PlanetNameCustomizationService
   ) {}
@@ -155,9 +152,6 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     // Load guided mode status and completed games
     this.loadGuidedModeStatus();
     this.updateNextGameInGuide();
-
-    // Load building customizations
-    this.buildingCustomization = this.buildingCustomizationService.getCustomizationState();
 
     // Load planet name color customization
     const planetNameCustomization = this.planetNameCustomizationService.getCustomization();
@@ -431,13 +425,20 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     this.coinsEarned = 0;
     this.gameDifficulty = 1;
     this.removeHoldListeners();
-    // Refresh building customizations and planet name color when closing headquarters
-    this.buildingCustomization = this.buildingCustomizationService.getCustomizationState();
+    // Refresh planet name color when closing headquarters
     const planetNameCustomization = this.planetNameCustomizationService.getCustomization();
     this.planetNameColor = planetNameCustomization.color;
     // Refresh star color
     this.starColor = this.backgroundCustomizationService.getStarColorValue();
     document.documentElement.style.setProperty('--star-color', this.starColor);
+    // Refresh planet background colors
+    const planetMainColor = this.backgroundCustomizationService.getPlanetMainColor();
+    const planetLightColor = this.backgroundCustomizationService.getPlanetLightColor();
+    const planetDarkColor = this.backgroundCustomizationService.getPlanetDarkColor();
+    document.documentElement.style.setProperty('--planet-main-color', planetMainColor);
+    document.documentElement.style.setProperty('--planet-light-color', planetLightColor);
+    document.documentElement.style.setProperty('--planet-dark-color', planetDarkColor);
+    this.loadSVGWithPlanetColors(planetMainColor, planetLightColor, planetDarkColor);
   }
 
   onHQCoinsChanged(newCoins: number): void {
@@ -451,6 +452,15 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   onPlanetColorChanged(): void {
     const planetNameCustomization = this.planetNameCustomizationService.getCustomization();
     this.planetNameColor = planetNameCustomization.color;
+    
+    // Reload planet background SVG with new colors
+    const planetMainColor = this.backgroundCustomizationService.getPlanetMainColor();
+    const planetLightColor = this.backgroundCustomizationService.getPlanetLightColor();
+    const planetDarkColor = this.backgroundCustomizationService.getPlanetDarkColor();
+    document.documentElement.style.setProperty('--planet-main-color', planetMainColor);
+    document.documentElement.style.setProperty('--planet-light-color', planetLightColor);
+    document.documentElement.style.setProperty('--planet-dark-color', planetDarkColor);
+    this.loadSVGWithPlanetColors(planetMainColor, planetLightColor, planetDarkColor);
   }
 
   closePopupWithCoin(): void {

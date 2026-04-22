@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AchievementsDisplayComponent } from '../../components/achievements-display.component';
 import { StatsDisplayComponent } from '../../components/stats-display.component';
-import { BuildingsCustomizerComponent } from '../../components/buildings-customizer.component';
-import { PlanetNameCustomizerComponent } from '../../components/planet-name-customizer.component';
+import { PlanetNameColorCustomizerComponent } from '../../components/planet-name-color-customizer.component';
+import { PlanetNameEditorComponent } from '../../components/planet-name-editor.component';
 import { BackgroundCustomizerComponent } from '../../components/background-customizer.component';
+import { ShopAccessoriesComponent } from '../../components/shop-accessories.component';
+import { PlanetNameCustomizationService } from '../../services/planet-name-customization.service';
 
 type Tab = 'information' | 'achievements' | 'stats' | 'shop';
 
@@ -13,9 +15,9 @@ type Tab = 'information' | 'achievements' | 'stats' | 'shop';
   templateUrl: './headquarters.component.html',
   styleUrl: './headquarters.component.scss',
   standalone: true,
-  imports: [CommonModule, AchievementsDisplayComponent, StatsDisplayComponent, BuildingsCustomizerComponent, PlanetNameCustomizerComponent, BackgroundCustomizerComponent],
+  imports: [CommonModule, AchievementsDisplayComponent, StatsDisplayComponent, PlanetNameColorCustomizerComponent, PlanetNameEditorComponent, BackgroundCustomizerComponent, ShopAccessoriesComponent],
 })
-export class HeadquartersComponent {
+export class HeadquartersComponent implements OnInit {
   @Input() coins: number = 0;
   @Input() planetName: string = 'Planet';
   @Output() gameClose = new EventEmitter<void>();
@@ -24,6 +26,7 @@ export class HeadquartersComponent {
   @Output() planetColorChanged = new EventEmitter<void>();
 
   activeTab: Tab = 'information';
+  currentNameColorHex: string = '#FFFFFF';
 
   tabs: { id: Tab; label: string }[] = [
     { id: 'information',  label: 'Information'  },
@@ -31,6 +34,13 @@ export class HeadquartersComponent {
     { id: 'stats',        label: 'Statistik'    },
     { id: 'shop',         label: 'Shop'         },
   ];
+
+  constructor(private planetNameCustomizationService: PlanetNameCustomizationService) {}
+
+  ngOnInit(): void {
+    const customization = this.planetNameCustomizationService.getCustomization();
+    this.currentNameColorHex = customization.color;
+  }
 
   selectTab(tab: Tab): void {
     this.activeTab = tab;

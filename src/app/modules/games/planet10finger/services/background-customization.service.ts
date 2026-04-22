@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 
+export const COLOR_COST = 10; // Cost in coins per color
+
 @Injectable({
   providedIn: 'root'
 })
 export class BackgroundCustomizationService {
   private readonly STAR_COLOR_KEY = 'planet10finger_star_color';
   private readonly PLANET_COLOR_KEY = 'planet10finger_planet_color';
+  private readonly PURCHASED_STAR_COLORS_KEY = 'planet10finger_purchased_star_colors';
+  private readonly PURCHASED_PLANET_COLORS_KEY = 'planet10finger_purchased_planet_colors';
 
   readonly starColors = [
     { id: 'white', label: 'Hvid', hexValue: '#FFFFFF' },
@@ -20,15 +24,15 @@ export class BackgroundCustomizationService {
   ];
 
   readonly planetColors = [
-    { id: 'grey', label: 'Grå', mainColor: '#808080', lightColor: '#909090', darkColor: '#707070' },
-    { id: 'red-grey', label: 'Rødgrå', mainColor: '#998080', lightColor: '#a99090', darkColor: '#896070' },
-    { id: 'blue-grey', label: 'Blågrå', mainColor: '#7a8c99', lightColor: '#8a9caa', darkColor: '#6a7c89' },
-    { id: 'green-grey', label: 'Grøngrå', mainColor: '#7a9980', lightColor: '#8aa990', darkColor: '#6a8970' },
-    { id: 'purple-grey', label: 'Lillagrå', mainColor: '#8a7a99', lightColor: '#9a8aaa', darkColor: '#7a6a89' },
-    { id: 'orange-grey', label: 'Orangegrå', mainColor: '#998a80', lightColor: '#a99a90', darkColor: '#897a70' },
-    { id: 'cyan-grey', label: 'Cyangrå', mainColor: '#788a9a', lightColor: '#88aaaa', darkColor: '#68797a' },
-    { id: 'yellow-grey', label: 'Gulgrå', mainColor: '#9a9a78', lightColor: '#aaaa88', darkColor: '#8a8a68' },
-    { id: 'pink-grey', label: 'Pinkgrå', mainColor: '#a08888', lightColor: '#b09898', darkColor: '#907878' },
+    { id: 'grey', label: 'Grå', mainColor: '#5A5A5A', lightColor: '#7A7A7A', darkColor: '#3A3A3A' },
+    { id: 'red-grey', label: 'Rød', mainColor: '#E63946', lightColor: '#FF6B6B', darkColor: '#C1121F' },
+    { id: 'blue-grey', label: 'Blå', mainColor: '#1D3557', lightColor: '#457B9D', darkColor: '#0F1F2C' },
+    { id: 'green-grey', label: 'Grøn', mainColor: '#2A9D8F', lightColor: '#52B788', darkColor: '#1B5E5A' },
+    { id: 'purple-grey', label: 'Lilla', mainColor: '#7209B7', lightColor: '#B5A7FF', darkColor: '#460FA3' },
+    { id: 'orange-grey', label: 'Orange', mainColor: '#FF8C42', lightColor: '#FFB84D', darkColor: '#E07B39' },
+    { id: 'cyan-grey', label: 'Cyan', mainColor: '#00D4FF', lightColor: '#37E7FF', darkColor: '#00A3CC' },
+    { id: 'yellow-grey', label: 'Gul', mainColor: '#FFD60A', lightColor: '#FFED4E', darkColor: '#FFC300' },
+    { id: 'pink-grey', label: 'Pink', mainColor: '#FF006E', lightColor: '#FF4D7D', darkColor: '#D6004A' },
   ];
 
   constructor() {}
@@ -97,5 +101,77 @@ export class BackgroundCustomizationService {
    */
   getPlanetDarkColor(): string {
     return this.getCurrentPlanetColor().darkColor;
+  }
+
+  /**
+   * Get list of purchased star colors.
+   */
+  getPurchasedStarColors(): string[] {
+    const saved = localStorage.getItem(this.PURCHASED_STAR_COLORS_KEY);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return ['white']; // White is always free
+      }
+    }
+    return ['white']; // White is always free
+  }
+
+  /**
+   * Check if a star color has been purchased.
+   */
+  isStarColorPurchased(colorId: string): boolean {
+    if (colorId === 'white') return true; // White is always free
+    return this.getPurchasedStarColors().includes(colorId);
+  }
+
+  /**
+   * Purchase a star color.
+   */
+  purchaseStarColor(colorId: string): void {
+    if (colorId !== 'white') {
+      const purchased = this.getPurchasedStarColors();
+      if (!purchased.includes(colorId)) {
+        purchased.push(colorId);
+        localStorage.setItem(this.PURCHASED_STAR_COLORS_KEY, JSON.stringify(purchased));
+      }
+    }
+  }
+
+  /**
+   * Get list of purchased planet colors.
+   */
+  getPurchasedPlanetColors(): string[] {
+    const saved = localStorage.getItem(this.PURCHASED_PLANET_COLORS_KEY);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return ['grey']; // Grey is always free
+      }
+    }
+    return ['grey']; // Grey is always free
+  }
+
+  /**
+   * Check if a planet color has been purchased.
+   */
+  isPlanetColorPurchased(colorId: string): boolean {
+    if (colorId === 'grey') return true; // Grey is always free
+    return this.getPurchasedPlanetColors().includes(colorId);
+  }
+
+  /**
+   * Purchase a planet color.
+   */
+  purchasePlanetColor(colorId: string): void {
+    if (colorId !== 'grey') {
+      const purchased = this.getPurchasedPlanetColors();
+      if (!purchased.includes(colorId)) {
+        purchased.push(colorId);
+        localStorage.setItem(this.PURCHASED_PLANET_COLORS_KEY, JSON.stringify(purchased));
+      }
+    }
   }
 }
