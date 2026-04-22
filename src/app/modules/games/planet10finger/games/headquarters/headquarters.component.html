@@ -65,12 +65,21 @@
     </div>
     <div *ngIf="activeTab === 'shop'" class="shop-tab">
       <h3>Butik - Tilpas din planet</h3>
+
+      <h4>Planetens navn</h4>
       <app-planet-name-customizer
         [coins]="coins"
         [planetName]="planetName"
         (coinsChanged)="onCoinsChanged($event)"
         (planetNameChanged)="onPlanetNameChanged($event)"
       ></app-planet-name-customizer>
+
+      <h4><strong>Skift farve på stjernerne</strong></h4>
+      <app-background-customizer
+        (planetColorChanged)="planetColorChanged.emit()"
+      ></app-background-customizer>
+
+      <h4>Bygninger</h4>
       <app-buildings-customizer
         [coins]="coins"
         (coinsChanged)="onCoinsChanged($event)"

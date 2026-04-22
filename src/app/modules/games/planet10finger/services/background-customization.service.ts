@@ -1,56 +1,101 @@
 import { Injectable } from '@angular/core';
 
-export interface BackgroundColor {
-  id: string;
-  label: string;
-  overlayColor: string; // rgba color for overlay
-  hexPreview: string;   // hex for color preview
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class BackgroundCustomizationService {
-  private readonly BACKGROUND_COLOR_KEY = 'planet10finger_background_color';
+  private readonly STAR_COLOR_KEY = 'planet10finger_star_color';
+  private readonly PLANET_COLOR_KEY = 'planet10finger_planet_color';
 
-  // Available background color options with rgba overlays
-  readonly backgroundColors: BackgroundColor[] = [
-    { id: 'original', label: 'Original (Grå)', overlayColor: 'rgba(0, 0, 0, 0)', hexPreview: '#808080' },
-    { id: 'red', label: 'Rød', overlayColor: 'rgba(255, 0, 0, 0.25)', hexPreview: '#FF0000' },
-    { id: 'blue', label: 'Blå', overlayColor: 'rgba(0, 100, 255, 0.25)', hexPreview: '#0064FF' },
-    { id: 'green', label: 'Grøn', overlayColor: 'rgba(0, 200, 100, 0.25)', hexPreview: '#00C864' },
-    { id: 'purple', label: 'Lilla', overlayColor: 'rgba(150, 50, 200, 0.25)', hexPreview: '#9632C8' },
-    { id: 'orange', label: 'Orange', overlayColor: 'rgba(255, 140, 0, 0.25)', hexPreview: '#FF8C00' },
-    { id: 'pink', label: 'Pink', overlayColor: 'rgba(255, 100, 180, 0.25)', hexPreview: '#FF64B4' },
-    { id: 'cyan', label: 'Cyan', overlayColor: 'rgba(0, 200, 255, 0.25)', hexPreview: '#00C8FF' },
-    { id: 'yellow', label: 'Gul', overlayColor: 'rgba(255, 200, 0, 0.15)', hexPreview: '#FFC800' },
+  readonly starColors = [
+    { id: 'white', label: 'Hvid', hexValue: '#FFFFFF' },
+    { id: 'red', label: 'Rød', hexValue: '#FF6B6B' },
+    { id: 'yellow', label: 'Gul', hexValue: '#FFD700' },
+    { id: 'orange', label: 'Orange', hexValue: '#FF8C00' },
+    { id: 'green', label: 'Grøn', hexValue: '#44AF69' },
+    { id: 'cyan', label: 'Cyan', hexValue: '#00CED1' },
+    { id: 'blue', label: 'Blå', hexValue: '#4ECDC4' },
+    { id: 'purple', label: 'Lilla', hexValue: '#9632C8' },
+    { id: 'pink', label: 'Pink', hexValue: '#FF1493' },
+  ];
+
+  readonly planetColors = [
+    { id: 'grey', label: 'Grå', mainColor: '#808080', lightColor: '#909090', darkColor: '#707070' },
+    { id: 'red-grey', label: 'Rødgrå', mainColor: '#998080', lightColor: '#a99090', darkColor: '#896070' },
+    { id: 'blue-grey', label: 'Blågrå', mainColor: '#7a8c99', lightColor: '#8a9caa', darkColor: '#6a7c89' },
+    { id: 'green-grey', label: 'Grøngrå', mainColor: '#7a9980', lightColor: '#8aa990', darkColor: '#6a8970' },
+    { id: 'purple-grey', label: 'Lillagrå', mainColor: '#8a7a99', lightColor: '#9a8aaa', darkColor: '#7a6a89' },
+    { id: 'orange-grey', label: 'Orangegrå', mainColor: '#998a80', lightColor: '#a99a90', darkColor: '#897a70' },
+    { id: 'cyan-grey', label: 'Cyangrå', mainColor: '#788a9a', lightColor: '#88aaaa', darkColor: '#68797a' },
+    { id: 'yellow-grey', label: 'Gulgrå', mainColor: '#9a9a78', lightColor: '#aaaa88', darkColor: '#8a8a68' },
+    { id: 'pink-grey', label: 'Pinkgrå', mainColor: '#a08888', lightColor: '#b09898', darkColor: '#907878' },
   ];
 
   constructor() {}
 
   /**
-   * Get the currently selected background color from localStorage.
-   * Defaults to 'original' if not set.
+   * Get the currently selected star color from localStorage.
+   * Defaults to 'white' if not set.
    */
-  getCurrentBackgroundColor(): BackgroundColor {
-    const saved = localStorage.getItem(this.BACKGROUND_COLOR_KEY) || 'original';
-    return this.backgroundColors.find(c => c.id === saved) || this.backgroundColors[0];
+  getCurrentStarColor(): { id: string; label: string; hexValue: string } {
+    const saved = localStorage.getItem(this.STAR_COLOR_KEY) || 'white';
+    return this.starColors.find(c => c.id === saved) || this.starColors[0];
   }
 
   /**
-   * Set the background color preference and save to localStorage.
+   * Set the star color preference and save to localStorage.
    */
-  setBackgroundColor(colorId: string): void {
-    const color = this.backgroundColors.find(c => c.id === colorId);
+  setStarColor(colorId: string): void {
+    const color = this.starColors.find(c => c.id === colorId);
     if (color) {
-      localStorage.setItem(this.BACKGROUND_COLOR_KEY, colorId);
+      localStorage.setItem(this.STAR_COLOR_KEY, colorId);
     }
   }
 
   /**
-   * Get the overlay color rgba value for the current background color.
+   * Get the hex value for the current star color.
    */
-  getBackgroundOverlayColor(): string {
-    return this.getCurrentBackgroundColor().overlayColor;
+  getStarColorValue(): string {
+    return this.getCurrentStarColor().hexValue;
+  }
+
+  /**
+   * Get the currently selected planet color from localStorage.
+   * Defaults to 'grey' if not set.
+   */
+  getCurrentPlanetColor(): { id: string; label: string; mainColor: string; lightColor: string; darkColor: string } {
+    const saved = localStorage.getItem(this.PLANET_COLOR_KEY) || 'grey';
+    return this.planetColors.find(c => c.id === saved) || this.planetColors[0];
+  }
+
+  /**
+   * Set the planet color preference and save to localStorage.
+   */
+  setPlanetColor(colorId: string): void {
+    const color = this.planetColors.find(c => c.id === colorId);
+    if (color) {
+      localStorage.setItem(this.PLANET_COLOR_KEY, colorId);
+    }
+  }
+
+  /**
+   * Get the main color value for the current planet color.
+   */
+  getPlanetMainColor(): string {
+    return this.getCurrentPlanetColor().mainColor;
+  }
+
+  /**
+   * Get the light color value for the current planet color.
+   */
+  getPlanetLightColor(): string {
+    return this.getCurrentPlanetColor().lightColor;
+  }
+
+  /**
+   * Get the dark color value for the current planet color.
+   */
+  getPlanetDarkColor(): string {
+    return this.getCurrentPlanetColor().darkColor;
   }
 }

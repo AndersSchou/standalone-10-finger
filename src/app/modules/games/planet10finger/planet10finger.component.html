@@ -40,7 +40,10 @@
   </div>
 </div>
 
-<div class="planet10finger-bg">
+<div
+  class="planet10finger-bg"
+  [ngStyle]="{ 'background-image': 'url(' + planetBackgroundUrl + ')' }"
+>
   <div class="planet-header" *ngIf="planetName">
     <h2
       (click)="!inGameIntro && startEditPlanetName()"
@@ -88,157 +91,148 @@
     </div>
   </div>
 
+  <!-- Resource Error Message -->
+  <div class="resource-error-toast" *ngIf="showResourceError">
+    <span class="resource-error-icon">⚠️</span>
+    {{ resourceError }}
+  </div>
+
   <div class="coin-display">
     <span class="coin-icon">🪙</span>
     <span class="coin-count">{{ coins }}</span>
   </div>
 
-  <!-- Guidance Message for New Players -->
-  <div class="guidance-message" *ngIf="isGuidedMode && guidanceMessage">
-    <p>{{ guidanceMessage }}</p>
+  <div class="battery-display">
+    <span class="battery-icon">🔋</span>
+    <span class="battery-count">{{ batteries }}</span>
+  </div>
+
+  <div class="oxygen-display">
+    <span class="oxygen-icon">🫧</span>
+    <span class="oxygen-count">{{ oxygenTanks }}</span>
+  </div>
+
+  <!-- Astronaut Helper with Speech Bubble -->
+  <div class="astronaut-helper">
+    <img
+      src="assets/png/wavingAstronaut.png"
+      alt="Helper Astronaut"
+      class="helper-astronaut-image"
+    />
+    <div class="helper-speech-bubble">
+      <p>{{ getAstronautMessage() }}</p>
+    </div>
   </div>
 
   <div class="games-grid">
     <!-- Power Game -->
     <div
       class="game-card"
+      data-game="power"
       [class.locked]="isGameLockedInGuide('power')"
       [class.next-in-guide]="nextGameInGuide === 'power'"
       (click)="openPopup('power')"
     >
       <div class="game-icon">
-        <app-power-building
-          [variant]="buildingCustomization.power?.shapeVariant || 'basic'"
-          [primaryColor]="
-            buildingCustomization.power?.primaryColor || '#FF6B6B'
-          "
-          [secondaryColor]="
-            buildingCustomization.power?.secondaryColor || '#FFE66D'
-          "
-          [accentColor]="buildingCustomization.power?.accentColor || '#FF8C42'"
-        ></app-power-building>
+        <img src="assets/png/batterybuilding.png" alt="Power Generation Game" />
       </div>
-      <span class="game-label">Strøm</span>
-      <span class="badge" *ngIf="nextGameInGuide === 'power'">NÆSTE</span>
+      <span class="game-label">lav Strøm</span>
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'power'"></div>
     </div>
 
     <!-- Headquarters -->
     <div
       class="game-card"
+      data-game="headquarters"
       [class.locked]="isGameLockedInGuide('headquarters')"
       [class.next-in-guide]="nextGameInGuide === 'headquarters'"
       (click)="openPopup('headquarters')"
     >
-      <app-headquarters-building
-        class="game-icon"
-        [variant]="'basic'"
-      ></app-headquarters-building>
+      <div class="game-icon">
+        <img
+          src="assets/png/headquarter_building.png"
+          alt="Headquarters Building"
+        />
+      </div>
       <span class="game-label">Hovedkvarter</span>
-      <span class="badge" *ngIf="nextGameInGuide === 'headquarters'"
-        >NÆSTE</span
-      >
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'headquarters'"></div>
     </div>
 
     <!-- Oxygen Game -->
     <div
       class="game-card"
+      data-game="oxygen"
       [class.locked]="isGameLockedInGuide('oxygen')"
       [class.next-in-guide]="nextGameInGuide === 'oxygen'"
       (click)="openPopup('oxygen')"
     >
       <div class="game-icon">
-        <app-oxygen-building
-          [variant]="buildingCustomization.oxygen?.shapeVariant || 'basic'"
-          [primaryColor]="
-            buildingCustomization.oxygen?.primaryColor || '#4ECDC4'
-          "
-          [secondaryColor]="
-            buildingCustomization.oxygen?.secondaryColor || '#A8E6CF'
-          "
-          [accentColor]="buildingCustomization.oxygen?.accentColor || '#0064FF'"
-        ></app-oxygen-building>
+        <img src="assets/png/Oxygen building.png" alt="Oxygen Building" />
       </div>
-      <span class="game-label">Ilt</span>
-      <span class="badge" *ngIf="nextGameInGuide === 'oxygen'">NÆSTE</span>
+      <span class="game-label">lav ilt</span>
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'oxygen'"></div>
     </div>
 
     <!-- Meteor Game -->
     <div
       class="game-card"
+      data-game="meteor"
       [class.locked]="isGameLockedInGuide('meteor')"
       [class.next-in-guide]="nextGameInGuide === 'meteor'"
       (click)="openPopup('meteor')"
     >
       <div class="game-icon">
-        <app-meteor-building
-          [variant]="buildingCustomization.meteor?.shapeVariant || 'basic'"
-          [primaryColor]="
-            buildingCustomization.meteor?.primaryColor || '#FF8C00'
-          "
-          [secondaryColor]="
-            buildingCustomization.meteor?.secondaryColor || '#FFD700'
-          "
-          [accentColor]="buildingCustomization.meteor?.accentColor || '#FF4500'"
-        ></app-meteor-building>
+        <img
+          src="assets/png/Meteor defense tower building.png"
+          alt="Meteor Defense Tower"
+        />
       </div>
-      <span class="game-label">Meteor</span>
-      <span class="badge" *ngIf="nextGameInGuide === 'meteor'">NÆSTE</span>
+      <span class="game-label">skyd meteorer</span>
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'meteor'"></div>
     </div>
 
     <!-- Factory Game -->
     <div
       class="game-card"
+      data-game="factory"
       [class.locked]="isGameLockedInGuide('factory')"
       [class.next-in-guide]="nextGameInGuide === 'factory'"
       (click)="openPopup('factory')"
     >
       <div class="game-icon">
-        <app-factory-building
-          [variant]="buildingCustomization.factory?.shapeVariant || 'basic'"
-          [primaryColor]="
-            buildingCustomization.factory?.primaryColor || '#44AF69'
-          "
-          [secondaryColor]="
-            buildingCustomization.factory?.secondaryColor || '#90EE90'
-          "
-          [accentColor]="
-            buildingCustomization.factory?.accentColor || '#228B22'
-          "
-        ></app-factory-building>
+        <img src="assets/png/factory building.png" alt="Factory Building" />
       </div>
-      <span class="game-label">Fabrik</span>
-      <span class="badge" *ngIf="nextGameInGuide === 'factory'">NÆSTE</span>
+      <span class="game-label">lav ord</span>
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'factory'"></div>
     </div>
 
     <!-- Assembling Game -->
     <div
       class="game-card"
+      data-game="assembling"
       [class.locked]="isGameLockedInGuide('assembling')"
       [class.next-in-guide]="nextGameInGuide === 'assembling'"
       (click)="openPopup('assembling')"
     >
       <div class="game-icon">
-        <app-assembling-building
-          [variant]="buildingCustomization.assembling?.shapeVariant || 'basic'"
-          [primaryColor]="
-            buildingCustomization.assembling?.primaryColor || '#9632C8'
-          "
-          [secondaryColor]="
-            buildingCustomization.assembling?.secondaryColor || '#D8BFD8'
-          "
-          [accentColor]="
-            buildingCustomization.assembling?.accentColor || '#FF69B4'
-          "
-        ></app-assembling-building>
+        <img
+          src="assets/png/storage hangar building.png"
+          alt="Storage Hangar Building"
+        />
       </div>
-      <span class="game-label">Samling</span>
-      <span class="badge" *ngIf="nextGameInGuide === 'assembling'">NÆSTE</span>
+      <span class="game-label">lav sætninger</span>
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'assembling'"></div>
     </div>
   </div>
 </div>
 
 <!-- Game Popup -->
-<div class="popup-overlay" *ngIf="activePopup" (click)="closePopup()">
+<div
+  class="popup-overlay"
+  *ngIf="activePopup"
+  (click)="closePopup()"
+  [ngStyle]="{ 'background-image': 'url(' + planetBackgroundUrl + ')' }"
+>
   <div class="popup" (click)="$event.stopPropagation()">
     <button
       class="popup-close"
@@ -314,6 +308,15 @@
           <div><kbd>F</kbd> og <kbd>J</kbd></div>
           <div>for at starte</div>
         </div>
+        <!-- Game Cost Display -->
+        <div
+          class="fj-cost"
+          *ngIf="['factory', 'assembling'].includes(activePopup || '')"
+        >
+          <span class="cost-label">Bruger:</span>
+          <span class="cost-item">🔋 1</span>
+          <span class="cost-item">🫧 1</span>
+        </div>
         <div class="fj-bar-track">
           <div class="fj-bar-fill" [style.width.%]="holdProgress"></div>
         </div>
@@ -339,6 +342,7 @@
         (gameClose)="closePopup()"
         (coinsChanged)="onHQCoinsChanged($event)"
         (planetNameChanged)="onHQPlanetNameChanged($event)"
+        (planetColorChanged)="onPlanetColorChanged()"
       ></app-planet10finger-headquarters>
 
       <app-planet10finger-power
@@ -366,6 +370,7 @@
         [coinsEarned]="coinsEarned"
         [difficulty]="gameDifficulty"
         (gameClose)="closePopupWithCoin()"
+        (gameRestart)="onGameRestart()"
       ></app-planet10finger-factory>
 
       <app-planet10finger-assembling
@@ -373,6 +378,7 @@
         [coinsEarned]="coinsEarned"
         [difficulty]="gameDifficulty"
         (gameClose)="closePopupWithCoin()"
+        (gameRestart)="onGameRestart()"
       ></app-planet10finger-assembling>
     </ng-container>
     <!-- Cheat Code Button (Bottom Right) -->
@@ -423,6 +429,10 @@
             <p><strong>Tilgængelige koder:</strong></p>
             <ul>
               <li><code>coins100</code> - Tilføj 100 mønter</li>
+              <li>
+                <code>resources10</code> - Tilføj 10 batterier og 10
+                iltbeholdere
+              </li>
               <li>
                 <code>resetgame</code> - Nulstil alt (som første gang du logger
                 ind)

@@ -29,6 +29,7 @@ export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() coinsEarned = 0;
   @Input() difficulty: 1 | 2 | 3 = 2;
   @Output() gameClose = new EventEmitter<void>();
+  @Output() gameRestart = new EventEmitter<void>();
 
   sentences: string[] = [];
   currentSentence = '';
@@ -108,6 +109,7 @@ export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
     this.usedIndices.clear();
     this.nextSentence();
     this.attachKeyListener();
+    this.gameRestart.emit();
   }
 
   close(): void {

@@ -126,6 +126,32 @@
   &:hover {
     background-color: #2020cc;
   }
+
+  &.secondary {
+    background-color: #e52e71;
+    &:hover { background-color: #b0003a; }
+  }
+}
+
+.battery-earned {
+  font-size: 1.4rem;
+  color: #ff6b00;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+
+  .battery-emoji {
+    font-size: 28px;
+  }
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 24px;
 }
 
 // ── Keyboard + hands ─────────────────────────────────────

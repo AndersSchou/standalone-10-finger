@@ -10,8 +10,8 @@ import { AssemblingComponent } from './games/assembling/assembling.component';
 import { HeadquartersComponent } from './games/headquarters/headquarters.component';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
 import { BuildingCustomizationService } from './services/building-customization.service';
+import { BackgroundCustomizationService } from './services/background-customization.service';
 import { PlanetNameCustomizationService } from './services/planet-name-customization.service';
-import { PowerBuildingComponent } from 'src/app/shared/svgs/power-building.component';
 import { OxygenBuildingComponent } from 'src/app/shared/svgs/oxygen-building.component';
 import { MeteorBuildingComponent } from 'src/app/shared/svgs/meteor-building.component';
 import { FactoryBuildingComponent } from 'src/app/shared/svgs/factory-building.component';
@@ -37,7 +37,6 @@ import { HeadquartersBuildingComponent } from 'src/app/shared/svgs/headquarters-
     AssemblingComponent,
     HeadquartersComponent,
     VKeyboardComponent,
-    PowerBuildingComponent,
     OxygenBuildingComponent,
     MeteorBuildingComponent,
     FactoryBuildingComponent,
@@ -49,6 +48,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   @ViewChild(VKeyboardComponent) fjKeyboard?: VKeyboardComponent;
 
   activePopup: string | null = null;
+  /** Dynamic SVG background URL with planet colors */
+  planetBackgroundUrl = '/assets/svg/Moon_background.svg';
   /** True once the player has held F+J for 1 second. */
   gameReady = false;
   /** Hold progress 0–100 for the progress bar. */
@@ -67,6 +68,10 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   doNotShowAgainChecked = false;
   /** Coin count. */
   coins = 0;
+  /** Batteries collected from power game. */
+  batteries = 0;
+  /** Oxygen tanks collected from oxygen game. */
+  oxygenTanks = 0;
   /** Coins to be awarded in current game. */
   coinsEarned = 0;
   /** Show planet name edit dialog. */
@@ -77,6 +82,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   planetNameEditError = '';
   /** Building customization state */
   buildingCustomization: any = {};
+  /** Star color */
+  starColor = '#FFFFFF';
   /** Show cheat code dialog. */
   showCheatDialog = false;
   /** Cheat code input. */
@@ -91,6 +98,10 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   showDifficultySelector = false;
   /** Current game difficulty (1-3) */
   gameDifficulty: 1 | 2 | 3 = 1;
+  /** Error message for insufficient resources */
+  resourceError = '';
+  /** Show resource error message */
+  showResourceError = false;
 
   // Guided mode for first-time players
   private readonly GUIDED_MODE_KEY = 'planet10finger_guided_completed_games';
@@ -103,6 +114,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   private readonly WELCOME_KEY = 'planet10finger_welcome_seen';
   private readonly PLANET_NAME_KEY = 'planet10finger_name';
   private readonly COINS_KEY = 'planet10finger_coins';
+  private readonly BATTERIES_KEY = 'planet10finger_batteries';
+  private readonly OXYGEN_TANKS_KEY = 'planet10finger_oxygen_tanks';
   private heldKeys = new Set<string>();
   private holdInterval: ReturnType<typeof setInterval> | null = null;
   private keydownListener: ((e: KeyboardEvent) => void) | null = null;
@@ -111,6 +124,7 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly buildingCustomizationService: BuildingCustomizationService,
+    private readonly backgroundCustomizationService: BackgroundCustomizationService,
     private readonly planetNameCustomizationService: PlanetNameCustomizationService
   ) {}
 
@@ -118,12 +132,20 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     const hasSeenWelcome = localStorage.getItem(this.WELCOME_KEY);
     const storedPlanetName = localStorage.getItem(this.PLANET_NAME_KEY);
     const storedCoins = localStorage.getItem(this.COINS_KEY);
+    const storedBatteries = localStorage.getItem(this.BATTERIES_KEY);
+    const storedOxygenTanks = localStorage.getItem(this.OXYGEN_TANKS_KEY);
     
     if (storedPlanetName) {
       this.planetName = storedPlanetName;
     }
     if (storedCoins) {
       this.coins = parseInt(storedCoins, 10);
+    }
+    if (storedBatteries) {
+      this.batteries = parseInt(storedBatteries, 10);
+    }
+    if (storedOxygenTanks) {
+      this.oxygenTanks = parseInt(storedOxygenTanks, 10);
     }
     if (!hasSeenWelcome) {
       this.showWelcome = true;
@@ -140,6 +162,40 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     // Load planet name color customization
     const planetNameCustomization = this.planetNameCustomizationService.getCustomization();
     this.planetNameColor = planetNameCustomization.color;
+
+    // Load star color customization
+    this.starColor = this.backgroundCustomizationService.getStarColorValue();
+    // Apply star color to CSS variable
+    document.documentElement.style.setProperty('--star-color', this.starColor);
+
+    // Load planet color customization
+    const planetMainColor = this.backgroundCustomizationService.getPlanetMainColor();
+    const planetLightColor = this.backgroundCustomizationService.getPlanetLightColor();
+    const planetDarkColor = this.backgroundCustomizationService.getPlanetDarkColor();
+    document.documentElement.style.setProperty('--planet-main-color', planetMainColor);
+    document.documentElement.style.setProperty('--planet-light-color', planetLightColor);
+    document.documentElement.style.setProperty('--planet-dark-color', planetDarkColor);
+
+    // Load SVG with custom planet colors
+    this.loadSVGWithPlanetColors(planetMainColor, planetLightColor, planetDarkColor);
+  }
+
+  private loadSVGWithPlanetColors(mainColor: string, lightColor: string, darkColor: string): void {
+    fetch('/assets/svg/Moon_background.svg')
+      .then(response => response.text())
+      .then(svgText => {
+        // Replace colors in the SVG
+        let modifiedSvg = svgText
+          .replace(/#8a8a8a/g, mainColor)  // main circle color
+          .replace(/#9a9a9a/g, lightColor) // light circles
+          .replace(/#7a7a7a/g, darkColor); // dark circles
+        
+        // Create data URI
+        const blob = new Blob([modifiedSvg], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        this.planetBackgroundUrl = url;
+      })
+      .catch(err => console.error('Failed to load SVG:', err));
   }
 
   private loadGuidedModeStatus(): void {
@@ -180,7 +236,6 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const gameIndex = this.guidedGameOrder.indexOf(this.nextGameInGuide) + 1;
     const gameNames: Record<string, string> = {
       oxygen: 'Ilt',
       power: 'Strøm',
@@ -189,7 +244,24 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
       meteor: 'Meteor',
     };
     const gameName = gameNames[this.nextGameInGuide] || this.nextGameInGuide;
-    this.guidanceMessage = `Sekvens ${gameIndex}/${this.guidedGameOrder.length}: Spil ${gameName}`;
+    this.guidanceMessage = `Spil ${gameName}`;
+  }
+
+  getAstronautMessage(): string {
+    // Check if all guided games are completed
+    if (this.completedGames.size === this.guidedGameOrder.length) {
+      return 'Godt arbejde!';
+    }
+
+    const messages: Record<string, string> = {
+      power: 'Lav strøm!',
+      headquarters: 'Byg hovedkvarter!',
+      oxygen: 'Lav ilt!',
+      meteor: 'Beskyt planeten!',
+      factory: 'Skriv ord!',
+      assembling: 'Skriv sætninger!',
+    };
+    return messages[this.activePopup || this.nextGameInGuide || ''] || 'Spil og byg!';
   }
 
   isGameNextInGuide(game: string): boolean {
@@ -302,6 +374,18 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
       return; // Don't open locked games
     }
 
+    // Check resources for factory and assembling games (deduction happens after F+J gate)
+    if (['factory', 'assembling'].includes(game)) {
+      if (this.batteries < 1 || this.oxygenTanks < 1) {
+        this.resourceError = 'Du skal have mindst 1 batteri og 1 ilt tank for at spille dette spil!';
+        this.showResourceError = true;
+        setTimeout(() => {
+          this.showResourceError = false;
+        }, 3000);
+        return;
+      }
+    }
+
     this.activePopup = game;
     this.gameReady = false;
     this.holdProgress = 0;
@@ -351,14 +435,40 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     this.buildingCustomization = this.buildingCustomizationService.getCustomizationState();
     const planetNameCustomization = this.planetNameCustomizationService.getCustomization();
     this.planetNameColor = planetNameCustomization.color;
+    // Refresh star color
+    this.starColor = this.backgroundCustomizationService.getStarColorValue();
+    document.documentElement.style.setProperty('--star-color', this.starColor);
+  }
+
+  onHQCoinsChanged(newCoins: number): void {
+    this.coins = newCoins;
+  }
+
+  onHQPlanetNameChanged(newName: string): void {
+    this.planetName = newName;
+  }
+
+  onPlanetColorChanged(): void {
+    const planetNameCustomization = this.planetNameCustomizationService.getCustomization();
+    this.planetNameColor = planetNameCustomization.color;
   }
 
   closePopupWithCoin(): void {
     const gameToClose = this.activePopup;
-    // Award a coin for meteor, factory, and assembling games
+    // Award coins for meteor, factory, and assembling games
     if (['meteor', 'factory', 'assembling'].includes(gameToClose || '')) {
       this.coins += 1;
       localStorage.setItem(this.COINS_KEY, this.coins.toString());
+    }
+    // Award battery for power game
+    if (gameToClose === 'power') {
+      this.batteries += 3;
+      localStorage.setItem(this.BATTERIES_KEY, this.batteries.toString());
+    }
+    // Award oxygen tank for oxygen game
+    if (gameToClose === 'oxygen') {
+      this.oxygenTanks += 3;
+      localStorage.setItem(this.OXYGEN_TANKS_KEY, this.oxygenTanks.toString());
     }
     
     // Track game completion in guided mode
@@ -371,18 +481,14 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     this.closePopup();
   }
 
-  onHQCoinsChanged(newCoins: number): void {
-    this.coins = newCoins;
-    localStorage.setItem(this.COINS_KEY, newCoins.toString());
-  }
-
-  onHQPlanetNameChanged(newName: string): void {
-    this.planetName = newName;
-    localStorage.setItem(this.PLANET_NAME_KEY, newName);
-  }
-
-  navigateToGame(game: string): void {
-    this.router.navigate(['/games/planet10finger/' + game]);
+  onGameRestart(): void {
+    // Deduct resources when restarting factory or assembling games
+    if (['factory', 'assembling'].includes(this.activePopup || '')) {
+      this.batteries -= 1;
+      this.oxygenTanks -= 1;
+      localStorage.setItem(this.BATTERIES_KEY, this.batteries.toString());
+      localStorage.setItem(this.OXYGEN_TANKS_KEY, this.oxygenTanks.toString());
+    }
   }
 
   ngOnDestroy(): void {
@@ -399,6 +505,13 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
           this.holdProgress += 10; // 10 steps × 100 ms = 1 second
           if (this.holdProgress >= 100) {
             this.removeHoldListeners();
+            // Deduct resources for factory and assembling games when passing F+J gate
+            if (['factory', 'assembling'].includes(this.activePopup || '')) {
+              this.batteries -= 1;
+              this.oxygenTanks -= 1;
+              localStorage.setItem(this.BATTERIES_KEY, this.batteries.toString());
+              localStorage.setItem(this.OXYGEN_TANKS_KEY, this.oxygenTanks.toString());
+            }
             setTimeout(() => { this.gameReady = true; }, 500);
           }
         }, 100);
@@ -459,12 +572,26 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Add 10 batteries and 10 oxygen tanks
+    if (code === 'resources10') {
+      this.batteries += 10;
+      this.oxygenTanks += 10;
+      localStorage.setItem(this.BATTERIES_KEY, this.batteries.toString());
+      localStorage.setItem(this.OXYGEN_TANKS_KEY, this.oxygenTanks.toString());
+      this.cheatMessage = `✓ Added 10 batteries and 10 oxygen tanks! Batteries: ${this.batteries}, Oxygen: ${this.oxygenTanks}`;
+      this.cheatMessageType = 'success';
+      this.cheatCodeInput = '';
+      return;
+    }
+
     // Reset game
     if (code === 'resetgame') {
       const confirm = window.confirm('Are you sure? This will reset ALL Planet 10 Finger progress and show the welcome screen like a fresh start.');
       if (confirm) {
         // Clear all planet10finger-specific data
         localStorage.removeItem(this.COINS_KEY);
+        localStorage.removeItem(this.BATTERIES_KEY);
+        localStorage.removeItem(this.OXYGEN_TANKS_KEY);
         localStorage.removeItem('planet10finger_achievements');
         localStorage.removeItem('planet10finger_stats');
         localStorage.removeItem('planet10finger_building_customization');
@@ -481,6 +608,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
         
         // Reset component state to first-time state
         this.coins = 0;
+        this.batteries = 0;
+        this.oxygenTanks = 0;
         this.planetName = '';
         this.planetNameColor = '#FFFFFF';
         this.showWelcome = true;

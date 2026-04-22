@@ -11,8 +11,7 @@ const NAME_CHANGE_COST = 10;
     <div class="planet-name-customizer">
       <!-- Planet Name Change Section -->
       <div class="name-change-section">
-        <h4>Planetens Navn</h4>
-        <p class="customizer-subtitle">Skift navn for 🪙 {{ nameChangeCost }} mønter:</p>
+        <p class="customizer-subtitle"><strong>Skift planetens navn for 10 mønter</strong></p>
         
         <!-- Initial Button -->
         <button *ngIf="!editingNameMode" class="change-name-button" (click)="startEditingName()">
@@ -54,10 +53,11 @@ const NAME_CHANGE_COST = 10;
       </div>
 
       <!-- Planet Name Color Section -->
-      <h4>Planetens Navn Farve</h4>
-      <p class="customizer-subtitle">Vælg en farve til dit planetnavns header:</p>
+      <h4>Skift planetens navne farve</h4>
+      <div class="color-change-section">
+        <p class="customizer-subtitle"><strong>Skift farven på planetens navn</strong></p>
       
-      <div class="color-grid">
+        <div class="color-grid">
         <button
           *ngFor="let color of colorSchemes"
           class="color-button"
@@ -86,6 +86,7 @@ const NAME_CHANGE_COST = 10;
       <div *ngIf="purchaseMessage && purchaseType === 'color'" class="purchase-message" [ngClass]="{ 'message-success': purchaseMessageType === 'success', 'message-error': purchaseMessageType === 'error' }">
         {{ purchaseMessage }}
       </div>
+      </div>
     </div>
   `,
   styles: [`
@@ -97,10 +98,16 @@ const NAME_CHANGE_COST = 10;
     }
 
     h4 {
-      margin: 0 0 8px;
+      margin: 20px -20px 12px -20px;
+      padding: 0 20px 8px 0;
       color: #1a1a2e;
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-bottom: 2px solid #cfd8dc;
+
+      &:first-of-type {
+        margin-top: 0;
+      }
     }
 
     .customizer-subtitle {
@@ -109,16 +116,44 @@ const NAME_CHANGE_COST = 10;
       font-size: 0.95rem;
     }
 
+    .name-change-section .customizer-subtitle {
+      margin: 0 0 16px;
+      color: #1a1a2e;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .name-change-section .customizer-subtitle strong {
+      font-weight: 700;
+    }
+
     .name-change-section {
       background: #f9f9f9;
       border-radius: 8px;
       padding: 16px;
       margin-bottom: 24px;
-      border-left: 4px solid #667eea;
     }
 
     .name-change-section h4 {
       margin-top: 0;
+    }
+
+    .color-change-section {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .color-change-section .customizer-subtitle {
+      margin: 0 0 16px;
+      color: #1a1a2e;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .color-change-section .customizer-subtitle strong {
+      font-weight: 700;
     }
 
     .change-name-button {

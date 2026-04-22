@@ -137,3 +137,24 @@
   color: #455a64;
   line-height: 1.35;
 }
+
+.shop-tab {
+  h3 {
+    margin: 0 0 24px;
+    color: #1a1a2e;
+    font-size: 1.8rem;
+  }
+
+  h4 {
+    margin: 20px 0 12px;
+    color: #1a1a2e;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-bottom: 2px solid #cfd8dc;
+    padding-bottom: 8px;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+}

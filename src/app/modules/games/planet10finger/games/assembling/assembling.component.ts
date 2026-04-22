@@ -31,6 +31,7 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
   @Input() coinsEarned = 0;
   @Input() difficulty: 1 | 2 | 3 = 2;
   @Output() gameClose = new EventEmitter<void>();
+  @Output() gameRestart = new EventEmitter<void>();
 
   stories: string[] = [];
   currentStory = '';
@@ -154,6 +155,7 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
     this.usedIndices.clear();
     this.nextStory();
     setTimeout(() => this.focusField());
+    this.gameRestart.emit();
   }
 
   close(): void {

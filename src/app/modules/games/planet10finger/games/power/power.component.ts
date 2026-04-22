@@ -45,6 +45,7 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
   trainingComplete = false;
   wrongPressCount = 0;
   isCountingWrong = true;
+  batteryEarned = 3;
 
   private holdInterval: ReturnType<typeof setInterval> | null = null;
   private holdStart: number | null = null;
@@ -94,6 +95,11 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
     this.gameClose.emit();
   }
 
+  restartGame(): void {
+    this.trainingComplete = false;
+    this.startPowerGame();
+  }
+
   // ── Game lifecycle ────────────────────────────────────────
 
   private startPowerGame(): void {
@@ -134,9 +140,43 @@ export class PowerComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    const idx = this.remainingRoundIndices.shift() ?? 0;
-    this.allPairs = this.powerRounds[idx].pairs;
-    this.holdDuration = this.powerRounds[idx].holdDuration;
+    // For difficulty 2, generate random pairs from the 3 button groups
+    if (this.difficulty === 2) {
+      this.allPairs = this.generateRandomPairs();
+      this.holdDuration = 2; // Standard hold duration
+    } else {
+      // For difficulties 1 and 3, use JSON pairs
+      const idx = this.remainingRoundIndices.shift() ?? 0;
+      this.allPairs = this.powerRounds[idx].pairs;
+      this.holdDuration = this.powerRounds[idx].holdDuration;
+    }
+  }
+
+  /** Generate 4 random pairs from qwer or uiop for difficulty 2 */
+  private generateRandomPairs(): string[][] {
+    const buttonGroups = [
+      ['Q', 'W', 'E', 'R'], // qwer
+      ['U', 'I', 'O', 'P'], // uiop
+    ];
+
+    const pairs: string[][] = [];
+    for (let i = 0; i < 4; i++) {
+      // Pick either qwer or uiop
+      const groupIdx = Math.floor(Math.random() * buttonGroups.length);
+      const group = buttonGroups[groupIdx];
+      
+      // Pick 2 random keys from that group
+      const key1Idx = Math.floor(Math.random() * group.length);
+      let key2Idx = Math.floor(Math.random() * group.length);
+      
+      // Ensure we pick 2 different keys
+      while (key2Idx === key1Idx && group.length > 1) {
+        key2Idx = Math.floor(Math.random() * group.length);
+      }
+      
+      pairs.push([group[key1Idx], group[key2Idx]]);
+    }
+    return pairs;
   }
 
   /** Fisher-Yates shuffle for a random, non-repeating round order. */

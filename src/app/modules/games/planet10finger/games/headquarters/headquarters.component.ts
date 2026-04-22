@@ -4,6 +4,7 @@ import { AchievementsDisplayComponent } from '../../components/achievements-disp
 import { StatsDisplayComponent } from '../../components/stats-display.component';
 import { BuildingsCustomizerComponent } from '../../components/buildings-customizer.component';
 import { PlanetNameCustomizerComponent } from '../../components/planet-name-customizer.component';
+import { BackgroundCustomizerComponent } from '../../components/background-customizer.component';
 
 type Tab = 'information' | 'achievements' | 'stats' | 'shop';
 
@@ -12,7 +13,7 @@ type Tab = 'information' | 'achievements' | 'stats' | 'shop';
   templateUrl: './headquarters.component.html',
   styleUrl: './headquarters.component.scss',
   standalone: true,
-  imports: [CommonModule, AchievementsDisplayComponent, StatsDisplayComponent, BuildingsCustomizerComponent, PlanetNameCustomizerComponent],
+  imports: [CommonModule, AchievementsDisplayComponent, StatsDisplayComponent, BuildingsCustomizerComponent, PlanetNameCustomizerComponent, BackgroundCustomizerComponent],
 })
 export class HeadquartersComponent {
   @Input() coins: number = 0;
@@ -20,6 +21,7 @@ export class HeadquartersComponent {
   @Output() gameClose = new EventEmitter<void>();
   @Output() coinsChanged = new EventEmitter<number>();
   @Output() planetNameChanged = new EventEmitter<string>();
+  @Output() planetColorChanged = new EventEmitter<void>();
 
   activeTab: Tab = 'information';
 

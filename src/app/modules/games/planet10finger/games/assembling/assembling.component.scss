@@ -148,6 +148,12 @@
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 60px;
 
   &:hover { background-color: #2020cc; }
 
@@ -155,6 +161,12 @@
     background-color: #e52e71;
     &:hover { background-color: #b0003a; }
   }
+}
+
+.button-cost {
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.9;
 }
 
 // ── Keyboard + hands ─────────────────────────────────────

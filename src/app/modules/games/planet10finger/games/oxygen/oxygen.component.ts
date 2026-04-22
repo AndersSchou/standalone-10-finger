@@ -42,6 +42,7 @@ export class OxygenComponent implements AfterViewInit, OnDestroy {
   trainingComplete = false;
   showError = false;
   wrongPressCount = 0;
+  oxygenEarned = 3;
   private usedSequencePairs: Set<number> = new Set();
   private currentSequenceData: OxygenSequence | null = null;
   private keydownListener: ((e: KeyboardEvent) => void) | null = null;
@@ -98,6 +99,11 @@ export class OxygenComponent implements AfterViewInit, OnDestroy {
 
   close(): void {
     this.gameClose.emit();
+  }
+
+  restartGame(): void {
+    this.trainingComplete = false;
+    this.startGame();
   }
 
   private startGame(): void {
