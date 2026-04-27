@@ -235,6 +235,7 @@ export class PlanetNameColorCustomizerComponent implements OnInit {
   @Input() coins: number = 0;
   @Input() planetName: string = 'Planet';
   @Output() coinsChanged = new EventEmitter<number>();
+  @Output() colorPurchased = new EventEmitter<string>();
 
   colorSchemes: Array<{ id: string; label: string; color: string }> = [];
   currentColor: string = '';
@@ -303,6 +304,7 @@ export class PlanetNameColorCustomizerComponent implements OnInit {
     this.planetNameCustomizationService.purchaseColor(this.previewColorId);
     this.coins -= COLOR_COST;
     this.coinsChanged.emit(this.coins);
+    this.colorPurchased.emit('name_color');
 
     // Update current color to the purchased one
     this.currentColor = this.previewColorId;

@@ -69,9 +69,9 @@ export class AssemblingComponent implements OnInit, AfterViewInit {
     this.typoCount = 0;
     this.totalWordsTyped = 0;
     this.http
-      .get<{ stories: string[] }>('assets/games/assembling-stories.json')
+      .get<{ stories: { [key: string]: string[] } }>('assets/games/assembling-stories.json')
       .subscribe((data) => {
-        this.stories = data.stories;
+        this.stories = data.stories[this.difficulty.toString()];
         this.nextStory();
       });
   }

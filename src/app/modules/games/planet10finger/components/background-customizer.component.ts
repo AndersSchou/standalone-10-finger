@@ -334,6 +334,7 @@ export class BackgroundCustomizerComponent implements OnInit {
   @Input() coins = 0;
   @Output() coinsChanged = new EventEmitter<number>();
   @Output() planetColorChanged = new EventEmitter<void>();
+  @Output() colorPurchased = new EventEmitter<string>();
 
   starColors = this.backgroundCustomization.starColors;
   planetColors = this.backgroundCustomization.planetColors;
@@ -416,6 +417,7 @@ export class BackgroundCustomizerComponent implements OnInit {
     this.backgroundCustomization.purchaseStarColor(this.previewStarColorId);
     this.coins -= COLOR_COST;
     this.coinsChanged.emit(this.coins);
+    this.colorPurchased.emit('star_color');
 
     // Update current color to the purchased one
     this.backgroundCustomization.setStarColor(this.previewStarColorId);
@@ -482,6 +484,7 @@ export class BackgroundCustomizerComponent implements OnInit {
     this.backgroundCustomization.purchasePlanetColor(this.previewPlanetColorId);
     this.coins -= COLOR_COST;
     this.coinsChanged.emit(this.coins);
+    this.colorPurchased.emit('planet_color');
 
     // Update current color to the purchased one
     this.backgroundCustomization.setPlanetColor(this.previewPlanetColorId);

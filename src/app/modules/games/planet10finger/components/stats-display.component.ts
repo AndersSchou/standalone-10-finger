@@ -58,6 +58,22 @@ import { StatsService, GameStats } from '../services/stats.service';
             </div>
           </div>
 
+          <!-- Moonrace: show best score by difficulty -->
+          <div *ngIf="stat.gameId === 'moonrace'">
+            <div class="stat-line" *ngIf="stat.bestScoreByDifficulty">
+              <span class="stat-label">Bedste level 1 score:</span>
+              <span class="stat-value">{{ stat.bestScoreByDifficulty[1] || 0 }}</span>
+            </div>
+            <div class="stat-line" *ngIf="stat.bestScoreByDifficulty">
+              <span class="stat-label">Bedste level 2 score:</span>
+              <span class="stat-value">{{ stat.bestScoreByDifficulty[2] || 0 }}</span>
+            </div>
+            <div class="stat-line" *ngIf="stat.bestScoreByDifficulty">
+              <span class="stat-label">Bedste level 3 score:</span>
+              <span class="stat-value">{{ stat.bestScoreByDifficulty[3] || 0 }}</span>
+            </div>
+          </div>
+
           <!-- Factory and Assembling: show best WPM and time played -->
           <div class="stat-line" *ngIf="stat.bestWPM !== undefined">
             <span class="stat-label">Bedste ord/min (100% nøjagtighed):</span>

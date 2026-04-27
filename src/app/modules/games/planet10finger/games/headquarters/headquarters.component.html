@@ -4,9 +4,14 @@
       class="tab-btn"
       *ngFor="let tab of tabs"
       [class.active]="activeTab === tab.id"
+      [class.next-in-guide]="tab.id === nextTabInGuide && activeTab !== tab.id"
       (click)="selectTab(tab.id)"
     >
       {{ tab.label }}
+      <div
+        class="guide-arrow"
+        *ngIf="tab.id === nextTabInGuide && activeTab !== tab.id"
+      ></div>
     </button>
     <button class="tab-btn close-btn" (click)="close()">&#x2715;</button>
   </nav>
@@ -70,15 +75,21 @@
         [coins]="coins"
         [planetName]="planetName"
         (coinsChanged)="onCoinsChanged($event)"
+        (colorPurchased)="onColorPurchased($event)"
       ></app-planet-name-color-customizer>
 
       <app-background-customizer
         [coins]="coins"
         (coinsChanged)="onCoinsChanged($event)"
         (planetColorChanged)="planetColorChanged.emit()"
+        (colorPurchased)="onColorPurchased($event)"
       ></app-background-customizer>
 
-      <app-shop-accessories></app-shop-accessories>
+      <app-shop-accessories
+        [coins]="coins"
+        [purchasedGames]="purchasedGames"
+        (gameRequested)="gamePurchaseRequested.emit($event)"
+      ></app-shop-accessories>
 
       <app-planet-name-editor
         [coins]="coins"

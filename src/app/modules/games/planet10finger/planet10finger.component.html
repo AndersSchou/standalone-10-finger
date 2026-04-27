@@ -145,7 +145,9 @@
       class="game-card"
       data-game="headquarters"
       [class.locked]="isGameLockedInGuide('headquarters')"
-      [class.next-in-guide]="nextGameInGuide === 'headquarters'"
+      [class.next-in-guide]="
+        nextGameInGuide === 'headquarters' && nextHQTabInGuide !== null
+      "
       (click)="openPopup('headquarters')"
     >
       <div class="game-icon">
@@ -155,7 +157,10 @@
         />
       </div>
       <span class="game-label">Hovedkvarter</span>
-      <div class="guide-arrow" *ngIf="nextGameInGuide === 'headquarters'"></div>
+      <div
+        class="guide-arrow"
+        *ngIf="nextGameInGuide === 'headquarters' && nextHQTabInGuide !== null"
+      ></div>
     </div>
 
     <!-- Oxygen Game -->
@@ -171,24 +176,6 @@
       </div>
       <span class="game-label">lav ilt</span>
       <div class="guide-arrow" *ngIf="nextGameInGuide === 'oxygen'"></div>
-    </div>
-
-    <!-- Meteor Game -->
-    <div
-      class="game-card"
-      data-game="meteor"
-      [class.locked]="isGameLockedInGuide('meteor')"
-      [class.next-in-guide]="nextGameInGuide === 'meteor'"
-      (click)="openPopup('meteor')"
-    >
-      <div class="game-icon">
-        <img
-          src="assets/png/Meteor defense tower building.png"
-          alt="Meteor Defense Tower"
-        />
-      </div>
-      <span class="game-label">skyd meteorer</span>
-      <div class="guide-arrow" *ngIf="nextGameInGuide === 'meteor'"></div>
     </div>
 
     <!-- Factory Game -->
@@ -222,6 +209,41 @@
       </div>
       <span class="game-label">lav sætninger</span>
       <div class="guide-arrow" *ngIf="nextGameInGuide === 'assembling'"></div>
+    </div>
+
+    <!-- Meteor Game -->
+    <div
+      *ngIf="purchasedGames.has('meteor')"
+      class="game-card"
+      data-game="meteor"
+      [class.locked]="isGameLockedInGuide('meteor')"
+      [class.next-in-guide]="nextGameInGuide === 'meteor'"
+      (click)="openPopup('meteor')"
+    >
+      <div class="game-icon">
+        <img
+          src="assets/png/Meteor defense tower building.png"
+          alt="Meteor Defense Tower"
+        />
+      </div>
+      <span class="game-label">skyd meteorer</span>
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'meteor'"></div>
+    </div>
+
+    <!-- Moonrace Game -->
+    <div
+      *ngIf="purchasedGames.has('moonrace')"
+      class="game-card"
+      data-game="moonrace"
+      [class.locked]="isGameLockedInGuide('moonrace')"
+      [class.next-in-guide]="nextGameInGuide === 'moonrace'"
+      (click)="openPopup('moonrace')"
+    >
+      <div class="game-icon">
+        <img src="assets/png/garage building.png" alt="Garage Building" />
+      </div>
+      <span class="game-label">måneræs</span>
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'moonrace'"></div>
     </div>
   </div>
 </div>
@@ -339,10 +361,15 @@
         *ngIf="activePopup === 'headquarters'"
         [coins]="coins"
         [planetName]="planetName"
+        [nextTabInGuide]="nextHQTabInGuide"
+        [purchasedGames]="purchasedGames"
         (gameClose)="closePopup()"
         (coinsChanged)="onHQCoinsChanged($event)"
         (planetNameChanged)="onHQPlanetNameChanged($event)"
         (planetColorChanged)="onPlanetColorChanged()"
+        (tabVisited)="markHQTabAsVisited($event)"
+        (gamePurchaseRequested)="onGamePurchaseRequested($event)"
+        (colorPurchased)="onColorPurchased($event)"
       ></app-planet10finger-headquarters>
 
       <app-planet10finger-power
@@ -380,6 +407,14 @@
         (gameClose)="closePopupWithCoin()"
         (gameRestart)="onGameRestart()"
       ></app-planet10finger-assembling>
+
+      <app-planet10finger-moonrace
+        *ngIf="activePopup === 'moonrace'"
+        [coinsEarned]="coinsEarned"
+        [difficulty]="gameDifficulty"
+        (gameClose)="closePopupWithCoin()"
+        (gameRestart)="onGameRestart()"
+      ></app-planet10finger-moonrace>
     </ng-container>
     <!-- Cheat Code Button (Bottom Right) -->
     <button

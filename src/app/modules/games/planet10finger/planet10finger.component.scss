@@ -503,7 +503,7 @@
 
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   gap: 8px;
   padding: 48px;
 }
@@ -519,32 +519,45 @@
     transform: scale(1.1);
   }
 
-  // Position each game by data attribute - modify column numbers here
+  // Position each game by data attribute - checkerboard pattern
+  // Row 1: O X O X O X O
+  // Row 2: X O X O X O X
   &[data-game="power"] {
-    grid-column: 1;
+    grid-column: 2;
+    grid-row: 1;
     margin-top: 130px;
   }
 
   &[data-game="headquarters"] {
-    grid-column: 3;
+    grid-column: 4;
+    grid-row: 1;
     margin-top: 130px;
   }
 
   &[data-game="oxygen"] {
-    grid-column: 5;
+    grid-column: 6;
+    grid-row: 1;
     margin-top: 130px;
   }
 
-  &[data-game="meteor"] {
-    grid-column: 2;
-  }
-
   &[data-game="factory"] {
-    grid-column: 4;
+    grid-column: 3;
+    grid-row: 2;
   }
 
   &[data-game="assembling"] {
-    grid-column: 6;
+    grid-column: 5;
+    grid-row: 2;
+  }
+
+  &[data-game="meteor"] {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  &[data-game="moonrace"] {
+    grid-column: 7;
+    grid-row: 2;
   }
 }
 
@@ -1030,7 +1043,7 @@
 }
 
 .fj-title {
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 600;
   color: #1a1a2e;
   text-align: center;
@@ -1041,13 +1054,13 @@
 
   kbd {
     display: inline-block;
-    padding: 6px 14px;
+    padding: 8px 16px;
     margin: 0 4px;
     border: 2px solid #555;
     border-radius: 8px;
     background: #f5f5f5;
     font-family: monospace;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
     box-shadow: 0 3px 0 #999;
     color: #1a1a2e;
@@ -1089,6 +1102,7 @@
   background: rgba(0, 0, 0, 0.12);
   border-radius: 7px;
   overflow: hidden;
+  margin-top: 16px;
 }
 
 .fj-bar-fill {

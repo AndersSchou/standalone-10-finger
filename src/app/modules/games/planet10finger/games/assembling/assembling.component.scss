@@ -10,24 +10,33 @@
 }
 
 .rounds-count {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #555;
   margin: 0;
+  flex-shrink: 0;
+}
+
+.key-instruction {
+  font-size: 1.8rem;
+  color: #000;
+  margin: 0;
+  font-weight: 600;
+  text-align: center;
   flex-shrink: 0;
 }
 
 // ── Story display ─────────────────────────────────────────
 
 .story-display {
-  flex: 1;
+  flex: 0 1 auto;
   width: 100%;
-  font-size: 1.6rem;
+  font-size: 2rem;
   line-height: 2;
   color: #111;
   text-align: center;
   word-break: break-word;
   white-space: pre-wrap;
-  overflow-y: auto;
+  overflow: visible;
 
   span {
     transition: color 0.1s;
@@ -37,10 +46,12 @@
     }
 
     &.current {
-      color: #fff;
-      background: #1565c0;
-      border-radius: 3px;
-      padding: 0 1px;
+      color: #111;
+      background: #e3f2fd;
+      text-decoration: underline;
+      text-decoration-color: #1565c0;
+      text-decoration-thickness: 4px;
+      text-underline-offset: 4px;
     }
   }
 }
@@ -53,7 +64,7 @@
   box-sizing: border-box;
   height: 7rem;
   padding: 0.8rem 1rem;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-family: inherit;
   background: #1e272e;
   color: #e0e0e0;
@@ -90,7 +101,7 @@
 // ── Hint ─────────────────────────────────────────────────
 
 .hint {
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   color: #ef9a9a;
   margin: 0;
   flex-shrink: 0;

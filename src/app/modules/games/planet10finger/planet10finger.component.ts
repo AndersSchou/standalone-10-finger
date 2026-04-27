@@ -7,11 +7,13 @@ import { OxygenComponent } from './games/oxygen/oxygen.component';
 import { MeteorComponent } from './games/meteor/meteor.component';
 import { FactoryComponent } from './games/factory/factory.component';
 import { AssemblingComponent } from './games/assembling/assembling.component';
+import { MoonraceComponent } from './games/moonrace/moonrace.component';
 import { HeadquartersComponent } from './games/headquarters/headquarters.component';
 import { VKeyboardComponent } from 'src/app/vkeyboard/vkeyboard.component';
 import { BuildingCustomizationService } from './services/building-customization.service';
 import { BackgroundCustomizationService } from './services/background-customization.service';
 import { PlanetNameCustomizationService } from './services/planet-name-customization.service';
+import { AchievementService } from './services/achievement.service';
 import { OxygenBuildingComponent } from 'src/app/shared/svgs/oxygen-building.component';
 import { MeteorBuildingComponent } from 'src/app/shared/svgs/meteor-building.component';
 import { FactoryBuildingComponent } from 'src/app/shared/svgs/factory-building.component';
@@ -35,6 +37,7 @@ import { HeadquartersBuildingComponent } from 'src/app/shared/svgs/headquarters-
     MeteorComponent,
     FactoryComponent,
     AssemblingComponent,
+    MoonraceComponent,
     HeadquartersComponent,
     VKeyboardComponent,
     OxygenBuildingComponent,
@@ -103,10 +106,14 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
 
   // Guided mode for first-time players
   private readonly GUIDED_MODE_KEY = 'planet10finger_guided_completed_games';
-  private readonly guidedGameOrder: string[] = ['oxygen', 'power', 'factory', 'assembling', 'meteor'];
+  private readonly guidedGameOrder: string[] = ['oxygen', 'power', 'factory', 'assembling'];
+  private readonly HQ_TABS_KEY = 'planet10finger_guided_hq_tabs_completed';
+  private readonly hqTabOrder: string[] = ['achievements', 'stats', 'shop'];
   completedGames: Set<string> = new Set();
+  completedHQTabs: Set<string> = new Set();
   isGuidedMode = false;
   nextGameInGuide: string | null = null;
+  nextHQTabInGuide: string | null = null;
   guidanceMessage = '';
 
   private readonly WELCOME_KEY = 'planet10finger_welcome_seen';
@@ -114,6 +121,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   private readonly COINS_KEY = 'planet10finger_coins';
   private readonly BATTERIES_KEY = 'planet10finger_batteries';
   private readonly OXYGEN_TANKS_KEY = 'planet10finger_oxygen_tanks';
+  private readonly PURCHASED_GAMES_KEY = 'planet10finger_purchased_games';
+  purchasedGames: Set<string> = new Set();
   private heldKeys = new Set<string>();
   private holdInterval: ReturnType<typeof setInterval> | null = null;
   private keydownListener: ((e: KeyboardEvent) => void) | null = null;
@@ -122,7 +131,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly backgroundCustomizationService: BackgroundCustomizationService,
-    private readonly planetNameCustomizationService: PlanetNameCustomizationService
+    private readonly planetNameCustomizationService: PlanetNameCustomizationService,
+    private readonly achievementService: AchievementService
   ) {}
 
   ngOnInit(): void {
@@ -151,7 +161,10 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
 
     // Load guided mode status and completed games
     this.loadGuidedModeStatus();
+    this.loadHQTabsStatus();
+    this.loadPurchasedGames();
     this.updateNextGameInGuide();
+    this.updateNextHQTabInGuide();
 
     // Load planet name color customization
     const planetNameCustomization = this.planetNameCustomizationService.getCustomization();
@@ -218,13 +231,18 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
         return;
       }
     }
-    // All games completed
-    this.isGuidedMode = false;
-    this.nextGameInGuide = null;
-    this.guidanceMessage = '';
+    // All games completed - point to headquarters
+    this.nextGameInGuide = 'headquarters';
+    this.updateGuidanceMessage();
   }
 
   private updateGuidanceMessage(): void {
+    // Always show message if pointing to headquarters after all games
+    if (this.nextGameInGuide === 'headquarters' && this.completedGames.size === this.guidedGameOrder.length) {
+      this.guidanceMessage = 'Besøg hovedkvarteret og gennemse hver fane for at lære mere!';
+      return;
+    }
+
     if (!this.isGuidedMode || !this.nextGameInGuide) {
       this.guidanceMessage = '';
       return;
@@ -235,10 +253,47 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
       power: 'Strøm',
       factory: 'Fabrik',
       assembling: 'Samling',
+      moonrace: 'Måneræs',
       meteor: 'Meteor',
     };
     const gameName = gameNames[this.nextGameInGuide] || this.nextGameInGuide;
     this.guidanceMessage = `Spil ${gameName}`;
+  }
+
+  private loadHQTabsStatus(): void {
+    const completedTabsStr = localStorage.getItem(this.HQ_TABS_KEY);
+    if (completedTabsStr) {
+      try {
+        const completed = JSON.parse(completedTabsStr);
+        this.completedHQTabs = new Set(completed);
+      } catch {
+        this.completedHQTabs = new Set();
+      }
+    }
+  }
+
+  private updateNextHQTabInGuide(): void {
+    if (this.nextGameInGuide !== 'headquarters' || this.completedGames.size !== this.guidedGameOrder.length) {
+      this.nextHQTabInGuide = null;
+      return;
+    }
+    // Only set next tab if all games are completed and we're in HQ guide mode
+    for (const tab of this.hqTabOrder) {
+      if (!this.completedHQTabs.has(tab)) {
+        this.nextHQTabInGuide = tab;
+        return;
+      }
+    }
+    // All HQ tabs completed
+    this.nextHQTabInGuide = null;
+  }
+
+  markHQTabAsVisited(tab: string): void {
+    if (tab === this.nextHQTabInGuide) {
+      this.completedHQTabs.add(tab);
+      localStorage.setItem(this.HQ_TABS_KEY, JSON.stringify(Array.from(this.completedHQTabs)));
+      this.updateNextHQTabInGuide();
+    }
   }
 
   getAstronautMessage(): string {
@@ -254,6 +309,7 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
       meteor: 'Beskyt planeten!',
       factory: 'Skriv ord!',
       assembling: 'Skriv sætninger!',
+      moonrace: 'Kjør måneræs!',
     };
     return messages[this.activePopup || this.nextGameInGuide || ''] || 'Spil og byg!';
   }
@@ -267,7 +323,34 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     if (game === 'headquarters') {
       return false;
     }
+    // Meteor and Moonrace require purchase
+    if ((game === 'meteor' || game === 'moonrace') && !this.purchasedGames.has(game)) {
+      return true;
+    }
     return this.isGuidedMode && this.nextGameInGuide !== game && !this.completedGames.has(game);
+  }
+
+  private loadPurchasedGames(): void {
+    const purchasedStr = localStorage.getItem(this.PURCHASED_GAMES_KEY);
+    if (purchasedStr) {
+      try {
+        const purchased = JSON.parse(purchasedStr);
+        this.purchasedGames = new Set(purchased);
+      } catch {
+        this.purchasedGames = new Set();
+      }
+    }
+  }
+
+  purchaseGame(game: string, cost: number): boolean {
+    if (this.coins >= cost && !this.purchasedGames.has(game)) {
+      this.coins -= cost;
+      this.purchasedGames.add(game);
+      localStorage.setItem(this.COINS_KEY, this.coins.toString());
+      localStorage.setItem(this.PURCHASED_GAMES_KEY, JSON.stringify(Array.from(this.purchasedGames)));
+      return true;
+    }
+    return false;
   }
 
   dismissWelcome(): void {
@@ -329,6 +412,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
         return 'I dette spil skal du skrive ord med 10 finger metoden. tag dig tid og brug den rigtige metode';
       case 'assembling':
         return 'I dette spil skal du skrive korte tekster med 10 finger metoden. Fokuser på at skrive korrekt frem for hurtigt';
+      case 'moonrace':
+        return 'I dette spil skal du skrive de grønne bogstaver for at fuldføre alle banerne inden tidens løb';
       default:
         return '';
     }
@@ -387,8 +472,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     this.doNotShowAgainChecked = false;
     this.gameDifficulty = 1; // Reset to default
     
-    // Set coins to be earned (1 for meteor, factory, assembling; 0 for others)
-    this.coinsEarned = ['meteor', 'factory', 'assembling'].includes(game) ? 1 : 0;
+    // Set coins to be earned (1 for meteor, factory, assembling, moonrace; 0 for others)
+    this.coinsEarned = ['meteor', 'factory', 'assembling', 'moonrace'].includes(game) ? 1 : 0;
     
     // Check if intro for this game has been hidden
     const introHiddenKey = `game_intro_${this.activePopup}_hidden`;
@@ -445,6 +530,22 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     this.coins = newCoins;
   }
 
+  onGamePurchaseRequested(request: { game: string; cost: number }): void {
+    if (this.purchaseGame(request.game, request.cost)) {
+      // Unlock achievement based on which game was purchased
+      if (request.game === 'meteor') {
+        this.achievementService.unlockAchievement('buy_meteor');
+      } else if (request.game === 'moonrace') {
+        this.achievementService.unlockAchievement('buy_moonrace');
+      }
+    }
+  }
+
+  onColorPurchased(_colorType: string): void {
+    // Color purchases are handled in the headquarters component
+    // This method is just for propagating the event if needed
+  }
+
   onHQPlanetNameChanged(newName: string): void {
     this.planetName = newName;
   }
@@ -465,8 +566,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
 
   closePopupWithCoin(): void {
     const gameToClose = this.activePopup;
-    // Award coins for meteor, factory, and assembling games
-    if (['meteor', 'factory', 'assembling'].includes(gameToClose || '')) {
+    // Award coins for meteor, factory, assembling, and moonrace games
+    if (['meteor', 'factory', 'assembling', 'moonrace'].includes(gameToClose || '')) {
       this.coins += 1;
       localStorage.setItem(this.COINS_KEY, this.coins.toString());
     }
@@ -611,7 +712,7 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
         localStorage.removeItem(this.GUIDED_MODE_KEY);
         
         // Clear all game intro hidden flags
-        const games = ['power', 'oxygen', 'meteor', 'factory', 'assembling'];
+        const games = ['power', 'oxygen', 'meteor', 'factory', 'assembling', 'moonrace'];
         games.forEach(game => {
           localStorage.removeItem(`game_intro_${game}_hidden`);
         });

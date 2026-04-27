@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 export interface GameStats {
-  gameId: 'power' | 'oxygen' | 'meteor' | 'factory' | 'assembling';
+  gameId: 'power' | 'oxygen' | 'meteor' | 'factory' | 'assembling' | 'moonrace';
   gameName: string;
   timesPlayed: number;
   perfectGameCount?: number;      // Power, Oxygen, Factory, Assembling (total)
@@ -37,6 +37,7 @@ export class StatsService {
     meteor: 'Meteor forsvar',
     factory: 'Fabrikken',
     assembling: 'Samle Hangaren',
+    moonrace: 'Måneræs',
   };
 
   constructor() {
@@ -46,7 +47,7 @@ export class StatsService {
   /**
    * Record a game completion with stats
    */
-  recordGameCompletion(gameId: 'power' | 'oxygen' | 'meteor' | 'factory' | 'assembling', data?: {
+  recordGameCompletion(gameId: 'power' | 'oxygen' | 'meteor' | 'factory' | 'assembling' | 'moonrace', data?: {
     score?: number;
     wpm?: number;
     correctTyped?: number;
@@ -54,6 +55,7 @@ export class StatsService {
     isPerfect?: boolean;
     elapsedSeconds?: number;
     difficulty?: 1 | 2 | 3;
+    laneCount?: number;
   }): void {
     if (!this.stats[gameId]) {
       this.stats[gameId] = {
@@ -87,6 +89,22 @@ export class StatsService {
       this.stats[gameId].bestScore = Math.max(this.stats[gameId].bestScore ?? 0, data.score);
       
       // Track best meteor score by difficulty
+      if (data.difficulty) {
+        if (!this.stats[gameId].bestScoreByDifficulty) {
+          this.stats[gameId].bestScoreByDifficulty = {};
+        }
+        this.stats[gameId].bestScoreByDifficulty![data.difficulty] = Math.max(
+          this.stats[gameId].bestScoreByDifficulty![data.difficulty] ?? 0,
+          data.score
+        );
+      }
+    }
+
+    // Track best moonrace score
+    if (data?.score !== undefined && gameId === 'moonrace') {
+      this.stats[gameId].bestScore = Math.max(this.stats[gameId].bestScore ?? 0, data.score);
+      
+      // Track best moonrace score by difficulty
       if (data.difficulty) {
         if (!this.stats[gameId].bestScoreByDifficulty) {
           this.stats[gameId].bestScoreByDifficulty = {};
@@ -142,6 +160,12 @@ export class StatsService {
         stats.bestScoreByDifficulty = data?.bestScoreByDifficulty ?? { 1: 0, 2: 0, 3: 0 };
       }
 
+      // Moonrace: show best score by difficulty
+      if (gameId === 'moonrace') {
+        stats.bestScore = data?.bestScore ?? 0;
+        stats.bestScoreByDifficulty = data?.bestScoreByDifficulty ?? { 1: 0, 2: 0, 3: 0 };
+      }
+
       // Factory and Assembling: show best WPM with perfect accuracy and time played
       if ((gameId === 'factory' || gameId === 'assembling') && data?.bestWPMWithPerfectAccuracy) {
         stats.bestWPM = data.bestWPMWithPerfectAccuracy;
@@ -157,7 +181,7 @@ export class StatsService {
   /**
    * Get stats for a specific game
    */
-  getGameStats(gameId: 'power' | 'oxygen' | 'meteor' | 'factory' | 'assembling'): GameStats {
+  getGameStats(gameId: 'power' | 'oxygen' | 'meteor' | 'factory' | 'assembling' | 'moonrace'): GameStats {
     const data = this.stats[gameId];
     const stats: GameStats = {
       gameId,
@@ -173,6 +197,12 @@ export class StatsService {
 
     // Meteor: show best score
     if (gameId === 'meteor') {
+      stats.bestScore = data?.bestScore ?? 0;
+      stats.bestScoreByDifficulty = data?.bestScoreByDifficulty ?? { 1: 0, 2: 0, 3: 0 };
+    }
+
+    // Moonrace: show best score by difficulty
+    if (gameId === 'moonrace') {
       stats.bestScore = data?.bestScore ?? 0;
       stats.bestScoreByDifficulty = data?.bestScoreByDifficulty ?? { 1: 0, 2: 0, 3: 0 };
     }

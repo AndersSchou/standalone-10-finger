@@ -132,6 +132,55 @@ export class AchievementService {
         unlocked: false,
         icon: '',
       },
+      // Diverse/Misc Achievements (6)
+      {
+        id: 'buy_name_color',
+        name: 'Farvet navn',
+        description: 'Buy a color for your planet name',
+        category: 'misc',
+        unlocked: false,
+        icon: '',
+      },
+      {
+        id: 'buy_planet_color',
+        name: 'Planet Kunstner',
+        description: 'Buy a color for your planet',
+        category: 'misc',
+        unlocked: false,
+        icon: '',
+      },
+      {
+        id: 'buy_star_color',
+        name: 'Stjernelys',
+        description: 'Buy a color for your stars',
+        category: 'misc',
+        unlocked: false,
+        icon: '',
+      },
+      {
+        id: 'all_colors',
+        name: 'Kunstner',
+        description: 'Buy colors for your name, planet, and stars',
+        category: 'misc',
+        unlocked: false,
+        icon: '',
+      },
+      {
+        id: 'buy_meteor',
+        name: 'Meteorjæger',
+        description: 'Buy the Meteor game',
+        category: 'misc',
+        unlocked: false,
+        icon: '',
+      },
+      {
+        id: 'buy_moonrace',
+        name: 'Måne Racer',
+        description: 'Buy the Moonrace game',
+        category: 'misc',
+        unlocked: false,
+        icon: '',
+      },
     ];
   }
 

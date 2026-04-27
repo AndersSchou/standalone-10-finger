@@ -16,49 +16,7 @@ export class AchievementService {
   private readonly STORAGE_KEY = 'planet10finger_achievements';
 
   private achievements: Achievement[] = [
-    // Power game
-    {
-      id: 'power_complete',
-      name: 'Strømmaster',
-      description: 'Gennemfør strømgenerationsspillet',
-      category: 'power',
-      unlocked: false,
-      icon: '',
-    },
-    {
-      id: 'power_perfect',
-      name: 'Fejlfri strøm',
-      description: 'Gennemfør strømgenerationsspillet uden forkerte tastetryk',
-      category: 'power',
-      unlocked: false,
-      icon: '',
-    },
-    // Oxygen game
-    {
-      id: 'oxygen_complete',
-      name: 'Iltkemist',
-      description: 'Gennemfør oxygenspillet',
-      category: 'oxygen',
-      unlocked: false,
-      icon: '',
-    },
-    {
-      id: 'oxygen_perfect',
-      name: 'Perfekt iltkemi',
-      description: 'Gennemfør oxygenspillet uden forkerte tastetryk',
-      category: 'oxygen',
-      unlocked: false,
-      icon: '',
-    },
     // Meteor game
-    {
-      id: 'meteor_complete',
-      name: 'Meteorjæger',
-      description: 'Gennemfør meteorspillet',
-      category: 'meteor',
-      unlocked: false,
-      icon: '',
-    },
     {
       id: 'meteor_5points',
       name: 'Meteor Slayer',
@@ -77,14 +35,6 @@ export class AchievementService {
     },
     // Factory game
     {
-      id: 'factory_complete',
-      name: 'Fabrikschef',
-      description: 'Gennemfør fabriksspillet',
-      category: 'factory',
-      unlocked: false,
-      icon: '',
-    },
-    {
       id: 'factory_wpm',
       name: 'Hurtig skriver',
       description: 'Skriv over 20 ord per minut i fabriksspillet',
@@ -101,14 +51,6 @@ export class AchievementService {
       icon: '',
     },
     // Assembling game
-    {
-      id: 'assembling_complete',
-      name: 'Samler',
-      description: 'Gennemfør samlespillet',
-      category: 'assembling',
-      unlocked: false,
-      icon: '',
-    },
     {
       id: 'assembling_wpm',
       name: 'Hurtig samler',
@@ -439,6 +381,56 @@ export class AchievementService {
       name: 'Samling Niveau 3 - Fejlfrit',
       description: 'Gennemfør samlespillet niveau 3 uden stavefejl',
       category: 'assembling',
+      unlocked: false,
+      icon: '',
+    },
+    // Misc - Customization
+    {
+      id: 'buy_name_color',
+      name: 'Farvet navn',
+      description: 'Køb en personlig planetnavnfarve',
+      category: 'misc',
+      unlocked: false,
+      icon: '',
+    },
+    {
+      id: 'buy_planet_color',
+      name: 'Planet Kunstner',
+      description: 'Køb en planetfarve personalisering',
+      category: 'misc',
+      unlocked: false,
+      icon: '',
+    },
+    {
+      id: 'buy_star_color',
+      name: 'Stjernelys',
+      description: 'Køb en stjernfarve personalisering',
+      category: 'misc',
+      unlocked: false,
+      icon: '',
+    },
+    {
+      id: 'all_colors',
+      name: 'Kunstner',
+      description: 'Køb alle tre farve personaliseringer',
+      category: 'misc',
+      unlocked: false,
+      icon: '',
+    },
+    // Misc - Extra Games
+    {
+      id: 'buy_meteor',
+      name: 'Meteorjæger',
+      description: 'Køb Meteor Forsvar spillet',
+      category: 'misc',
+      unlocked: false,
+      icon: '',
+    },
+    {
+      id: 'buy_moonrace',
+      name: 'Måne Racer',
+      description: 'Køb Måneræs spillet',
+      category: 'misc',
       unlocked: false,
       icon: '',
     },

@@ -80,9 +80,9 @@ export class MeteorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.http
-      .get<{ words: string[] }>('assets/games/meteor-words.json')
+      .get<{ words: { [key: string]: string[] } }>('assets/games/meteor-words.json')
       .subscribe((data) => {
-        this.words = data.words;
+        this.words = data.words[this.difficulty.toString()];
         this.startGame();
       });
   }
@@ -108,16 +108,17 @@ export class MeteorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private startGame(): void {
     this.score = 0;
-    // Set time based on difficulty: 1=20s, 2=15s, 3=10s
-    this.timeLeft = this.difficulty === 1 ? 20 : this.difficulty === 3 ? 10 : 15;
+    // Set time to 20 seconds for all difficulties
+    this.timeLeft = 20;
     this.gameOver = false;
     this.typedWord = '';
     this.meteors = [];
     this.nextId = 0;
 
-    // Spawn one meteor right away, then every 1.5 s
+    // Spawn one meteor right away, then every 1.5 s (or 3 s for difficulty 1)
+    const spawnInterval = this.difficulty === 1 ? 3000 : 1500;
     this.spawnMeteor();
-    this.spawnIntervalRef = setInterval(() => this.spawnMeteor(), 1500);
+    this.spawnIntervalRef = setInterval(() => this.spawnMeteor(), spawnInterval);
 
     // Countdown (ticks every second)
     this.timerIntervalRef = setInterval(() => {
@@ -136,7 +137,8 @@ export class MeteorComponent implements OnInit, AfterViewInit, OnDestroy {
     const word = this.words[Math.floor(Math.random() * this.words.length)];
     const top = this.getRandomSafeTop();
     const direction: 'ltr' | 'rtl' = Math.random() > 0.5 ? 'ltr' : 'rtl';
-    const duration = 5; // seconds to cross the full screen
+    // Duration varies by difficulty: Level 1 = 10s, Level 2 = 8s, Level 3 = 6s
+    const duration = this.difficulty === 1 ? 10 : this.difficulty === 2 ? 8 : 6;
 
     this.meteors.push({
       id: this.nextId++,

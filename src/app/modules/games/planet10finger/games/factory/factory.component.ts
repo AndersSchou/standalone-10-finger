@@ -90,9 +90,9 @@ export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
     this.typoCount = 0;
     this.totalWordsTyped = 0;
     this.http
-      .get<{ sentences: string[] }>('assets/games/factory-sentences.json')
+      .get<{ sentences: { [key: string]: string[] } }>('assets/games/factory-sentences.json')
       .subscribe((data) => {
-        this.sentences = data.sentences;
+        this.sentences = data.sentences[this.difficulty.toString()];
         this.nextSentence();
         this.attachKeyListener();
       });
