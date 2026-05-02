@@ -152,6 +152,36 @@
       </div>
     </div>
 
+    <!-- Moonrace column -->
+    <div class="achievement-column">
+      <h3 class="column-title">Måneræs</h3>
+      <div class="achievement-list">
+        <div
+          class="achievement-item"
+          *ngFor="let ach of moonraceAchievements"
+          [class.unlocked]="ach.unlocked"
+          (mouseenter)="onAchievementMouseEnter(ach.id)"
+          (mouseleave)="onAchievementMouseLeave()"
+        >
+          <img
+            src="assets/png/badge.png"
+            alt="Achievement Badge"
+            class="achievement-icon-img"
+          />
+          <div class="achievement-name">{{ ach.name }}</div>
+          <div
+            class="achievement-tooltip"
+            *ngIf="hoveredAchievementId === ach.id"
+          >
+            <div class="tooltip-description">{{ ach.description }}</div>
+            <div class="tooltip-status" [class.earned]="ach.unlocked">
+              {{ ach.unlocked ? "✓ Achieved" : "Locked" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Misc column -->
     <div class="achievement-column">
       <h3 class="column-title">Diverse</h3>

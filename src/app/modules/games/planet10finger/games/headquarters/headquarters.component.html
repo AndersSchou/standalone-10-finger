@@ -89,6 +89,7 @@
         [coins]="coins"
         [purchasedGames]="purchasedGames"
         (gameRequested)="gamePurchaseRequested.emit($event)"
+        (characterPurchaseRequested)="characterPurchaseRequested.emit($event)"
       ></app-shop-accessories>
 
       <app-planet-name-editor

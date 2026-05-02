@@ -586,6 +586,67 @@
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
+.character-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  // Position characters only between buildings
+  &[data-char-index="0"] {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  &[data-char-index="1"] {
+    grid-column: 5;
+    grid-row: 1;
+  }
+
+  &[data-char-index="2"] {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  &[data-char-index="3"] {
+    grid-column: 4;
+    grid-row: 2;
+  }
+
+  &[data-char-index="4"] {
+    grid-column: 6;
+    grid-row: 2;
+  }
+}
+
+.character-image {
+  width: 135px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transform: scale(1);
+  margin-bottom: 0;
+
+  img {
+    width: 125px;
+    height: 125px;
+    display: block;
+    object-fit: contain;
+  }
+}
+
+.character-label {
+  display: none;
+}
+
 // Guided Mode Styling
 .guidance-message {
   margin-bottom: 32px;

@@ -4,7 +4,7 @@ export interface Achievement {
   id: string;
   name: string;
   description: string;
-  category: 'power' | 'oxygen' | 'meteor' | 'factory' | 'assembling' | 'misc';
+  category: 'power' | 'oxygen' | 'meteor' | 'factory' | 'assembling' | 'moonrace' | 'misc';
   unlocked: boolean;
   icon: string;
 }
@@ -37,7 +37,7 @@ export class AchievementService {
     {
       id: 'factory_wpm',
       name: 'Hurtig skriver',
-      description: 'Skriv over 20 ord per minut i fabriksspillet',
+      description: 'Gennemfør fabriksspillet på under et minut',
       category: 'factory',
       unlocked: false,
       icon: '',
@@ -384,6 +384,79 @@ export class AchievementService {
       unlocked: false,
       icon: '',
     },
+    // Moonrace game - Level specific
+    {
+      id: 'moonrace_lvl1_complete',
+      name: 'Måneræs - Niveau 1',
+      description: 'Gennemfør Måneræs niveau 1',
+      category: 'moonrace',
+      unlocked: false,
+      icon: '',
+    },
+    {
+      id: 'moonrace_lvl1_10points',
+      name: 'Måneræs Niveau 1 - 10 Point',
+      description: 'Tjener 10 point i Måneræs niveau 1',
+      category: 'moonrace',
+      unlocked: false,
+      icon: '',
+    },
+    {
+      id: 'moonrace_lvl1_fast_letter',
+      name: 'Måneræs Niveau 1 - Lyn-håndig',
+      description: 'Svar på et bogstav inden for 2 sekunder i Måneræs niveau 1',
+      category: 'moonrace',
+      unlocked: false,
+      icon: '',
+    },
+    {
+      id: 'moonrace_lvl2_complete',
+      name: 'Måneræs - Niveau 2',
+      description: 'Gennemfør Måneræs niveau 2',
+      category: 'moonrace',
+      unlocked: false,
+      icon: '',
+    },
+    {
+      id: 'moonrace_lvl2_10points',
+      name: 'Måneræs Niveau 2 - 10 Point',
+      description: 'Tjener 10 point i Måneræs niveau 2',
+      category: 'moonrace',
+      unlocked: false,
+      icon: '',
+    },
+    {
+      id: 'moonrace_lvl2_fast_letter',
+      name: 'Måneræs Niveau 2 - Lyn-håndig',
+      description: 'Svar på et bogstav inden for 2 sekunder i Måneræs niveau 2',
+      category: 'moonrace',
+      unlocked: false,
+      icon: '',
+    },
+    {
+      id: 'moonrace_lvl3_complete',
+      name: 'Måneræs - Niveau 3',
+      description: 'Gennemfør Måneræs niveau 3',
+      category: 'moonrace',
+      unlocked: false,
+      icon: '',
+    },
+    {
+      id: 'moonrace_lvl3_10points',
+      name: 'Måneræs Niveau 3 - 10 Point',
+      description: 'Tjener 10 point i Måneræs niveau 3',
+      category: 'moonrace',
+      unlocked: false,
+      icon: '',
+    },
+    {
+      id: 'moonrace_lvl3_fast_letter',
+      name: 'Måneræs Niveau 3 - Lyn-håndig',
+      description: 'Svar på et bogstav inden for 2 sekunder i Måneræs niveau 3',
+      category: 'moonrace',
+      unlocked: false,
+      icon: '',
+    },
     // Misc - Customization
     {
       id: 'buy_name_color',
@@ -430,6 +503,14 @@ export class AchievementService {
       id: 'buy_moonrace',
       name: 'Måne Racer',
       description: 'Køb Måneræs spillet',
+      category: 'misc',
+      unlocked: false,
+      icon: '',
+    },
+    {
+      id: 'buy_character',
+      name: 'Karakter Samler',
+      description: 'Køb enhver karakter',
       category: 'misc',
       unlocked: false,
       icon: '',

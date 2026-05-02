@@ -4,7 +4,7 @@ export interface Achievement {
   id: string;
   name: string;
   description: string;
-  category: 'power' | 'oxygen' | 'meteor' | 'factory' | 'assembling' | 'misc';
+  category: 'power' | 'oxygen' | 'meteor' | 'factory' | 'assembling' | 'moonrace' | 'misc';
   unlocked: boolean;
   icon: string;
 }
@@ -94,7 +94,7 @@ export class AchievementService {
       {
         id: 'factory_wpm',
         name: 'Factory Speed',
-        description: 'Type over 20 WPM in Factory game',
+        description: 'Complete the game in under a minute',
         category: 'factory',
         unlocked: false,
         icon: '',
@@ -129,6 +129,23 @@ export class AchievementService {
         name: 'Perfect Assembling',
         description: 'Complete Assembling game without any typos',
         category: 'assembling',
+        unlocked: false,
+        icon: '',
+      },
+      // Moonrace Achievements (2)
+      {
+        id: 'moonrace_10points',
+        name: 'Moonrace Racer',
+        description: 'Score 10 points in Moonrace game',
+        category: 'moonrace',
+        unlocked: false,
+        icon: '',
+      },
+      {
+        id: 'moonrace_fast_letter',
+        name: 'Quick Reflexes',
+        description: 'Answer a letter within 2 seconds in Moonrace',
+        category: 'moonrace',
         unlocked: false,
         icon: '',
       },
@@ -177,6 +194,14 @@ export class AchievementService {
         id: 'buy_moonrace',
         name: 'Måne Racer',
         description: 'Buy the Moonrace game',
+        category: 'misc',
+        unlocked: false,
+        icon: '',
+      },
+      {
+        id: 'buy_character',
+        name: 'Karakter Samler',
+        description: 'Buy any character',
         category: 'misc',
         unlocked: false,
         icon: '',

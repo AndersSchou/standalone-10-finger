@@ -29,6 +29,7 @@ export class HeadquartersComponent implements OnInit {
   @Output() planetColorChanged = new EventEmitter<void>();
   @Output() tabVisited = new EventEmitter<string>();
   @Output() gamePurchaseRequested = new EventEmitter<{ game: string; cost: number }>();
+  @Output() characterPurchaseRequested = new EventEmitter<{ character: string; cost: number }>();
   @Output() colorPurchased = new EventEmitter<string>();
 
   activeTab: Tab = 'information';

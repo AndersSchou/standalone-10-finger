@@ -245,6 +245,20 @@
       <span class="game-label">måneræs</span>
       <div class="guide-arrow" *ngIf="nextGameInGuide === 'moonrace'"></div>
     </div>
+
+    <!-- Placed Characters -->
+    <div
+      *ngFor="let char of placedCharacters; let i = index"
+      class="character-display"
+      [attr.data-char-index]="i"
+      (click)="toggleCharacterPlacement(char.id)"
+      title="Klik for at fjerne"
+    >
+      <div class="character-image">
+        <img [src]="char.imagePath" [alt]="char.label" />
+      </div>
+      <div class="character-label">{{ char.label }}</div>
+    </div>
   </div>
 </div>
 
@@ -369,6 +383,7 @@
         (planetColorChanged)="onPlanetColorChanged()"
         (tabVisited)="markHQTabAsVisited($event)"
         (gamePurchaseRequested)="onGamePurchaseRequested($event)"
+        (characterPurchaseRequested)="onCharacterPurchaseRequested($event)"
         (colorPurchased)="onColorPurchased($event)"
       ></app-planet10finger-headquarters>
 

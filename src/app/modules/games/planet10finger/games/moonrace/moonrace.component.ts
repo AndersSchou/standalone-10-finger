@@ -22,6 +22,7 @@ interface Lane {
   displayedLetters: string[]; // shuffled order
   finished: boolean;
   showError?: boolean; // true when wrong letter pressed
+  spawnTime: number; // timestamp when lane was created
 }
 
 /**
@@ -49,6 +50,7 @@ export class MoonraceComponent implements OnInit, AfterViewInit, OnDestroy {
   timeLeft = 5;
   gameOver = false;
   private keyboardLocked = false;
+  private fastLetterUnlocked = false;
 
   private timerIntervalRef: ReturnType<typeof setInterval> | null = null;
   private keydownListener: ((e: KeyboardEvent) => void) | null = null;
@@ -92,6 +94,7 @@ export class MoonraceComponent implements OnInit, AfterViewInit, OnDestroy {
     this.timeLeft = timeLimit;
     this.gameOver = false;
     this.nextId = 0;
+    this.fastLetterUnlocked = false;
 
     // Generate the first lane
     this.generateLane();
@@ -127,6 +130,7 @@ export class MoonraceComponent implements OnInit, AfterViewInit, OnDestroy {
       incorrectLetters,
       displayedLetters,
       finished: false,
+      spawnTime: Date.now(),
     });
   }
 
@@ -159,6 +163,13 @@ export class MoonraceComponent implements OnInit, AfterViewInit, OnDestroy {
           lane.finished = true;
           this.score++;
           foundMatch = true;
+
+          // Check for fast letter achievement (answered within 2 seconds of spawn)
+          const timeSinceSpawn = (Date.now() - lane.spawnTime) / 1000;
+          if (timeSinceSpawn <= 2 && !this.fastLetterUnlocked) {
+            this.achievementService.unlockAchievement(`moonrace_lvl${this.difficulty}_fast_letter`);
+            this.fastLetterUnlocked = true;
+          }
 
           // Remove finished lane and generate next one if game is still running
           setTimeout(() => {
@@ -231,7 +242,7 @@ export class MoonraceComponent implements OnInit, AfterViewInit, OnDestroy {
     // Unlock achievements
     this.achievementService.unlockAchievement(`moonrace_lvl${this.difficulty}_complete`);
     if (this.score >= 10) {
-      this.achievementService.unlockAchievement(`moonrace_lvl${this.difficulty}_highscore`);
+      this.achievementService.unlockAchievement(`moonrace_lvl${this.difficulty}_10points`);
     }
   }
 

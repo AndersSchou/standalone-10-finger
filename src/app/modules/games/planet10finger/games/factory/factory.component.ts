@@ -183,7 +183,7 @@ export class FactoryComponent implements OnInit, AfterViewInit, OnDestroy {
           });
           // Unlock achievements
           this.achievementService.unlockAchievement(`factory_lvl${this.difficulty}_complete`);
-          if (wpm > 20) {
+          if (elapsedSeconds < 60) {
             this.achievementService.unlockAchievement(`factory_lvl${this.difficulty}_wpm`);
           }
           if (this.typoCount === 0) {

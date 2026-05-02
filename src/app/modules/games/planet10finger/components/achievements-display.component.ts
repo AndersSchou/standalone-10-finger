@@ -15,6 +15,7 @@ export class AchievementsDisplayComponent implements OnInit {
   meteorAchievements: Achievement[] = [];
   factoryAchievements: Achievement[] = [];
   assemblingAchievements: Achievement[] = [];
+  moonraceAchievements: Achievement[] = [];
   miscAchievements: Achievement[] = [];
 
   hoveredAchievementId: string | null = null;
@@ -28,6 +29,7 @@ export class AchievementsDisplayComponent implements OnInit {
     this.meteorAchievements = this.achievementService.getAchievementsByCategory('meteor');
     this.factoryAchievements = this.achievementService.getAchievementsByCategory('factory');
     this.assemblingAchievements = this.achievementService.getAchievementsByCategory('assembling');
+    this.moonraceAchievements = this.achievementService.getAchievementsByCategory('moonrace');
     this.miscAchievements = this.achievementService.getAchievementsByCategory('misc');
   }
 
