@@ -1,0 +1,499 @@
+<!-- Welcome Popup (first visit) -->
+<div class="welcome-overlay" *ngIf="showWelcome">
+  <div class="welcome-popup">
+    <div class="welcome-header">
+      <h1>Velkommen til Planet 10 Finger!</h1>
+    </div>
+    <div class="welcome-body">
+      <img
+        src="assets/png/wavingAstronaut.png"
+        alt="Waving Astronaut"
+        class="astronaut-image"
+      />
+      <div class="text-input-container">
+        <div class="speech-bubble">
+          <p>Hej! Velkommen til 10-finger galaksen.</p>
+          <p>
+            Her lærer du at skrive på et tastatur på den rigtige måde samtidig
+            med at du kan bygge din by. <br />
+          </p>
+          <p>før vi starter, hvad vil du have din planet til at hedde?</p>
+        </div>
+        <input
+          type="text"
+          class="planet-input"
+          [(ngModel)]="planetNameInput"
+          placeholder="Indtast planetens navn"
+          (keyup.enter)="dismissWelcome()"
+        />
+      </div>
+    </div>
+    <div class="welcome-footer">
+      <button
+        class="welcome-btn"
+        [disabled]="!planetNameInput.trim()"
+        (click)="dismissWelcome()"
+      >
+        Lad os starte
+      </button>
+    </div>
+  </div>
+</div>
+
+<div
+  class="planet10finger-bg"
+  [ngStyle]="{ 'background-image': 'url(' + planetBackgroundUrl + ')' }"
+>
+  <div class="planet-header" *ngIf="planetName">
+    <h2
+      (click)="!inGameIntro && startEditPlanetName()"
+      title="Klik for at ændre planetnavnet"
+      [style.color]="planetNameColor"
+      [class.disabled]="inGameIntro"
+    >
+      Planet {{ planetName }}
+    </h2>
+  </div>
+
+  <!-- Quick edit planet name dialog -->
+  <div
+    class="planet-edit-overlay"
+    *ngIf="editingPlanetName"
+    (click)="cancelEditPlanetName()"
+  >
+    <div class="planet-edit-dialog" (click)="$event.stopPropagation()">
+      <h3>Rediger planetnavnet</h3>
+      <p class="planet-edit-cost">Pris: 🪙 10 mønter</p>
+      <input
+        type="text"
+        class="planet-name-input"
+        [(ngModel)]="editingPlanetInput"
+        placeholder="Indtast nyt planetnavn"
+        (keyup.enter)="savePlanetName()"
+        (keyup.escape)="cancelEditPlanetName()"
+        autofocus
+      />
+      <div class="planet-edit-error" *ngIf="planetNameEditError">
+        {{ planetNameEditError }}
+      </div>
+      <div class="planet-edit-buttons">
+        <button
+          class="planet-edit-save"
+          (click)="savePlanetName()"
+          [disabled]="coins < 10"
+        >
+          Gem for 10 🪙
+        </button>
+        <button class="planet-edit-cancel" (click)="cancelEditPlanetName()">
+          Annuller
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resource Error Message -->
+  <div class="resource-error-toast" *ngIf="showResourceError">
+    <span class="resource-error-icon">⚠️</span>
+    {{ resourceError }}
+  </div>
+
+  <div class="coin-display">
+    <span class="coin-icon">🪙</span>
+    <span class="coin-count">{{ coins }}</span>
+  </div>
+
+  <div class="battery-display">
+    <span class="battery-icon">🔋</span>
+    <span class="battery-count">{{ batteries }}</span>
+  </div>
+
+  <div class="oxygen-display">
+    <span class="oxygen-icon">🫧</span>
+    <span class="oxygen-count">{{ oxygenTanks }}</span>
+  </div>
+
+  <!-- Astronaut Helper with Speech Bubble -->
+  <div class="astronaut-helper">
+    <img
+      src="assets/png/wavingAstronaut.png"
+      alt="Helper Astronaut"
+      class="helper-astronaut-image"
+    />
+    <div class="helper-speech-bubble">
+      <p>{{ getAstronautMessage() }}</p>
+    </div>
+  </div>
+
+  <div class="games-grid">
+    <!-- Power Game -->
+    <div
+      class="game-card"
+      data-game="power"
+      [class.locked]="isGameLockedInGuide('power')"
+      [class.next-in-guide]="nextGameInGuide === 'power'"
+      (click)="openPopup('power')"
+    >
+      <div class="game-icon">
+        <img src="assets/png/batterybuilding.png" alt="Power Generation Game" />
+      </div>
+      <span class="game-label">lav Strøm</span>
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'power'"></div>
+    </div>
+
+    <!-- Headquarters -->
+    <div
+      class="game-card"
+      data-game="headquarters"
+      [class.locked]="isGameLockedInGuide('headquarters')"
+      [class.next-in-guide]="
+        nextGameInGuide === 'headquarters' && nextHQTabInGuide !== null
+      "
+      (click)="openPopup('headquarters')"
+    >
+      <div class="game-icon">
+        <img
+          src="assets/png/headquarter_building.png"
+          alt="Headquarters Building"
+        />
+      </div>
+      <span class="game-label">Hovedkvarter</span>
+      <div
+        class="guide-arrow"
+        *ngIf="nextGameInGuide === 'headquarters' && nextHQTabInGuide !== null"
+      ></div>
+    </div>
+
+    <!-- Oxygen Game -->
+    <div
+      class="game-card"
+      data-game="oxygen"
+      [class.locked]="isGameLockedInGuide('oxygen')"
+      [class.next-in-guide]="nextGameInGuide === 'oxygen'"
+      (click)="openPopup('oxygen')"
+    >
+      <div class="game-icon">
+        <img src="assets/png/Oxygen building.png" alt="Oxygen Building" />
+      </div>
+      <span class="game-label">lav ilt</span>
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'oxygen'"></div>
+    </div>
+
+    <!-- Factory Game -->
+    <div
+      class="game-card"
+      data-game="factory"
+      [class.locked]="isGameLockedInGuide('factory')"
+      [class.next-in-guide]="nextGameInGuide === 'factory'"
+      (click)="openPopup('factory')"
+    >
+      <div class="game-icon">
+        <img src="assets/png/factory building.png" alt="Factory Building" />
+      </div>
+      <span class="game-label">lav ord</span>
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'factory'"></div>
+    </div>
+
+    <!-- Assembling Game -->
+    <div
+      class="game-card"
+      data-game="assembling"
+      [class.locked]="isGameLockedInGuide('assembling')"
+      [class.next-in-guide]="nextGameInGuide === 'assembling'"
+      (click)="openPopup('assembling')"
+    >
+      <div class="game-icon">
+        <img
+          src="assets/png/storage hangar building.png"
+          alt="Storage Hangar Building"
+        />
+      </div>
+      <span class="game-label">lav sætninger</span>
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'assembling'"></div>
+    </div>
+
+    <!-- Meteor Game -->
+    <div
+      *ngIf="purchasedGames.has('meteor')"
+      class="game-card"
+      data-game="meteor"
+      [class.locked]="isGameLockedInGuide('meteor')"
+      [class.next-in-guide]="nextGameInGuide === 'meteor'"
+      (click)="openPopup('meteor')"
+    >
+      <div class="game-icon">
+        <img
+          src="assets/png/Meteor defense tower building.png"
+          alt="Meteor Defense Tower"
+        />
+      </div>
+      <span class="game-label">skyd meteorer</span>
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'meteor'"></div>
+    </div>
+
+    <!-- Moonrace Game -->
+    <div
+      *ngIf="purchasedGames.has('moonrace')"
+      class="game-card"
+      data-game="moonrace"
+      [class.locked]="isGameLockedInGuide('moonrace')"
+      [class.next-in-guide]="nextGameInGuide === 'moonrace'"
+      (click)="openPopup('moonrace')"
+    >
+      <div class="game-icon">
+        <img src="assets/png/garage building.png" alt="Garage Building" />
+      </div>
+      <span class="game-label">måneræs</span>
+      <div class="guide-arrow" *ngIf="nextGameInGuide === 'moonrace'"></div>
+    </div>
+
+    <!-- Placed Characters -->
+    <div
+      *ngFor="let char of placedCharacters; let i = index"
+      class="character-display"
+      [attr.data-char-index]="i"
+      (click)="toggleCharacterPlacement(char.id)"
+      title="Klik for at fjerne"
+    >
+      <div class="character-image">
+        <img [src]="char.imagePath" [alt]="char.label" />
+      </div>
+      <div class="character-label">{{ char.label }}</div>
+    </div>
+  </div>
+</div>
+
+<!-- Game Popup -->
+<div
+  class="popup-overlay"
+  *ngIf="activePopup"
+  (click)="closePopup()"
+  [ngStyle]="{ 'background-image': 'url(' + planetBackgroundUrl + ')' }"
+>
+  <div class="popup" (click)="$event.stopPropagation()">
+    <button
+      class="popup-close"
+      *ngIf="activePopup !== 'headquarters'"
+      (click)="closePopup()"
+    >
+      &#x2715;
+    </button>
+
+    <button
+      class="popup-info-btn"
+      *ngIf="activePopup && activePopup !== 'headquarters'"
+      (click)="reopenGameIntro()"
+      title="Vis spillevejledning"
+    >
+      <img src="assets/svg/info.svg" alt="Info" />
+    </button>
+
+    <!-- Game intro popup (appears before F+J gate) -->
+    <div class="game-intro-popup" *ngIf="showGameIntro">
+      <div class="game-intro-content">
+        <h2>Sådan spiller du</h2>
+        <p>{{ getGameIntroText() }}</p>
+        <div class="game-intro-footer">
+          <label class="intro-checkbox">
+            <input type="checkbox" [(ngModel)]="doNotShowAgainChecked" />
+            <span>Vis ikke igen</span>
+          </label>
+          <button class="intro-continue-btn" (click)="continueFromIntro()">
+            Fortsæt
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- F+J hold gate (skipped for headquarters) -->
+    <div
+      class="fj-gate"
+      *ngIf="!gameReady && activePopup !== 'headquarters' && !showGameIntro"
+    >
+      <!-- Difficulty Selector at top of F+J gate -->
+      <div class="difficulty-selector-container">
+        <h3 class="difficulty-title">Vælg sværhedsgrad</h3>
+        <div class="difficulty-selector">
+          <button
+            class="difficulty-btn difficulty-1"
+            [class.selected]="gameDifficulty === 1"
+            (click)="selectDifficulty(1)"
+          >
+            <div class="difficulty-level">Level 1</div>
+          </button>
+          <button
+            class="difficulty-btn difficulty-2"
+            [class.selected]="gameDifficulty === 2"
+            (click)="selectDifficulty(2)"
+          >
+            <div class="difficulty-level">Level 2</div>
+          </button>
+          <button
+            class="difficulty-btn difficulty-3"
+            [class.selected]="gameDifficulty === 3"
+            (click)="selectDifficulty(3)"
+          >
+            <div class="difficulty-level">Level 3</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- F+J Progress -->
+      <div class="fj-progress">
+        <div class="fj-title">
+          <div>Hold</div>
+          <div><kbd>F</kbd> og <kbd>J</kbd></div>
+          <div>nede for at starte</div>
+        </div>
+        <!-- Game Cost Display -->
+        <div
+          class="fj-cost"
+          *ngIf="['factory', 'assembling'].includes(activePopup || '')"
+        >
+          <span class="cost-label">Bruger:</span>
+          <span class="cost-item">🔋 1</span>
+          <span class="cost-item">🫧 1</span>
+        </div>
+        <div class="fj-bar-track">
+          <div class="fj-bar-fill" [style.width.%]="holdProgress"></div>
+        </div>
+      </div>
+
+      <div class="fj-keyboard-hld">
+        <div class="fj-hands-hld mr-10">
+          <div class="fj-hands-bg left"></div>
+        </div>
+        <app-vkeyboard></app-vkeyboard>
+        <div class="fj-hands-hld ml-10">
+          <div class="fj-hands-bg right"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game content (only rendered after hold completes) -->
+    <ng-container *ngIf="gameReady || activePopup === 'headquarters'">
+      <app-planet10finger-headquarters
+        *ngIf="activePopup === 'headquarters'"
+        [coins]="coins"
+        [planetName]="planetName"
+        [nextTabInGuide]="nextHQTabInGuide"
+        [purchasedGames]="purchasedGames"
+        (gameClose)="closePopup()"
+        (coinsChanged)="onHQCoinsChanged($event)"
+        (planetNameChanged)="onHQPlanetNameChanged($event)"
+        (planetColorChanged)="onPlanetColorChanged()"
+        (tabVisited)="markHQTabAsVisited($event)"
+        (gamePurchaseRequested)="onGamePurchaseRequested($event)"
+        (characterPurchaseRequested)="onCharacterPurchaseRequested($event)"
+        (colorPurchased)="onColorPurchased($event)"
+      ></app-planet10finger-headquarters>
+
+      <app-planet10finger-power
+        *ngIf="activePopup === 'power'"
+        [difficulty]="gameDifficulty"
+        (gameClose)="closePopupWithCoin()"
+      ></app-planet10finger-power>
+
+      <app-planet10finger-oxygen
+        *ngIf="activePopup === 'oxygen'"
+        [difficulty]="gameDifficulty"
+        [trainingSetIndex]="gameDifficulty - 1"
+        (gameClose)="closePopupWithCoin()"
+      ></app-planet10finger-oxygen>
+
+      <app-planet10finger-meteor
+        *ngIf="activePopup === 'meteor'"
+        [coinsEarned]="coinsEarned"
+        [difficulty]="gameDifficulty"
+        (gameClose)="closePopupWithCoin()"
+      ></app-planet10finger-meteor>
+
+      <app-planet10finger-factory
+        *ngIf="activePopup === 'factory'"
+        [coinsEarned]="coinsEarned"
+        [difficulty]="gameDifficulty"
+        (gameClose)="closePopupWithCoin()"
+        (gameRestart)="onGameRestart()"
+      ></app-planet10finger-factory>
+
+      <app-planet10finger-assembling
+        *ngIf="activePopup === 'assembling'"
+        [coinsEarned]="coinsEarned"
+        [difficulty]="gameDifficulty"
+        (gameClose)="closePopupWithCoin()"
+        (gameRestart)="onGameRestart()"
+      ></app-planet10finger-assembling>
+
+      <app-planet10finger-moonrace
+        *ngIf="activePopup === 'moonrace'"
+        [coinsEarned]="coinsEarned"
+        [difficulty]="gameDifficulty"
+        (gameClose)="closePopupWithCoin()"
+        (gameRestart)="onGameRestart()"
+      ></app-planet10finger-moonrace>
+    </ng-container>
+    <!-- Cheat Code Button (Bottom Right) -->
+    <button
+      class="cheat-button"
+      (click)="openCheatDialog()"
+      title="Åbn cheat-koder"
+    >
+      <span>⚙️</span>
+    </button>
+
+    <!-- Cheat Code Modal Dialog -->
+    <div
+      class="cheat-overlay"
+      *ngIf="showCheatDialog"
+      (click)="closeCheatDialog()"
+    >
+      <div class="cheat-dialog" (click)="$event.stopPropagation()">
+        <div class="cheat-dialog-header">
+          <h3>Cheat Koder</h3>
+          <button class="cheat-close-btn" (click)="closeCheatDialog()">
+            ×
+          </button>
+        </div>
+        <div class="cheat-dialog-body">
+          <p class="cheat-instructions">Indtast en cheat-kode:</p>
+          <input
+            type="text"
+            class="cheat-input"
+            [(ngModel)]="cheatCodeInput"
+            placeholder="f.eks. money100 eller reset"
+            (keyup.enter)="executeCheatCode()"
+          />
+          <button class="cheat-submit-btn" (click)="executeCheatCode()">
+            Udføre
+          </button>
+          <div
+            class="cheat-message"
+            [ngClass]="{
+              'message-success': cheatMessageType === 'success',
+              'message-error': cheatMessageType === 'error',
+            }"
+            *ngIf="cheatMessage"
+          >
+            {{ cheatMessage }}
+          </div>
+          <div class="cheat-help">
+            <p><strong>Tilgængelige koder:</strong></p>
+            <ul>
+              <li><code>coins100</code> - Tilføj 100 mønter</li>
+              <li>
+                <code>resources10</code> - Tilføj 10 batterier og 10
+                iltbeholdere
+              </li>
+              <li>
+                <code>resetgame</code> - Nulstil alt (som første gang du logger
+                ind)
+              </li>
+              <li>
+                <code>resetshop</code> - Nulstil butik-køb (farve-låsninger)
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

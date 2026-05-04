@@ -1,0 +1,192 @@
+@use '../shared/finger-indicators';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1.5rem 2rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.rounds-count {
+  font-size: 1.2rem;
+  color: #555;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.key-instruction {
+  font-size: 1.8rem;
+  color: #000;
+  margin: 0;
+  font-weight: 600;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+// ── Story display ─────────────────────────────────────────
+
+.story-display {
+  flex: 0 1 auto;
+  width: 100%;
+  font-size: 2rem;
+  line-height: 2;
+  color: #111;
+  text-align: center;
+  word-break: break-word;
+  white-space: pre-wrap;
+  overflow: visible;
+
+  span {
+    transition: color 0.1s;
+
+    &.correct {
+      color: #66bb6a;
+    }
+
+    &.current {
+      color: #111;
+      background: #e3f2fd;
+      text-decoration: underline;
+      text-decoration-color: #1565c0;
+      text-decoration-thickness: 4px;
+      text-underline-offset: 4px;
+    }
+  }
+}
+
+// ── Typing field ──────────────────────────────────────────
+
+.typing-field {
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  height: 7rem;
+  padding: 0.8rem 1rem;
+  font-size: 1.4rem;
+  font-family: inherit;
+  background: #1e272e;
+  color: #e0e0e0;
+  border: 2px solid #546e7a;
+  border-radius: 0.6rem;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border-color: #42a5f5;
+    box-shadow: 0 0 10px #42a5f566;
+  }
+
+  &.error {
+    border-color: #ef5350;
+    box-shadow: 0 0 10px #ef535066;
+    animation: shake 0.3s ease;
+  }
+
+  &::placeholder {
+    color: #546e7a;
+  }
+}
+
+@keyframes shake {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-5px); }
+  50%  { transform: translateX(5px); }
+  75%  { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+// ── Hint ─────────────────────────────────────────────────
+
+.hint {
+  font-size: 1.1rem;
+  color: #ef9a9a;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+// ── Training complete overlay ─────────────────────────────
+
+.training-complete-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(232, 234, 246, 0.92);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 10;
+}
+
+.training-complete-text {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2e7d32;
+  text-align: center;
+}
+
+.coins-earned {
+  font-size: 1.4rem;
+  color: #ffd700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+
+  .coin-emoji {
+    font-size: 28px;
+  }
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.training-close-btn {
+  padding: 14px 48px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: #3a3aff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 60px;
+
+  &:hover { background-color: #2020cc; }
+
+  &.secondary {
+    background-color: #e52e71;
+    &:hover { background-color: #b0003a; }
+  }
+}
+
+.button-cost {
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+// ── Keyboard + hands ─────────────────────────────────────
+
+.keyboard-hld {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 12px;
+  flex-shrink: 0;
+}

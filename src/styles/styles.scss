@@ -1,0 +1,209 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "../assets/app-colors";
+
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("../assets/fonts/OpenDyslexic/OpenDyslexic-Regular.otf") format("truetype");
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: $default-text-color;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: normal;
+}
+
+body .mat-icon {
+  height: 24px;
+  width: 24px;
+}
+
+.cdk-overlay-pane.error-class {
+  width: 450px;
+}
+
+.mat-mdc-dialog-actions,
+.mat-mdc-dialog-title {
+  margin-bottom: 0 !important;
+}
+
+.mdc-dialog__title::before {
+  display: none !important;
+}
+
+.mdc-dialog__title {
+  padding: 0 !important;
+}
+
+.mdc-dialog .mdc-dialog__content {
+  padding: 0 !important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__content {
+  color: $default-text-color !important;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.main-content-hld {
+  position: fixed;
+  top: 81px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.page-padd {
+  padding: 0 64px;
+}
+
+.divider {
+  background: $divider-bg;
+  height: 1px;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.flex-display {
+  display: flex;
+}
+
+.v-align {
+  align-items: center;
+}
+
+.orange .achievement-backdrop {
+  background: rgba(252, 169, 3, 0.8);
+  backdrop-filter: blur(16px);
+}
+
+.blue .achievement-backdrop {
+  background: rgba(16, 110, 190, 0.8);
+  backdrop-filter: blur(16px);
+}
+
+.game-over-backdrop {
+  background: rgba(24, 99, 165, 0.8);
+  backdrop-filter: blur(16px);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.game-over-class,
+.achievement-class {
+  max-height: 98vh;
+  min-width: 432px!important;
+}
+
+.game-over-class,
+.achievement-class .mat-mdc-dialog-container {
+  padding: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 1199px) {
+  .page-padd {
+    padding: 0 26px;
+  }
+}
+
+.fx-layout-row {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.fx-layout-row-wrap {
+  flex-flow: row wrap;
+}
+
+.fx-layout-center-center {
+  justify-content: center !important;
+  align-items: center;
+}
+
+.fx-layout-start-center {
+  justify-content: flex-start !important;
+  align-items: center;
+}
+
+.fx-layout-end-center {
+  justify-content: flex-end !important;
+  align-items: center;
+}
+
+.fx-flex {
+  flex: 1 1 0%;
+  box-sizing: border-box;
+}
+
+.fx-flex-nogrow {
+  flex: 0 1 auto;
+  box-sizing: border-box;
+}
+
+.fx-flex-none {
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+
+/* xs: extra small */
+@media(max-width: 599px) {}
+
+/* sm: small medium */
+@media(min-width: 600px) and (max-width: 959px) {}
+
+/* md: medium */
+@media(min-width: 960px) and (max-width: 1279px) {}
+
+/* lg: large */
+@media(min-width: 1280px) and (max-width: 1919px) {}
+
+
+/* Custom scroll bar */
+::-webkit-scrollbar {
+  width: 18px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #667eea;
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #5568d3;
+}

@@ -1,0 +1,17 @@
+{
+  "words": {
+    "1": [
+      "rum", "sol", "måne", "jord", "mars", "raket", "komet", "planet", "stjerne", "saturn",
+      "ufo", "robot", "hjelm", "dragt", "pilot", "kapsel", "base", "bane", "støv", "lys"
+    ],
+    "2": [
+      "rum", "sol", "måne", "jord", "mars", "raket", "komet", "planet", "stjerne", "saturn",
+      "ufo", "robot", "hjelm", "dragt", "pilot", "kapsel", "base", "bane", "støv", "lys",
+      "nat", "sky", "start", "fart", "tur", "motor", "signal", "kreds", "bølge", "vind"
+    ],
+    "3": [
+      "planet", "stjerne", "rakette", "sensor", "signal", "system", "tanker", "filter",
+      "lander", "robot", "motor", "måler", "teleskop", "bølge", "stråle", "forsker"
+    ]
+  }
+}

@@ -1,0 +1,168 @@
+@import "app-colors";
+@import "variables";
+@import "mixins";
+
+.instructions-bg {
+  background-color: $game-blue-bg;
+  background-image: url("/assets/svg/fish_instructions_bg.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+.center-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.levels-hld {
+  background: $white-color;
+  padding: 20px;
+  box-shadow: 16px 16px 32px rgba(0, 0, 0, 0.12);
+  border-radius: 16px;
+  max-height: 90vh;
+  height: 90vh;
+  width: 736px;
+  overflow: hidden;
+  position: relative;
+}
+
+.levels-header {
+  padding-top: 18px;
+}
+
+.levels-hld-title {
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 138%;
+  text-align: center;
+  color: theme-var($--color-active);
+}
+
+.levels-hld-description {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  text-align: center;
+}
+
+.level-hld .mat-icon {
+  width: 72px;
+  min-width: 72px;
+  height: 72px;
+  min-height: 72px;
+}
+
+.scroll-hld {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 140px;
+  height: calc(90vh - 200px);
+  bottom: 0;
+  overflow: auto;
+}
+
+.proceed-hld {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.proceed-btn {
+  height: 40px;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  border-radius: 12px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background: $light-gray;
+}
+
+
+.proceed-btn:hover,
+.proceed-btn.active {
+  background: theme-var($--color-active);
+  color: theme-var($--color-active-text);
+}
+
+.proceed-btn.disabled,
+.proceed-btn.disabled:hover {
+  opacity: 0.6;
+  background: $light-gray;
+  cursor: not-allowed;
+  color: $default-text-color;
+}
+
+.level-hld {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  cursor: pointer;
+  margin: 0 5px;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.level-hld.available {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.level-hld.available.active,
+.level-hld.available:hover {
+  border-color: theme-var($--color-active);
+}
+
+.level-nbr-hld {
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.level-nbr {
+  width: 32px;
+  height: 32px;
+  background: theme-var($--active-light-bg);
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: theme-var($--color-active);
+}
+
+.level-text-hld {
+  font-weight: 500;
+  font-size: 18px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.plr-30 {
+  padding: 0 30px;
+}
+
+.mr-16 {
+  margin-right: 16px;
+}
+
+.fx-flex-25 {
+  flex: 1 1 25%;
+  box-sizing: border-box;
+  max-width: 25%
+}

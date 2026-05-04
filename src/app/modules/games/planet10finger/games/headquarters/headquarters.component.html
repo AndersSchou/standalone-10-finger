@@ -1,0 +1,104 @@
+<div class="hq-container">
+  <nav class="tab-bar">
+    <button
+      class="tab-btn"
+      *ngFor="let tab of tabs"
+      [class.active]="activeTab === tab.id"
+      [class.next-in-guide]="tab.id === nextTabInGuide && activeTab !== tab.id"
+      (click)="selectTab(tab.id)"
+    >
+      {{ tab.label }}
+      <div
+        class="guide-arrow"
+        *ngIf="tab.id === nextTabInGuide && activeTab !== tab.id"
+      ></div>
+    </button>
+    <button class="tab-btn close-btn" (click)="close()">&#x2715;</button>
+  </nav>
+
+  <div class="tab-content">
+    <div *ngIf="activeTab === 'information'" class="info-content">
+      <h3>Udgangs stilling for 10 Finger systemet!</h3>
+      <p>
+        sæt din venstre pegefinger på F og din højre pegefinger på J, og lad
+        resten af fingrene hvile naturligt på tastaturet.
+      </p>
+
+      <img
+        class="starting-position-image"
+        src="assets/png/startingposition.png"
+        alt="Udgangsstilling for 10-finger systemet"
+      />
+
+      <h3>Spiloversigt</h3>
+      <div class="game-info-list">
+        <div class="game-info-item">
+          <div class="game-name">Strøm</div>
+          <div class="game-desc">
+            Hold knappe par inde i den rigtige rækkefølge for at lave strøm.
+          </div>
+        </div>
+        <div class="game-info-item">
+          <div class="game-name">Ilt</div>
+          <div class="game-desc">
+            Tryk knapper i den rigtige rækkefølge for at lave Ilt.
+          </div>
+        </div>
+        <div class="game-info-item">
+          <div class="game-name">Meteor forsvar</div>
+          <div class="game-desc">
+            Skriv ord hurtigt for at ramme meteorerne.
+          </div>
+        </div>
+        <div class="game-info-item">
+          <div class="game-name">Fabrikken</div>
+          <div class="game-desc">
+            Skriv ord rigtigt for at lave rum materiale.
+          </div>
+        </div>
+        <div class="game-info-item">
+          <div class="game-name">Samle Hangaren</div>
+          <div class="game-desc">Skriv korte historier for at bygge ting.</div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="activeTab === 'achievements'" class="achievements-tab">
+      <app-achievements-display></app-achievements-display>
+    </div>
+    <div *ngIf="activeTab === 'stats'" class="stats-tab">
+      <app-stats-display></app-stats-display>
+    </div>
+    <div *ngIf="activeTab === 'shop'" class="shop-tab">
+      <h3>Butik - Tilpas din planet</h3>
+
+      <app-planet-name-color-customizer
+        [coins]="coins"
+        [planetName]="planetName"
+        (coinsChanged)="onCoinsChanged($event)"
+        (colorPurchased)="onColorPurchased($event)"
+      ></app-planet-name-color-customizer>
+
+      <app-background-customizer
+        [coins]="coins"
+        (coinsChanged)="onCoinsChanged($event)"
+        (planetColorChanged)="planetColorChanged.emit()"
+        (colorPurchased)="onColorPurchased($event)"
+      ></app-background-customizer>
+
+      <app-shop-accessories
+        [coins]="coins"
+        [purchasedGames]="purchasedGames"
+        (gameRequested)="gamePurchaseRequested.emit($event)"
+        (characterPurchaseRequested)="characterPurchaseRequested.emit($event)"
+      ></app-shop-accessories>
+
+      <app-planet-name-editor
+        [coins]="coins"
+        [planetName]="planetName"
+        [currentColorHex]="currentNameColorHex"
+        (coinsChanged)="onCoinsChanged($event)"
+        (planetNameChanged)="onPlanetNameChanged($event)"
+      ></app-planet-name-editor>
+    </div>
+  </div>
+</div>

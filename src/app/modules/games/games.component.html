@@ -1,0 +1,55 @@
+<app-shared-top-menu></app-shared-top-menu>
+<app-shared-settings *ngIf="viewSettings"></app-shared-settings>
+<div class="main-content-hld">
+  <div class="center-content">
+    <div>
+      <div class="game-text padd-tb-44">
+        <div class="game-page-title">
+          {{ "translateWelcomeToGamePortal" | translate }}
+        </div>
+        <div class="game-page-description">
+          {{ "translateGamePortalDescription" | translate }}
+        </div>
+        <div class="games-list fx-layout-row fx-layout-center-center mr-30">
+          <div *ngIf="showGame; else noGamesTemplate">
+            <div
+              class="game-hld"
+              (click)="navigateTo('fish')"
+              style="margin-bottom: 30px"
+            >
+              <div>
+                <mat-icon svgIcon="fish"></mat-icon>
+              </div>
+              <div class="game-title">
+                {{ "translateFishTyping" | translate }}
+              </div>
+            </div>
+
+            <div class="games-between-text">ELLER</div>
+            <div class="games-between-description">
+              Lær at stave med 10 finger metoden på en spændende rumrejse
+            </div>
+
+            <div
+              class="game-hld"
+              (click)="navigateTo('planet10finger')"
+              style="margin-bottom: 30px"
+            >
+              <div>
+                <mat-icon svgIcon="cover_rocket_alone"></mat-icon>
+              </div>
+              <div class="game-title">Planet 10 finger</div>
+            </div>
+          </div>
+
+          <ng-template #noGamesTemplate>
+            <div>
+              {{ "translateNoGamesFor" | translate }}
+              {{ currentLanguage | translate }}.
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

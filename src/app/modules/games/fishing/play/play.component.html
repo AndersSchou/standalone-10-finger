@@ -1,0 +1,61 @@
+<div class="play-bg">
+  <div class="island-chest-bg"></div>
+  <div class="island-crab-bg"></div>
+  <div class="game-info-hld white-bg">
+    <div class="game-info-title">{{ 'translateYourTime' | translate }}</div>
+    <div class="timer-holder ptb-16">
+      <span class="timer-hld">{{tensOfMinutes}}</span>
+      <span class="timer-hld">{{minutes}}</span>
+      <span class="timer-hld no-bg">:</span>
+      <span class="timer-hld">{{tensOfSeconds}}</span>
+      <span class="timer-hld">{{seconds}}</span>
+    </div>
+    <div class="divider"></div>
+    <div class="flex-v-align p-16">
+      <mat-icon svgIcon="koi_orange_white" class="koi-icon mr-16"></mat-icon>
+      <mat-icon svgIcon="icon_close" class="times-icon mr-16"></mat-icon>
+      {{score}} / {{levelGoal}}
+    </div>
+    <div class="divider"></div>
+    <div class="flex-v-align p-16 txt-uppercase font-500" *ngIf="currentLevel">
+      <mat-icon svgIcon="level_difficulty" class="mr-16"></mat-icon>
+      {{currentLevel.levelDefinition.name}}
+    </div>
+  </div>
+  <div class="game-actions-hld white-bg">
+    <mat-icon matTooltip="{{
+      (activeIcon === 'play' ? 'translatePlay' : 'translatePause') | translate
+    }}" svgIcon="{{ activeIcon }}" (click)="togglePlayState()" class="mlr-12 cursor-pointer black-icon"
+      [ngClass]="{'active': activeIcon === 'pause'}">
+    </mat-icon>
+    <mat-icon matTooltip="{{
+      (soundIcon === 'sound_on' ? 'translateSoundOn' : 'translateSoundOff') | translate
+    }}" svgIcon="{{ soundIcon }}" (click)="toggleSoundState()" class="mlr-12 cursor-pointer black-icon"
+      [ngClass]="{'active': soundIcon === 'sound_on'}">
+    </mat-icon>
+    <mat-icon svgIcon="icon_replay" class="mlr-12 cursor-pointer replay-icon"
+      matTooltip="{{'translateReplay'|translate}}" (click)="replay(gameLevel.id)">
+    </mat-icon>
+    <mat-icon svgIcon="enter" class="mlr-12 cursor-pointer" matTooltip="{{'translateSelectLevel'|translate}}"
+      (click)="selectLevel()">
+    </mat-icon>
+    <mat-icon svgIcon="icon_logout" class="mlr-12 cursor-pointer back-icon"
+      matTooltip="{{'translateBackToGames'|translate}}" (click)="backToGames()">
+    </mat-icon>
+  </div>
+
+  <div *ngIf="countdownNbr > 0" class="countdown-hld">
+    <div class="countdown-text">{{countdownNbr}}</div>
+  </div>
+
+  <div class="boat-bg-hld">
+    <div class="boat-hld">
+    </div>
+  </div>
+
+  <div id="grid" #grid></div>
+  <app-modules-games-fishing-school-fish #schoolFish (currentScore)="updateScore($event)"
+    [isPaused]="activeIcon === 'play' ? true : false" [isGameOver]="isTimeOut"
+    [playSound]="soundIcon === 'sound_on' ? true: false">
+  </app-modules-games-fishing-school-fish>
+</div>

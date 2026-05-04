@@ -1,0 +1,100 @@
+<p class="rounds-count">Gennemførte sætninger: {{ score }} / {{ goal }}</p>
+
+<p class="key-instruction">Skriv ordene for at gennemføre spillet</p>
+
+<!-- Training complete overlay -->
+<div class="training-complete-overlay" *ngIf="gameOver">
+  <p class="training-complete-text">Træning gennemført!</p>
+  <div class="coins-earned" *ngIf="coinsEarned > 0">
+    <span class="coin-emoji">🪙</span>
+    +{{ coinsEarned }} {{ coinsEarned === 1 ? "coin" : "coins" }}
+  </div>
+  <div class="button-group">
+    <button class="training-close-btn" (click)="restartGame()">
+      <div>Spil igen</div>
+      <div class="button-cost">🔋 1 🫧 1</div>
+    </button>
+    <button class="training-close-btn secondary" (click)="close()">Luk</button>
+  </div>
+</div>
+
+<ng-container *ngIf="!gameOver">
+  <div class="sentence-row">
+    <ng-container *ngFor="let word of words">
+      <!-- Space between words -->
+      <div class="word-space" *ngIf="word.length === 1 && word[0].char === ' '">
+        <div
+          class="char-chip space"
+          [class.active]="word[0].index === typed.length"
+          [class.correct]="word[0].state === 'correct'"
+        ></div>
+      </div>
+      <!-- Word group: all chars kept together -->
+      <div
+        class="word-group"
+        *ngIf="!(word.length === 1 && word[0].char === ' ')"
+      >
+        <div
+          class="char-chip"
+          *ngFor="let c of word"
+          [class.active]="c.index === typed.length"
+          [class.correct]="c.state === 'correct'"
+          [class.error]="c.state === 'error'"
+        >
+          {{ c.char }}
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <p class="hint" [style.visibility]="showError ? 'visible' : 'hidden'">
+    Forkert tegn!
+  </p>
+</ng-container>
+
+<!-- Keyboard + hands -->
+<div class="keyboard-hld">
+  <div class="hands-hld mr-10">
+    <div class="finger-indicators left">
+      <div
+        class="finger-indicator pinky"
+        [class.active]="isFingerExpected('left', 'pinky')"
+      ></div>
+      <div
+        class="finger-indicator ring"
+        [class.active]="isFingerExpected('left', 'ring')"
+      ></div>
+      <div
+        class="finger-indicator middle"
+        [class.active]="isFingerExpected('left', 'middle')"
+      ></div>
+      <div
+        class="finger-indicator index"
+        [class.active]="isFingerExpected('left', 'index')"
+      ></div>
+    </div>
+    <div class="hands-bg left"></div>
+  </div>
+  <app-vkeyboard></app-vkeyboard>
+  <div class="hands-hld ml-10">
+    <div class="finger-indicators right">
+      <div
+        class="finger-indicator index"
+        [class.active]="isFingerExpected('right', 'index')"
+      ></div>
+      <div
+        class="finger-indicator middle"
+        [class.active]="isFingerExpected('right', 'middle')"
+      ></div>
+      <div
+        class="finger-indicator ring"
+        [class.active]="isFingerExpected('right', 'ring')"
+      ></div>
+      <div
+        class="finger-indicator pinky"
+        [class.active]="isFingerExpected('right', 'pinky')"
+      ></div>
+    </div>
+    <div class="hands-bg right"></div>
+  </div>
+</div>

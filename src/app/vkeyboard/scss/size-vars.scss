@@ -1,0 +1,33 @@
+@import "app-colors";
+@import "variables";
+@import "mixins";
+
+// Interior of kb.
+$cell-width: 40px;
+$cell-height: 40px;
+// kb actual size.
+$key-width: 51px;
+$key-height: 51px;
+// Margin between keys.
+$key-margin: 3px;
+// Single key bg color.
+$key-bg-color: $white-color;
+$key-border-radius: 4px;
+
+// Used to lower the main rows to make room for fn keys.
+$top-spacing: 3px;
+// Used to offset the row3 keys.
+$row1-offset: calc(($key-width + $key-margin) / 2);
+// Used to offset the row3 keys.
+$row3-offset: calc(($key-width + $key-margin) / 2);
+// Used to offset the row4 keys.
+$row4-offset: calc(($key-width + $key-margin) *3 / 4);
+// Used to offset the row5 keys.
+$row5-offset: calc(($key-width + $key-margin) *1 / 4);
+
+// Row 6 has specific size.
+$row6-key-width: $key-width + calc(($key-width + $key-margin) *1 / 4);
+// Space key has specific size.
+$row6-space-key-width: 334px;
+// Used to offset the group of keys (num pad and arrow keys).
+$group-offset: $key-margin*2;

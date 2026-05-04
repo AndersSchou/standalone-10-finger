@@ -1,0 +1,72 @@
+.key-hidden {
+  display: none;
+}
+
+// ROW 1
+#keyboard.minimal .kr1,
+#keyboard.partial .kr1 {
+  @extend .key-hidden;
+}
+
+// ROW 2
+@for $colIdx from 15 through 21 {
+
+  #keyboard.minimal .kr2 .kc#{$colIdx},
+  #keyboard.partial .kr2 .kc#{$colIdx} {
+    @extend .key-hidden;
+  }
+}
+
+// ROW 3
+@for $colIdx from 15 through 21 {
+
+  #keyboard.minimal .kr3 .kc#{$colIdx},
+  #keyboard.partial .kr3 .kc#{$colIdx} {
+    @extend .key-hidden;
+  }
+}
+
+#keyboard.minimal .kr3 .kc14,
+#keyboard.minimal .kr3 .kc1 {
+  @extend .key-hidden;
+}
+
+// ROW 4
+@for $colIdx from 14 through 16 {
+
+  #keyboard.minimal .kr4 .kc#{$colIdx},
+  #keyboard.partial .kr4 .kc#{$colIdx} {
+    @extend .key-hidden;
+  }
+}
+
+#keyboard.minimal .kr4 .kc1,
+#keyboard.minimal .kr4 .kc21 {
+  @extend .key-hidden;
+}
+
+// ROW 5
+@for $colIdx from 14 through 18 {
+
+  #keyboard.minimal .kr5 .kc#{$colIdx},
+  #keyboard.partial .kr5 .kc#{$colIdx} {
+    @extend .key-hidden;
+  }
+}
+
+// ROW 6
+@for $colIdx from 9 through 13 {
+
+  #keyboard.minimal .kr6 .kc#{$colIdx},
+  #keyboard.partial .kr6 .kc#{$colIdx} {
+    @extend .key-hidden;
+  }
+}
+
+#keyboard.minimal .kr6 .kc8,
+#keyboard.minimal .kr6 .kc7,
+#keyboard.minimal .kr6 .kc6,
+#keyboard.minimal .kr6 .kc2,
+#keyboard.minimal .kr6 .kc1 {
+  @extend .key-hidden;
+}

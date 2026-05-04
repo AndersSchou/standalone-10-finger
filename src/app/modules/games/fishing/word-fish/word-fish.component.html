@@ -1,0 +1,15 @@
+<div class="game-play-hld" [ngStyle]="{left:currentWord.left,top:currentWord.top}">
+  <div class="animation-hld" [ngClass]="{'active': currentWord.active}">
+    <app-modules-games-fish *ngIf="currentFishImage!==''" [fishImage]="currentFishImage" #fishComp>
+    </app-modules-games-fish>
+    <div class="game-word-hld" #wordHld></div>
+  </div>
+  <audio autoplay *ngIf="isEscaped && playSound">
+    <source src="../../../../../assets/sounds/fishing-game/fish_escaped.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+  <audio autoplay *ngIf="isCaught && playSound">
+    <source src="../../../../../assets/sounds/fishing-game/fish_caught.wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+</div>

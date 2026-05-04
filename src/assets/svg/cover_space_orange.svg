@@ -1,0 +1,62 @@
+<svg width="1360" height="960" viewBox="0 0 1360 960" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g clip-path="url(#clip0_208_13981)">
+<rect width="1360" height="960" rx="8" fill="#212631"/>
+<rect width="585" height="325" fill="url(#pattern0)"/>
+<rect x="585" width="585" height="325" fill="url(#pattern1)"/>
+<rect x="1170" width="585" height="325" fill="url(#pattern2)"/>
+<rect y="325" width="585" height="325" fill="url(#pattern3)"/>
+<rect x="585" y="325" width="585" height="325" fill="url(#pattern4)"/>
+<rect x="1170" y="325" width="585" height="325" fill="url(#pattern5)"/>
+<rect y="650" width="585" height="325" fill="url(#pattern6)"/>
+<rect x="585" y="650" width="585" height="325" fill="url(#pattern7)"/>
+<rect x="1170" y="650" width="585" height="325" fill="url(#pattern8)"/>
+<g filter="url(#filter0_f_208_13981)">
+<circle cx="184" cy="456" r="47" stroke="#FFC757" stroke-width="2"/>
+</g>
+<circle cx="184" cy="456" r="30" fill="#FFC757"/>
+<ellipse cx="166.508" cy="470.435" rx="3.31832" ry="1.75561" transform="rotate(29.1223 166.508 470.435)" fill="#F4B434"/>
+<ellipse cx="190.484" cy="479.897" rx="3.02785" ry="1.65612" transform="rotate(-11.2058 190.484 479.897)" fill="#F4B434"/>
+<ellipse cx="201.946" cy="456.305" rx="1.67404" ry="2.34063" transform="rotate(-11.2058 201.946 456.305)" fill="#F4B434"/>
+<ellipse cx="194.068" cy="462.355" rx="6.51235" ry="5.6794" transform="rotate(-28.4372 194.068 462.355)" fill="#F4B434"/>
+<ellipse cx="181.541" cy="439.618" rx="4.06016" ry="2.91533" transform="rotate(-8.82811 181.541 439.618)" fill="#F4B434"/>
+<ellipse cx="167.395" cy="442.631" rx="3.31832" ry="6.06803" transform="rotate(29.1223 167.395 442.631)" fill="#F4B434"/>
+</g>
+<defs>
+<pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_208_13981" transform="scale(0.0017094 0.00307692)"/>
+</pattern>
+<pattern id="pattern1" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_208_13981" transform="scale(0.0017094 0.00307692)"/>
+</pattern>
+<pattern id="pattern2" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_208_13981" transform="scale(0.0017094 0.00307692)"/>
+</pattern>
+<pattern id="pattern3" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_208_13981" transform="scale(0.0017094 0.00307692)"/>
+</pattern>
+<pattern id="pattern4" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_208_13981" transform="scale(0.0017094 0.00307692)"/>
+</pattern>
+<pattern id="pattern5" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_208_13981" transform="scale(0.0017094 0.00307692)"/>
+</pattern>
+<pattern id="pattern6" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_208_13981" transform="scale(0.0017094 0.00307692)"/>
+</pattern>
+<pattern id="pattern7" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_208_13981" transform="scale(0.0017094 0.00307692)"/>
+</pattern>
+<pattern id="pattern8" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_208_13981" transform="scale(0.0017094 0.00307692)"/>
+</pattern>
+<filter id="filter0_f_208_13981" x="120" y="392" width="128" height="128" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="8" result="effect1_foregroundBlur_208_13981"/>
+</filter>
+<clipPath id="clip0_208_13981">
+<rect width="1360" height="960" rx="8" fill="white"/>
+</clipPath>
+<image id="image0_208_13981" width="585" height="325" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkkAAAFFCAYAAAD4qnnSAAAETklEQVR4nO3dTW7bMBSFUUHwMMhOo810eVzM7aRoOwgQJab0SPqcsQcf4B/IeqS4bQAAAAAAAAAAAAAAAAAAAAAAAAAA8F35o7oDAGDbtm2vDgAAAAAAAAAAAAAAAAAAAKBSklbdAAAAAAAAAAAAAAAAAADAMpKkugEAAAAAAAAAAAAAAAAAAAAAAAAAoAsPWgQAAAAAAAAAAAAAAAC4gt1bAAAAAADQgzvuAEwjyVt1AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAwrSatuAAAAAAAAWJRRDMACnOoOAAAAAAAASzECBAAAgB78wwYAAAAAAAAAAAAAAAAAWJWdpAAAAAAAAAAAAAAAAAAAAAAA8Jwk79UNADwvSatuYFI+PAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8B8H/wIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8HOeeg8AAAAAAAAAAAAAAAC92bUDAAAAAAAAAADwepIcSY7qDmAse3UAAMCUkqS6AQAAAAAAAOjGCBAA4AIusgAAAAAAAIBOjB8BAAAAAAAAAAAAAABgAElakqO64y57dQDMIEmrboCf8vmlo1/VAQAAAAAAAAAAAAAADMSmBQAAAAAAgNOMVgAAAAAAAAAAAAC+IUmqGwAAAAAAAAAAAAAAAADGZAcWXMPREgAAAAAAAAAAAADAaRYgAwBwSpJHkkd1B8AZe3UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACsJUmrbgAAAABegbsQAADQgQvrsXl/AAAAAAAAAAAAAAAAAGZjZxgAAAAAAAAAAAAAAAAAAAAMzaMBAACgExfXAAAAAAAAAP+YoQIAAAAAAAAAMCDLWgAAAAAA3CoFAAAAAAAAejF+BO7i92Zs3h/ozJcKAAAAAAC4jkkEFPDFAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgJsleSR5VHfMYj/zoiTt6hAAAAAABuFmEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwBeSvFc3AAAAAAAAAAB8IUmrbgAAAAAAAJiE0QoAAAAAAAAAAAAAAH8lOZIc1R0Ad9irA4DpfFQHAAAAALPwXB8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAtTivEgAAAAAAAAAAgLOsOQMA6C3JW3UDAAAAAAAAALexEA8AAPiUPwsAAAAAAAAAAAAAT7IgEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAnJWnVDQAAAAAAAMBLMq4EAAAAAAAAAACAGkmOJEd1x6j26gAAoNRHdQAAAAAAAAAAAAAAAAAAAAAAAMCoHEwNAAAAAAAASzECBFiAH3MAAAAAAIDLGMUAAADQzW/gyCYMMvQhNAAAAABJRU5ErkJggg=="/>
+</defs>
+</svg>

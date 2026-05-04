@@ -1,0 +1,65 @@
+import { TestBed } from '@angular/core/testing';
+import { Observable } from 'rxjs';
+import { AppComponent } from './app.component';
+import { UserService } from './services/api/user.service';
+import { AuthService } from './services/auth.service';
+import { CustomIconService } from './services/custom-icon.service';
+import { LanguageHelperService } from './services/language.service';
+import { SettingsService } from './services/settings.service';
+import { MatDialog } from '@angular/material/dialog';
+
+describe('AppComponent', () => {
+  let languageHelperServiceSpy: jasmine.SpyObj<LanguageHelperService>;
+  let customIconServiceSpy: jasmine.SpyObj<CustomIconService>;
+  let userServiceSpy: jasmine.SpyObj<UserService>;
+  let onGetUserInfoActionSpy;
+  let settingsServiceSpy: jasmine.SpyObj<SettingsService>;
+  let authServiceSpy: jasmine.SpyObj<AuthService>;
+  let onLoggedInActionSpy;
+  let matDialogSpy: jasmine.SpyObj<MatDialog>;
+
+  beforeEach(async () => {
+    languageHelperServiceSpy = jasmine.createSpyObj<LanguageHelperService>([
+      'getCurrentLanguageAndTranslations',
+    ]);
+
+    customIconServiceSpy = jasmine.createSpyObj<CustomIconService>([
+      'addCustomIcons',
+      'fetchCustomIcons',
+    ]);
+
+    userServiceSpy = jasmine.createSpyObj<UserService>(['getUserInfo']);
+    (userServiceSpy as any).getUserInfo = new Observable((subscriber) => {
+      onGetUserInfoActionSpy = subscriber;
+    });
+
+    settingsServiceSpy = jasmine.createSpyObj<SettingsService>([
+      'setDefaultSettings',
+    ]);
+
+    authServiceSpy = jasmine.createSpyObj<AuthService>(['loggedInAction']);
+    (authServiceSpy as any).loggedInAction = new Observable((subscriber) => {
+      onLoggedInActionSpy = subscriber;
+    });
+
+    matDialogSpy = jasmine.createSpyObj<MatDialog>(['open']);
+
+    await TestBed.configureTestingModule({
+      imports: [AppComponent],
+      providers: [
+        { provide: LanguageHelperService, useValue: languageHelperServiceSpy },
+        { provide: CustomIconService, useValue: customIconServiceSpy },
+        { provide: UserService, useValue: userServiceSpy },
+        { provide: SettingsService, useValue: settingsServiceSpy },
+        { provide: AuthService, useValue: authServiceSpy },
+        { provide: MatDialog, useValue: matDialogSpy },
+      ],
+    }).compileComponents();
+  });
+
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
+});

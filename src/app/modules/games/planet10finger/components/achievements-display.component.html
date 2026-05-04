@@ -1,0 +1,215 @@
+<div class="achievements-container">
+  <h2 class="achievements-title">Præstationer</h2>
+
+  <div class="achievements-grid">
+    <!-- Power column -->
+    <div class="achievement-column">
+      <h3 class="column-title">Strøm</h3>
+      <div class="achievement-list">
+        <div
+          class="achievement-item"
+          *ngFor="let ach of powerAchievements"
+          [class.unlocked]="ach.unlocked"
+          (mouseenter)="onAchievementMouseEnter(ach.id)"
+          (mouseleave)="onAchievementMouseLeave()"
+        >
+          <img
+            src="assets/png/badge.png"
+            alt="Achievement Badge"
+            class="achievement-icon-img"
+          />
+          <div class="achievement-name">{{ ach.name }}</div>
+          <div
+            class="achievement-tooltip"
+            *ngIf="hoveredAchievementId === ach.id"
+          >
+            <div class="tooltip-description">{{ ach.description }}</div>
+            <div class="tooltip-status" [class.earned]="ach.unlocked">
+              {{ ach.unlocked ? "✓ Achieved" : "Locked" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Oxygen column -->
+    <div class="achievement-column">
+      <h3 class="column-title">Oxygen</h3>
+      <div class="achievement-list">
+        <div
+          class="achievement-item"
+          *ngFor="let ach of oxygenAchievements"
+          [class.unlocked]="ach.unlocked"
+          (mouseenter)="onAchievementMouseEnter(ach.id)"
+          (mouseleave)="onAchievementMouseLeave()"
+        >
+          <img
+            src="assets/png/badge.png"
+            alt="Achievement Badge"
+            class="achievement-icon-img"
+          />
+          <div class="achievement-name">{{ ach.name }}</div>
+          <div
+            class="achievement-tooltip"
+            *ngIf="hoveredAchievementId === ach.id"
+          >
+            <div class="tooltip-description">{{ ach.description }}</div>
+            <div class="tooltip-status" [class.earned]="ach.unlocked">
+              {{ ach.unlocked ? "✓ Achieved" : "Locked" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Meteor column -->
+    <div class="achievement-column">
+      <h3 class="column-title">Meteor</h3>
+      <div class="achievement-list">
+        <div
+          class="achievement-item"
+          *ngFor="let ach of meteorAchievements"
+          [class.unlocked]="ach.unlocked"
+          (mouseenter)="onAchievementMouseEnter(ach.id)"
+          (mouseleave)="onAchievementMouseLeave()"
+        >
+          <img
+            src="assets/png/badge.png"
+            alt="Achievement Badge"
+            class="achievement-icon-img"
+          />
+          <div class="achievement-name">{{ ach.name }}</div>
+          <div
+            class="achievement-tooltip"
+            *ngIf="hoveredAchievementId === ach.id"
+          >
+            <div class="tooltip-description">{{ ach.description }}</div>
+            <div class="tooltip-status" [class.earned]="ach.unlocked">
+              {{ ach.unlocked ? "✓ Achieved" : "Locked" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Factory column -->
+    <div class="achievement-column">
+      <h3 class="column-title">Fabrik</h3>
+      <div class="achievement-list">
+        <div
+          class="achievement-item"
+          *ngFor="let ach of factoryAchievements"
+          [class.unlocked]="ach.unlocked"
+          (mouseenter)="onAchievementMouseEnter(ach.id)"
+          (mouseleave)="onAchievementMouseLeave()"
+        >
+          <img
+            src="assets/png/badge.png"
+            alt="Achievement Badge"
+            class="achievement-icon-img"
+          />
+          <div class="achievement-name">{{ ach.name }}</div>
+          <div
+            class="achievement-tooltip"
+            *ngIf="hoveredAchievementId === ach.id"
+          >
+            <div class="tooltip-description">{{ ach.description }}</div>
+            <div class="tooltip-status" [class.earned]="ach.unlocked">
+              {{ ach.unlocked ? "✓ Achieved" : "Locked" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assembling column -->
+    <div class="achievement-column">
+      <h3 class="column-title">Samling</h3>
+      <div class="achievement-list">
+        <div
+          class="achievement-item"
+          *ngFor="let ach of assemblingAchievements"
+          [class.unlocked]="ach.unlocked"
+          (mouseenter)="onAchievementMouseEnter(ach.id)"
+          (mouseleave)="onAchievementMouseLeave()"
+        >
+          <img
+            src="assets/png/badge.png"
+            alt="Achievement Badge"
+            class="achievement-icon-img"
+          />
+          <div class="achievement-name">{{ ach.name }}</div>
+          <div
+            class="achievement-tooltip"
+            *ngIf="hoveredAchievementId === ach.id"
+          >
+            <div class="tooltip-description">{{ ach.description }}</div>
+            <div class="tooltip-status" [class.earned]="ach.unlocked">
+              {{ ach.unlocked ? "✓ Achieved" : "Locked" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Moonrace column -->
+    <div class="achievement-column">
+      <h3 class="column-title">Måneræs</h3>
+      <div class="achievement-list">
+        <div
+          class="achievement-item"
+          *ngFor="let ach of moonraceAchievements"
+          [class.unlocked]="ach.unlocked"
+          (mouseenter)="onAchievementMouseEnter(ach.id)"
+          (mouseleave)="onAchievementMouseLeave()"
+        >
+          <img
+            src="assets/png/badge.png"
+            alt="Achievement Badge"
+            class="achievement-icon-img"
+          />
+          <div class="achievement-name">{{ ach.name }}</div>
+          <div
+            class="achievement-tooltip"
+            *ngIf="hoveredAchievementId === ach.id"
+          >
+            <div class="tooltip-description">{{ ach.description }}</div>
+            <div class="tooltip-status" [class.earned]="ach.unlocked">
+              {{ ach.unlocked ? "✓ Achieved" : "Locked" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Misc column -->
+    <div class="achievement-column">
+      <h3 class="column-title">Diverse</h3>
+      <div class="achievement-list">
+        <div
+          class="achievement-item"
+          *ngFor="let ach of miscAchievements"
+          [class.unlocked]="ach.unlocked"
+          (mouseenter)="onAchievementMouseEnter(ach.id)"
+          (mouseleave)="onAchievementMouseLeave()"
+        >
+          <img
+            src="assets/png/badge.png"
+            alt="Achievement Badge"
+            class="achievement-icon-img"
+          />
+          <div class="achievement-name">{{ ach.name }}</div>
+          <div
+            class="achievement-tooltip"
+            *ngIf="hoveredAchievementId === ach.id"
+          >
+            <div class="tooltip-description">{{ ach.description }}</div>
+            <div class="tooltip-status" [class.earned]="ach.unlocked">
+              {{ ach.unlocked ? "✓ Achieved" : "Locked" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

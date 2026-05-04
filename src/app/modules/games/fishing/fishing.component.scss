@@ -1,0 +1,77 @@
+@import "app-colors";
+@import "variables";
+@import "mixins";
+
+.loading-bg {
+  background-color: $game-blue-bg;
+  background-image: url("/assets/svg/fish_game_loading_bg.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+.loading-hld {
+  position: relative;
+  height: 100%;
+}
+
+.loading-header-hld {
+  width: 582px;
+  margin: 0 auto;
+  padding-top: 6%;
+}
+
+.loading-header {
+  font-weight: 900;
+  font-size: 120px;
+  line-height: 142px;
+  text-align: center;
+  background: linear-gradient(180deg, #FFD666 0%, #FFAB3D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: -1px -1px 0px rgba(255, 255, 255, 0.4), 8px 8px 16px rgba(132, 55, 0, 0.32);
+}
+
+.loading-bar-hld {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.footer-loading {
+  width: 416px;
+  margin: 0 auto;
+}
+
+.loading-bar {
+  background-image: url("/assets/svg/fish_loading_bar.svg");
+  background-repeat: no-repeat;
+  height: 56px;
+}
+
+.loading-bucket-hld {
+  width: 80px;
+  margin: 0 auto 60px auto;
+}
+
+.loading-bucket {
+  background-image: url("/assets/svg/fish_loading_bucket.svg");
+  background-repeat: no-repeat;
+  height: 186px;
+}
+
+.footer-text {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #FFD666 0%, #FFAB3D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 8px 8px 7px rgba(0, 0, 0, 0.1);
+  padding-bottom: 30px;
+  padding-top: 10px;
+}

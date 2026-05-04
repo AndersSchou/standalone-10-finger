@@ -1,0 +1,231 @@
+@use '../shared/finger-indicators';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.5rem 2rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.rounds-count {
+  font-size: 1.2rem;
+  color: #555;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.key-instruction {
+  font-size: 1.8rem;
+  color: #000;
+  margin: 0;
+  font-weight: 600;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.timer {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1565c0;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+// ── Lanes container ────────────────────────────────────────
+
+.lanes-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+  overflow-x: auto;
+  padding: 1rem;
+  flex-wrap: nowrap;
+}
+
+.lane {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  background: rgba(21, 101, 192, 0.08);
+  border: 2px solid #1565c080;
+  transition: all 0.3s;
+
+  &.finished {
+    background: rgba(46, 125, 50, 0.15);
+    border-color: #2e7d3280;
+
+    .letter-buttons {
+      opacity: 0.6;
+    }
+
+    .lane-status {
+      display: flex;
+    }
+  }
+
+  &.error {
+    background: rgba(183, 28, 28, 0.2);
+    border-color: #c62828;
+    animation: shake 0.3s ease;
+  }
+}
+
+.letter-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.4rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.letter-btn {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid #546e7a;
+  background: #263238;
+  color: #90a4ae;
+  font-size: 1.3rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: not-allowed;
+  transition: all 0.2s;
+  text-transform: uppercase;
+
+  &.correct {
+    background: #2e7d32;
+    border-color: #66bb6a;
+    color: #fff;
+    box-shadow: 0 0 12px #66bb6a99;
+  }
+
+  &.incorrect {
+    background: #b71c1c;
+    border-color: #ef5350;
+    color: #fff;
+  }
+
+  &.finished {
+    background: #263238;
+    border-color: #546e7a;
+    color: #90a4ae;
+    opacity: 0.5;
+  }
+}
+
+.lane-status {
+  display: none;
+  width: 3rem;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #2e7d32;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+// ── Training complete overlay ────────────────────────────
+
+.training-complete-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.training-complete-text {
+  font-size: 2.5rem;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
+}
+
+.result-score {
+  font-size: 1.5rem;
+  color: #e0e0e0;
+  text-align: center;
+  margin: 0;
+}
+
+.coins-earned {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.8rem;
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.coin-emoji {
+  font-size: 2rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.training-close-btn {
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.4rem;
+  background: #1565c0;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #1e88e5;
+  }
+
+  &.secondary {
+    background: #546e7a;
+
+    &:hover {
+      background: #607d8b;
+    }
+  }
+
+  .button-cost {
+    font-size: 0.8rem;
+    opacity: 0.9;
+  }
+}
+
+// ── Keyboard + hands ──────────────────────────────────────
+
+.keyboard-hld {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 12px;
+  flex-shrink: 0;
+}

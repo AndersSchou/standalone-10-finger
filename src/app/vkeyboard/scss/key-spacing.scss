@@ -1,0 +1,237 @@
+@import './size-vars.scss';
+
+.kr1 {
+
+  .kb,
+  .kt,
+  .kls {
+    left: 0 !important;
+  }
+
+  @for $col from 2 through 5 {
+    .kc#{$col} {
+      left: $key-width*$col+$key-margin*$col;
+    }
+  }
+
+  @for $col from 6 through 9 {
+    .kc#{$col} {
+      left: $row1-offset + $key-width*$col+$key-margin*$col;
+    }
+  }
+
+  @for $col from 10 through 13 {
+    .kc#{$col} {
+      left: $row1-offset * 2 + ($key-width*($col)+$key-margin*($col));
+    }
+  }
+
+  @for $col from 14 through 16 {
+    .kc#{$col} {
+      left: $group-offset + $row1-offset * 2 + ($key-width*($col)+$key-margin*($col));
+    }
+  }
+}
+
+.kr2 {
+
+  .kb,
+  .kt,
+  .kls {
+    left: 0 !important;
+  }
+
+  @for $col from 1 through 14 {
+    .kc#{$col} {
+      left: ($key-width*($col - 1)+$key-margin*($col - 1));
+    }
+  }
+
+  @for $col from 15 through 17 {
+    .kc#{$col} {
+      left: $group-offset + ($key-width*($col)+$key-margin*($col));
+    }
+  }
+
+  @for $col from 18 through 21 {
+    .kc#{$col} {
+      left: $group-offset*2 + ($key-width*($col)+$key-margin*($col));
+    }
+  }
+
+  .kc14 .kb {
+    width: $key-width * 2 + $key-margin;
+  }
+}
+
+.kr3 {
+
+  .kb,
+  .kt,
+  .kls {
+    left: 0 !important;
+  }
+
+  .kc1 {
+    .kb {
+      width: $key-width + $row3-offset;
+    }
+  }
+
+  @for $col from 2 through 14 {
+    .kc#{$col} {
+      left: $row3-offset + ($key-width*($col - 1)+$key-margin*($col - 1));
+    }
+  }
+
+  @for $col from 15 through 17 {
+    .kc#{$col} {
+      left: $group-offset + ($key-width*($col)+$key-margin*($col));
+    }
+  }
+
+  @for $col from 18 through 21 {
+    .kc#{$col} {
+      left: $group-offset*2 + ($key-width*($col)+$key-margin*($col));
+    }
+  }
+}
+
+.kr4 {
+
+  .kb,
+  .kt,
+  .kls {
+    left: 0 !important;
+  }
+
+  .kc1 {
+    .kb {
+      width: $key-width + $row4-offset;
+    }
+  }
+
+  @for $col from 2 through 13 {
+    .kc#{$col} {
+      left: $row4-offset + ($key-width*($col - 1)+$key-margin*($col - 1));
+    }
+  }
+
+  @for $col from 14 through 16 {
+    .kc#{$col} {
+      left: $group-offset*2 + ($key-width*($col+4)+$key-margin*($col+4));
+    }
+  }
+}
+
+.kr5 {
+
+  .kb,
+  .kt,
+  .kls {
+    left: 0 !important;
+  }
+
+  .kc1 {
+    .kb {
+      width: $key-width + $row5-offset;
+    }
+  }
+
+  @for $col from 2 through 13 {
+    .kc#{$col} {
+      left: $row5-offset + ($key-width*($col - 1)+$key-margin*($col - 1));
+    }
+  }
+
+  .kc14 {
+    left: $group-offset + ($key-width*16+$key-margin*16);
+  }
+
+  @for $col from 15 through 18 {
+    .kc#{$col} {
+      left: $group-offset*2 + ($key-width*($col+3)+$key-margin*($col+3));
+    }
+  }
+}
+
+.kr6 {
+
+  .kb,
+  .kt,
+  .kls {
+    left: 0 !important;
+  }
+
+  .kc1,
+  .kc2,
+  .kc3,
+  .kc5,
+  .kc6,
+  .kc7,
+  .kc8 {
+    .kb {
+      width: $row6-key-width;
+    }
+  }
+
+  @for $col from 1 through 3 {
+    .kc#{$col} {
+      left: $row6-key-width * ($col - 1) + $key-margin * ($col - 1);
+    }
+  }
+
+  .kc4 {
+    // spacebar
+    left: $row6-key-width * 3 + $key-margin * 3;
+
+    .kb {
+      width: $row6-space-key-width;
+    }
+  }
+
+  @for $col from 5 through 8 {
+    .kc#{$col} {
+      left: $row6-space-key-width + $row6-key-width * ($col - 2) + $key-margin * ($col - 1);
+    }
+  }
+
+  @for $col from 9 through 11 {
+    .kc#{$col} {
+      left: $group-offset + ($key-width*($col+6)+$key-margin*($col+6));
+    }
+  }
+
+  .kc12 {
+    left: $group-offset*2 + ($key-width*18+$key-margin*18);
+  }
+
+  .kc13 {
+    left: $group-offset*2 + ($key-width*20+$key-margin*20);
+  }
+
+}
+
+// Custom button sizes
+
+// NumPad +
+.kr3 .kc21 .kb,
+// NumPad CR
+.kr5 .kc18 .kb {
+
+  height: $key-height * 2 + $key-margin;
+}
+
+.kr5 .kc13 {
+
+  // Right shift
+  .kb {
+    // $key-width*(15-11) + $key-margin*(15-11) - $key-width - $row5-offset
+    width: $key-width*3 + $key-margin*2 - $row5-offset;
+  }
+}
+
+// NumPad 0
+.kr6 .kc12 .kb {
+  width: $key-width * 2 + $key-margin;
+}
