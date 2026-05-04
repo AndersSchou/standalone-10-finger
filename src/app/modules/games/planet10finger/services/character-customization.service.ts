@@ -14,6 +14,8 @@ export interface Character {
 export class CharacterCustomizationService {
   private readonly PURCHASED_CHARACTERS_KEY = 'planet10finger_purchased_characters';
   private readonly PLACED_CHARACTERS_KEY = 'planet10finger_placed_characters';
+  private readonly CHARACTER_POSITIONS_KEY = 'planet10finger_character_positions';
+  private readonly MAX_CHARACTER_POSITIONS = 5;
 
   readonly characters: Character[] = [
     { id: 'astro_dog', label: 'Astro Hund', imagePath: 'assets/png/astro dog.png' },
@@ -83,6 +85,47 @@ export class CharacterCustomizationService {
   }
 
   /**
+   * Get character positions map from localStorage.
+   * Maps character ID to position index (0-4).
+   */
+  getCharacterPositions(): Record<string, number> {
+    const saved = localStorage.getItem(this.CHARACTER_POSITIONS_KEY);
+    return saved ? JSON.parse(saved) : {};
+  }
+
+  /**
+   * Move a character to the next available position.
+   * If already placed, cycles to the next position; otherwise places at first available.
+   */
+  moveCharacterToNextPosition(characterId: string): void {
+    const placed = this.getPlacedCharacters();
+    const positions = this.getCharacterPositions();
+
+    // If character is not placed, place it at position 0
+    if (!placed.includes(characterId)) {
+      placed.push(characterId);
+      positions[characterId] = 0;
+      localStorage.setItem(this.PLACED_CHARACTERS_KEY, JSON.stringify(placed));
+      localStorage.setItem(this.CHARACTER_POSITIONS_KEY, JSON.stringify(positions));
+      return;
+    }
+
+    // If already placed, move to next position (cycle through 0-4)
+    const currentPos = positions[characterId] ?? 0;
+    const nextPos = (currentPos + 1) % this.MAX_CHARACTER_POSITIONS;
+    positions[characterId] = nextPos;
+    localStorage.setItem(this.CHARACTER_POSITIONS_KEY, JSON.stringify(positions));
+  }
+
+  /**
+   * Get the position of a character.
+   */
+  getCharacterPosition(characterId: string): number {
+    const positions = this.getCharacterPositions();
+    return positions[characterId] ?? 0;
+  }
+
+  /**
    * Get character details by ID.
    */
   getCharacterById(characterId: string): Character | undefined {
@@ -99,9 +142,18 @@ export class CharacterCustomizationService {
 
   /**
    * Get all character objects that have been placed.
+   * Sorted by position to maintain correct grid layout.
    */
   getPlacedCharacterObjects(): Character[] {
     const placed = this.getPlacedCharacters();
-    return this.characters.filter(c => placed.includes(c.id));
+    const positions = this.getCharacterPositions();
+    
+    // Filter characters that are placed and sort by position
+    const placedChars = this.characters.filter(c => placed.includes(c.id));
+    return placedChars.sort((a, b) => {
+      const posA = positions[a.id] ?? 0;
+      const posB = positions[b.id] ?? 0;
+      return posA - posB;
+    });
   }
 }

@@ -375,14 +375,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     const charObj = this.characterCustomizationService.getCharacterById(characterId);
     if (!charObj) return;
 
-    const isPlaced = this.characterCustomizationService.getPlacedCharacters().includes(characterId);
-    
-    if (isPlaced) {
-      this.characterCustomizationService.removeCharacter(characterId);
-    } else {
-      this.characterCustomizationService.placeCharacter(characterId);
-    }
-    
+    // Move character to next position instead of removing
+    this.characterCustomizationService.moveCharacterToNextPosition(characterId);
     this.loadPlacedCharacters();
   }
 
@@ -392,6 +386,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
       this.purchasedGames.add(game);
       localStorage.setItem(this.COINS_KEY, this.coins.toString());
       localStorage.setItem(this.PURCHASED_GAMES_KEY, JSON.stringify(Array.from(this.purchasedGames)));
+      // Trigger change detection immediately so the game becomes playable right away
+      this.cdr.detectChanges();
       return true;
     }
     return false;
