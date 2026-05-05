@@ -34,7 +34,7 @@ export const FishDefinitionsData = [
     wordMaxSize: 3,
     maxErrors: 2,
     extraTime: 0,
-    reward: 1,
+    reward: 3,
     images: [
       { name: 'marine_fish', width: 9, height: 4 },
       { name: 'marine_fish_1', width: 5, height: 3 },
@@ -49,7 +49,7 @@ export const FishDefinitionsData = [
     wordMaxSize: 6,
     maxErrors: 1,
     extraTime: 0,
-    reward: 2,
+    reward: 6,
     images: [
       { name: 'striped_fish', width: 6, height: 6 },
       { name: 'striped_fish_1', width: 6, height: 4 },
@@ -63,7 +63,7 @@ export const FishDefinitionsData = [
     wordMaxSize: 9,
     maxErrors: 0,
     extraTime: 0,
-    reward: 4,
+    reward: 12,
     images: [
       { name: 'koi_white_red_1', width: 5, height: 4 },
       { name: 'koi_red_black', width: 6, height: 4 },
@@ -79,7 +79,7 @@ export const FishDefinitionsData = [
     wordMaxSize: 11,
     maxErrors: 0,
     extraTime: 0,
-    reward: 5,
+    reward: 15,
     images: [
       { name: 'koi_black', width: 6, height: 5 },
       { name: 'koi_yellow', width: 6, height: 5 },
@@ -93,7 +93,7 @@ export const FishDefinitionsData = [
     wordMaxSize: 100,
     maxErrors: 1,
     extraTime: 0,
-    reward: 10,
+    reward: 30,
     images: [
       { name: 'chest', width: 5, height: 4, xPos: 18, yPos: 1 }
     ]

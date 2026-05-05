@@ -512,8 +512,8 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     this.doNotShowAgainChecked = false;
     this.gameDifficulty = 1; // Reset to default
     
-    // Set coins to be earned (1 for meteor, factory, assembling, moonrace; 0 for others)
-    this.coinsEarned = ['meteor', 'factory', 'assembling', 'moonrace'].includes(game) ? 1 : 0;
+    // Set coins to be earned (3 for meteor, factory, assembling, moonrace; 0 for others)
+    this.coinsEarned = ['meteor', 'factory', 'assembling', 'moonrace'].includes(game) ? 3 : 0;
     
     // Check if intro for this game has been hidden
     const introHiddenKey = `game_intro_${this.activePopup}_hidden`;
@@ -618,7 +618,7 @@ export class Planet10fingerComponent implements OnInit, OnDestroy {
     // Calculate coin reward based on difficulty level
     // Games that give coins: meteor, factory, assembling, moonrace
     if (['meteor', 'factory', 'assembling', 'moonrace'].includes(gameToClose || '')) {
-      const coinsToAdd = this.gameDifficulty === 1 ? 1 : this.gameDifficulty === 2 ? 2 : 3;
+      const coinsToAdd = this.gameDifficulty === 1 ? 3 : this.gameDifficulty === 2 ? 6 : 9;
       this.coins += coinsToAdd;
       localStorage.setItem(this.COINS_KEY, this.coins.toString());
     }

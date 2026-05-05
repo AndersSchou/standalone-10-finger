@@ -1222,6 +1222,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transition: transform 0.15s, box-shadow 0.15s;
   z-index: 1500;
+  opacity: 0;
 
   &:hover {
     transform: scale(1.1);
